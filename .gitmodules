@@ -1,0 +1,6 @@
+[submodule "Spore-ModAPI"]
+	path = Spore-ModAPI
+	url = https://github.com/emd4600/Spore-ModAPI/
+[submodule "Detours"]
+	path = Detours
+	url = https://github.com/microsoft/Detours
