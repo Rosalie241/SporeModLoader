@@ -216,13 +216,14 @@ bool SporeModLoader::Initialize()
         }
 
         // make sure required directories exist
-        for (const auto& path : { sporeModManagerPath, coreLibsPath, l_ModLoaderModLibsPath })
+        for (const auto& path : { sporeModManagerPath, coreLibsPath })
         {
             if (!std::filesystem::is_directory(path))
             {
                 std::string errorMessage;
-                errorMessage = "\"" + sporeModManagerPath + "\"";
+                errorMessage = "\"" + path + "\"";
                 errorMessage += " doesn't exist!";
+                ShowErrorMessage(errorMessage);
                 throw std::exception();
             }
         }
@@ -235,6 +236,11 @@ bool SporeModLoader::Initialize()
             ShowErrorMessage(errorMessage);
         }
        
+        if (!std::filesystem::exists(l_ModLoaderModLibsPath))
+        {
+            std::filesystem::create_directory(l_ModLoaderModLibsPath);
+        }
+
         // copy required libs to the mLibs directory
         std::filesystem::copy_file(coreLibsPath + "\\SporeModAPI.lib", l_ModLoaderModLibsPath + "\\SporeModAPI.lib", std::filesystem::copy_options::overwrite_existing);
         std::filesystem::copy_file(coreLibInputPath, coreLibOutputPath, std::filesystem::copy_options::overwrite_existing);
