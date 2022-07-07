@@ -35,9 +35,9 @@ enum class SporeExecutableType
 // Local Variables
 //
 
-static std::wstring l_ModLoaderCoreLibsPath;
-static std::wstring l_ModLoaderModLibsPath;
-static std::wstring l_ModLoaderLogPath;
+static std::string l_ModLoaderModLibsPath;
+static std::string l_ModLoaderLogPath;
+static std::vector<std::filesystem::path> l_ModLoaderCoreLibs;
 
 //
 // Helper Functions
@@ -46,6 +46,11 @@ static std::wstring l_ModLoaderLogPath;
 static void ShowErrorMessage(std::wstring message)
 {
     MessageBoxW(nullptr, message.c_str(), L"SporeModLoader", MB_OK | MB_ICONERROR);
+}
+
+static void ShowErrorMessage(std::string message)
+{
+    MessageBoxA(nullptr, message.c_str(), "SporeModLoader", MB_OK | MB_ICONERROR);
 }
 
 static void AddLogMessage(std::string message)
@@ -71,30 +76,58 @@ static bool LoadModLibrary(std::filesystem::path path)
     return ret;
 }
 
-static bool LoadLibrariesInPath(std::wstring path)
+static std::vector<std::filesystem::path> GetLibrariesInPath(std::string path)
 {
+    std::vector<std::filesystem::path> libraries;
+
     for (const auto& entry : std::filesystem::directory_iterator(path))
     {
-        // skip non-files & non-dlls
         if (!entry.is_regular_file() ||
             !entry.path().wstring().ends_with(L"dll"))
         {
             continue;
         }
 
-        // attempt to load mod library
-        if (!LoadModLibrary(entry.path()))
-        {
-            std::wstring errorMessage;
-            errorMessage = L"LoadModLibrary(\"";
-            errorMessage += entry.path().wstring();
-            errorMessage += L"\") Failed!";
-            ShowErrorMessage(errorMessage);
-            return false;
-        }
+        libraries.push_back(entry.path());
     }
 
-    return true;
+    return libraries;
+}
+
+static std::string GetModManagerPath(void)
+{
+    std::string modManagerPath;
+    std::string redirectStoragePath;
+    std::fstream redirectStorageFileStream;
+    std::string redirectStorageFileLine;
+
+    char envBuffer[2048];
+    
+    if (GetEnvironmentVariableA("PROGRAMDATA", envBuffer, 2048) == 0)
+    {
+        return modManagerPath;
+    }
+
+    modManagerPath = envBuffer;
+    modManagerPath += "\\SporeModManagerStorage";
+    redirectStoragePath = modManagerPath + "\\redirectStorage.txt";
+
+    if (std::filesystem::exists(redirectStoragePath) &&
+        std::filesystem::is_regular_file(redirectStoragePath))
+    {
+        redirectStorageFileStream.open(redirectStoragePath);
+        if (redirectStorageFileStream.is_open())
+        {
+            std::getline(redirectStorageFileStream, redirectStorageFileLine);
+            if (!redirectStorageFileLine.empty())
+            {
+                modManagerPath = redirectStorageFileLine;
+            }
+        }
+        redirectStorageFileStream.close();
+    }
+
+    return modManagerPath;
 }
 
 SporeExecutableType GetCurrentGameVersion(void)
@@ -105,19 +138,19 @@ SporeExecutableType GetCurrentGameVersion(void)
 
     switch (std::filesystem::file_size(sporeExePath))
     {
-        case 24909584:
-            return SporeExecutableType::Disk_1_5_1;
-        case 31347984:
-            return SporeExecutableType::Origin_1_5_1;
-        case 24898224:
-            return SporeExecutableType::Origin_March2017;
-        case 24888320:
-            return SporeExecutableType::GogOrSteam_1_5_1;
-        case 24885248:
-            return SporeExecutableType::GogOrSteam_March2017;
+    case 24909584:
+        return SporeExecutableType::Disk_1_5_1;
+    case 31347984:
+        return SporeExecutableType::Origin_1_5_1;
+    case 24898224:
+        return SporeExecutableType::Origin_March2017;
+    case 24888320:
+        return SporeExecutableType::GogOrSteam_1_5_1;
+    case 24885248:
+        return SporeExecutableType::GogOrSteam_March2017;
 
-        default:
-            return SporeExecutableType::Unknown;
+    default:
+        return SporeExecutableType::Unknown;
     }
 }
 
@@ -129,15 +162,20 @@ bool SporeModLoader::Initialize()
 {
     try
     {
-        std::wstring modLoaderPath;
-        std::wstring errorMessage;
+        std::string errorMessage;
+        std::string legacyCoreLibPath;
+        std::string coreLibsPath;
+        std::string coreLibInputPath;
+        std::string coreLibOutputPath;
+        std::string sporeModManagerPath;
 
-        modLoaderPath = std::filesystem::current_path().wstring();
-        modLoaderPath += L"\\SporeModLoader";
-
-        l_ModLoaderCoreLibsPath = modLoaderPath + L"\\CoreLibs";
-        l_ModLoaderModLibsPath = modLoaderPath + L"\\ModLibs";
-        l_ModLoaderLogPath = modLoaderPath + L"\\SporeModLoader.log";
+        sporeModManagerPath = GetModManagerPath();
+        coreLibsPath = sporeModManagerPath + "\\coreLibs";
+        l_ModLoaderModLibsPath = sporeModManagerPath + "\\mLibs";
+        l_ModLoaderLogPath = sporeModManagerPath + "\\SporeModLoader.log";
+        legacyCoreLibPath = sporeModManagerPath + "\\legacyLibs";
+        coreLibInputPath = coreLibsPath;
+        coreLibOutputPath = l_ModLoaderModLibsPath + "\\SporeModAPI.dll";
 
         // remove log file if it exists
         if (std::filesystem::exists(l_ModLoaderLogPath))
@@ -145,37 +183,64 @@ bool SporeModLoader::Initialize()
             std::filesystem::remove(l_ModLoaderLogPath);
         }
 
-        for (const auto& path : { l_ModLoaderCoreLibsPath , l_ModLoaderModLibsPath })
+        // retrieve game version and set variables
+        switch (GetCurrentGameVersion())
+        {
+        default:
+        case SporeExecutableType::Unknown:
+            ShowErrorMessage(L"Unknown Spore version!");
+            throw std::exception();
+
+        case SporeExecutableType::Origin_1_5_1:
+        case SporeExecutableType::GogOrSteam_1_5_1:
+            ShowErrorMessage(L"Update Spore to the latest version!");
+            throw std::exception();
+
+        case SporeExecutableType::Origin_March2017:
+        case SporeExecutableType::GogOrSteam_March2017:
+            legacyCoreLibPath += "\\SporeModAPI-steam_patched.dll";
+            coreLibInputPath += "\\SporeModAPI.march2017.dll";
+            break;
+
+        case SporeExecutableType::Disk_1_5_1:
+            legacyCoreLibPath += "\\SporeModAPI-disk.dll";
+            coreLibInputPath += "\\SporeModAPI.disk.dll";
+            break;
+        }
+
+        // make sure GetModManagerPath() didn't fail
+        if (sporeModManagerPath.empty())
+        {
+            ShowErrorMessage("GetModManagerPath() Failed!");
+            throw std::exception();
+        }
+
+        // make sure required directories exist
+        for (const auto& path : { sporeModManagerPath, coreLibsPath, l_ModLoaderModLibsPath })
         {
             if (!std::filesystem::is_directory(path))
             {
-                errorMessage = path;
-                errorMessage += L" doesn't exist!";
-                ShowErrorMessage(errorMessage);
+                std::string errorMessage;
+                errorMessage = "\"" + sporeModManagerPath + "\"";
+                errorMessage += " doesn't exist!";
                 throw std::exception();
             }
         }
 
-        switch (GetCurrentGameVersion())
+        if (!std::filesystem::exists(coreLibInputPath))
         {
-            case SporeExecutableType::Unknown:
-                ShowErrorMessage(L"Unknown Spore version!");
-                throw std::exception();
-
-            case SporeExecutableType::Origin_1_5_1:
-            case SporeExecutableType::GogOrSteam_1_5_1:
-                ShowErrorMessage(L"Update Spore to the latest version!");
-                throw std::exception();
-
-            case SporeExecutableType::Origin_March2017:
-            case SporeExecutableType::GogOrSteam_March2017:
-                l_ModLoaderCoreLibsPath += L"\\march2017";
-                break;
-
-            case SporeExecutableType::Disk_1_5_1:
-                l_ModLoaderCoreLibsPath += L"\\disk";
-                break;
+            std::string errorMessage;
+            errorMessage = "\"" + coreLibInputPath + "\"";
+            errorMessage += " doesn't exist!";
+            ShowErrorMessage(errorMessage);
         }
+       
+        // copy required libs to the mLibs directory
+        std::filesystem::copy_file(coreLibsPath + "\\SporeModAPI.lib", l_ModLoaderModLibsPath + "\\SporeModAPI.lib", std::filesystem::copy_options::overwrite_existing);
+        std::filesystem::copy_file(coreLibInputPath, coreLibOutputPath, std::filesystem::copy_options::overwrite_existing);
+
+        l_ModLoaderCoreLibs.push_back(coreLibOutputPath);
+        l_ModLoaderCoreLibs.push_back(legacyCoreLibPath);
 
         AddLogMessage("SporeModLoader::Initialize() == TRUE");
         return true;
@@ -193,9 +258,17 @@ bool SporeModLoader::LoadCoreLibs()
     try
     {
         AddLogMessage("SporeModLoader::LoadCoreLibs()");
-        if (!LoadLibrariesInPath(l_ModLoaderCoreLibsPath))
+        for (const auto& library : l_ModLoaderCoreLibs)
         {
-            throw std::exception();
+            if (!LoadModLibrary(library))
+            {
+                std::wstring errorMessage;
+                errorMessage = L"LoadModLibrary(\"";
+                errorMessage += library.wstring();
+                errorMessage += L"\") Failed!";
+                ShowErrorMessage(errorMessage);
+                throw std::exception();
+            }
         }
         AddLogMessage("SporeModLoader::LoadCoreLibs() == TRUE");
         return true;
@@ -213,9 +286,22 @@ bool SporeModLoader::LoadModLibs()
     try
     {
         AddLogMessage("SporeModLoader::LoadModLibs()");
-        if (!LoadLibrariesInPath(l_ModLoaderModLibsPath))
+        for (const auto& library : GetLibrariesInPath(l_ModLoaderModLibsPath))
         {
-            throw std::exception();
+            if (std::find(l_ModLoaderCoreLibs.begin(), l_ModLoaderCoreLibs.end(), library) != l_ModLoaderCoreLibs.end())
+            { // skip core libs
+                continue;
+            }
+
+            if (!LoadModLibrary(library))
+            {
+                std::wstring errorMessage;
+                errorMessage = L"LoadModLibrary(\"";
+                errorMessage += library.wstring();
+                errorMessage += L"\") Failed!";
+                ShowErrorMessage(errorMessage);
+                throw std::exception();
+            }
         }
         AddLogMessage("SporeModLoader::LoadModLibs() == TRUE");
         return true;
