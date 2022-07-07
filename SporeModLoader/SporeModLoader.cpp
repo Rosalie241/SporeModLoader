@@ -152,7 +152,7 @@ bool SporeModLoader::Initialize()
                 errorMessage = path;
                 errorMessage += L" doesn't exist!";
                 ShowErrorMessage(errorMessage);
-                throw new std::exception();
+                throw std::exception();
             }
         }
 
@@ -160,14 +160,12 @@ bool SporeModLoader::Initialize()
         {
             case SporeExecutableType::Unknown:
                 ShowErrorMessage(L"Unknown Spore version!");
-                throw new std::exception();
-                break;
+                throw std::exception();
 
             case SporeExecutableType::Origin_1_5_1:
             case SporeExecutableType::GogOrSteam_1_5_1:
                 ShowErrorMessage(L"Update Spore to the latest version!");
-                throw new std::exception();
-                break;
+                throw std::exception();
 
             case SporeExecutableType::Origin_March2017:
             case SporeExecutableType::GogOrSteam_March2017:
@@ -197,7 +195,7 @@ bool SporeModLoader::LoadCoreLibs()
         AddLogMessage("SporeModLoader::LoadCoreLibs()");
         if (!LoadLibrariesInPath(l_ModLoaderCoreLibsPath))
         {
-            throw new std::exception();
+            throw std::exception();
         }
         AddLogMessage("SporeModLoader::LoadCoreLibs() == TRUE");
         return true;
@@ -217,7 +215,7 @@ bool SporeModLoader::LoadModLibs()
         AddLogMessage("SporeModLoader::LoadModLibs()");
         if (!LoadLibrariesInPath(l_ModLoaderModLibsPath))
         {
-            throw new std::exception();
+            throw std::exception();
         }
         AddLogMessage("SporeModLoader::LoadModLibs() == TRUE");
         return true;
