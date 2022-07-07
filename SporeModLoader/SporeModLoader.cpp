@@ -195,7 +195,6 @@ bool SporeModLoader::LoadCoreLibs()
     try
     {
         AddLogMessage("SporeModLoader::LoadCoreLibs()");
-
         if (!LoadLibrariesInPath(l_ModLoaderCoreLibsPath))
         {
             throw new std::exception();
