@@ -45,7 +45,7 @@ static std::wstring l_ModLoaderLogPath;
 
 static void ShowErrorMessage(std::wstring message)
 {
-    MessageBoxW(NULL, message.c_str(), L"SporeModLoader", MB_OK | MB_ICONERROR);
+    MessageBoxW(nullptr, message.c_str(), L"SporeModLoader", MB_OK | MB_ICONERROR);
 }
 
 static void AddLogMessage(std::string message)
@@ -65,7 +65,7 @@ static bool LoadModLibrary(std::filesystem::path path)
     logMessage += "\")";
 
     AddLogMessage(logMessage);
-    ret = LoadLibraryW(path.wstring().c_str()) != NULL;
+    ret = LoadLibraryW(path.wstring().c_str()) != nullptr;
     AddLogMessage(logMessage + " == " + (ret ? "TRUE" : "FALSE"));
 
     return ret;

@@ -17,7 +17,7 @@
 // Detoured Functions
 //
 
-static int (WINAPI* SporeAppEntry_real)(void) = NULL;
+static int (WINAPI* SporeAppEntry_real)(void) = nullptr;
 static int SporeAppEntry_detoured(void)
 {
     if (!SporeModLoader::Initialize())
@@ -60,7 +60,7 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID reserved)
     {
         DetourRestoreAfterWith();
 
-        SporeAppEntry_real = (int (WINAPI*)(VOID))DetourGetEntryPoint(NULL);
+        SporeAppEntry_real = (int (WINAPI*)(VOID))DetourGetEntryPoint(nullptr);
 
         DetourTransactionBegin();
         DetourUpdateThread(GetCurrentThread());
