@@ -35,8 +35,8 @@ enum class SporeExecutableType
 // Local Variables
 //
 
-static std::string l_ModLoaderModLibsPath;
-static std::string l_ModLoaderLogPath;
+static std::filesystem::path l_ModLoaderModLibsPath;
+static std::filesystem::path l_ModLoaderLogPath;
 static std::vector<std::filesystem::path> l_ModLoaderCoreLibs;
 
 //
@@ -76,14 +76,14 @@ static bool LoadModLibrary(std::filesystem::path path)
     return ret;
 }
 
-static std::vector<std::filesystem::path> GetLibrariesInPath(std::string path)
+static std::vector<std::filesystem::path> GetLibrariesInPath(std::filesystem::path path)
 {
     std::vector<std::filesystem::path> libraries;
 
     for (const auto& entry : std::filesystem::directory_iterator(path))
     {
         if (!entry.is_regular_file() ||
-            !entry.path().wstring().ends_with(L"dll"))
+            !entry.path().filename().wstring().ends_with(L".dll"))
         {
             continue;
         }
@@ -94,23 +94,24 @@ static std::vector<std::filesystem::path> GetLibrariesInPath(std::string path)
     return libraries;
 }
 
-static std::string GetModManagerPath(void)
+static std::filesystem::path GetModManagerPath(void)
 {
-    std::string modManagerPath;
-    std::string redirectStoragePath;
+    std::filesystem::path modManagerPath;
+    std::filesystem::path redirectStoragePath;
     std::fstream redirectStorageFileStream;
     std::string redirectStorageFileLine;
 
-    char envBuffer[2048];
+    wchar_t envBuffer[2048];
     
-    if (GetEnvironmentVariableA("PROGRAMDATA", envBuffer, 2048) == 0)
+    if (GetEnvironmentVariableW(L"PROGRAMDATA", envBuffer, 2048) == 0)
     {
         return modManagerPath;
     }
 
     modManagerPath = envBuffer;
     modManagerPath += "\\SporeModManagerStorage";
-    redirectStoragePath = modManagerPath + "\\redirectStorage.txt";
+    redirectStoragePath = modManagerPath;
+    redirectStoragePath += "\\redirectStorage.txt";
 
     if (std::filesystem::exists(redirectStoragePath) &&
         std::filesystem::is_regular_file(redirectStoragePath))
@@ -163,19 +164,30 @@ bool SporeModLoader::Initialize()
     try
     {
         std::string errorMessage;
-        std::string legacyCoreLibPath;
-        std::string coreLibsPath;
-        std::string coreLibInputPath;
-        std::string coreLibOutputPath;
-        std::string sporeModManagerPath;
-
+        std::filesystem::path legacyCoreLibPath;
+        std::filesystem::path coreLibsPath;
+        std::filesystem::path coreLibFileInputPath;
+        std::filesystem::path coreLibFileOutputPath;
+        std::filesystem::path coreLibInputPath;
+        std::filesystem::path coreLibOutputPath;
+        std::filesystem::path sporeModManagerPath;
+        
         sporeModManagerPath = GetModManagerPath();
-        coreLibsPath = sporeModManagerPath + "\\coreLibs";
-        l_ModLoaderModLibsPath = sporeModManagerPath + "\\mLibs";
-        l_ModLoaderLogPath = sporeModManagerPath + "\\SporeModLoader.log";
-        legacyCoreLibPath = sporeModManagerPath + "\\legacyLibs";
+        coreLibsPath = sporeModManagerPath;
+        coreLibsPath += "\\coreLibs";
+        l_ModLoaderModLibsPath = sporeModManagerPath;
+        l_ModLoaderModLibsPath += "\\mLibs";
+        l_ModLoaderLogPath = sporeModManagerPath;
+        l_ModLoaderLogPath += "\\SporeModLoader.log";
+        legacyCoreLibPath = sporeModManagerPath;
+        legacyCoreLibPath += "\\legacyLibs";
+        coreLibFileInputPath = coreLibsPath;
+        coreLibFileInputPath += "\\SporeModAPI.lib";
+        coreLibFileOutputPath = l_ModLoaderModLibsPath;
+        coreLibFileOutputPath += "\\SporeModAPI.lib";
         coreLibInputPath = coreLibsPath;
-        coreLibOutputPath = l_ModLoaderModLibsPath + "\\SporeModAPI.dll";
+        coreLibOutputPath = l_ModLoaderModLibsPath;
+        coreLibOutputPath += "\\SporeModAPI.dll";
 
         // remove log file if it exists
         if (std::filesystem::exists(l_ModLoaderLogPath))
@@ -220,9 +232,8 @@ bool SporeModLoader::Initialize()
         {
             if (!std::filesystem::is_directory(path))
             {
-                std::string errorMessage;
-                errorMessage = "\"" + path + "\"";
-                errorMessage += " doesn't exist!";
+                std::wstring errorMessage;
+                errorMessage = L"\"" + path.wstring() + L"\" doesn't exist!";
                 ShowErrorMessage(errorMessage);
                 throw std::exception();
             }
@@ -230,9 +241,8 @@ bool SporeModLoader::Initialize()
 
         if (!std::filesystem::exists(coreLibInputPath))
         {
-            std::string errorMessage;
-            errorMessage = "\"" + coreLibInputPath + "\"";
-            errorMessage += " doesn't exist!";
+            std::wstring errorMessage;
+            errorMessage = L"\"" + coreLibInputPath.wstring() + L"\" doesn't exist!";
             ShowErrorMessage(errorMessage);
         }
        
@@ -241,10 +251,12 @@ bool SporeModLoader::Initialize()
             std::filesystem::create_directory(l_ModLoaderModLibsPath);
         }
 
-        // copy required libs to the mLibs directory
-        std::filesystem::copy_file(coreLibsPath + "\\SporeModAPI.lib", l_ModLoaderModLibsPath + "\\SporeModAPI.lib", std::filesystem::copy_options::overwrite_existing);
+        // copy SporeModAPI.lib
+        std::filesystem::copy_file(coreLibFileInputPath, coreLibFileOutputPath , std::filesystem::copy_options::overwrite_existing);
+        // copy SporeModAPI.dll
         std::filesystem::copy_file(coreLibInputPath, coreLibOutputPath, std::filesystem::copy_options::overwrite_existing);
 
+        // make sure the core libs are added here  
         l_ModLoaderCoreLibs.push_back(coreLibOutputPath);
         l_ModLoaderCoreLibs.push_back(legacyCoreLibPath);
 
