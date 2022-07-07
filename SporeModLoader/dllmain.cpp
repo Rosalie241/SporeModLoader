@@ -59,9 +59,11 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID reserved)
     if (dwReason == DLL_PROCESS_ATTACH)
     {
         DetourRestoreAfterWith();
-
         SporeAppEntry_real = (int (WINAPI*)(VOID))DetourGetEntryPoint(nullptr);
-
+        if (SporeAppEntry_real == nullptr)
+        {
+            MessageBoxW(nullptr, L"DetourGetEntryPoint() Failed!", L"SporeModLoader", MB_OK | MB_ICONERROR);
+        }
         DetourTransactionBegin();
         DetourUpdateThread(GetCurrentThread());
         DetourAttach(&(PVOID&)SporeAppEntry_real, SporeAppEntry_detoured);
@@ -71,7 +73,10 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID reserved)
     {
         DetourTransactionBegin();
         DetourUpdateThread(GetCurrentThread());
-        DetourDetach(&(PVOID&)SporeAppEntry_real, SporeAppEntry_detoured);
+        if (SporeAppEntry_real != nullptr)
+        {
+            DetourDetach(&(PVOID&)SporeAppEntry_real, SporeAppEntry_detoured);
+        }
         DetourTransactionCommit();
     }
 
