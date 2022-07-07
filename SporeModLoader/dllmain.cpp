@@ -42,31 +42,11 @@ static int SporeAppEntry_detoured(void)
 // Exported Functions
 //
 
+// The game uses this function, however it doesn't seem to actually use any of it,
+// so just return E_FAIL.
 HRESULT WINAPI DirectInput8Create(HINSTANCE hinst, DWORD dwVersion, REFIID riidltf, LPVOID* ppvOut, LPUNKNOWN punkOuter)
 {
-    typedef HRESULT(WINAPI* DirectInput8Create_function)(HINSTANCE, DWORD, REFIID, LPVOID*, LPUNKNOWN);
-    DirectInput8Create_function DirectInput8Create_real;
-    HMODULE hModule;
-    HRESULT result;
-
-    hModule = LoadLibraryA("C:\\Windows\\System32\\dinput8.dll");
-    if (hModule == NULL)
-    {
-        return E_FAIL;
-    }
-
-    DirectInput8Create_real = (DirectInput8Create_function)GetProcAddress(hModule, "DirectInput8Create");
-    if (DirectInput8Create_real == NULL)
-    {
-        return E_FAIL;
-    }
-
-    result = DirectInput8Create_real(hinst, dwVersion, riidltf, ppvOut, punkOuter);
-
-    // free library
-    FreeLibrary(hModule);
-
-    return result;
+    return E_FAIL;
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID reserved)
