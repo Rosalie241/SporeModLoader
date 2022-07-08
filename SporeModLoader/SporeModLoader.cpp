@@ -71,7 +71,7 @@ static bool LoadModLibrary(std::filesystem::path path)
     return ret;
 }
 
-static bool LoadLibrariesInPath(std::wstring path)
+static bool LoadLibrariesInPath(std::filesystem::path path)
 {
     for (const auto& entry : std::filesystem::directory_iterator(path))
     {
