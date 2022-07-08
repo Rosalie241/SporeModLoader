@@ -16,6 +16,9 @@
 #include <fstream>
 
 #include "SporeModLoader.hpp"
+#include "SporeModLoaderHelpers.hpp"
+
+using namespace SporeModLoaderHelpers;
 
 //
 // Local Enums
@@ -42,16 +45,6 @@ static std::vector<std::filesystem::path> l_ModLoaderCoreLibs;
 //
 // Helper Functions
 //
-
-static void ShowErrorMessage(std::wstring message)
-{
-    MessageBoxW(nullptr, message.c_str(), L"SporeModLoader", MB_OK | MB_ICONERROR);
-}
-
-static void ShowErrorMessage(std::string message)
-{
-    MessageBoxA(nullptr, message.c_str(), "SporeModLoader", MB_OK | MB_ICONERROR);
-}
 
 static void AddLogMessage(std::string message)
 {
@@ -92,43 +85,6 @@ static std::vector<std::filesystem::path> GetLibrariesInPath(std::filesystem::pa
     }
 
     return libraries;
-}
-
-static std::filesystem::path GetModManagerPath(void)
-{
-    std::filesystem::path modManagerPath;
-    std::filesystem::path redirectStoragePath;
-    std::fstream redirectStorageFileStream;
-    std::string redirectStorageFileLine;
-
-    wchar_t envBuffer[2048];
-    
-    if (GetEnvironmentVariableW(L"PROGRAMDATA", envBuffer, 2048) == 0)
-    {
-        return modManagerPath;
-    }
-
-    modManagerPath = envBuffer;
-    modManagerPath += "\\SporeModManagerStorage";
-    redirectStoragePath = modManagerPath;
-    redirectStoragePath += "\\redirectStorage.txt";
-
-    if (std::filesystem::exists(redirectStoragePath) &&
-        std::filesystem::is_regular_file(redirectStoragePath))
-    {
-        redirectStorageFileStream.open(redirectStoragePath);
-        if (redirectStorageFileStream.is_open())
-        {
-            std::getline(redirectStorageFileStream, redirectStorageFileLine);
-            if (!redirectStorageFileLine.empty())
-            {
-                modManagerPath = redirectStorageFileLine;
-            }
-        }
-        redirectStorageFileStream.close();
-    }
-
-    return modManagerPath;
 }
 
 static SporeExecutableType GetCurrentGameVersion(void)
@@ -210,7 +166,7 @@ bool SporeModLoader::Initialize()
         std::filesystem::path coreLibOutputPath;
         std::filesystem::path sporeModManagerPath;
         
-        sporeModManagerPath = GetModManagerPath();
+        sporeModManagerPath = GetSporeModManagerStoragePath();
         coreLibsPath = sporeModManagerPath;
         coreLibsPath += "\\coreLibs";
         l_ModLoaderModLibsPath = sporeModManagerPath;
@@ -272,7 +228,7 @@ bool SporeModLoader::Initialize()
         // make sure GetModManagerPath() didn't fail
         if (sporeModManagerPath.empty())
         {
-            ShowErrorMessage("GetModManagerPath() Failed!");
+            ShowErrorMessage(L"GetModManagerPath() Failed!");
             throw std::exception();
         }
 

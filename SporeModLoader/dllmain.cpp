@@ -11,7 +11,7 @@
 #include "detours.h"
 
 #include "SporeModLoader.hpp"
-
+#include "SporeModLoaderHelpers.hpp"
 
 //
 // Detoured Functions
@@ -20,6 +20,13 @@
 static int (WINAPI* SporeAppEntry_real)(void) = nullptr;
 static int SporeAppEntry_detoured(void)
 {
+    if (!SporeModLoaderHelpers::IsSporeModManagerRunning())
+    {
+        SporeModLoaderHelpers::LaunchSporeModManager();
+        return 1;
+    }
+
+
     if (!SporeModLoader::Initialize())
     {
         return 1;
@@ -62,7 +69,7 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID reserved)
         SporeAppEntry_real = (int (WINAPI*)(VOID))DetourGetEntryPoint(nullptr);
         if (SporeAppEntry_real == nullptr)
         {
-            MessageBoxW(nullptr, L"DetourGetEntryPoint() Failed!", L"SporeModLoader", MB_OK | MB_ICONERROR);
+            SporeModLoaderHelpers::ShowErrorMessage(L"DetourGetEntryPoint() Failed!");
         }
         DetourTransactionBegin();
         DetourUpdateThread(GetCurrentThread());
