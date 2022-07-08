@@ -35,9 +35,9 @@ enum class SporeExecutableType
 // Local Variables
 //
 
-static std::wstring l_ModLoaderCoreLibsPath;
-static std::wstring l_ModLoaderModLibsPath;
-static std::wstring l_ModLoaderLogPath;
+static std::filesystem::path l_ModLoaderCoreLibsPath;
+static std::filesystem::path l_ModLoaderModLibsPath;
+static std::filesystem::path l_ModLoaderLogPath;
 
 //
 // Helper Functions
@@ -148,15 +148,18 @@ bool SporeModLoader::Initialize()
 {
     try
     {
-        std::wstring modLoaderPath;
-        std::wstring errorMessage;
+        std::filesystem::path modLoaderPath;
+        std::filesystem::path errorMessage;
 
         modLoaderPath = std::filesystem::current_path().wstring();
         modLoaderPath += L"\\SporeModLoader";
 
-        l_ModLoaderCoreLibsPath = modLoaderPath + L"\\CoreLibs";
-        l_ModLoaderModLibsPath = modLoaderPath + L"\\ModLibs";
-        l_ModLoaderLogPath = modLoaderPath + L"\\SporeModLoader.log";
+        l_ModLoaderCoreLibsPath = modLoaderPath;
+        l_ModLoaderCoreLibsPath += "\\CoreLibs";
+        l_ModLoaderModLibsPath = modLoaderPath;
+        l_ModLoaderModLibsPath += "\\ModLibs";
+        l_ModLoaderLogPath = modLoaderPath;
+        l_ModLoaderLogPath += "\\SporeModLoader.log";
 
         // remove log file if it exists
         if (std::filesystem::exists(l_ModLoaderLogPath))
