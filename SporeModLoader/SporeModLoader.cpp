@@ -97,13 +97,32 @@ static bool LoadLibrariesInPath(std::wstring path)
     return true;
 }
 
-SporeExecutableType GetCurrentGameVersion(void)
+static SporeExecutableType GetCurrentGameVersion(void)
 {
-    std::wstring sporeExePath;
-    sporeExePath = std::filesystem::current_path().wstring();
-    sporeExePath += L"\\SporebinEP1\\SporeApp.exe";
+    wchar_t currentFileNameBuf[MAX_PATH];
+    uintmax_t currentFileSize;
 
-    switch (std::filesystem::file_size(sporeExePath))
+    if (GetModuleFileNameW(nullptr, currentFileNameBuf, MAX_PATH) == 0)
+    {
+        ShowErrorMessage(L"GetModuleFileNameW() Failed!");
+        throw std::exception();
+    }
+
+    try
+    {
+        currentFileSize = std::filesystem::file_size(currentFileNameBuf);
+    }
+    catch (...)
+    {
+        std::wstring errorMessage;
+        errorMessage = L"std::filesystem::file_size(\"";
+        errorMessage += currentFileNameBuf;
+        errorMessage += L"\") Failed!";
+        ShowErrorMessage(errorMessage);
+        throw std::exception();
+    }
+
+    switch (currentFileSize)
     {
         case 24909584:
             return SporeExecutableType::Disk_1_5_1;
