@@ -174,6 +174,25 @@ static SporeExecutableType GetCurrentGameVersion(void)
     }
 }
 
+static void TryCopyFile(std::filesystem::path inputPath, std::filesystem::path outputPath)
+{
+    try
+    {
+        std::filesystem::copy_file(inputPath, outputPath, std::filesystem::copy_options::overwrite_existing);
+    }
+    catch (...)
+    {
+        std::wstring errorMessage;
+        errorMessage = L"std::filesystem::copy_file(\"";
+        errorMessage += inputPath.wstring();
+        errorMessage += L"\", \"";
+        errorMessage += outputPath.wstring();
+        errorMessage += L"\") Failed!";
+        ShowErrorMessage(errorMessage);
+        throw std::exception();
+    }
+}
+
 //
 // Exported Functions
 //
@@ -182,7 +201,7 @@ bool SporeModLoader::Initialize()
 {
     try
     {
-        std::string errorMessage;
+        std::wstring errorMessage;
         std::filesystem::path legacyCoreLibPath;
         std::filesystem::path coreLibsPath;
         std::filesystem::path coreLibFileInputPath;
@@ -211,7 +230,18 @@ bool SporeModLoader::Initialize()
         // remove log file if it exists
         if (std::filesystem::exists(l_ModLoaderLogPath))
         {
-            std::filesystem::remove(l_ModLoaderLogPath);
+            try
+            {
+                std::filesystem::remove(l_ModLoaderLogPath);
+            }
+            catch (...)
+            {
+                errorMessage = L"std::filesystem::remove(\"";
+                errorMessage += l_ModLoaderLogPath.wstring();
+                errorMessage += L"\") Failed!";
+                ShowErrorMessage(errorMessage);
+                throw std::exception();
+            }
         }
 
         // retrieve game version and set variables
@@ -251,7 +281,6 @@ bool SporeModLoader::Initialize()
         {
             if (!std::filesystem::is_directory(path))
             {
-                std::wstring errorMessage;
                 errorMessage = L"\"" + path.wstring() + L"\" doesn't exist!";
                 ShowErrorMessage(errorMessage);
                 throw std::exception();
@@ -260,20 +289,30 @@ bool SporeModLoader::Initialize()
 
         if (!std::filesystem::exists(coreLibInputPath))
         {
-            std::wstring errorMessage;
             errorMessage = L"\"" + coreLibInputPath.wstring() + L"\" doesn't exist!";
             ShowErrorMessage(errorMessage);
         }
        
         if (!std::filesystem::exists(l_ModLoaderModLibsPath))
         {
-            std::filesystem::create_directory(l_ModLoaderModLibsPath);
+            try
+            {
+                std::filesystem::create_directory(l_ModLoaderModLibsPath);
+            }
+            catch (...)
+            {
+                errorMessage = L"std::filesystem::create_directory(\"";
+                errorMessage += l_ModLoaderModLibsPath.wstring();
+                errorMessage += L"\") Failed!";
+                ShowErrorMessage(errorMessage);
+                throw std::exception();
+            }
         }
 
         // copy SporeModAPI.lib
-        std::filesystem::copy_file(coreLibFileInputPath, coreLibFileOutputPath , std::filesystem::copy_options::overwrite_existing);
+        TryCopyFile(coreLibFileInputPath, coreLibFileOutputPath);
         // copy SporeModAPI.dll
-        std::filesystem::copy_file(coreLibInputPath, coreLibOutputPath, std::filesystem::copy_options::overwrite_existing);
+        TryCopyFile(coreLibInputPath, coreLibOutputPath);
 
         // make sure the core libs are added here  
         l_ModLoaderCoreLibs.push_back(coreLibOutputPath);
