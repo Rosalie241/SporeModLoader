@@ -43,7 +43,7 @@ bool SporeModLoaderHelpers::IsSporeModManagerRunning(void)
 
     amountOfProcessIds = amountOfProcessIds / sizeof(DWORD);
 
-    for (int i = 0; i < amountOfProcessIds; i++)
+    for (DWORD i = 0; i < amountOfProcessIds; i++)
     {
         processId = processIds[i];
 
