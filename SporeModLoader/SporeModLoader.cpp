@@ -97,10 +97,9 @@ static bool LoadLibrariesInPath(std::filesystem::path path)
     return true;
 }
 
-static SporeExecutableType GetCurrentGameVersion(void)
+static std::filesystem::path GetCurrentExecutablePath(void)
 {
     wchar_t currentFileNameBuf[MAX_PATH];
-    uintmax_t currentFileSize;
 
     if (GetModuleFileNameW(nullptr, currentFileNameBuf, MAX_PATH) == 0)
     {
@@ -108,15 +107,25 @@ static SporeExecutableType GetCurrentGameVersion(void)
         throw std::exception();
     }
 
+    return std::filesystem::path(currentFileNameBuf);
+}
+
+static SporeExecutableType GetCurrentGameVersion(void)
+{
+    std::filesystem::path currentExecutablePath;
+    uintmax_t currentFileSize;
+
+    currentExecutablePath = GetCurrentExecutablePath();
+
     try
     {
-        currentFileSize = std::filesystem::file_size(currentFileNameBuf);
+        currentFileSize = std::filesystem::file_size(currentExecutablePath);
     }
     catch (...)
     {
         std::wstring errorMessage;
         errorMessage = L"std::filesystem::file_size(\"";
-        errorMessage += currentFileNameBuf;
+        errorMessage += currentExecutablePath;
         errorMessage += L"\") Failed!";
         ShowErrorMessage(errorMessage);
         throw std::exception();
@@ -151,7 +160,7 @@ bool SporeModLoader::Initialize()
         std::filesystem::path modLoaderPath;
         std::filesystem::path errorMessage;
 
-        modLoaderPath = std::filesystem::current_path().wstring();
+        modLoaderPath = GetCurrentExecutablePath().parent_path().parent_path();
         modLoaderPath += L"\\SporeModLoader";
 
         l_ModLoaderCoreLibsPath = modLoaderPath;
