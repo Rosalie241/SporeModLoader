@@ -164,7 +164,18 @@ bool SporeModLoader::Initialize()
         // remove log file if it exists
         if (std::filesystem::exists(l_ModLoaderLogPath))
         {
-            std::filesystem::remove(l_ModLoaderLogPath);
+            try
+            {
+                std::filesystem::remove(l_ModLoaderLogPath);
+            }
+            catch (...)
+            {
+                errorMessage = L"std::filesystem::remove(\"";
+                errorMessage += l_ModLoaderLogPath.wstring();
+                errorMessage += L"\") Failed!";
+                ShowErrorMessage(errorMessage);
+                throw std::exception();
+            }
         }
 
         for (const auto& path : { l_ModLoaderCoreLibsPath , l_ModLoaderModLibsPath })
