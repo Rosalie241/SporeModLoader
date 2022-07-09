@@ -22,7 +22,7 @@ bool SporeModLoader::Initialize()
 {
     try
     {
-        std::filesystem::path errorMessage;
+        std::wstring errorMessage;
         std::filesystem::path logFilePath;
 
         logFilePath = Path::GetLogFilePath();
