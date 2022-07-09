@@ -158,10 +158,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="SporeModLoader.hpp" />
+    <ClInclude Include="SporeModLoaderHelpers.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="SporeModLoader.cpp" />
+    <ClCompile Include="SporeModLoaderHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dllmain.def" />
