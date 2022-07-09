@@ -1,14 +1,20 @@
 @echo off
 
-del /s /q "bin\*"
-mkdir bin
+set CUR_DIR="%~dp0"
+set OBJ_DIR="%CUR_DIR%\obj"
+set BIN_DIR="%CUR_DIR%\bin"
 
-mkdir bin\SporebinEP1
-mkdir bin\SporeModLoader
-mkdir bin\SporeModLoader\CoreLibs
-mkdir bin\SporeModLoader\CoreLibs\disk
-mkdir bin\SporeModLoader\CoreLibs\march2017
-mkdir bin\SporeModLoader\ModLibs
+rmdir /S /Q "%OBJ_DIR%" "%BIN_DIR%"
+
+mkdir "%CUR_DIR%\obj"
+mkdir "%CUR_DIR%\bin"
+
+mkdir "%OBJ_DIR%\SporebinEP1"
+mkdir "%OBJ_DIR%\SporeModLoader"
+mkdir "%OBJ_DIR%\SporeModLoader\CoreLibs"
+mkdir "%OBJ_DIR%\SporeModLoader\CoreLibs\disk"
+mkdir "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017"
+mkdir "%OBJ_DIR%\SporeModLoader\ModLibs"
 
 msbuild "Spore-ModAPI\Spore ModAPI" ^
     /t:BuildDlls ^
@@ -22,9 +28,14 @@ msbuild SporeModLoader ^
     /p:Platform=Win32 ^
     /m
 
-copy Spore-ModAPI\dll\Release\SporeModAPI.disk.dll bin\SporeModLoader\CoreLibs\disk\
-copy Spore-ModAPI\dll\Release\SporeModAPI.disk.dll bin\SporeModLoader\CoreLibs\disk\SporeModAPI.dll
-copy Spore-ModAPI\dll\Release\SporeModAPI.march2017.dll bin\SporeModLoader\CoreLibs\march2017\
-copy Spore-ModAPI\dll\Release\SporeModAPI.march2017.dll bin\SporeModLoader\CoreLibs\march2017\SporeModAPI.dll
+copy Spore-ModAPI\dll\Release\SporeModAPI.disk.dll "%OBJ_DIR%\SporeModLoader\CoreLibs\disk\SporeModAPI.dll"
+copy Spore-ModAPI\dll\Release\SporeModAPI.march2017.dll "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017\SporeModAPI.dll"
+copy SporeModLoader\Bin\Release\dinput8.dll "%OBJ_DIR%\SporebinEP1\dinput8.dll"
 
-copy SporeModLoader\Bin\Release\*.dll bin\SporebinEP1\
+cd "%OBJ_DIR%"
+
+"C:\Program Files\7-Zip\7z" a -tzip "%BIN_DIR%\SporeModLoader.zip" *
+
+cd "%CUR_DIR%"
+
+rmdir /S /Q "%OBJ_DIR%"
