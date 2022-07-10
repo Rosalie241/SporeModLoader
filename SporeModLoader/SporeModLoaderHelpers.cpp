@@ -17,15 +17,23 @@ using namespace SporeModLoaderHelpers;
 
 std::filesystem::path Path::GetCurrentExecutablePath(void)
 {
-    wchar_t currentFileNameBuf[MAX_PATH];
+    static std::filesystem::path currentExecutablePath;
+    wchar_t currentExecutablePathBuf[MAX_PATH];
 
-    if (GetModuleFileNameW(nullptr, currentFileNameBuf, MAX_PATH) == 0)
+    if (!currentExecutablePath.empty())
+    {
+        return currentExecutablePath;
+    }
+
+    if (GetModuleFileNameW(nullptr, currentExecutablePathBuf, MAX_PATH) == 0)
     {
         UI::ShowErrorMessage(L"GetModuleFileNameW() Failed!");
         throw std::exception();
     }
 
-    return std::filesystem::path(currentFileNameBuf);
+    currentExecutablePath = currentExecutablePathBuf;
+
+    return currentExecutablePath;
 }
 
 std::filesystem::path Path::GetModLoaderPath(void)
