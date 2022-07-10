@@ -49,7 +49,7 @@ bool SporeModLoader::Initialize()
             if (!std::filesystem::is_directory(path))
             {
                 errorMessage = L"\"";
-                errorMessage += path;
+                errorMessage += path.wstring();
                 errorMessage += L"\" doesn't exist!";
                 UI::ShowErrorMessage(errorMessage);
                 throw std::exception();
