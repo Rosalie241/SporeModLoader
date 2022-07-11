@@ -22,32 +22,13 @@ bool SporeModLoader::Initialize()
 {
     try
     {
-        std::wstring errorMessage;
-        std::filesystem::path logFilePath;
-
-        logFilePath = Path::GetLogFilePath();
-
-        // remove log file if it exists
-        if (std::filesystem::exists(logFilePath))
-        {
-            try
-            {
-                std::filesystem::remove(logFilePath);
-            }
-            catch (...)
-            {
-                errorMessage = L"std::filesystem::remove(\"";
-                errorMessage += logFilePath.wstring();
-                errorMessage += L"\") Failed!";
-                UI::ShowErrorMessage(errorMessage);
-                throw std::exception();
-            }
-        }
-
+        Logger::Clear();
+        
         for (const auto& path : { Path::GetCoreLibsPath(), Path::GetModLibsPath() })
         {
             if (!std::filesystem::is_directory(path))
             {
+                std::wstring errorMessage;
                 errorMessage = L"\"";
                 errorMessage += path.wstring();
                 errorMessage += L"\" doesn't exist!";

@@ -46,6 +46,11 @@ namespace SporeModLoaderHelpers
     namespace Logger
     {
         /// <summary>
+        ///     Clears log file
+        /// </summary>
+        void Clear(void);
+
+        /// <summary>
         ///     Adds message to the log file
         /// </summary>
         void AddMessage(std::wstring message);

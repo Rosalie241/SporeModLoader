@@ -97,6 +97,29 @@ std::filesystem::path Path::GetModLibsPath(void)
     return modLibsPath;
 }
 
+void Logger::Clear(void)
+{
+    std::filesystem::path logFilePath;
+
+    logFilePath = Path::GetLogFilePath();
+
+    if (std::filesystem::exists(logFilePath))
+    {
+        try
+        {
+            std::filesystem::remove(logFilePath);
+        }
+        catch (...)
+        {
+            std::wstring errorMessage;
+            errorMessage = L"std::filesystem::remove(\"";
+            errorMessage += logFilePath.wstring();
+            errorMessage += L"\") Failed!";
+            UI::ShowErrorMessage(errorMessage);
+            throw std::exception();
+        }
+    }
+}
 
 void Logger::AddMessage(std::wstring message)
 {
@@ -150,7 +173,7 @@ bool Library::LoadAllInPath(std::filesystem::path path)
     return true;
 }
 
-Game::GameVersion SporeModLoaderHelpers::Game::GetCurrentVersion(void)
+Game::GameVersion Game::GetCurrentVersion(void)
 {
     std::filesystem::path currentExecutablePath;
     uintmax_t currentFileSize;
