@@ -15,6 +15,7 @@ mkdir "%OBJ_DIR%\SporeModLoader\CoreLibs"
 mkdir "%OBJ_DIR%\SporeModLoader\CoreLibs\disk"
 mkdir "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017"
 mkdir "%OBJ_DIR%\SporeModLoader\ModLibs"
+mkdir "%OBJ_DIR%\SporeModLoader\SporeModManager"
 
 msbuild "Spore-ModAPI\Spore ModAPI" ^
     /t:BuildDlls ^
@@ -31,6 +32,7 @@ msbuild SporeModLoader ^
 copy Spore-ModAPI\dll\Release\SporeModAPI.disk.dll "%OBJ_DIR%\SporeModLoader\CoreLibs\disk\SporeModAPI.dll"
 copy Spore-ModAPI\dll\Release\SporeModAPI.march2017.dll "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017\SporeModAPI.dll"
 copy SporeModLoader\Bin\Release\dinput8.dll "%OBJ_DIR%\SporebinEP1\dinput8.dll"
+copy SporeModManager\Bin\Release\SporeModManager.exe "%OBJ_DIR%\SporeModLoader\SporeModManager"
 
 cd "%OBJ_DIR%"
 
