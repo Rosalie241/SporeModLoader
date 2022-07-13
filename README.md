@@ -11,4 +11,4 @@ archive into the game directory.
 
 ## Installation of mods
 
-Place mods (only dlls are supported) in `SporeModLoader/ModLibs/`
+See the commandline utility `SporeModLoader/SporeModManager/SporeModManager.exe`
