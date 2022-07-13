@@ -9,6 +9,7 @@
  */
 using SporeModManager.SporeMods.Xml;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -16,31 +17,41 @@ namespace SporeModManager.SporeMods
 {
     internal partial class SporeMods
     {
-        public static void UninstallMod(int id)
+        public static void UninstallMods(List<int> ids)
         {
             var installedMods = InstalledMods.ReadFromXml();
 
             int installedModListCount = installedMods.InstalledModList.Count();
-            if (id < 0 || id > installedModListCount || installedModListCount == 0)
+            foreach (var id in ids)
             {
-                throw new Exception("Invalid mod ID!");
+                if (id < 0 || id > installedModListCount || installedModListCount == 0)
+                {
+                    throw new Exception("Invalid mod ID!");
+                }
             }
 
-            var installedMod = installedMods.InstalledModList[id];
-
-            Console.WriteLine($"> uninstalling {installedMod.Name}");
-
-            foreach (var installedModFile in installedMod.Files)
+            var installedModsList = new List<InstalledMod>();
+            foreach (var id in ids)
             {
-                Console.WriteLine($"-> removing {installedModFile.FileName}");
-                string directory = Directory.GetDirectoryFromInstallLocation(installedModFile.InstallLocation);
-                File.Delete(Path.Combine(directory, installedModFile.FileName));
+                installedModsList.Add(installedMods.InstalledModList[id]);
             }
 
-            installedMods.InstalledModList.Remove(installedMod);
-            InstalledMods.SaveToXml(installedMods);
+            foreach (var installedMod in installedModsList)
+            {
+                Console.WriteLine($"> uninstalling {installedMod.Name}");
 
-            Console.WriteLine($"> successfully uninstalled {installedMod.Name}");
+                foreach (var installedModFile in installedMod.Files)
+                {
+                    Console.WriteLine($"-> removing {installedModFile.FileName}");
+                    string directory = Directory.GetDirectoryFromInstallLocation(installedModFile.InstallLocation);
+                    File.Delete(Path.Combine(directory, installedModFile.FileName));
+                }
+
+                installedMods.InstalledModList.Remove(installedMod);
+                InstalledMods.SaveToXml(installedMods);
+
+                Console.WriteLine($"> successfully uninstalled {installedMod.Name}");
+            }
         }
     }
 }

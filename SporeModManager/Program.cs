@@ -8,6 +8,7 @@
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SporeModManager
@@ -55,11 +56,14 @@ namespace SporeModManager
             }
             else if (args[0] == "-u" || args[0] == "--uninstall")
             {
+                List<int> idList = new List<int>();
+
                 foreach (string id in args.Skip(1))
                 {
-                    SporeMods.SporeMods.UninstallMod(Int32.Parse(id));
+                    idList.Add(Int32.Parse(id));
                 }
 
+                SporeMods.SporeMods.UninstallMods(idList);
                 return;
             }
             else

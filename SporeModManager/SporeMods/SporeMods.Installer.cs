@@ -196,7 +196,7 @@ namespace SporeModManager.SporeMods
             int index = installedMods.InstalledModList.FindIndex(delegate (InstalledMod a) { return a.UniqueName == installedMod.UniqueName; });
             if (index != -1)
             {
-                SporeMods.UninstallMod(index);
+                SporeMods.UninstallMods(new List<int>(index));
                 installedMods.InstalledModList.RemoveAt(index);
                 installedMods.InstalledModList.Insert(index, installedMod);
             }
