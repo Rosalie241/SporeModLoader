@@ -1,0 +1,505 @@
+/*
+ * SporeModLoader - https://github.com/Rosalie241/SporeModLoader
+ *  Copyright (C) 2022 Rosalie Wanders <rosalie@mailbox.org>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License version 3.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+#include "SporeModManagerHelpers.hpp"
+
+#include <iostream>
+#include <tinyxml2.h>
+
+using namespace SporeModManagerHelpers;
+
+//
+// Helper Functions
+//
+
+static std::vector<std::string> SplitString(std::string string, char delimitor)
+{
+    std::vector<std::string> result;
+    std::stringstream stringStream(string);
+    std::string item;
+
+    while (std::getline(stringStream, item, delimitor))
+    {
+        result.push_back(item);
+    }
+
+    return result;
+}
+
+static std::string InstallLocationToString(SporeMod::InstallLocation installLocation)
+{
+    switch (installLocation)
+    {
+    default:
+    case SporeMod::InstallLocation::ModLibs:
+        return "ModLibs";
+    case SporeMod::InstallLocation::GalacticAdventuresData:
+        return "GalacticAdventuresData";
+    case SporeMod::InstallLocation::CoreSporeData:
+        return "CoreSporeData";
+    }
+}
+
+static SporeMod::InstallLocation ParseInstallLocation(std::string text)
+{
+    SporeMod::InstallLocation installLocation;
+
+    if (text == "GalacticAdventures" || text == "GalacticAdventuresData")
+    {
+        installLocation = SporeMod::InstallLocation::GalacticAdventuresData;
+    }
+    else if (text == "CoreSpore" || text == "CoreSporeData")
+    {
+        installLocation = SporeMod::InstallLocation::CoreSporeData;
+    }
+    else
+    {
+        installLocation = SporeMod::InstallLocation::ModLibs;
+    }
+
+    return installLocation;
+}
+
+static std::string GetAttributeText(tinyxml2::XMLElement* element, std::string attributeName)
+{
+    const tinyxml2::XMLAttribute* xmlAttribute;
+
+    xmlAttribute = element->FindAttribute(attributeName.c_str());
+    if (xmlAttribute != nullptr)
+    {
+        if (xmlAttribute->Value() != nullptr)
+        {
+            return xmlAttribute->Value();
+        }
+    }
+
+    return "";
+}
+
+static std::string GetElementText(tinyxml2::XMLElement* element)
+{
+    const char* text;
+
+    if (element == nullptr)
+    {
+        return "";
+    }
+
+    text = element->GetText();
+    if (text != nullptr)
+    {
+        return text;
+    }
+
+    return "";
+}
+
+static std::string GetElementName(tinyxml2::XMLElement* element)
+{
+    if (element->Name() != nullptr)
+    {
+        return element->Name();
+    }
+
+    return "";
+}
+
+static tinyxml2::XMLElement* FindElement(tinyxml2::XMLElement* rootElement, std::string name)
+{
+    tinyxml2::XMLElement* xmlElement;
+    std::string xmlElementName;
+
+    xmlElement = rootElement->FirstChildElement();
+    while (xmlElement != nullptr)
+    {
+        xmlElementName = GetElementName(xmlElement);
+        if (xmlElementName == name)
+        {
+            return xmlElement;
+        }
+
+        xmlElement = xmlElement->NextSiblingElement();
+    }
+
+    return nullptr;
+}
+
+static std::vector<SporeMod::Xml::SporeModFile> ParseFiles(tinyxml2::XMLElement* element)
+{
+    std::vector<SporeMod::Xml::SporeModFile> files;
+
+    std::vector<std::string> installLocations;
+    std::vector<std::string> installFiles;
+
+    installLocations = SplitString(GetAttributeText(element, "game"), '?');
+    installFiles = SplitString(GetElementText(element), '?');
+
+    for (size_t i = 0; i < installFiles.size(); i++)
+    {
+        SporeMod::Xml::SporeModFile file;
+
+        if (installLocations.size() > i)
+        {
+            file.InstallLocation = ParseInstallLocation(installLocations[i]);
+        }
+        else
+        {
+            file.InstallLocation = SporeMod::InstallLocation::ModLibs;
+        }
+        file.FileName = installFiles[i];
+
+        files.push_back(file);
+    }
+
+    return files;
+}
+
+static SporeMod::Xml::SporeModInfoComponent ParseComponentElement(tinyxml2::XMLElement* element)
+{
+    SporeMod::Xml::SporeModInfoComponent component;
+
+    component.Name = GetAttributeText(element, "displayName");
+    component.UniqueName = GetAttributeText(element, "unique");
+    component.Description = GetAttributeText(element, "description");
+    component.Files = ParseFiles(element);
+
+    return component;
+}
+
+
+static SporeMod::Xml::SporeModInfoComponentGroup ParseComponentGroupElement(tinyxml2::XMLElement* element)
+{
+    SporeMod::Xml::SporeModInfoComponentGroup componentGroup;
+    tinyxml2::XMLElement* xmlElement;
+    std::string xmlElementName;
+
+    componentGroup.Name = GetAttributeText(element, "displayName");
+    componentGroup.UniqueName = GetAttributeText(element, "unique");
+    
+    xmlElement = element->FirstChildElement();
+    while (xmlElement != nullptr)
+    {
+        xmlElementName = GetElementName(xmlElement);
+
+        if (xmlElementName == "component")
+        {
+            componentGroup.Components.push_back(ParseComponentElement(xmlElement));
+        }
+
+        xmlElement = xmlElement->NextSiblingElement();
+    }
+
+    return componentGroup;
+}
+
+static SporeMod::Xml::SporeModInfoPrerequisite ParsePrerequisiteElement(tinyxml2::XMLElement* element)
+{
+    SporeMod::Xml::SporeModInfoPrerequisite prerequisite;
+
+    prerequisite.Files = ParseFiles(element);
+
+    return prerequisite;
+}
+
+static std::vector<SporeMod::Xml::SporeModFile> ParseInstalledSporeModFilesElement(tinyxml2::XMLElement* element)
+{
+    std::vector<SporeMod::Xml::SporeModFile> sporeModFiles;
+    tinyxml2::XMLElement* xmlElement;
+    std::string xmlElementName;
+
+    if (element == nullptr)
+    {
+        return sporeModFiles;
+    }
+
+    xmlElement = element->FirstChildElement();
+    while (xmlElement != nullptr)
+    {
+        xmlElementName = GetElementName(xmlElement);
+
+        if (xmlElementName == "InstalledModFile")
+        {
+            SporeMod::Xml::SporeModFile sporeModFile;
+
+            sporeModFile.FileName = GetElementText(FindElement(xmlElement, "FileName"));
+            sporeModFile.InstallLocation = ParseInstallLocation(GetElementText(FindElement(xmlElement, "InstallLocation")));
+
+            sporeModFiles.push_back(sporeModFile);
+        }
+
+        xmlElement = xmlElement->NextSiblingElement();
+    }
+
+    return sporeModFiles;
+}
+
+static SporeMod::Xml::InstalledSporeMod ParseInstalledSporeModElement(tinyxml2::XMLElement* element)
+{
+    SporeMod::Xml::InstalledSporeMod installedSporeMod;
+    tinyxml2::XMLElement* xmlElement;
+    std::string xmlElementName;
+
+    xmlElement = element->FirstChildElement();
+    installedSporeMod.Name = GetElementText(FindElement(element, "Name"));
+    installedSporeMod.UniqueName = GetElementText(FindElement(element, "UniqueName"));
+    installedSporeMod.Description = GetElementText(FindElement(element, "Description"));
+    installedSporeMod.InstalledFiles = ParseInstalledSporeModFilesElement(FindElement(element, "Files"));
+
+    return installedSporeMod;
+}
+
+//
+// Exported Functions
+//
+
+bool SporeMod::Xml::ParseSporeModInfo(char* buffer, size_t bufferSize, SporeModInfo& sporeModInfo)
+{
+    tinyxml2::XMLDocument xmlDocument;
+    tinyxml2::XMLElement* xmlElement;
+    tinyxml2::XMLError    error;
+    std::string xmlElementName;
+
+    error = xmlDocument.Parse(buffer, bufferSize);
+    if (error != tinyxml2::XMLError::XML_SUCCESS)
+    {
+        std::cerr << "XmlDocument.Parse() Failed!" << std::endl;
+        return false;
+    }
+
+    xmlElement = xmlDocument.RootElement();
+    if (xmlElement == nullptr)
+    {
+        std::cerr << "XDocument.RootElement() Failed!" << std::endl;
+        return false;
+    }
+
+    sporeModInfo.Name = GetAttributeText(xmlElement, "displayName");
+    sporeModInfo.UniqueName = GetAttributeText(xmlElement, "unique");
+    sporeModInfo.Description = GetAttributeText(xmlElement, "description");
+
+    xmlElement = xmlElement->FirstChildElement();
+    while (xmlElement != nullptr)
+    {
+        xmlElementName = GetElementName(xmlElement);
+
+        if (xmlElementName == "componentGroup")
+        {
+            sporeModInfo.ComponentGroups.push_back(ParseComponentGroupElement(xmlElement));
+        }
+        else if (xmlElementName == "component")
+        {
+            sporeModInfo.Components.push_back(ParseComponentElement(xmlElement));
+        }
+        else if (xmlElementName == "prerequisite")
+        {
+            sporeModInfo.Prerequisites.push_back(ParsePrerequisiteElement(xmlElement));
+        }
+
+        xmlElement = xmlElement->NextSiblingElement();
+    }
+    return true;
+}
+
+bool SporeMod::Xml::GetDirectories(std::filesystem::path& modLibsPath, std::filesystem::path& galacticAdventuresDataPath, std::filesystem::path& coreSporeDataPath)
+{
+    tinyxml2::XMLDocument xmlDocument;
+    tinyxml2::XMLElement* xmlElement;
+    tinyxml2::XMLElement* childXmlElement;
+    tinyxml2::XMLError    error;
+    std::string xmlElementName;
+
+    if (!std::filesystem::is_regular_file("SporeModManager.xml"))
+    {
+        if (!Xml::SaveDirectories("..\\ModLibs", "..\\..\\DataEP1", "..\\..\\Data"))
+        {
+            std::cerr << "Xml::SaveDirectories() Failed!" << std::endl;
+            return false;
+        }
+    }
+
+    error = xmlDocument.LoadFile("SporeModManager.xml");
+    if (error != tinyxml2::XMLError::XML_SUCCESS)
+    {
+        std::cerr << "XmlDocument.LoadFile() Failed!" << std::endl;
+        return false;
+    }
+
+    xmlElement = xmlDocument.RootElement();
+    if (xmlElement == nullptr)
+    {
+        std::cerr << "XDocument.RootElement() Failed!" << std::endl;
+        return false;
+    }
+
+    xmlElement = xmlElement->FirstChildElement();
+    while (xmlElement != nullptr)
+    {
+        xmlElementName = GetElementName(xmlElement);
+        if (xmlElementName == "Directories")
+        {
+            childXmlElement = xmlElement->FirstChildElement();
+            while (childXmlElement != nullptr)
+            {
+                xmlElementName = GetElementName(childXmlElement);
+                if (xmlElementName == "ModLibsDirectory")
+                {
+                    modLibsPath = GetElementText(childXmlElement);
+                }
+                else if (xmlElementName == "GalacticAdventuresDataDirectory")
+                {
+                    galacticAdventuresDataPath = GetElementText(childXmlElement);
+                }
+                else if (xmlElementName == "CoreSporeDataDirectory")
+                {
+                    coreSporeDataPath = GetElementText(childXmlElement);
+                }
+
+                childXmlElement = childXmlElement->NextSiblingElement();
+            }
+        }
+
+        xmlElement = xmlElement->NextSiblingElement();
+    }
+
+    return true;
+}
+
+bool SporeMod::Xml::SaveDirectories(std::filesystem::path modLibsPath, std::filesystem::path galacticAdventuresDataPath, std::filesystem::path coreSporeDataPath)
+{
+    tinyxml2::XMLDocument xmlDocument;
+    tinyxml2::XMLElement* rootXmlElement;
+    tinyxml2::XMLElement* directoriesElement;
+
+    rootXmlElement = xmlDocument.NewElement("SporeModManager");
+    xmlDocument.InsertFirstChild(rootXmlElement);
+
+    directoriesElement = rootXmlElement->InsertNewChildElement("Directories");
+    directoriesElement->InsertNewChildElement("ModLibsDirectory")->SetText(modLibsPath.string().c_str());
+    directoriesElement->InsertNewChildElement("GalacticAdventuresDataDirectory")->SetText(galacticAdventuresDataPath.string().c_str());
+    directoriesElement->InsertNewChildElement("CoreSporeDataDirectory")->SetText(coreSporeDataPath.string().c_str());
+
+    xmlDocument.SaveFile("SporeModManager.xml");
+    return true;
+}
+
+bool SporeMod::Xml::GetInstalledModList(std::vector<InstalledSporeMod>& installedSporeModList)
+{
+    tinyxml2::XMLDocument xmlDocument;
+    tinyxml2::XMLElement* xmlElement;
+    tinyxml2::XMLElement* childXmlElement;
+    tinyxml2::XMLError    error;
+    std::string xmlElementName;
+
+    if (!std::filesystem::is_regular_file("SporeModManager.xml"))
+    { 
+        return true;
+    }
+
+    error = xmlDocument.LoadFile("SporeModManager.xml");
+    if (error != tinyxml2::XMLError::XML_SUCCESS)
+    {
+        std::cerr << "XmlDocument.LoadFile() Failed!" << std::endl;
+        return false;
+    }
+
+    xmlElement = xmlDocument.RootElement();
+    if (xmlElement == nullptr)
+    {
+        std::cerr << "XDocument.RootElement() Failed!" << std::endl;
+        return false;
+    }
+
+    xmlElement = xmlElement->FirstChildElement();
+    while (xmlElement != nullptr)
+    {
+        xmlElementName = GetElementName(xmlElement);
+        if (xmlElementName == "InstalledSporeMods")
+        {
+            childXmlElement = xmlElement->FirstChildElement();
+            while (childXmlElement != nullptr)
+            {
+                xmlElementName = GetElementName(childXmlElement);
+                if (xmlElementName == "InstalledSporeMod")
+                {
+                    installedSporeModList.push_back(ParseInstalledSporeModElement(childXmlElement));
+                }
+
+                childXmlElement = childXmlElement->NextSiblingElement();
+            }
+        }
+
+        xmlElement = xmlElement->NextSiblingElement();
+    }
+
+    // sort list by alphabet
+    std::sort(installedSporeModList.begin(), installedSporeModList.end(),
+        [](const InstalledSporeMod& a, const InstalledSporeMod& b) 
+        {
+            return a.Name < b.Name;
+        }
+    );
+
+    return true;
+}
+
+bool SporeMod::Xml::SaveInstalledModList(std::vector<InstalledSporeMod> installedSporeModList)
+{
+    tinyxml2::XMLDocument xmlDocument;
+    tinyxml2::XMLElement* rootXmlElement;
+    tinyxml2::XMLElement* installedSporeModsElement;
+    tinyxml2::XMLElement* xmlElement;
+    tinyxml2::XMLElement* filesXmlElement;
+    tinyxml2::XMLElement* installedModFileElement;
+    tinyxml2::XMLError    error;
+    std::string xmlElementName;
+
+    error = xmlDocument.LoadFile("SporeModManager.xml");
+    if (error != tinyxml2::XMLError::XML_SUCCESS)
+    {
+        std::cerr << "XmlDocument.LoadFile() Failed!" << std::endl;
+        return false;
+    }
+
+    rootXmlElement = xmlDocument.RootElement();
+    xmlDocument.InsertFirstChild(rootXmlElement);
+
+    installedSporeModsElement = FindElement(rootXmlElement, "InstalledSporeMods");
+    if (installedSporeModsElement != nullptr)
+    { // element exists, so remove all children
+        installedSporeModsElement->DeleteChildren();
+    }
+    else
+    { // element doesn't exist, so insert it
+        installedSporeModsElement = rootXmlElement->InsertNewChildElement("InstalledSporeMods");
+    }
+
+    for (const auto& installedSporeMod : installedSporeModList)
+    {
+        xmlElement = installedSporeModsElement->InsertNewChildElement("InstalledSporeMod");
+        xmlElement->InsertNewChildElement("Name")->SetText(installedSporeMod.Name.c_str());
+        xmlElement->InsertNewChildElement("UniqueName")->SetText(installedSporeMod.UniqueName.c_str());
+        xmlElement->InsertNewChildElement("Description")->SetText(installedSporeMod.Description.c_str());
+
+        filesXmlElement = xmlElement->InsertNewChildElement("Files");
+
+        for (const auto& installedFile : installedSporeMod.InstalledFiles)
+        {
+            std::string fileName = installedFile.FileName.string();
+            std::string installLocation = InstallLocationToString(installedFile.InstallLocation);
+
+            installedModFileElement = filesXmlElement->InsertNewChildElement("InstalledModFile");
+            installedModFileElement->InsertNewChildElement("FileName")->SetText(fileName.c_str());
+            installedModFileElement->InsertNewChildElement("InstallLocation")->SetText(installLocation.c_str());
+        }
+    }
+
+    xmlDocument.SaveFile("SporeModManager.xml");
+    return true;
+}
+

@@ -1,8 +1,9 @@
 @echo off
 
-set CUR_DIR="%~dp0"
-set OBJ_DIR="%CUR_DIR%\obj"
-set BIN_DIR="%CUR_DIR%\bin"
+set CUR_DIR=%~dp0
+set OBJ_DIR=%CUR_DIR%\obj
+set BIN_DIR=%CUR_DIR%\bin
+set THIRDPARTY_DIR=%CUR_DIR%\3rdParty
 
 rmdir /S /Q "%OBJ_DIR%" "%BIN_DIR%"
 
@@ -17,20 +18,21 @@ mkdir "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017"
 mkdir "%OBJ_DIR%\SporeModLoader\ModLibs"
 mkdir "%OBJ_DIR%\SporeModLoader\SporeModManager"
 
-msbuild "Spore-ModAPI\Spore ModAPI" ^
-    /t:BuildDlls ^
-    /p:BuildVer=83 ^
-    /p:Config=Release ^
-    /p:Platform=Win32 ^
-    /m
+CALL "%THIRDPARTY_DIR%\BuildMinizipNG.bat"
+CALL "%THIRDPARTY_DIR%\BuildSporeModAPI.bat"
 
 msbuild SporeModLoader ^
     /p:Configuration=Release ^
     /p:Platform=Win32 ^
     /m
 
-copy Spore-ModAPI\dll\Release\SporeModAPI.disk.dll "%OBJ_DIR%\SporeModLoader\CoreLibs\disk\SporeModAPI.dll"
-copy Spore-ModAPI\dll\Release\SporeModAPI.march2017.dll "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017\SporeModAPI.dll"
+msbuild SporeModManager ^
+    /p:Configuration=Release ^
+    /p:Platform=Win32 ^
+    /m
+
+copy "%THIRDPARTY_DIR%\Spore-ModAPI\dll\Release\SporeModAPI.disk.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\disk\SporeModAPI.dll"
+copy "%THIRDPARTY_DIR%\Spore-ModAPI\dll\Release\SporeModAPI.march2017.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017\SporeModAPI.dll"
 copy SporeModLoader\Bin\Release\dinput8.dll "%OBJ_DIR%\SporebinEP1\dinput8.dll"
 copy SporeModManager\Bin\Release\SporeModManager.exe "%OBJ_DIR%\SporeModLoader\SporeModManager"
 
