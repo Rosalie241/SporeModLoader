@@ -122,16 +122,17 @@ bool SporeModManager::UpdateMod(std::filesystem::path path)
     if (!SporeMod::FindInstalledMod(installedSporeModUniqueName, installedSporeModId))
     {
         std::cerr << "No mod found with the same unique name" << std::endl
-                  << "Did you mean -i/--install?" << std::endl;
+                  << "Did you mean install?" << std::endl;
         return false;
     }
 
-    return UninstallMod(installedSporeModId) && InstallMod(path);
+    return UninstallMods({ installedSporeModId }) && InstallMod(path);
 }
 
-bool SporeModManager::UninstallMod(int id)
+bool SporeModManager::UninstallMods(std::vector<int> ids)
 {
     std::vector<SporeMod::Xml::InstalledSporeMod> installedSporeMods;
+    std::vector<SporeMod::Xml::InstalledSporeMod> removedSporeMods;
     SporeMod::Xml::InstalledSporeMod installedSporeMod;
     std::filesystem::path fullInstallPath;
 
@@ -141,32 +142,48 @@ bool SporeModManager::UninstallMod(int id)
         return false;
     }
 
-    if (id < 0 || (size_t)id > installedSporeMods.size())
+    for (const auto& id : ids)
     {
-        std::cerr << "ID must be valid!" << std::endl;
-        return false;
-    }
-
-    installedSporeMod = installedSporeMods.at(id);
-
-    for (const auto& installedFile : installedSporeMod.InstalledFiles)
-    {
-        try
+        if (id < 0 || (size_t)id >= installedSporeMods.size() || installedSporeMods.empty())
         {
-            fullInstallPath = Path::GetFullInstallPath(installedFile.InstallLocation, installedFile.FileName);
-
-            std::cout << "-> Removing " << installedFile.FileName.string() << std::endl;
-
-            std::filesystem::remove(fullInstallPath);
-        }
-        catch (...)
-        {
-            std::cerr << "std::filesystem::remove(" << fullInstallPath << "\") Failed!" << std::endl;
+            std::cerr << "ID(s) must be valid!" << std::endl;
             return false;
         }
     }
 
-    installedSporeMods.erase(installedSporeMods.begin() + id);
+    for (const auto& id : ids)
+    {
+        installedSporeMod = installedSporeMods.at(id);
+
+        for (const auto& installedFile : installedSporeMod.InstalledFiles)
+        {
+            try
+            {
+                fullInstallPath = Path::GetFullInstallPath(installedFile.InstallLocation, installedFile.FileName);
+
+                std::cout << "-> Removing " << installedFile.FileName.string() << std::endl;
+
+                std::filesystem::remove(fullInstallPath);
+            }
+            catch (...)
+            {
+                std::cerr << "std::filesystem::remove(" << fullInstallPath << "\") Failed!" << std::endl;
+                return false;
+            }
+        }
+
+        removedSporeMods.push_back(installedSporeMod);
+    }
+
+    for (const auto& removedSporeMod : removedSporeMods)
+    {
+        auto installedSporeModIter = std::find(installedSporeMods.begin(), installedSporeMods.end(), removedSporeMod);
+        if (installedSporeModIter != installedSporeMods.end())
+        {
+            installedSporeMods.erase(installedSporeModIter);
+        }
+    }
+
     if (!SporeMod::Xml::SaveInstalledModList(installedSporeMods))
     {
         std::cerr << "SporeMod::Xml::SaveInstalledModList() Failed!" << std::endl;

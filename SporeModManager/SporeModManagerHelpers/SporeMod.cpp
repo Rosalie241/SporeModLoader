@@ -32,7 +32,7 @@ static bool IsModAlreadyInstalled(std::string uniqueName)
         if (installedSporeMod.UniqueName == uniqueName)
         {
             std::cerr << "A mod with the same unique name (" << installedSporeMod.Name << ") has already been installed" << std::endl
-                      << "Did you mean -u/--update?" << std::endl;
+                      << "Did you mean update?" << std::endl;
             return true;
         }
     }

@@ -30,9 +30,9 @@ namespace SporeModManager
     bool UpdateMod(std::filesystem::path path);
 
     /// <summary>
-    ///  Uninstalls mod with id
+    ///  Uninstalls mods with ids
     /// </summary>
-    bool UninstallMod(int id);
+    bool UninstallMods(std::vector<int> ids);
 }
 
 #endif // SPOREMODMANAGER_HPP

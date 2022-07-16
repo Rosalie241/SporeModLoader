@@ -19,12 +19,12 @@ static void ShowUsage()
     std::cout << "Usage: SporeModManager [OPTION]" << std::endl
               << std::endl
               << "Options:" << std::endl
-              << "  -l, --list-installed      lists installed mods with IDs" << std::endl
-              << "  -i, --install FILE        installs FILE" << std::endl
-              << "  -u, --update FILE         updates mod using FILE" << std::endl
-              << "  -r, --uninstall ID        uninstalls mod with ID" << std::endl
+              << "  list-installed      lists installed mod(s) with id(s)" << std::endl
+              << "  install file(s)     installs file(s)" << std::endl
+              << "  update file(s)      updates mod(s) using file(s)" << std::endl
+              << "  uninstall id(s)     uninstalls mod with id(s)" << std::endl
               << std::endl
-              << "      --help                display this help and exit" << std::endl;
+              << "  help                display this help and exit" << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -41,13 +41,12 @@ int main(int argc, char** argv)
     }
 
     char* action = argv[1];
-    if (std::strcmp(action, "--help") == 0)
+    if (std::strcmp(action, "help") == 0)
     {
         ShowUsage();
         return 0;
     }
-    else if (std::strcmp(action, "-l") == 0 ||
-        std::strcmp(action, "--list-installed") == 0)
+    else if (std::strcmp(action, "list-installed") == 0)
     {
         if (argc != 2)
         {
@@ -58,56 +57,62 @@ int main(int argc, char** argv)
         SporeModManager::ListInstalledMods();
         return 0;
     }
-    else if (std::strcmp(action, "-i") == 0 ||
-        std::strcmp(action, "--install") == 0)
+    else if (std::strcmp(action, "install") == 0)
     {
-        if (argc != 3)
+        if (argc < 3)
         {
             ShowUsage();
             return 1;
         }
         
-        if (!SporeModManager::InstallMod(argv[2]))
+        for (int i = 2; i < argc; i++)
         {
-            return 1;
+            if (!SporeModManager::InstallMod(argv[i]))
+            {
+                return 1;
+            }
         }
     }
-    else if (std::strcmp(action, "-u") == 0 ||
-        std::strcmp(action, "--update") == 0)
+    else if (std::strcmp(action, "update") == 0)
     {
-        if (argc != 3)
+        if (argc < 3)
         {
             ShowUsage();
             return 1;
         }
 
-        if (!SporeModManager::UpdateMod(argv[2]))
+        for (int i = 2; i < argc; i++)
         {
-            return 1;
+            if (!SporeModManager::UpdateMod(argv[i]))
+            {
+                return 1;
+            }
         }
     }
-    else if (std::strcmp(action, "-r") == 0 ||
-        std::strcmp(action, "--uninstall") == 0)
+    else if (std::strcmp(action, "uninstall") == 0)
     {
-        if (argc != 3)
+        if (argc < 3)
         {
             ShowUsage();
             return 1;
         }
 
-        int id = 0;
+        std::vector<int> ids;
 
-        try
+        for (int i = 2; i < argc; i++)
         {
-            id = std::stoi(argv[2]);
-        }
-        catch (...)
-        {
-            std::cerr << "ID must be a number!" << std::endl;
-            return 1;
+            try
+            {
+                ids.push_back(std::stoi(argv[i]));
+            }
+            catch (...)
+            {
+                std::cerr << "ID must be a number!" << std::endl;
+                return 1;
+            }
         }
 
-        if (!SporeModManager::UninstallMod(id))
+        if (!SporeModManager::UninstallMods(ids))
         {
             return 1;
         }

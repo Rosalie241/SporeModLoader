@@ -71,6 +71,14 @@ namespace SporeModManagerHelpers
                 std::string Description;
 
                 std::vector<SporeModFile> InstalledFiles;
+
+                bool operator==(const InstalledSporeMod& other) const
+                {
+                    return Name == other.Name &&
+                        UniqueName == other.UniqueName &&
+                        Description == other.Description &&
+                        InstalledFiles.size() == other.InstalledFiles.size();
+                }
             };
 
             /// <summary>
