@@ -226,7 +226,7 @@ bool SporeMod::InstallPackage(std::filesystem::path path)
     {
         std::cout << "-> Installing " << installedFile.FileName.string() << std::endl;
 
-        std::filesystem::path sourcePath = installedFile.FileName;
+        std::filesystem::path sourcePath = path;
         std::filesystem::path installPath = Path::GetFullInstallPath(installedFile.InstallLocation, installedFile.FileName);
 
         try
