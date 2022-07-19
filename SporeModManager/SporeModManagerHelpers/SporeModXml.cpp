@@ -10,6 +10,7 @@
 #include "SporeModManagerHelpers.hpp"
 
 #include <iostream>
+#include <algorithm>
 #include <tinyxml2.h>
 
 using namespace SporeModManagerHelpers;
@@ -308,13 +309,16 @@ bool SporeMod::Xml::ParseSporeModInfo(char* buffer, size_t bufferSize, SporeModI
 
 bool SporeMod::Xml::GetDirectories(std::filesystem::path& modLibsPath, std::filesystem::path& galacticAdventuresDataPath, std::filesystem::path& coreSporeDataPath)
 {
+    std::filesystem::path configFilePath;
     tinyxml2::XMLDocument xmlDocument;
     tinyxml2::XMLElement* xmlElement;
     tinyxml2::XMLElement* childXmlElement;
     tinyxml2::XMLError    error;
     std::string xmlElementName;
 
-    if (!std::filesystem::is_regular_file("SporeModManager.xml"))
+    configFilePath = Path::GetConfigFilePath();
+
+    if (!std::filesystem::is_regular_file(configFilePath))
     {
         if (!Xml::SaveDirectories("..\\ModLibs", "..\\..\\DataEP1", "..\\..\\Data"))
         {
@@ -323,7 +327,7 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& modLibsPath, std::file
         }
     }
 
-    error = xmlDocument.LoadFile("SporeModManager.xml");
+    error = xmlDocument.LoadFile(configFilePath.string().c_str());
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
         std::cerr << "XmlDocument.LoadFile() Failed!" << std::endl;
@@ -372,9 +376,12 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& modLibsPath, std::file
 
 bool SporeMod::Xml::SaveDirectories(std::filesystem::path modLibsPath, std::filesystem::path galacticAdventuresDataPath, std::filesystem::path coreSporeDataPath)
 {
+    std::filesystem::path configFilePath;
     tinyxml2::XMLDocument xmlDocument;
     tinyxml2::XMLElement* rootXmlElement;
     tinyxml2::XMLElement* directoriesElement;
+
+    configFilePath = Path::GetConfigFilePath();
 
     rootXmlElement = xmlDocument.NewElement("SporeModManager");
     xmlDocument.InsertFirstChild(rootXmlElement);
@@ -384,24 +391,27 @@ bool SporeMod::Xml::SaveDirectories(std::filesystem::path modLibsPath, std::file
     directoriesElement->InsertNewChildElement("GalacticAdventuresDataDirectory")->SetText(galacticAdventuresDataPath.string().c_str());
     directoriesElement->InsertNewChildElement("CoreSporeDataDirectory")->SetText(coreSporeDataPath.string().c_str());
 
-    xmlDocument.SaveFile("SporeModManager.xml");
+    xmlDocument.SaveFile(configFilePath.string().c_str());
     return true;
 }
 
 bool SporeMod::Xml::GetInstalledModList(std::vector<InstalledSporeMod>& installedSporeModList)
 {
+    std::filesystem::path configFilePath;
     tinyxml2::XMLDocument xmlDocument;
     tinyxml2::XMLElement* xmlElement;
     tinyxml2::XMLElement* childXmlElement;
     tinyxml2::XMLError    error;
     std::string xmlElementName;
 
-    if (!std::filesystem::is_regular_file("SporeModManager.xml"))
+    configFilePath = Path::GetConfigFilePath();
+
+    if (!std::filesystem::is_regular_file(configFilePath))
     { 
         return true;
     }
 
-    error = xmlDocument.LoadFile("SporeModManager.xml");
+    error = xmlDocument.LoadFile(configFilePath.string().c_str());
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
         std::cerr << "XmlDocument.LoadFile() Failed!" << std::endl;
@@ -450,6 +460,7 @@ bool SporeMod::Xml::GetInstalledModList(std::vector<InstalledSporeMod>& installe
 
 bool SporeMod::Xml::SaveInstalledModList(std::vector<InstalledSporeMod> installedSporeModList)
 {
+    std::filesystem::path configFilePath;
     tinyxml2::XMLDocument xmlDocument;
     tinyxml2::XMLElement* rootXmlElement;
     tinyxml2::XMLElement* installedSporeModsElement;
@@ -459,7 +470,9 @@ bool SporeMod::Xml::SaveInstalledModList(std::vector<InstalledSporeMod> installe
     tinyxml2::XMLError    error;
     std::string xmlElementName;
 
-    error = xmlDocument.LoadFile("SporeModManager.xml");
+    configFilePath = Path::GetConfigFilePath();
+
+    error = xmlDocument.LoadFile(configFilePath.string().c_str());
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
         std::cerr << "XmlDocument.LoadFile() Failed!" << std::endl;
@@ -499,7 +512,7 @@ bool SporeMod::Xml::SaveInstalledModList(std::vector<InstalledSporeMod> installe
         }
     }
 
-    xmlDocument.SaveFile("SporeModManager.xml");
+    xmlDocument.SaveFile(configFilePath.string().c_str());
     return true;
 }
 

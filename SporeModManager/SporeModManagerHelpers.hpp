@@ -142,19 +142,14 @@ namespace SporeModManagerHelpers
         std::filesystem::path GetFullInstallPath(SporeMod::InstallLocation installLocation, std::filesystem::path path);
 
         /// <summary>
-        ///     Returns mod libs path
+        ///     Returns full path from the executable (without the executable filename)
         /// </summary>
-        std::filesystem::path GetModLibsPath(void);
+        std::filesystem::path GetCurrentExecutablePath(void);
 
         /// <summary>
-        ///     Returns Galactic Adventures data path
+        ///     Returns full path to the config file
         /// </summary>
-        std::filesystem::path GetGalacticAdventuresDataPath(void);
-
-        /// <summary>
-        ///     Returns Core Spore data path
-        /// </summary>
-        std::filesystem::path GetCoreSporeDataPath(void);
+        std::filesystem::path GetConfigFilePath(void);
     }
 
     namespace UI
