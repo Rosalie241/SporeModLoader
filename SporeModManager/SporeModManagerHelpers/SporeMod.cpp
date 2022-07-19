@@ -10,6 +10,7 @@
 #include "SporeModManagerHelpers.hpp"
 
 #include <iostream>
+#include <algorithm>
 
 using namespace SporeModManagerHelpers;
 
@@ -33,6 +34,30 @@ static bool IsModAlreadyInstalled(std::string uniqueName)
         {
             std::cerr << "A mod with the same unique name (" << installedSporeMod.Name << ") has already been installed" << std::endl
                       << "Did you mean update?" << std::endl;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static bool CheckIfOtherModContainsFile(SporeMod::Xml::SporeModFile sporeModFile)
+{
+    std::vector<SporeMod::Xml::InstalledSporeMod> installedSporeMods;
+
+    if (!SporeMod::Xml::GetInstalledModList(installedSporeMods))
+    {
+        std::cerr << "SporeMod::Xml::GetInstalledModList() Failed!" << std::endl;
+        return true;
+    }
+
+    for (const auto& installedSporeMod : installedSporeMods)
+    {
+        auto installedFileIter = std::find(installedSporeMod.InstalledFiles.begin(), installedSporeMod.InstalledFiles.end(), sporeModFile);
+        if (installedFileIter != installedSporeMod.InstalledFiles.end())
+        {
+            std::cerr << "An already installed mod (" << installedSporeMod.Name
+                      << ") contains a file (\"" << sporeModFile.FileName.string() << "\") that this mod wants to install!" << std::endl;
             return true;
         }
     }
@@ -167,6 +192,15 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
         }
     }
 
+    // file collision detection
+    for (const auto& installedFile : installedSporeMod.InstalledFiles)
+    {
+        if (CheckIfOtherModContainsFile(installedFile))
+        {
+            return false;
+        }
+    }
+
     for (const auto& installedFile : installedSporeMod.InstalledFiles)
     {
         std::cout << "-> Installing " << installedFile.FileName.string() << std::endl;
@@ -220,6 +254,15 @@ bool SporeMod::InstallPackage(std::filesystem::path path)
     if (IsModAlreadyInstalled(baseName))
     {
         return false;
+    }
+
+    // file collision detection
+    for (const auto& installedFile : installedSporeMod.InstalledFiles)
+    {
+        if (CheckIfOtherModContainsFile(installedFile))
+        {
+            return false;
+        }
     }
 
     for (const auto& installedFile : installedSporeMod.InstalledFiles)
