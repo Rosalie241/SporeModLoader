@@ -41,7 +41,7 @@ static bool IsModAlreadyInstalled(std::string uniqueName)
     return false;
 }
 
-static bool CheckIfOtherModContainsFile(SporeMod::Xml::SporeModFile sporeModFile)
+static bool CheckIfOtherModContainsFiles(std::vector<SporeMod::Xml::SporeModFile> sporeModFiles)
 {
     std::vector<SporeMod::Xml::InstalledSporeMod> installedSporeMods;
 
@@ -53,12 +53,15 @@ static bool CheckIfOtherModContainsFile(SporeMod::Xml::SporeModFile sporeModFile
 
     for (const auto& installedSporeMod : installedSporeMods)
     {
-        auto installedFileIter = std::find(installedSporeMod.InstalledFiles.begin(), installedSporeMod.InstalledFiles.end(), sporeModFile);
-        if (installedFileIter != installedSporeMod.InstalledFiles.end())
+        for (const auto& sporeModFile : sporeModFiles)
         {
-            std::cerr << "An already installed mod (" << installedSporeMod.Name
-                      << ") contains a file (\"" << sporeModFile.FileName.string() << "\") that this mod wants to install!" << std::endl;
-            return true;
+            auto installedFileIter = std::find(installedSporeMod.InstalledFiles.begin(), installedSporeMod.InstalledFiles.end(), sporeModFile);
+            if (installedFileIter != installedSporeMod.InstalledFiles.end())
+            {
+                std::cerr << "An already installed mod (" << installedSporeMod.Name
+                    << ") contains a file (\"" << sporeModFile.FileName.string() << "\") that this mod wants to install!" << std::endl;
+                return true;
+            }
         }
     }
 
@@ -193,12 +196,9 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
     }
 
     // file collision detection
-    for (const auto& installedFile : installedSporeMod.InstalledFiles)
+    if (CheckIfOtherModContainsFiles(installedSporeMod.InstalledFiles))
     {
-        if (CheckIfOtherModContainsFile(installedFile))
-        {
-            return false;
-        }
+        return false;
     }
 
     for (const auto& installedFile : installedSporeMod.InstalledFiles)
@@ -257,12 +257,9 @@ bool SporeMod::InstallPackage(std::filesystem::path path)
     }
 
     // file collision detection
-    for (const auto& installedFile : installedSporeMod.InstalledFiles)
+    if (CheckIfOtherModContainsFiles(installedSporeMod.InstalledFiles))
     {
-        if (CheckIfOtherModContainsFile(installedFile))
-        {
-            return false;
-        }
+        return false;
     }
 
     for (const auto& installedFile : installedSporeMod.InstalledFiles)
