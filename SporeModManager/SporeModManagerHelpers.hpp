@@ -30,6 +30,12 @@ namespace SporeModManagerHelpers
             {
                 InstallLocation InstallLocation;
                 std::filesystem::path FileName;
+
+                bool operator==(const SporeModFile& other) const
+                {
+                    return InstallLocation == other.InstallLocation &&
+                        FileName == other.FileName;
+                }
             };
 
             struct SporeModInfoComponent
@@ -77,7 +83,7 @@ namespace SporeModManagerHelpers
                     return Name == other.Name &&
                         UniqueName == other.UniqueName &&
                         Description == other.Description &&
-                        InstalledFiles.size() == other.InstalledFiles.size();
+                        InstalledFiles == other.InstalledFiles;
                 }
             };
 
