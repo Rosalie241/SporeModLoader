@@ -33,6 +33,7 @@ msbuild SporeModManager ^
 
 copy "%THIRDPARTY_DIR%\Spore-ModAPI\dll\Release\SporeModAPI.disk.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\disk\SporeModAPI.dll"
 copy "%THIRDPARTY_DIR%\Spore-ModAPI\dll\Release\SporeModAPI.march2017.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017\SporeModAPI.dll"
+copy "%THIRDPARTY_DIR%\Spore-ModAPI\dll\Release\SporeModAPI.lib" "%OBJ_DIR%\SporeModLoader\CoreLibs\SporeModAPI.lib"
 copy SporeModLoader\Bin\Release\dinput8.dll "%OBJ_DIR%\SporebinEP1\dinput8.dll"
 copy SporeModManager\Bin\Release\SporeModManager.exe "%OBJ_DIR%\SporeModLoader\SporeModManager"
 
