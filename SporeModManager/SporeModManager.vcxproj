@@ -169,6 +169,7 @@
     <ClCompile Include="SporeModManagerHelpers\Path.cpp" />
     <ClCompile Include="SporeModManagerHelpers\SporeMod.cpp" />
     <ClCompile Include="SporeModManagerHelpers\SporeModXml.cpp" />
+    <ClCompile Include="SporeModManagerHelpers\String.cpp" />
     <ClCompile Include="SporeModManagerHelpers\UI.cpp" />
     <ClCompile Include="SporeModManagerHelpers\Zip.cpp" />
   </ItemGroup>

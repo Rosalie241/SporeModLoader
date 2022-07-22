@@ -65,6 +65,10 @@ namespace SporeModManagerHelpers
                 std::string UniqueName;
                 std::string Description;
 
+                bool IsExperimental;
+                bool RequiresGalaxyReset;
+                bool CausesSaveDataDependency;
+
                 std::vector<SporeModInfoComponentGroup> ComponentGroups;
                 std::vector<SporeModInfoComponent> Components;
                 std::vector<SporeModInfoPrerequisite> Prerequisites;
@@ -163,6 +167,11 @@ namespace SporeModManagerHelpers
         ///     Asks user for an integers
         /// </summary>
         void AskUserInput(std::string text, char delimiter, std::vector<int>& numbers, int min, int max);
+
+        /// <summary>
+        ///     Asks user for a boolean
+        /// </summary>
+        void AskUserInput(std::string text, bool& boolValue, bool defaultValue);
     }
 
     namespace Zip
@@ -193,6 +202,19 @@ namespace SporeModManagerHelpers
         ///     Extracts file to buffer
         /// </summary>
         bool ExtractFile(ZipFile zipFile, std::filesystem::path file, char** buffer, size_t* bufferSize);
+    }
+
+    namespace String
+    {
+        /// <summary>
+        ///     Splits the given string by the delimiter
+        /// </summary>
+        std::vector<std::string> Split(std::string string, char delimiter);
+
+        /// <summary>
+        ///     Returns the lowercase version of the given string
+        /// </summary>
+        std::string Lowercase(std::string string);
     }
 }
 

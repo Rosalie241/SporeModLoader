@@ -138,6 +138,33 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
         return false;
     }
 
+    struct
+    {
+        bool NeedsWarn;
+        std::string Text;
+    } warningOptions[] =
+    {
+        { sporeModInfo.IsExperimental, "This mod is experimental" },
+        { sporeModInfo.RequiresGalaxyReset, "This mod requires a galaxy reset" },
+        { sporeModInfo.CausesSaveDataDependency, "This mod causes save data dependency" }
+    };
+
+    for (const auto& warnOption : warningOptions)
+    {
+        if (warnOption.NeedsWarn)
+        {
+            std::string inputText = warnOption.Text;
+            bool userAnswer = false;
+            inputText += "\n-> Are you sure you want to continue? [y/N]: ";
+            UI::AskUserInput(inputText, userAnswer, false);
+            if (!userAnswer)
+            {
+                return false;
+            }
+        }
+    }
+
+
     for (const auto& componentGroup : sporeModInfo.ComponentGroups)
     {
         std::cout << "-> " << componentGroup.Name << std::endl;

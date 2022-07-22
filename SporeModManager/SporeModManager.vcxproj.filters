@@ -42,6 +42,9 @@
     <ClCompile Include="SporeModManagerHelpers\Path.cpp">
       <Filter>Source Files\SporeModManagerHelpers</Filter>
     </ClCompile>
+    <ClCompile Include="SporeModManagerHelpers\String.cpp">
+      <Filter>Source Files\SporeModManagerHelpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdParty\tinyxml2\tinyxml2.h">

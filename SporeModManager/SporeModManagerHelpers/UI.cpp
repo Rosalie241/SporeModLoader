@@ -80,3 +80,27 @@ void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& number
     } while (!validInput);
 }
 
+void UI::AskUserInput(std::string text, bool& boolValue, bool defaultValue)
+{
+    std::string inputLine;
+    bool validInput = false;
+    do
+    {
+        std::cout << text;
+
+        std::getline(std::cin, inputLine);
+        inputLine = String::Lowercase(inputLine);
+        if (inputLine.empty())
+        {
+            boolValue = defaultValue;
+            validInput = true;
+        }
+        else if (inputLine == "y" ||
+            inputLine == "n")
+        {
+            boolValue = (inputLine == "y");
+            validInput = true;
+        }
+    } while (!validInput);
+}
+

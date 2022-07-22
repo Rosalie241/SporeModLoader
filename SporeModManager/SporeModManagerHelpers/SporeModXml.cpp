@@ -19,20 +19,6 @@ using namespace SporeModManagerHelpers;
 // Helper Functions
 //
 
-static std::vector<std::string> SplitString(std::string string, char delimitor)
-{
-    std::vector<std::string> result;
-    std::stringstream stringStream(string);
-    std::string item;
-
-    while (std::getline(stringStream, item, delimitor))
-    {
-        result.push_back(item);
-    }
-
-    return result;
-}
-
 static std::string InstallLocationToString(SporeMod::InstallLocation installLocation)
 {
     switch (installLocation)
@@ -81,6 +67,15 @@ static std::string GetAttributeText(tinyxml2::XMLElement* element, std::string a
     }
 
     return "";
+}
+
+static bool GetAttributeBool(tinyxml2::XMLElement* element, std::string attributeName)
+{
+    std::string boolString;
+
+    boolString = GetAttributeText(element, attributeName);
+
+    return String::Lowercase(boolString) == "true";
 }
 
 static std::string GetElementText(tinyxml2::XMLElement* element)
@@ -138,8 +133,8 @@ static std::vector<SporeMod::Xml::SporeModFile> ParseFiles(tinyxml2::XMLElement*
     std::vector<std::string> installLocations;
     std::vector<std::string> installFiles;
 
-    installLocations = SplitString(GetAttributeText(element, "game"), '?');
-    installFiles = SplitString(GetElementText(element), '?');
+    installLocations = String::Split(GetAttributeText(element, "game"), '?');
+    installFiles = String::Split(GetElementText(element), '?');
 
     for (size_t i = 0; i < installFiles.size(); i++)
     {
@@ -283,6 +278,10 @@ bool SporeMod::Xml::ParseSporeModInfo(char* buffer, size_t bufferSize, SporeModI
     sporeModInfo.Name = GetAttributeText(xmlElement, "displayName");
     sporeModInfo.UniqueName = GetAttributeText(xmlElement, "unique");
     sporeModInfo.Description = GetAttributeText(xmlElement, "description");
+    
+    sporeModInfo.IsExperimental = GetAttributeBool(xmlElement, "isExperimental");
+    sporeModInfo.RequiresGalaxyReset = GetAttributeBool(xmlElement, "requiresGalaxyReset");
+    sporeModInfo.CausesSaveDataDependency = GetAttributeBool(xmlElement, "causesSaveDataDependency");
 
     xmlElement = xmlElement->FirstChildElement();
     while (xmlElement != nullptr)
