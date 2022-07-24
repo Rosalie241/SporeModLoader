@@ -135,12 +135,16 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
     // already installed
     if (IsModAlreadyInstalled(sporeModInfo.UniqueName))
     {
+        free(modInfoFileBuffer);
+        Zip::CloseFile(zipFile);
         return false;
     }
 
     // make sure we have the modapi dll that the mod requires
     if (!FileVersion::CheckIfCoreLibMatchesVersion(sporeModInfo.MinimumModAPILibVersion, sporeModInfo.Name))
     {
+        free(modInfoFileBuffer);
+        Zip::CloseFile(zipFile);
         return false;
     }
 
@@ -165,6 +169,8 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
             UI::AskUserInput(inputText, userAnswer, false);
             if (!userAnswer)
             {
+                free(modInfoFileBuffer);
+                Zip::CloseFile(zipFile);
                 return false;
             }
         }
@@ -230,6 +236,8 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
     // file collision detection
     if (CheckIfOtherModContainsFiles(installedSporeMod.InstalledFiles))
     {
+        free(modInfoFileBuffer);
+        Zip::CloseFile(zipFile);
         return false;
     }
 
