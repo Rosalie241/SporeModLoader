@@ -105,6 +105,12 @@ bool SporeModManager::UpdateMod(std::filesystem::path path)
             return false;
         }
 
+        // make sure we have the modapi dll that the mod requires
+        if (!FileVersion::CheckIfCoreLibMatchesVersion(sporeModInfo.MinimumModAPILibVersion, sporeModInfo.Name))
+        {
+            return false;
+        }
+
         installedSporeModUniqueName = sporeModInfo.UniqueName;
 
         free(modInfoFileBuffer);

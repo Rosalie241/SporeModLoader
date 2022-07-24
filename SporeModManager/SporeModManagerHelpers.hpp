@@ -44,6 +44,16 @@ namespace SporeModManagerHelpers
         };
 
         /// <summary>
+        ///     Retrieves file version info for the core lib
+        /// </summary>
+        bool GetCoreLibFileVersionInfo(FileVersionInfo& fileVersionInfo);
+
+        /// <summary>
+        ///     Returns whether the core lib matches the version required by the mod
+        /// </summary>
+        bool CheckIfCoreLibMatchesVersion(FileVersionInfo& modFileVersionInfo, std::string modName);
+
+        /// <summary>
         ///     Parses FileVersionInfo from string
         /// </summary>
         bool ParseString(std::string string, FileVersionInfo& fileVersionInfo);

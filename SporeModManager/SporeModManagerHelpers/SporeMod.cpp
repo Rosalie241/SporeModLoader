@@ -41,35 +41,6 @@ static bool IsModAlreadyInstalled(std::string uniqueName)
     return false;
 }
 
-static bool CheckModAPILibVersion(FileVersion::FileVersionInfo fileVersionInfo)
-{
-    std::filesystem::path coreLibPath;
-    FileVersion::FileVersionInfo coreLibFileVersionInfo;
-
-    coreLibPath = Path::Combine({ Path::GetCoreLibsPath(), "march2017", "SporeModAPI.dll" });
-
-    if (!std::filesystem::is_regular_file(coreLibPath))
-    {
-        std::cerr << "\"" << coreLibPath.string() << "\" doesn't exist!" << std::endl;
-        return false;
-    }
-
-    if (!FileVersion::ParseFile(coreLibPath, coreLibFileVersionInfo))
-    {
-        std::cerr << "FileVersion::ParseFile() Failed!" << std::endl;
-        return false;
-    }
-
-    if (fileVersionInfo > coreLibFileVersionInfo)
-    {
-        std::cerr << "mod requires newer modapi dll (\"" + fileVersionInfo.string() << 
-                     "\") than what's currently installed (\"" << coreLibFileVersionInfo.string() << "\")" << std::endl;
-        return false;
-    }
-
-    return true;
-}
-
 static bool CheckIfOtherModContainsFiles(std::vector<SporeMod::Xml::SporeModFile> sporeModFiles)
 {
     std::vector<SporeMod::Xml::InstalledSporeMod> installedSporeMods;
@@ -168,7 +139,7 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
     }
 
     // make sure we have the modapi dll that the mod requires
-    if (!CheckModAPILibVersion(sporeModInfo.MinimumModAPILibVersion))
+    if (!FileVersion::CheckIfCoreLibMatchesVersion(sporeModInfo.MinimumModAPILibVersion, sporeModInfo.Name))
     {
         return false;
     }

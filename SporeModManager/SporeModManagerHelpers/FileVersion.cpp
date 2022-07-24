@@ -25,6 +25,57 @@ using namespace SporeModManagerHelpers;
 // Exported Functions
 //
 
+bool FileVersion::GetCoreLibFileVersionInfo(FileVersionInfo& fileVersionInfo)
+{
+    std::filesystem::path coreLibPath;
+    static FileVersionInfo cachedFileVersionInfo = { 0 };
+    static bool hasCachedFileVersionInfo = false;
+
+    if (hasCachedFileVersionInfo)
+    {
+        fileVersionInfo = cachedFileVersionInfo;
+        return true;
+    }
+
+    coreLibPath = Path::Combine({ Path::GetCoreLibsPath(), "march2017", "SporeModAPI.dll" });
+
+    if (!std::filesystem::is_regular_file(coreLibPath))
+    {
+        std::cerr << "\"" << coreLibPath.string() << "\" doesn't exist!" << std::endl;
+        return false;
+    }
+
+    if (!FileVersion::ParseFile(coreLibPath, fileVersionInfo))
+    {
+        std::cerr << "FileVersion::ParseFile() Failed!" << std::endl;
+        return false;
+    }
+
+    cachedFileVersionInfo = fileVersionInfo;
+    hasCachedFileVersionInfo = true;
+    return true;
+}
+
+bool FileVersion::CheckIfCoreLibMatchesVersion(FileVersionInfo& modFileVersionInfo, std::string modName)
+{
+    FileVersionInfo coreLibFileVersionInfo;
+
+    if (!GetCoreLibFileVersionInfo(coreLibFileVersionInfo))
+    {
+        std::cerr << "FileVersion::GetCoreLibFileVersionInfo() Failed!" << std::endl;
+        return false;
+    }
+
+    if (modFileVersionInfo > coreLibFileVersionInfo)
+    {
+        std::cerr << "\"" << modName << "\" requires newer modapi dll (\"" + modFileVersionInfo.string() <<
+            "\") than what's currently installed (\"" << coreLibFileVersionInfo.string() << "\")" << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
 bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionInfo)
 {
     std::vector<std::string> splitString;
