@@ -166,6 +166,7 @@
     <ClCompile Include="..\3rdParty\tinyxml2\tinyxml2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SporeModManager.cpp" />
+    <ClCompile Include="SporeModManagerHelpers\FileVersion.cpp" />
     <ClCompile Include="SporeModManagerHelpers\Path.cpp" />
     <ClCompile Include="SporeModManagerHelpers\SporeMod.cpp" />
     <ClCompile Include="SporeModManagerHelpers\SporeModXml.cpp" />

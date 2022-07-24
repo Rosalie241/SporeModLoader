@@ -21,6 +21,7 @@ using namespace SporeModManagerHelpers;
 // Local Variables
 //
 
+std::filesystem::path l_CoreLibsPath;
 std::filesystem::path l_ModLibsPath;
 std::filesystem::path l_GalacticAdventuresDataPath;
 std::filesystem::path l_CoreSporeDataPath;
@@ -64,16 +65,17 @@ std::filesystem::path MakeAbsolutePath(std::filesystem::path& path)
 
 bool Path::CheckIfPathsExist(void)
 {
-    if (!SporeMod::Xml::GetDirectories(l_ModLibsPath, l_GalacticAdventuresDataPath, l_CoreSporeDataPath))
+    if (!SporeMod::Xml::GetDirectories(l_CoreLibsPath, l_ModLibsPath, l_GalacticAdventuresDataPath, l_CoreSporeDataPath))
     {
         std::cerr << "SporeMod::Xml::GetDirectories() Failed!" << std::endl;
     }
 
+    l_CoreLibsPath = MakeAbsolutePath(l_CoreLibsPath);
     l_ModLibsPath = MakeAbsolutePath(l_ModLibsPath);
     l_GalacticAdventuresDataPath = MakeAbsolutePath(l_GalacticAdventuresDataPath);
     l_CoreSporeDataPath = MakeAbsolutePath(l_CoreSporeDataPath);
-
-    for (const auto& path : { l_ModLibsPath, l_GalacticAdventuresDataPath, l_CoreSporeDataPath })
+    
+    for (const auto& path : { l_CoreLibsPath, l_ModLibsPath, l_GalacticAdventuresDataPath, l_CoreSporeDataPath })
     {
         if (!std::filesystem::is_directory(path))
         {
@@ -84,6 +86,27 @@ bool Path::CheckIfPathsExist(void)
     }
 
     return true;
+}
+
+std::filesystem::path Path::Combine(std::vector<std::filesystem::path> paths)
+{
+    std::filesystem::path combinedPath;
+
+    for (size_t i = 0; i < paths.size(); i++)
+    {
+        combinedPath += paths[i];
+        if (i == (paths.size() - 1))
+        { // break when at end
+            break;
+        }
+#ifdef _WIN32
+        combinedPath += "\\";
+#else
+        combinedPath += "/";
+#endif // _WIN32
+    }
+
+    return combinedPath;
 }
 
 std::filesystem::path Path::GetCurrentExecutablePath(void)
@@ -105,10 +128,9 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
 
     currentExecutablePath = currentExecutablePathBuf;
     currentExecutablePath = currentExecutablePath.parent_path();
-
     return currentExecutablePath;
 #else // _WIN32
-    return std::filesystem::current_path()
+    return std::filesystem::canonical("/proc/self/exe").parent_path();
 #endif // _WIN32
 }
 
@@ -156,5 +178,10 @@ std::filesystem::path Path::GetConfigFilePath(void)
     configFilePath += configFileName;
 
     return configFilePath;
+}
+
+std::filesystem::path Path::GetCoreLibsPath(void)
+{
+    return l_CoreLibsPath;
 }
 

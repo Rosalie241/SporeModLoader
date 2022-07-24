@@ -15,6 +15,68 @@
 
 namespace SporeModManagerHelpers
 {
+    namespace FileVersion
+    {
+        struct FileVersionInfo
+        {
+            int Major;
+            int Minor;
+            int Build;
+            int Revision;
+
+            bool operator>(const FileVersionInfo& other) const
+            {
+                bool ret = Major > other.Major &&
+                    Minor > other.Minor &&
+                    Build > other.Build &&
+                    Revision > other.Revision;
+
+                if (!ret)
+                {
+                    if (Major == other.Major &&
+                        Minor > other.Minor)
+                    {
+                        return true;
+                    }
+
+                    if (Minor == other.Minor &&
+                        Build > other.Build)
+                    {
+                        return true;
+                    }
+
+                    if (Build == other.Build &&
+                        Revision > other.Revision)
+                    {
+                        return true;
+                    }
+                }
+
+                return ret;
+            }
+
+            std::string string(void)
+            {
+                std::string string;
+                string = std::to_string(Major) + ".";
+                string += std::to_string(Minor) + ".";
+                string += std::to_string(Build) + ".";
+                string += std::to_string(Revision);
+                return string;
+            }
+        };
+
+        /// <summary>
+        ///     Parses FileVersionInfo from string
+        /// </summary>
+        bool ParseString(std::string string, FileVersionInfo& fileVersionInfo);
+
+        /// <summary>
+        ///     Parses FileVersionInfo from a file
+        /// </summary>
+        bool ParseFile(std::filesystem::path path, FileVersionInfo& fileVersionInfo);
+    }
+
     namespace SporeMod
     {
         enum class InstallLocation
@@ -68,6 +130,9 @@ namespace SporeModManagerHelpers
                 bool IsExperimental;
                 bool RequiresGalaxyReset;
                 bool CausesSaveDataDependency;
+                bool HasCustomInstaller;
+
+                FileVersion::FileVersionInfo MinimumModAPILibVersion;
 
                 std::vector<SporeModInfoComponentGroup> ComponentGroups;
                 std::vector<SporeModInfoComponent> Components;
@@ -99,12 +164,12 @@ namespace SporeModManagerHelpers
             /// <summary>
             ///     Retrieves directories 
             /// </summary>>
-            bool GetDirectories(std::filesystem::path& modLibsPath, std::filesystem::path& galacticAdventuresDataPath, std::filesystem::path& coreSporeDataPath);
+            bool GetDirectories(std::filesystem::path& coreLibsPath, std::filesystem::path& modLibsPath, std::filesystem::path& galacticAdventuresDataPath, std::filesystem::path& coreSporeDataPath);
 
             /// <summary>
             ///     Saves directories
             /// </summary>
-            bool SaveDirectories(std::filesystem::path modLibsPath, std::filesystem::path galacticAdventuresDataPath, std::filesystem::path coreSporeDataPath);
+            bool SaveDirectories(std::filesystem::path coreLibsPath, std::filesystem::path modLibsPath, std::filesystem::path galacticAdventuresDataPath, std::filesystem::path coreSporeDataPath);
 
             /// <summary>
             ///     Retrieves installed mod list
@@ -141,6 +206,11 @@ namespace SporeModManagerHelpers
         bool CheckIfPathsExist(void);
 
         /// <summary>
+        ///     Returns the combined path of paths
+        /// </summary>
+        std::filesystem::path Combine(std::vector<std::filesystem::path> paths);
+
+        /// <summary>
         ///     Retrieves full installation path
         /// </summary>
         std::filesystem::path GetFullInstallPath(SporeMod::InstallLocation installLocation, std::filesystem::path path);
@@ -154,6 +224,11 @@ namespace SporeModManagerHelpers
         ///     Returns full path to the config file
         /// </summary>
         std::filesystem::path GetConfigFilePath(void);
+
+        /// <summary>
+        ///     Returns the CoreLibs path
+        /// </summary>
+        std::filesystem::path GetCoreLibsPath(void);
     }
 
     namespace UI

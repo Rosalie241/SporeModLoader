@@ -260,6 +260,8 @@ bool SporeMod::Xml::ParseSporeModInfo(char* buffer, size_t bufferSize, SporeModI
     tinyxml2::XMLElement* xmlElement;
     tinyxml2::XMLError    error;
     std::string xmlElementName;
+    std::string xmlAttributeText;
+    bool ret;
 
     error = xmlDocument.Parse(buffer, bufferSize);
     if (error != tinyxml2::XMLError::XML_SUCCESS)
@@ -282,6 +284,22 @@ bool SporeMod::Xml::ParseSporeModInfo(char* buffer, size_t bufferSize, SporeModI
     sporeModInfo.IsExperimental = GetAttributeBool(xmlElement, "isExperimental");
     sporeModInfo.RequiresGalaxyReset = GetAttributeBool(xmlElement, "requiresGalaxyReset");
     sporeModInfo.CausesSaveDataDependency = GetAttributeBool(xmlElement, "causesSaveDataDependency");
+    sporeModInfo.HasCustomInstaller = GetAttributeBool(xmlElement, "hasCustomInstaller");
+
+    xmlAttributeText = GetAttributeText(xmlElement, "dllsBuild");
+    if (!xmlAttributeText.empty())
+    {
+        ret = FileVersion::ParseString(xmlAttributeText, sporeModInfo.MinimumModAPILibVersion);
+        if (!ret)
+        {
+            std::cerr << "FileVersion::ParseString() Failed!" << std::endl;
+            return false;
+        }
+    }
+    else
+    {
+        sporeModInfo.MinimumModAPILibVersion = { 0 };
+    }
 
     xmlElement = xmlElement->FirstChildElement();
     while (xmlElement != nullptr)
@@ -306,7 +324,7 @@ bool SporeMod::Xml::ParseSporeModInfo(char* buffer, size_t bufferSize, SporeModI
     return true;
 }
 
-bool SporeMod::Xml::GetDirectories(std::filesystem::path& modLibsPath, std::filesystem::path& galacticAdventuresDataPath, std::filesystem::path& coreSporeDataPath)
+bool SporeMod::Xml::GetDirectories(std::filesystem::path& coreLibsPath, std::filesystem::path& modLibsPath, std::filesystem::path& galacticAdventuresDataPath, std::filesystem::path& coreSporeDataPath)
 {
     std::filesystem::path configFilePath;
     tinyxml2::XMLDocument xmlDocument;
@@ -319,7 +337,10 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& modLibsPath, std::file
 
     if (!std::filesystem::is_regular_file(configFilePath))
     {
-        if (!Xml::SaveDirectories("..\\ModLibs", "..\\..\\DataEP1", "..\\..\\Data"))
+        if (!Xml::SaveDirectories(Path::Combine({ "..", "CoreLibs" }),
+                                  Path::Combine({ "..", "ModLibs" }),
+                                  Path::Combine({ "..", "..", "DataEP1" }),
+                                  Path::Combine({ "..", "..", "Data" })))
         {
             std::cerr << "Xml::SaveDirectories() Failed!" << std::endl;
             return false;
@@ -350,7 +371,11 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& modLibsPath, std::file
             while (childXmlElement != nullptr)
             {
                 xmlElementName = GetElementName(childXmlElement);
-                if (xmlElementName == "ModLibsDirectory")
+                if (xmlElementName == "CoreLibsDirectory")
+                {
+                    coreLibsPath = GetElementText(childXmlElement);
+                }
+                else if (xmlElementName == "ModLibsDirectory")
                 {
                     modLibsPath = GetElementText(childXmlElement);
                 }
@@ -373,7 +398,7 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& modLibsPath, std::file
     return true;
 }
 
-bool SporeMod::Xml::SaveDirectories(std::filesystem::path modLibsPath, std::filesystem::path galacticAdventuresDataPath, std::filesystem::path coreSporeDataPath)
+bool SporeMod::Xml::SaveDirectories(std::filesystem::path coreLibsPath, std::filesystem::path modLibsPath, std::filesystem::path galacticAdventuresDataPath, std::filesystem::path coreSporeDataPath)
 {
     std::filesystem::path configFilePath;
     tinyxml2::XMLDocument xmlDocument;
@@ -386,6 +411,7 @@ bool SporeMod::Xml::SaveDirectories(std::filesystem::path modLibsPath, std::file
     xmlDocument.InsertFirstChild(rootXmlElement);
 
     directoriesElement = rootXmlElement->InsertNewChildElement("Directories");
+    directoriesElement->InsertNewChildElement("CoreLibsDirectory")->SetText(coreLibsPath.string().c_str());
     directoriesElement->InsertNewChildElement("ModLibsDirectory")->SetText(modLibsPath.string().c_str());
     directoriesElement->InsertNewChildElement("GalacticAdventuresDataDirectory")->SetText(galacticAdventuresDataPath.string().c_str());
     directoriesElement->InsertNewChildElement("CoreSporeDataDirectory")->SetText(coreSporeDataPath.string().c_str());
