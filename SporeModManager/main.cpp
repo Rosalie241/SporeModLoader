@@ -11,6 +11,7 @@
 #include "SporeModManagerHelpers.hpp"
 
 #include <iostream>
+#include <cstring>
 
 using namespace SporeModManagerHelpers;
 

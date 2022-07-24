@@ -11,6 +11,7 @@
 #define SPOREMODMANAGER_HPP
 
 #include <filesystem>
+#include <vector>
 
 namespace SporeModManager
 {
