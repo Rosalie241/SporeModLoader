@@ -90,7 +90,7 @@ namespace SporeModManagerHelpers
         {
             struct SporeModFile
             {
-                InstallLocation InstallLocation;
+                SporeMod::InstallLocation InstallLocation;
                 std::filesystem::path FileName;
 
                 bool operator==(const SporeModFile& other) const
