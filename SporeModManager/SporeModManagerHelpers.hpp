@@ -26,33 +26,10 @@ namespace SporeModManagerHelpers
 
             bool operator>(const FileVersionInfo& other) const
             {
-                bool ret = Major > other.Major &&
-                    Minor > other.Minor &&
-                    Build > other.Build &&
-                    Revision > other.Revision;
-
-                if (!ret)
-                {
-                    if (Major == other.Major &&
-                        Minor > other.Minor)
-                    {
-                        return true;
-                    }
-
-                    if (Minor == other.Minor &&
-                        Build > other.Build)
-                    {
-                        return true;
-                    }
-
-                    if (Build == other.Build &&
-                        Revision > other.Revision)
-                    {
-                        return true;
-                    }
-                }
-
-                return ret;
+                return (Major > other.Major) ||
+                    (Major == other.Major && Minor > other.Minor) ||
+                    (Minor == other.Minor && Build > other.Build) ||
+                    (Build == other.Build && Revision > other.Revision);
             }
 
             std::string string(void)
