@@ -9,6 +9,7 @@
  */
 #include "SporeModManagerHelpers.hpp"
 
+#include <filesystem>
 #include <iostream>
 
 #ifdef _WIN32
@@ -94,6 +95,10 @@ std::filesystem::path Path::Combine(std::vector<std::filesystem::path> paths)
 
     for (size_t i = 0; i < paths.size(); i++)
     {
+        if (paths[i].empty())
+        { // skip empty paths
+            continue; 
+        }
         combinedPath += paths[i];
         if (i == (paths.size() - 1))
         { // break when at end
@@ -130,32 +135,36 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
     currentExecutablePath = currentExecutablePath.parent_path();
     return currentExecutablePath;
 #else // _WIN32
-    return std::filesystem::canonical("/proc/self/exe").parent_path();
+    try
+    {
+        return std::filesystem::canonical("/proc/self/exe").parent_path();
+    }
+    catch (...)
+    { // fail silently and fallback to current path
+        return std::filesystem::current_path();
+    }
 #endif // _WIN32
 }
 
 std::filesystem::path Path::GetFullInstallPath(SporeMod::InstallLocation installLocation, std::filesystem::path path)
 {
-    std::filesystem::path fullPath;
+    std::filesystem::path installPath;
 
     switch (installLocation)
     {
     default:
     case SporeMod::InstallLocation::ModLibs:
-        fullPath = l_ModLibsPath;
+        installPath = l_ModLibsPath;
         break;
     case SporeMod::InstallLocation::GalacticAdventuresData:
-        fullPath = l_GalacticAdventuresDataPath;
+        installPath = l_GalacticAdventuresDataPath;
         break;
     case SporeMod::InstallLocation::CoreSporeData:
-        fullPath = l_CoreSporeDataPath;
+        installPath = l_CoreSporeDataPath;
         break;
     }
 
-    fullPath += "\\";
-    fullPath += path;
-
-    return fullPath;
+    return Path::Combine({ installPath, path });
 }
 
 std::filesystem::path Path::GetConfigFilePath(void)
@@ -170,12 +179,7 @@ std::filesystem::path Path::GetConfigFilePath(void)
         return configFilePath;
     }
 
-    configFilePath = Path::GetCurrentExecutablePath();
-    if (!configFilePath.empty())
-    {
-        configFilePath += "\\";
-    }
-    configFilePath += configFileName;
+    configFilePath = Path::Combine({ Path::GetCurrentExecutablePath(), configFileName });
 
     return configFilePath;
 }
