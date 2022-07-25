@@ -48,7 +48,7 @@ bool SporeModManager::InstallMod(std::filesystem::path path)
         return false;
     }
 
-    std::string extension = path.extension().string();
+    std::string extension = String::Lowercase(path.extension().string());
     if (extension == ".sporemod")
     {
         return SporeMod::InstallSporeMod(path);
@@ -81,7 +81,7 @@ bool SporeModManager::UpdateMod(std::filesystem::path path)
         return false;
     }
 
-    std::string extension = path.extension().string();
+    std::string extension = String::Lowercase(path.extension().string());
     if (extension == ".sporemod")
     {
         if (!Zip::OpenFile(zipFile, path))
