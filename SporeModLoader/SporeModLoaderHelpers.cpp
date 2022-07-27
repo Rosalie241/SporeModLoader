@@ -212,39 +212,67 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
 {
     std::vector<std::filesystem::path> modLibsPaths;
     std::vector<std::filesystem::path> coreLibsPaths;
-    std::vector<std::filesystem::path> mLibsPaths;
-    std::filesystem::path tmpPath;
+    std::filesystem::path legacyLibsPath;
+    std::filesystem::path mLibsPath;
+    std::string legacyLibFileNameEnding;
 
     coreLibsPaths = Path::GetCoreLibsPaths();
 
-    tmpPath = Path::GetSporeModManagerStoragePath();
-    tmpPath += "\\legacyLibs";
-    mLibsPaths.push_back(tmpPath);
+    legacyLibsPath = Path::GetSporeModManagerStoragePath();
+    legacyLibsPath += "\\legacyLibs";
 
-    tmpPath = Path::GetSporeModManagerStoragePath();
-    tmpPath += "\\mLibs";
-    mLibsPaths.push_back(tmpPath);
+    mLibsPath = Path::GetSporeModManagerStoragePath();
+    mLibsPath += "\\mLibs";
 
-    for (const auto& path : mLibsPaths)
+    switch (Game::GetCurrentVersion())
     {
-        for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
+    default:
+    case Game::GameVersion::Origin_March2017:
+    case Game::GameVersion::GogOrSteam_March2017:
+        legacyLibFileNameEnding = "-steam_patched.dll";
+        break;
+
+    case Game::GameVersion::Disk_1_5_1:
+        legacyLibFileNameEnding = "-disk.dll";
+        break;
+    }
+
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(legacyLibsPath))
+    {
+        // skip non-files & non-dlls
+        if (!entry.is_regular_file() ||
+            !entry.path().has_extension() ||
+            !entry.path().string().ends_with(legacyLibFileNameEnding))
         {
-            // skip non-files & non-dlls
-            if (!entry.is_regular_file() ||
-                !entry.path().has_extension() ||
-                entry.path().extension() != ".dll")
-            {
-                continue;
-            }
-
-            // skip core libs
-            if (std::find(coreLibsPaths.begin(), coreLibsPaths.end(), entry.path()) != coreLibsPaths.end())
-            {
-                continue;
-            }
-
-            modLibsPaths.push_back(entry.path());
+            continue;
         }
+
+        // skip core libs
+        if (std::find(coreLibsPaths.begin(), coreLibsPaths.end(), entry.path()) != coreLibsPaths.end())
+        {
+            continue;
+        }
+
+        modLibsPaths.push_back(entry.path());
+    }
+
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(mLibsPath))
+    {
+        // skip non-files & non-dlls
+        if (!entry.is_regular_file() ||
+            !entry.path().has_extension() ||
+            entry.path().extension() != ".dll")
+        {
+            continue;
+        }
+        
+        // skip core libs
+        if (std::find(coreLibsPaths.begin(), coreLibsPaths.end(), entry.path()) != coreLibsPaths.end())
+        {
+            continue;
+        }
+
+        modLibsPaths.push_back(entry.path());
     }
 
     return modLibsPaths;
