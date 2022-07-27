@@ -212,30 +212,39 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
 {
     std::vector<std::filesystem::path> modLibsPaths;
     std::vector<std::filesystem::path> coreLibsPaths;
-    std::filesystem::path mLibsPath;
+    std::vector<std::filesystem::path> mLibsPaths;
+    std::filesystem::path tmpPath;
 
     coreLibsPaths = Path::GetCoreLibsPaths();
 
-    mLibsPath = Path::GetSporeModManagerStoragePath();
-    mLibsPath += "\\mLibs";
+    tmpPath = Path::GetSporeModManagerStoragePath();
+    tmpPath += "\\legacyLibs";
+    mLibsPaths.push_back(tmpPath);
 
-    for (const auto& entry : std::filesystem::recursive_directory_iterator(mLibsPath))
+    tmpPath = Path::GetSporeModManagerStoragePath();
+    tmpPath += "\\mLibs";
+    mLibsPaths.push_back(tmpPath);
+
+    for (const auto& path : mLibsPaths)
     {
-        // skip non-files & non-dlls
-        if (!entry.is_regular_file() ||
-            !entry.path().has_extension() ||
-            entry.path().extension() != ".dll")
+        for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
         {
-            continue;
-        }
+            // skip non-files & non-dlls
+            if (!entry.is_regular_file() ||
+                !entry.path().has_extension() ||
+                entry.path().extension() != ".dll")
+            {
+                continue;
+            }
 
-        // skip core libs
-        if (std::find(coreLibsPaths.begin(), coreLibsPaths.end(), entry.path()) != coreLibsPaths.end())
-        {
-            continue;
-        }
+            // skip core libs
+            if (std::find(coreLibsPaths.begin(), coreLibsPaths.end(), entry.path()) != coreLibsPaths.end())
+            {
+                continue;
+            }
 
-        modLibsPaths.push_back(entry.path());
+            modLibsPaths.push_back(entry.path());
+        }
     }
 
     return modLibsPaths;
