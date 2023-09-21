@@ -1,7 +1,7 @@
 @echo off
-set CUR_DIR=%~dp0
+set MINIZIPNG_CUR_DIR=%~dp0
 
-set MINIZIPNG_DIR=%CUR_DIR%\minizip-ng
+set MINIZIPNG_DIR=%MINIZIPNG_CUR_DIR%\minizip-ng
 
 rmdir /S /Q "%MINIZIPNG_DIR%\build"
 mkdir "%MINIZIPNG_DIR%\build"

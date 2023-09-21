@@ -1,8 +1,8 @@
 @echo off
 
-set CUR_DIR=%~dp0
+set SPOREMODAPI_CUR_DIR=%~dp0
 
-msbuild "%CUR_DIR%\Spore-ModAPI\Spore ModAPI" ^
+msbuild "%SPOREMODAPI_CUR_DIR%\Spore-ModAPI\Spore ModAPI" ^
 	/t:BuildDlls ^
 	/p:BuildVer=280 ^
 	/p:Config=Release ^
