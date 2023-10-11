@@ -1,0 +1,105 @@
+name: SporeModLoader
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64_x86
+      - name: Prepare Environment
+        run: |
+          $env:revision = git describe --tags --always
+          echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
+      - name: Build Detours
+        run: |
+          cd "3rdParty\Detours"
+          nmake
+        env:
+          CL: /MP
+          DETOURS_TARGET_PROCESSOR: x86
+      - name: Build minizip-ng
+        run: |
+          cmake -S "3rdParty\minizip-ng" -B "3rdParty\minizip-ng\build" -A Win32 `
+            -DMZ_LZMA=OFF -DMZ_ZSTD=OFF `
+            -DMZ_BZIP2=OFF -DMZ_PKCRYPT=OFF `
+            -DMZ_WZAES=OFF -DMZ_SIGNING=OFF `
+            -DMZ_DECOMPRESS_ONLY=ON `
+            -DCMAKE_POLICY_DEFAULT_CMP0091=NEW `
+            -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded `
+            -DCMAKE_BUILD_TYPE=Release
+          cmake --build "3rdParty\minizip-ng\build" --config Release
+      - name: Build Spore-ModAPI
+        run: |
+          msbuild "3rdParty\Spore-ModAPI\Spore ModAPI" `
+            /t:BuildDlls `
+            /p:BuildVer=280 `
+            /p:Config=Release `
+            /p:Platform=Win32 `
+            /m
+      - name: Build SporeModLoader
+        run: |
+          msbuild "SporeModLoader" `
+            /p:Configuration=Release `
+            /p:Platform=Win32 `
+            /m
+      - name: Build SporeModManager
+        run: |
+          msbuild "SporeModManager" `
+            /p:Configuration=Release `
+            /p:Platform=Win32 `
+            /m
+      - name: Package SporeModLoader
+        run: |
+          New-Item -ItemType Directory -Force -Path bin\SporebinEP1
+          New-Item -ItemType Directory -Force -Path bin\SporeModLoader\CoreLibs\disk
+          New-Item -ItemType Directory -Force -Path bin\SporeModLoader\CoreLibs\march2017
+          New-Item -ItemType Directory -Force -Path bin\SporeModLoader\ModLibs
+          New-Item -ItemType Directory -Force -Path bin\SporeModLoader\SporeModManager
+          New-Item -ItemType File -Force -Path bin\SporeModLoader\ModLibs\.keep
+
+          Copy "3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.disk.dll"      "bin\SporeModLoader\CoreLibs\disk\SporeModAPI.dll"
+          Copy "3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.march2017.dll" "bin\SporeModLoader\CoreLibs\march2017\SporeModAPI.dll"
+          Copy "3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.lib"           "bin\SporeModLoader\CoreLibs\SporeModAPI.lib"
+
+          Copy "SporeModLoader\Bin\Release\dinput8.dll"          "bin\SporebinEP1\dinput8.dll"
+          Copy "SporeModManager\Bin\Release\SporeModManager.exe" "bin\SporeModLoader\SporeModManager\SporeModManager.exe"
+      - name: Upload SporeModLoader
+        uses: actions/upload-artifact@v3
+        with:
+          name: SporeModLoader-${{ env.GIT_REVISION }}
+          path: bin/*
+  linux-build:
+    runs-on: ubuntu-20.04
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
+      - name: Install Packages
+        run: |
+          sudo apt-get -y install libminizip-dev build-essential
+      - name: Prepare Environment
+        run: |
+          echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
+      - name: Download SporeModLoader
+        uses: actions/download-artifact@v3
+        with:
+          name: SporeModLoader-${{ env.GIT_REVISION }}
+          path: artifacts
+      - name: Build SporeModManager (Linux)
+        run: |
+          make -j$(nproc)
+      - name: Add SporeModManager (Linux) to SporeModLoader
+        run: |
+          cp bin/SporeModManager artifacts/SporeModLoader/SporeModManager/SporeModManager
+      - name: Upload SporeModLoader
+        uses: actions/upload-artifact@v3
+        with:
+          name: SporeModLoader-${{ env.GIT_REVISION }}
+          path: artifacts/*
