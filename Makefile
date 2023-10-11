@@ -7,13 +7,13 @@ SOURCE_DIR     = SporeModManager
 
 PKG_CONFIG := pkg-config
 CXX        := g++
-CXXFLAGS   := -std=c++20                     \
+CXXFLAGS   := -std=c++17                     \
 				-O2 -flto                    \
 				-I$(SOURCE_DIR)              \
 				-I$(THIRDPARTY_DIR)/tinyxml2 \
 				$(shell $(PKG_CONFIG) --cflags minizip)
 
-LDFLAGS    := $(shell $(PKG_CONFIG) --libs minizip)
+LDFLAGS    := -s $(shell $(PKG_CONFIG) --libs minizip)
 
 OBJECT_FILES = \
 	$(SOURCE_DIR)/main.o \
@@ -36,7 +36,7 @@ $(BINARY_DIR):
 	mkdir -p $@
 
 $(BINARY_DIR)/SporeModManager: $(BINARY_DIR) $(OBJECT_FILES)
-	$(CXX) $(OBJECT_FILES) -s -o $@ $(LDFLAGS)
+	$(CXX) $(OBJECT_FILES) -o $@ $(LDFLAGS)
 
 clean:
 	rm -rf $(BINARY_DIR) $(OBJECT_FILES)
