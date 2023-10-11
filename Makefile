@@ -2,7 +2,7 @@
 # SporeModManager Makefile
 #
 THIRDPARTY_DIR = 3rdParty
-BINARY_DIR     = Bin
+BINARY_DIR     = bin
 SOURCE_DIR     = SporeModManager
 
 PKG_CONFIG := pkg-config
@@ -30,7 +30,7 @@ OBJECT_FILES = \
 %.o: %.cpp
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
-all: Bin/SporeModManager
+all: $(BINARY_DIR)/SporeModManager
 
 $(BINARY_DIR):
 	mkdir -p $@
