@@ -13,11 +13,7 @@
 #include <fstream>
 #include <cstring>
 
-#ifdef _WIN32
 #include <mz_compat.h>
-#else
-#include <unzip.h>
-#endif // _WIN32
 
 using namespace SporeModManagerHelpers;
 
@@ -91,11 +87,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
     std::ofstream outputFileStream;
 
     // try to find file in zip
-#ifdef _WIN32
     if (unzLocateFile(zipFile, file.string().c_str(), nullptr) != UNZ_OK)
-#else
-    if (unzLocateFile(zipFile, file.string().c_str(), 2) != UNZ_OK)
-#endif
     {
         std::cerr << "Failed to find \"" << file << "\" in zip file!" << std::endl;
         return false;
@@ -153,11 +145,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, char** outBuf
     size_t bytesRead = 0;
 
     // try to find file in zip
-#ifdef _WIN32
     if (unzLocateFile(zipFile, file.string().c_str(), nullptr) != UNZ_OK)
-#else
-    if (unzLocateFile(zipFile, file.string().c_str(), 2) != UNZ_OK)
-#endif
     {
         std::cerr << "Failed to find \"" << file << "\" in zip file!" << std::endl;
         return false;
