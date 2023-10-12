@@ -23,17 +23,13 @@ jobs:
         env:
           CL: /MP
           DETOURS_TARGET_PROCESSOR: x86
-      - name: Build minizip-ng
+      - name: Build zlib
         run: |
-          cmake -S "3rdParty\minizip-ng" -B "3rdParty\minizip-ng\build" -A Win32 `
-            -DMZ_LZMA=OFF -DMZ_ZSTD=OFF `
-            -DMZ_BZIP2=OFF -DMZ_PKCRYPT=OFF `
-            -DMZ_WZAES=OFF -DMZ_SIGNING=OFF `
-            -DMZ_DECOMPRESS_ONLY=ON `
+          cmake -S "3rdParty\zlib" -B "3rdParty\zlib\build" -A Win32 `
             -DCMAKE_POLICY_DEFAULT_CMP0091=NEW `
             -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded `
             -DCMAKE_BUILD_TYPE=Release
-          cmake --build "3rdParty\minizip-ng\build" --config Release
+          cmake --build "3rdParty\zlib\build" --config Release
       - name: Build Spore-ModAPI
         run: |
           msbuild "3rdParty\Spore-ModAPI\Spore ModAPI" `
@@ -81,9 +77,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: 'true'
-      - name: Install Packages
-        run: |
-          sudo apt-get -y install libminizip-dev build-essential
       - name: Prepare Environment
         run: |
           echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV

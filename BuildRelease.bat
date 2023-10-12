@@ -19,7 +19,7 @@ mkdir "%OBJ_DIR%\SporeModLoader\ModLibs"
 mkdir "%OBJ_DIR%\SporeModLoader\SporeModManager"
 
 CALL "%THIRDPARTY_DIR%\BuildDetours.bat"
-CALL "%THIRDPARTY_DIR%\BuildMinizipNG.bat"
+CALL "%THIRDPARTY_DIR%\BuildZlib.bat"
 CALL "%THIRDPARTY_DIR%\BuildSporeModAPI.bat"
 
 msbuild "%CUR_DIR%\SporeModLoader" ^

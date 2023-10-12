@@ -48,6 +48,12 @@
     <ClCompile Include="SporeModManagerHelpers\FileVersion.cpp">
       <Filter>Source Files\SporeModManagerHelpers</Filter>
     </ClCompile>
+    <ClCompile Include="..\3rdParty\zlib\contrib\minizip\unzip.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\zlib\contrib\minizip\ioapi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rdParty\tinyxml2\tinyxml2.h">
@@ -57,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SporeModManagerHelpers.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\zlib\contrib\minizip\unzip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
