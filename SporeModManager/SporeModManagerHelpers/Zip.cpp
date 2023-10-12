@@ -40,15 +40,15 @@ bool Zip::CloseFile(ZipFile zipFile)
 
 bool Zip::GetFileList(ZipFile zipFile, std::vector<std::filesystem::path>& fileList)
 {
-    unz_global_info zipInfo;
+    unz_global_info64  zipInfo;
 
-    if (unzGetGlobalInfo(zipFile, &zipInfo) != UNZ_OK)
+    if (unzGetGlobalInfo64(zipFile, &zipInfo) != UNZ_OK)
     {
         std::cerr << "unzGetGlobalInfo() Failed!" << std::endl;
         return false;
     }
 
-    for (uint32_t i = 0; i < zipInfo.number_entry; i++)
+    for (uint64_t i = 0; i < zipInfo.number_entry; i++)
     {
         unz_file_info fileInfo;
         char          fileName[2048];
@@ -62,7 +62,7 @@ bool Zip::GetFileList(ZipFile zipFile, std::vector<std::filesystem::path>& fileL
         fileList.push_back(fileName);
 
         // break when we've iterated over all entries
-        if ((uint32_t)(i + 1) >= zipInfo.number_entry)
+        if ((uint64_t)(i + 1) >= zipInfo.number_entry)
         {
             break;
         }
