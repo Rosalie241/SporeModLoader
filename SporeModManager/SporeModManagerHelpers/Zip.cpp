@@ -24,12 +24,92 @@ using namespace SporeModManagerHelpers;
 #define UNZIP_READ_SIZE 67108860 /* 64 MiB */
 
 //
+// Local Functions
+//
+
+static voidpf zlib_filefunc_open(voidpf opaque, const void* filename, int mode)
+{
+    std::filesystem::path path = *(std::filesystem::path*)filename;
+
+    // we need a static filestream
+    static std::ifstream fileStream;
+
+    // attempt to open file
+    fileStream.open(path, std::ios::binary);
+    if (!fileStream.is_open())
+    {
+        return nullptr;
+    }
+
+    return (voidpf)&fileStream;
+}
+
+static uLong zlib_filefunc_read(voidpf opaque, voidpf stream, void* buf, uLong size)
+{
+    std::ifstream* fileStream = (std::ifstream*)stream;
+    fileStream->read((char*)buf, size);
+    return fileStream->fail() ? 0 : size;
+}
+
+static ZPOS64_T zlib_filefunc_tell(voidpf opaque, voidpf stream)
+{
+    std::ifstream* fileStream = (std::ifstream*)stream;
+    return fileStream->tellg();
+}
+
+static long zlib_filefunc_seek(voidpf opaque, voidpf stream, ZPOS64_T offset, int origin)
+{
+    std::ifstream* fileStream = (std::ifstream*)stream;
+    std::ios_base::seekdir seekOrigin;
+
+    switch (origin)
+    {
+    default:
+        return 0;
+    case ZLIB_FILEFUNC_SEEK_CUR:
+        seekOrigin = std::ios::cur;
+        break;
+    case ZLIB_FILEFUNC_SEEK_END:
+        seekOrigin = std::ios::end;
+        break;
+    case ZLIB_FILEFUNC_SEEK_SET:
+        seekOrigin = std::ios::beg;
+        break;
+    }
+
+    fileStream->seekg(offset, seekOrigin);
+    return fileStream->fail() ? -1 : 0;
+}
+
+static int zlib_filefunc_close(voidpf opaque, voidpf stream)
+{
+    std::ifstream* fileStream = (std::ifstream*)stream;
+    fileStream->close();
+    return fileStream->fail() ? -1 : 0;
+}
+
+static int zlib_filefunc_testerror(voidpf opaque, voidpf stream)
+{
+    return errno;
+}
+
+//
 // Exported Functions
 //
 
 bool Zip::OpenFile(ZipFile& zipFile, std::filesystem::path path)
 {
-    zipFile = unzOpen(path.string().c_str());
+    zlib_filefunc64_def filefuncs;
+    filefuncs.zopen64_file = zlib_filefunc_open;
+    filefuncs.zread_file   = zlib_filefunc_read;
+    filefuncs.zwrite_file  = nullptr;
+    filefuncs.ztell64_file = zlib_filefunc_tell;
+    filefuncs.zseek64_file = zlib_filefunc_seek;
+    filefuncs.zclose_file  = zlib_filefunc_close;
+    filefuncs.zerror_file  = zlib_filefunc_testerror;
+    filefuncs.opaque       = nullptr;
+
+    zipFile = unzOpen2_64((const void*)&path, &filefuncs);
     return zipFile != nullptr;
 }
 
