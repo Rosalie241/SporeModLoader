@@ -161,7 +161,7 @@ bool Zip::GetFileList(ZipFile zipFile, std::vector<std::filesystem::path>& fileL
 
 bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesystem::path outputFile)
 {
-    char*  buffer;
+    std::vector<char> buffer(UNZIP_READ_SIZE);
     size_t dataSize = UNZIP_READ_SIZE;
     size_t bytesRead = 0;
     std::ofstream outputFileStream;
@@ -173,46 +173,35 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
         return false;
     }
 
-    buffer = (char*)malloc(UNZIP_READ_SIZE);
-    if (buffer == nullptr)
-    {
-        std::cerr << "malloc() Failed!" << std::endl;
-        return false;
-    }
-
     outputFileStream.open(outputFile, std::ofstream::trunc | std::ofstream::binary);
     if (!outputFileStream.is_open())
     {
-        free(buffer);
         std::cerr << "ofstream.open() Failed!" << std::endl;
         return false;
     }
 
     if (unzOpenCurrentFile(zipFile) != UNZ_OK)
     {
-        free(buffer);
         std::cerr << "unzOpenCurrentFile() Failed!" << std::endl;
         return false;
     }
 
     do
     {
-        bytesRead = unzReadCurrentFile(zipFile, buffer, UNZIP_READ_SIZE);
+        bytesRead = unzReadCurrentFile(zipFile, buffer.data(), UNZIP_READ_SIZE);
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
-            free(buffer);
             std::cerr << "unzReadCurrentFile() Failed: " << std::to_string(bytesRead) << std::endl;
             return false;
         }
 
-        outputFileStream.write(buffer, bytesRead);
+        outputFileStream.write(buffer.data(), bytesRead);
     } while (bytesRead > 0);
 
     unzCloseCurrentFile(zipFile);
     outputFileStream.flush();
     outputFileStream.close();
-    free(buffer);
     return true;
 }
 
