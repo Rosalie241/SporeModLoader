@@ -9,8 +9,6 @@ mkdir "%ZLIB_DIR%\build"
 set PATH=%PATH%;C:\Program Files\CMake\bin
 
 cmake -S "%ZLIB_DIR%" -B "%ZLIB_DIR%\build" -A Win32 ^
-	-DCMAKE_POLICY_DEFAULT_CMP0091=NEW ^
-	-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded ^
-	-DCMAKE_BUILD_TYPE=Release
+	-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
 
 cmake --build "%ZLIB_DIR%\build" --config Release

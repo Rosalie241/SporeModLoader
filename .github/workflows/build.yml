@@ -26,9 +26,7 @@ jobs:
       - name: Build zlib
         run: |
           cmake -S "3rdParty\zlib" -B "3rdParty\zlib\build" -A Win32 `
-            -DCMAKE_POLICY_DEFAULT_CMP0091=NEW `
-            -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded `
-            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
           cmake --build "3rdParty\zlib\build" --config Release
       - name: Build Spore-ModAPI
         run: |
