@@ -28,7 +28,11 @@ static void ShowUsage()
               << "  help                display this help and exit" << std::endl;
 }
 
+#ifdef _WIN32
+int wmain(int argc, wchar_t** argv)
+#else
 int main(int argc, char** argv)
+#endif // _WIN32
 {
     if (!Path::CheckIfPathsExist())
     {
@@ -41,13 +45,23 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    char* action = argv[1];
-    if (std::strcmp(action, "help") == 0)
+#ifdef _WIN32
+    // we know that wstring -> string conversion
+    // will possibly lose data, but that doesn't 
+    // matter for the first argument, so we can
+    // safely disable the warning
+#pragma warning(disable : 4244)
+    std::wstring waction = std::wstring(argv[1]);
+    std::string  action  = std::string(waction.begin(), waction.end());
+#else
+    std::string action = std::string(argv[1]);
+#endif // _WIN32
+    if (action == "help")
     {
         ShowUsage();
         return 0;
     }
-    else if (std::strcmp(action, "list-installed") == 0)
+    else if (action == "list-installed")
     {
         if (argc != 2)
         {
@@ -58,7 +72,7 @@ int main(int argc, char** argv)
         SporeModManager::ListInstalledMods();
         return 0;
     }
-    else if (std::strcmp(action, "install") == 0)
+    else if (action == "install")
     {
         if (argc < 3)
         {
@@ -74,7 +88,7 @@ int main(int argc, char** argv)
             }
         }
     }
-    else if (std::strcmp(action, "update") == 0)
+    else if (action == "update")
     {
         if (argc < 3)
         {
@@ -90,7 +104,7 @@ int main(int argc, char** argv)
             }
         }
     }
-    else if (std::strcmp(action, "uninstall") == 0)
+    else if (action == "uninstall")
     {
         if (argc < 3)
         {
