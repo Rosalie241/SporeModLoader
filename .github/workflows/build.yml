@@ -18,7 +18,7 @@ jobs:
           echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
       - name: Build Detours
         run: |
-          cd "3rdParty\Detours"
+          cd "3rdParty\Detours\src"
           nmake
         env:
           CL: /MP
