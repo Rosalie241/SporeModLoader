@@ -254,7 +254,7 @@ static SporeMod::Xml::InstalledSporeMod ParseInstalledSporeModElement(tinyxml2::
 // Exported Functions
 //
 
-bool SporeMod::Xml::ParseSporeModInfo(char* buffer, size_t bufferSize, SporeModInfo& sporeModInfo)
+bool SporeMod::Xml::ParseSporeModInfo(std::vector<char> buffer, SporeModInfo& sporeModInfo)
 {
     tinyxml2::XMLDocument xmlDocument;
     tinyxml2::XMLElement* xmlElement;
@@ -263,7 +263,7 @@ bool SporeMod::Xml::ParseSporeModInfo(char* buffer, size_t bufferSize, SporeModI
     std::string xmlAttributeText;
     bool ret;
 
-    error = xmlDocument.Parse(buffer, bufferSize);
+    error = xmlDocument.Parse(buffer.data(), buffer.size());
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
         std::cerr << "XmlDocument.Parse() Failed!" << std::endl;

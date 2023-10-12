@@ -146,7 +146,7 @@ namespace SporeModManagerHelpers
             /// <summary>
             ///     Parses SporeMod.xml buffer into a SporeModInfo
             /// </summary>
-            bool ParseSporeModInfo(char* buffer, size_t bufferSize, SporeModInfo& sporeModInfo);
+            bool ParseSporeModInfo(std::vector<char> buffer, SporeModInfo& sporeModInfo);
 
             /// <summary>
             ///     Retrieves directories 
@@ -263,7 +263,7 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Extracts file to buffer
         /// </summary>
-        bool ExtractFile(ZipFile zipFile, std::filesystem::path file, char** buffer, size_t* bufferSize);
+        bool ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<char>& buffer);
     }
 
     namespace String

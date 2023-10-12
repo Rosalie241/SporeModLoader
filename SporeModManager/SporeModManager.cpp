@@ -69,8 +69,7 @@ bool SporeModManager::InstallMod(std::filesystem::path path)
 bool SporeModManager::UpdateMod(std::filesystem::path path)
 {
     Zip::ZipFile zipFile;
-    char* modInfoFileBuffer;
-    size_t modInfoFileBufferSize;
+    std::vector<char> modInfoFileBuffer;
     SporeMod::Xml::SporeModInfo sporeModInfo;
     int installedSporeModId = 0;
     std::string installedSporeModUniqueName;
@@ -90,17 +89,16 @@ bool SporeModManager::UpdateMod(std::filesystem::path path)
             return false;
         }
 
-        if (!Zip::ExtractFile(zipFile, "modinfo.xml", &modInfoFileBuffer, &modInfoFileBufferSize))
+        if (!Zip::ExtractFile(zipFile, "modinfo.xml", modInfoFileBuffer))
         {
             std::cerr << "Zip::ExtractFile() Failed!" << std::endl;
             Zip::CloseFile(zipFile);
             return false;
         }
 
-        if (!SporeMod::Xml::ParseSporeModInfo(modInfoFileBuffer, modInfoFileBufferSize, sporeModInfo))
+        if (!SporeMod::Xml::ParseSporeModInfo(modInfoFileBuffer, sporeModInfo))
         {
             std::cerr << "SporeMod::Xml::ParseSporeModInfo() Failed!" << std::endl;
-            free(modInfoFileBuffer);
             Zip::CloseFile(zipFile);
             return false;
         }
@@ -108,14 +106,12 @@ bool SporeModManager::UpdateMod(std::filesystem::path path)
         // make sure we have the modapi dll that the mod requires
         if (!FileVersion::CheckIfCoreLibMatchesVersion(sporeModInfo.MinimumModAPILibVersion, sporeModInfo.Name))
         {
-            free(modInfoFileBuffer);
             Zip::CloseFile(zipFile);
             return false;
         }
 
         installedSporeModUniqueName = sporeModInfo.UniqueName;
 
-        free(modInfoFileBuffer);
         Zip::CloseFile(zipFile);
     }
     else if (extension == ".package")

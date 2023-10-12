@@ -136,10 +136,9 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
     return true;
 }
 
-bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, char** outBuffer, size_t* bufferSize)
+bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<char>& outBuffer)
 {
-    char*  buffer;
-    char*  tmpBuffer;
+    std::vector<char> buffer(UNZIP_READ_SIZE);
     size_t dataSize = UNZIP_READ_SIZE;
     size_t totalBytesRead = 0;
     size_t bytesRead = 0;
@@ -151,67 +150,30 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, char** outBuf
         return false;
     }
 
-    buffer = (char*)malloc(UNZIP_READ_SIZE);
-    if (buffer == nullptr)
-    {
-        std::cerr << "malloc() Failed!" << std::endl;
-        return false;
-    }
-
-    *outBuffer = (char*)malloc(UNZIP_READ_SIZE);
-    if (*outBuffer == nullptr)
-    {
-        free(buffer);
-        std::cerr << "malloc() Failed!" << std::endl;
-        return false;
-    }
+    outBuffer.reserve(UNZIP_READ_SIZE);
 
     if (unzOpenCurrentFile(zipFile) != UNZ_OK)
     {
-        free(buffer);
         std::cerr << "unzOpenCurrentFile() Failed!" << std::endl;
         return false;
     }
 
     do
     {
-        bytesRead = unzReadCurrentFile(zipFile, buffer, UNZIP_READ_SIZE);
+        bytesRead = unzReadCurrentFile(zipFile, buffer.data(), UNZIP_READ_SIZE);
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
-            free(buffer);
             std::cerr << "unzReadCurrentFile() Failed: " << std::to_string(bytesRead) << std::endl;
             return false;
         }
-
-        if (bytesRead > 0)
+        else if (bytesRead > 0)
         {
-            if (totalBytesRead + bytesRead > dataSize)
-            {
-                tmpBuffer = (char*)realloc(*outBuffer, totalBytesRead + bytesRead);
-                dataSize += bytesRead;
-                if (tmpBuffer == nullptr)
-                {
-                    unzCloseCurrentFile(zipFile);
-                    free(buffer);
-                    free(*outBuffer);
-                    std::cerr << "realloc() Failed!" << std::endl;
-                    return false;
-                }
-                else
-                {
-                    *outBuffer = tmpBuffer;
-                }
-            }
-
-            memcpy((*outBuffer + totalBytesRead), buffer, bytesRead);
-            totalBytesRead += bytesRead;
+            outBuffer.insert(outBuffer.end(), buffer.begin(), std::next(buffer.begin(), bytesRead));
         }
     } while (bytesRead > 0);
 
     unzCloseCurrentFile(zipFile);
-    *bufferSize = totalBytesRead;
-    free(buffer);
     return true;
 
 
