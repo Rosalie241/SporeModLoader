@@ -130,7 +130,7 @@
     </Link>
     <PreBuildEvent>
       <Command>if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\zlib\build\Release\zlibstatic.lib" (
-    "$(MSBuildProjectDirectory)\..\3rdParty\BuildZlib.bat"
+    CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildZlib.bat"
 )</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
