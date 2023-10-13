@@ -56,7 +56,7 @@ $(THIRDPARTY_DIR)/zlib/build/libz.a:
     	-DCMAKE_BUILD_TYPE=Release                  \
     	-DCMAKE_C_COMPILER=$(CC)                    \
     	-G "Unix Makefiles"
-	$(MAKE) -C $(THIRDPARTY_DIR)/zlib/build
+	$(MAKE) zlibstatic -C $(THIRDPARTY_DIR)/zlib/build
 
 $(BINARY_DIR)/SporeModManager: $(THIRDPARTY_LIBRARIES) $(BINARY_DIR) $(OBJECT_FILES)
 	$(CXX) $(OBJECT_FILES) -o $@ $(THIRDPARTY_LIBRARIES) $(LDFLAGS)
