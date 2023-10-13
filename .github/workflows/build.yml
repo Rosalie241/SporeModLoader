@@ -16,26 +16,6 @@ jobs:
         run: |
           $env:revision = git describe --tags --always
           echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
-      - name: Build Detours
-        run: |
-          cd "3rdParty\Detours\src"
-          nmake
-        env:
-          CL: /MP
-          DETOURS_TARGET_PROCESSOR: x86
-      - name: Build zlib
-        run: |
-          cmake -S "3rdParty\zlib" -B "3rdParty\zlib\build" -A Win32 `
-            -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
-          cmake --build "3rdParty\zlib\build" --config Release
-      - name: Build Spore-ModAPI
-        run: |
-          msbuild "3rdParty\Spore-ModAPI\Spore ModAPI" `
-            /t:BuildDlls `
-            /p:BuildVer=280 `
-            /p:Config=Release `
-            /p:Platform=Win32 `
-            /m
       - name: Build SporeModLoader
         run: |
           msbuild "SporeModLoader" `
