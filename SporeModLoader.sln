@@ -4,11 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SporeModLoader", "SporeModLoader\SporeModLoader.vcxproj", "{AD9120DA-E42B-4563-A307-B5A155CC25C0}"
-	ProjectSection(ProjectDependencies) = postProject
-		{37489709-8054-4903-9C49-A79846049FC9} = {37489709-8054-4903-9C49-A79846049FC9}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Detours", "3rdParty\Detours\vc\Detours.vcxproj", "{37489709-8054-4903-9C49-A79846049FC9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SporeModManager", "SporeModManager\SporeModManager.vcxproj", "{7D7E065A-3A61-434F-98CB-363031BE4481}"
 EndProject
@@ -22,10 +17,6 @@ Global
 		{AD9120DA-E42B-4563-A307-B5A155CC25C0}.Debug|x86.Build.0 = Debug|Win32
 		{AD9120DA-E42B-4563-A307-B5A155CC25C0}.Release|x86.ActiveCfg = Release|Win32
 		{AD9120DA-E42B-4563-A307-B5A155CC25C0}.Release|x86.Build.0 = Release|Win32
-		{37489709-8054-4903-9C49-A79846049FC9}.Debug|x86.ActiveCfg = DebugMDd|Win32
-		{37489709-8054-4903-9C49-A79846049FC9}.Debug|x86.Build.0 = DebugMDd|Win32
-		{37489709-8054-4903-9C49-A79846049FC9}.Release|x86.ActiveCfg = ReleaseMD|Win32
-		{37489709-8054-4903-9C49-A79846049FC9}.Release|x86.Build.0 = ReleaseMD|Win32
 		{7D7E065A-3A61-434F-98CB-363031BE4481}.Debug|x86.ActiveCfg = Debug|Win32
 		{7D7E065A-3A61-434F-98CB-363031BE4481}.Debug|x86.Build.0 = Debug|Win32
 		{7D7E065A-3A61-434F-98CB-363031BE4481}.Release|x86.ActiveCfg = Release|Win32
