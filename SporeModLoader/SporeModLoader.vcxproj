@@ -138,11 +138,11 @@
     </Link>
     <PreBuildEvent>
       <Command>if NOT EXIST  "$(MSBuildProjectDirectory)\..\3rdParty\Detours\lib.X86\detours.lib" (
-    "$(MSBuildProjectDirectory)\..\3rdParty\BuildDetours.bat"
+    CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildDetours.bat"
 )
 
 if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll" (
-    "$(MSBuildProjectDirectory)\..\3rdParty\BuildSporeModAPI.bat"
+    CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildSporeModAPI.bat"
 )</Command>
     </PreBuildEvent>
     <PostBuildEvent>
