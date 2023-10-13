@@ -137,7 +137,11 @@
       <AdditionalDependencies>detours.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll" (
+      <Command>if NOT EXIST  "$(MSBuildProjectDirectory)\..\3rdParty\Detours\lib.X86\detours.lib" (
+    "$(MSBuildProjectDirectory)\..\3rdParty\BuildDetours.bat"
+)
+
+if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll" (
     "$(MSBuildProjectDirectory)\..\3rdParty\BuildSporeModAPI.bat"
 )</Command>
     </PreBuildEvent>
