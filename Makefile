@@ -8,11 +8,11 @@ SOURCE_DIR     = SporeModManager
 PKG_CONFIG := pkg-config
 CC         := gcc
 CXX        := g++
-CFLAGS     := -O2 -flto                      \
+CFLAGS     := -Os -flto                      \
 				-I$(THIRDPARTY_DIR)/zlib     \
 				-I$(THIRDPARTY_DIR)/zlib/contrib/minizip
 CXXFLAGS   := -std=c++17                     \
-				-O2 -flto                    \
+				-Os -flto                    \
 				-I$(SOURCE_DIR)              \
 				-I$(THIRDPARTY_DIR)/tinyxml2 \
 				-I$(THIRDPARTY_DIR)/zlib     \
