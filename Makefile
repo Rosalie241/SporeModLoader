@@ -18,7 +18,7 @@ CXXFLAGS   := -std=c++17                     \
 				-I$(THIRDPARTY_DIR)/zlib     \
 				-I$(THIRDPARTY_DIR)/zlib/contrib/minizip
 
-LDFLAGS    := -s
+LDFLAGS    := -flto -s
 
 OBJECT_FILES = \
 	$(SOURCE_DIR)/main.o \
