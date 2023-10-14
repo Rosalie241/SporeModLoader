@@ -10,6 +10,7 @@
 #include "SporeModManagerHelpers.hpp"
 
 #include <iostream>
+#include <sstream>
 
 using namespace SporeModManagerHelpers;
 
