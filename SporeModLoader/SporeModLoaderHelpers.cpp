@@ -56,8 +56,12 @@ std::filesystem::path Path::GetLogFilePath(void)
     return logFilePath;
 }
 
-std::filesystem::path Path::GetCoreLibsPath(void)
+std::vector<std::filesystem::path> Path::GetCoreLibsPaths(void)
 {
+    std::vector<std::filesystem::path> coreLibsPaths;
+    std::string legacyLibFile;
+    std::filesystem::path legacyLibPath;
+    std::filesystem::path coreLibPath;
     std::filesystem::path coreLibsPath;
 
     coreLibsPath = GetModLoaderPath();
@@ -70,31 +74,93 @@ std::filesystem::path Path::GetCoreLibsPath(void)
         throw std::exception();
 
     case Game::GameVersion::Origin_1_5_1:
+    case Game::GameVersion::Origin_March2017:
+        UI::ShowErrorMessage(L"Unsupported Spore version!");
+        throw std::exception();
+
     case Game::GameVersion::GogOrSteam_1_5_1:
         UI::ShowErrorMessage(L"Update Spore to the latest version!");
         throw std::exception();
 
-    case Game::GameVersion::Origin_March2017:
     case Game::GameVersion::GogOrSteam_March2017:
-        coreLibsPath += "\\march2017";
+        coreLibsPath += "\\march2017\\";
+        legacyLibFile = "SporeModAPI-steam_patched.dll";
         break;
 
     case Game::GameVersion::Disk_1_5_1:
-        coreLibsPath += "\\disk";
+        coreLibsPath += "\\disk\\";
+        legacyLibFile = "SporeModAPI-disk.dll";
         break;
     }
 
-    return coreLibsPath;
+    coreLibPath = coreLibsPath;
+    coreLibPath += "SporeModAPI.dll";
+
+    legacyLibPath = coreLibsPath;
+    legacyLibPath += legacyLibFile;
+
+    coreLibsPaths.push_back(coreLibPath);
+    coreLibsPaths.push_back(legacyLibPath);
+
+    return coreLibsPaths;
 }
 
-std::filesystem::path Path::GetModLibsPath(void)
+std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
 {
+    std::vector<std::filesystem::path> modLibsPaths;
     std::filesystem::path modLibsPath;
+    Game::GameVersion gameVersion;
+    std::vector<std::string> excludePostfixes;
 
     modLibsPath = GetModLoaderPath();
     modLibsPath += "\\ModLibs";
 
-    return modLibsPath;
+    // we have to create an exclusion list
+    // for the postfixes for the mod dlls
+    // due to support for the legacy ModAPI DLLs
+    // where games shipped a dll with either the
+    // -steam, -steam_patched or -disk postfix
+    gameVersion = Game::GetCurrentVersion();
+    if (gameVersion == Game::GameVersion::GogOrSteam_March2017)
+    {
+        excludePostfixes.push_back("-steam.dll");
+        excludePostfixes.push_back("-disk.dll");
+    }
+    else
+    {
+        excludePostfixes.push_back("-steam.dll");
+        excludePostfixes.push_back("-steam_patched.dll");
+    }
+
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(modLibsPath))
+    {
+        // skip non-files & non-dlls
+        if (!entry.is_regular_file() ||
+            !entry.path().has_extension() ||
+            entry.path().extension() != ".dll")
+        {
+            continue;
+        }
+
+        // ensure we have an allowed postfix
+        bool skipLib = false;
+        for (const auto& postFix : excludePostfixes)
+        {
+            if (entry.path().filename().string().ends_with(postFix))
+            {
+                skipLib = true;
+                break;
+            }
+        }
+
+
+        if (!skipLib)
+        {
+            modLibsPaths.push_back(entry.path());
+        }
+    }
+
+    return modLibsPaths;
 }
 
 void Logger::Clear(void)
@@ -137,24 +203,16 @@ void UI::ShowErrorMessage(std::wstring message)
     MessageBoxW(nullptr, message.c_str(), L"SporeModLoader", MB_OK | MB_ICONERROR);
 }
 
-bool Library::LoadAllInPath(std::filesystem::path path)
+bool Library::LoadAll(std::vector<std::filesystem::path> paths)
 {
-    for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
+    for (const auto& path : paths)
     {
-        // skip non-files & non-dlls
-        if (!entry.is_regular_file() ||
-            !entry.path().has_extension() ||
-            entry.path().extension() != ".dll")
-        {
-            continue;
-        }
-
         // attempt to load library
-        bool ret = LoadLibraryW(entry.path().wstring().c_str()) != nullptr;
+        bool ret = LoadLibraryW(path.wstring().c_str()) != nullptr;
 
         std::wstring logMessage;
         logMessage = L"LoadLibraryW(\"";
-        logMessage += entry.path().wstring();
+        logMessage += path.wstring();
         logMessage += L"\") == ";
         logMessage += std::to_wstring((ret ? 1 : GetLastError()));
         Logger::AddMessage(logMessage);
@@ -163,7 +221,7 @@ bool Library::LoadAllInPath(std::filesystem::path path)
         {
             std::wstring errorMessage;
             errorMessage = L"LoadLibraryW(\"";
-            errorMessage += entry.path().wstring();
+            errorMessage += path.wstring();
             errorMessage += L"\") Failed!";
             UI::ShowErrorMessage(errorMessage);
             return false;

@@ -12,6 +12,7 @@
 
 #include <string>
 #include <filesystem>
+#include <vector>
 
 namespace SporeModLoaderHelpers
 {
@@ -33,14 +34,14 @@ namespace SporeModLoaderHelpers
         std::filesystem::path GetLogFilePath(void);
 
         /// <summary>
-        ///     Returns path to the core libs
+        ///     Returns paths to the core libs
         /// </summary>
-        std::filesystem::path GetCoreLibsPath(void);
+        std::vector<std::filesystem::path> GetCoreLibsPaths(void);
 
         /// <summary>
-        ///     Returns path to the mod libs
+        ///     Returns paths to the mod libs
         /// </summary>
-        std::filesystem::path GetModLibsPath(void);
+        std::vector<std::filesystem::path> GetModLibsPaths(void);
     }
 
     namespace Logger
@@ -67,9 +68,9 @@ namespace SporeModLoaderHelpers
     namespace Library
     {
         /// <summary>
-        ///     Loads all DLL files that are in path
+        ///     Loads all specified DLL files
         /// </summary>
-        bool LoadAllInPath(std::filesystem::path path);
+        bool LoadAll(std::vector<std::filesystem::path> paths);
     }
 
     namespace Game
