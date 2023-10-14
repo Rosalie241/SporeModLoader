@@ -34,7 +34,8 @@ msbuild "%CUR_DIR%\SporeModManager" ^
 
 copy "%THIRDPARTY_DIR%\Spore-ModAPI\dll\Release\SporeModAPI.disk.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\disk\SporeModAPI.dll"
 copy "%THIRDPARTY_DIR%\Spore-ModAPI\dll\Release\SporeModAPI.march2017.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017\SporeModAPI.dll"
-copy "%THIRDPARTY_DIR%\Spore-ModAPI\dll\Release\SporeModAPI.lib" "%OBJ_DIR%\SporeModLoader\CoreLibs\SporeModAPI.lib"
+copy "%THIRDPARTY_DIR%\Spore-ModAPI-legacy\SporeModAPI-disk.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\disk\SporeModAPI-disk.dll"
+copy "%THIRDPARTY_DIR%\Spore-ModAPI-legacy\SporeModAPI-steam_patched.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017\SporeModAPI-steam_patched.dll"
 copy "%CUR_DIR%\SporeModLoader\Bin\Release\dinput8.dll" "%OBJ_DIR%\SporebinEP1\dinput8.dll"
 copy "%CUR_DIR%\SporeModManager\Bin\Release\SporeModManager.exe" "%OBJ_DIR%\SporeModLoader\SporeModManager"
 
