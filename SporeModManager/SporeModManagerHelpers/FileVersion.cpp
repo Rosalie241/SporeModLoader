@@ -28,7 +28,7 @@ using namespace SporeModManagerHelpers;
 bool FileVersion::GetCoreLibFileVersionInfo(FileVersionInfo& fileVersionInfo)
 {
     std::filesystem::path coreLibPath;
-    static FileVersionInfo cachedFileVersionInfo = { 0 };
+    static FileVersionInfo cachedFileVersionInfo;
     static bool hasCachedFileVersionInfo = false;
 
     if (hasCachedFileVersionInfo)
@@ -90,7 +90,7 @@ bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionIn
     }
 
     // reset values to 0
-    fileVersionInfo = { 0 };
+    fileVersionInfo = { 0, 0, 0, 0 };
 
     int* numbers[] =
     {

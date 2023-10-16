@@ -19,10 +19,10 @@ namespace SporeModManagerHelpers
     {
         struct FileVersionInfo
         {
-            int Major;
-            int Minor;
-            int Build;
-            int Revision;
+            int Major    = 0;
+            int Minor    = 0;
+            int Build    = 0;
+            int Revision = 0;
 
             bool operator>(const FileVersionInfo& other) const
             {
