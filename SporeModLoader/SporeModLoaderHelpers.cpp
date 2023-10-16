@@ -109,8 +109,7 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
 {
     std::vector<std::filesystem::path> modLibsPaths;
     std::filesystem::path modLibsPath;
-    Game::GameVersion gameVersion;
-    std::vector<std::string> excludePostfixes;
+    std::vector<std::wstring> excludePostfixes;
 
     modLibsPath = GetModLoaderPath();
     modLibsPath += "\\ModLibs";
@@ -120,16 +119,15 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
     // due to support for the legacy ModAPI DLLs
     // where games shipped a dll with either the
     // -steam, -steam_patched or -disk postfix
-    gameVersion = Game::GetCurrentVersion();
-    if (gameVersion == Game::GameVersion::GogOrSteam_March2017)
+    if (Game::GetCurrentVersion() == Game::GameVersion::GogOrSteam_March2017)
     {
-        excludePostfixes.push_back("-steam.dll");
-        excludePostfixes.push_back("-disk.dll");
+        excludePostfixes.push_back(L"-steam.dll");
+        excludePostfixes.push_back(L"-disk.dll");
     }
     else
     {
-        excludePostfixes.push_back("-steam.dll");
-        excludePostfixes.push_back("-steam_patched.dll");
+        excludePostfixes.push_back(L"-steam.dll");
+        excludePostfixes.push_back(L"-steam_patched.dll");
     }
 
     for (const auto& entry : std::filesystem::recursive_directory_iterator(modLibsPath))
@@ -144,9 +142,10 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
 
         // ensure we have an allowed postfix
         bool skipLib = false;
-        for (const auto& postFix : excludePostfixes)
+        std::wstring filename = entry.path().filename().wstring();
+        for (const auto& postfix : excludePostfixes)
         {
-            if (entry.path().filename().string().ends_with(postFix))
+            if (filename.ends_with(postfix))
             {
                 skipLib = true;
                 break;
