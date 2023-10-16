@@ -269,16 +269,16 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
 bool SporeMod::InstallPackage(std::filesystem::path path)
 {
     Xml::InstalledSporeMod installedSporeMod;
-    Xml::SporeModFile installedFile;
+    Xml::SporeModFile installedModFile;
 
     std::string baseName = path.stem().string();
 
-    installedFile.FileName = path.filename();
-    installedFile.InstallLocation = InstallLocation::GalacticAdventuresData;
+    installedModFile.FileName = path.filename();
+    installedModFile.InstallLocation = InstallLocation::GalacticAdventuresData;
 
     installedSporeMod.Name = baseName;
     installedSporeMod.UniqueName = baseName;
-    installedSporeMod.InstalledFiles.push_back(installedFile);
+    installedSporeMod.InstalledFiles.push_back(installedModFile);
 
     // check if mod with the same unique name is 
     // already installed
