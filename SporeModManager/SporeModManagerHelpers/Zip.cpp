@@ -162,7 +162,6 @@ bool Zip::GetFileList(ZipFile zipFile, std::vector<std::filesystem::path>& fileL
 bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesystem::path outputFile)
 {
     std::vector<char> buffer(UNZIP_READ_SIZE);
-    size_t dataSize = UNZIP_READ_SIZE;
     size_t bytesRead = 0;
     std::ofstream outputFileStream;
 
@@ -208,8 +207,6 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
 bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<char>& outBuffer)
 {
     std::vector<char> buffer(UNZIP_READ_SIZE);
-    size_t dataSize = UNZIP_READ_SIZE;
-    size_t totalBytesRead = 0;
     size_t bytesRead = 0;
 
     // try to find file in zip

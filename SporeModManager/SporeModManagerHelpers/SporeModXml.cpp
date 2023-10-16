@@ -238,10 +238,7 @@ static std::vector<SporeMod::Xml::SporeModFile> ParseInstalledSporeModFilesEleme
 static SporeMod::Xml::InstalledSporeMod ParseInstalledSporeModElement(tinyxml2::XMLElement* element)
 {
     SporeMod::Xml::InstalledSporeMod installedSporeMod;
-    tinyxml2::XMLElement* xmlElement;
-    std::string xmlElementName;
 
-    xmlElement = element->FirstChildElement();
     installedSporeMod.Name = GetElementText(FindElement(element, "Name"));
     installedSporeMod.UniqueName = GetElementText(FindElement(element, "UniqueName"));
     installedSporeMod.Description = GetElementText(FindElement(element, "Description"));
