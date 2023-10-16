@@ -25,19 +25,16 @@ bool SporeModLoader::Initialize()
         Logger::Clear();
                
 
-        for (const auto& paths : { Path::GetCoreLibsPaths(), Path::GetModLibsPaths() })
+        for (const auto& path : Path::GetCoreLibsPaths())
         {
-            for (const auto& path : paths)
+            if (!std::filesystem::exists(path))
             {
-                if (!std::filesystem::exists(path))
-                {
-                    std::wstring errorMessage;
-                    errorMessage = L"\"";
-                    errorMessage += path.wstring();
-                    errorMessage += L"\" doesn't exist!";
-                    UI::ShowErrorMessage(errorMessage);
-                    throw std::exception();
-                }
+                std::wstring errorMessage;
+                errorMessage = L"\"";
+                errorMessage += path.wstring();
+                errorMessage += L"\" doesn't exist!";
+                UI::ShowErrorMessage(errorMessage);
+                throw std::exception();
             }
         }
 
