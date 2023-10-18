@@ -22,10 +22,10 @@ using namespace SporeModManagerHelpers;
 // Local Variables
 //
 
-std::filesystem::path l_CoreLibsPath;
-std::filesystem::path l_ModLibsPath;
-std::filesystem::path l_GalacticAdventuresDataPath;
-std::filesystem::path l_CoreSporeDataPath;
+static std::filesystem::path l_CoreLibsPath;
+static std::filesystem::path l_ModLibsPath;
+static std::filesystem::path l_GalacticAdventuresDataPath;
+static std::filesystem::path l_CoreSporeDataPath;
 
 //
 // Helper Functions
@@ -33,7 +33,6 @@ std::filesystem::path l_CoreSporeDataPath;
 
 std::filesystem::path MakeAbsolutePath(std::filesystem::path& path)
 {
-    std::filesystem::path currentExecutablePath;
     std::filesystem::path fullPath;
 
     if (path.is_absolute())
@@ -41,10 +40,7 @@ std::filesystem::path MakeAbsolutePath(std::filesystem::path& path)
         return path;
     }
 
-    currentExecutablePath = Path::GetCurrentExecutablePath();
-    fullPath = currentExecutablePath;
-    fullPath += "\\";
-    fullPath += path;
+    fullPath = Path::Combine({ Path::GetCurrentExecutablePath(), path });
 
     try
     {
@@ -71,11 +67,11 @@ bool Path::CheckIfPathsExist(void)
         std::cerr << "SporeMod::Xml::GetDirectories() Failed!" << std::endl;
     }
 
-    l_CoreLibsPath = MakeAbsolutePath(l_CoreLibsPath);
-    l_ModLibsPath = MakeAbsolutePath(l_ModLibsPath);
+    l_CoreLibsPath               = MakeAbsolutePath(l_CoreLibsPath);
+    l_ModLibsPath                = MakeAbsolutePath(l_ModLibsPath);
     l_GalacticAdventuresDataPath = MakeAbsolutePath(l_GalacticAdventuresDataPath);
-    l_CoreSporeDataPath = MakeAbsolutePath(l_CoreSporeDataPath);
-    
+    l_CoreSporeDataPath          = MakeAbsolutePath(l_CoreSporeDataPath);
+
     for (const auto& path : { l_CoreLibsPath, l_ModLibsPath, l_GalacticAdventuresDataPath, l_CoreSporeDataPath })
     {
         if (!std::filesystem::is_directory(path))
