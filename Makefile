@@ -29,21 +29,26 @@ OBJECT_FILES = \
 	$(SOURCE_DIR)/SporeModManagerHelpers/SporeModXml.o \
 	$(SOURCE_DIR)/SporeModManagerHelpers/String.o \
 	$(SOURCE_DIR)/SporeModManagerHelpers/UI.o \
-	$(SOURCE_DIR)/SporeModManagerHelpers/Zip.o \
+	$(SOURCE_DIR)/SporeModManagerHelpers/Zip.o
+
+THIRDPARTY_OBJECT_FILES = \
 	$(THIRDPARTY_DIR)/tinyxml2/tinyxml2.o \
+	$(THIRDPARTY_DIR)/zlib/adler32.o  \
+	$(THIRDPARTY_DIR)/zlib/crc32.o    \
+	$(THIRDPARTY_DIR)/zlib/inflate.o  \
+	$(THIRDPARTY_DIR)/zlib/inffast.o  \
+	$(THIRDPARTY_DIR)/zlib/inftrees.o \
+	$(THIRDPARTY_DIR)/zlib/zutil.o    \
 	$(THIRDPARTY_DIR)/zlib/contrib/minizip/unzip.o \
 	$(THIRDPARTY_DIR)/zlib/contrib/minizip/ioapi.o
 
-THIRDPARTY_LIBRARIES = \
-	$(THIRDPARTY_DIR)/zlib/build/libz.a
+THIRDPARTY_HEADERS = \
+	$(THIRDPARTY_DIR)/zlib/zconf.h
 
-THIRDPARTY_BUILD_DIRS = \
-	$(THIRDPARTY_DIR)/zlib/build
-
-%.o: %.c
+%.o: %.c $(THIRDPARTY_HEADERS)
 	$(CC) -c $< -o $@ $(CFLAGS)
 
-%.o: %.cpp
+%.o: %.cpp $(THIRDPARTY_HEADERS)
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 all: $(BINARY_DIR)/SporeModManager
@@ -51,15 +56,11 @@ all: $(BINARY_DIR)/SporeModManager
 $(BINARY_DIR):
 	mkdir -p $@
 
-$(THIRDPARTY_DIR)/zlib/build/libz.a:
-	cmake -S $(THIRDPARTY_DIR)/zlib -B $(THIRDPARTY_DIR)/zlib/build \
-    	-DCMAKE_BUILD_TYPE=Release                  \
-    	-DCMAKE_C_COMPILER=$(CC)                    \
-    	-G "Unix Makefiles"
-	$(MAKE) zlibstatic -C $(THIRDPARTY_DIR)/zlib/build
+$(THIRDPARTY_DIR)/zlib/zconf.h:
+	cp $@.in $@
 
-$(BINARY_DIR)/SporeModManager: $(THIRDPARTY_LIBRARIES) $(BINARY_DIR) $(OBJECT_FILES)
-	$(CXX) $(OBJECT_FILES) -o $@ $(THIRDPARTY_LIBRARIES) $(LDFLAGS)
+$(BINARY_DIR)/SporeModManager: $(BINARY_DIR) $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
+	$(CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS)
 
 clean:
-	rm -rf $(BINARY_DIR) $(OBJECT_FILES) $(THIRDPARTY_BUILD_DIRS)
+	rm -rf $(BINARY_DIR) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) $(THIRDPARTY_HEADERS)
