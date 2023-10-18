@@ -39,7 +39,6 @@ jobs:
 
           Copy "3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.disk.dll"      "bin\SporeModLoader\CoreLibs\disk\SporeModAPI.dll"
           Copy "3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.march2017.dll" "bin\SporeModLoader\CoreLibs\march2017\SporeModAPI.dll"
-          Copy "3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.lib"           "bin\SporeModLoader\CoreLibs\SporeModAPI.lib"
 
           Copy "3rdParty\Spore-ModAPI-legacy\SporeModAPI-disk.dll"          "bin\SporeModLoader\CoreLibs\disk\SporeModAPI-disk.dll"
           copy "3rdParty\Spore-ModAPI-legacy\SporeModAPI-steam_patched.dll" "bin\SporeModLoader\CoreLibs\march2017\SporeModAPI-steam_patched.dll"
