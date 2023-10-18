@@ -186,8 +186,12 @@
   <ItemGroup>
     <ClInclude Include="..\3rdParty\tinyxml2\tinyxml2.h" />
     <ClInclude Include="..\3rdParty\zlib\contrib\minizip\unzip.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SporeModManager.hpp" />
     <ClInclude Include="SporeModManagerHelpers.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SporeModManager.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
