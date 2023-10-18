@@ -27,7 +27,7 @@ using namespace SporeModManagerHelpers;
 // Local Functions
 //
 
-static voidpf zlib_filefunc_open(voidpf opaque, const void* filename, int mode)
+static voidpf zlib_filefunc_open(voidpf /*opaque*/, const void* filename, int /*mode*/)
 {
     std::filesystem::path path = *(std::filesystem::path*)filename;
 
@@ -44,20 +44,20 @@ static voidpf zlib_filefunc_open(voidpf opaque, const void* filename, int mode)
     return (voidpf)&fileStream;
 }
 
-static uLong zlib_filefunc_read(voidpf opaque, voidpf stream, void* buf, uLong size)
+static uLong zlib_filefunc_read(voidpf /*opaque*/, voidpf stream, void* buf, uLong size)
 {
     std::ifstream* fileStream = (std::ifstream*)stream;
     fileStream->read((char*)buf, size);
     return fileStream->fail() ? 0 : size;
 }
 
-static ZPOS64_T zlib_filefunc_tell(voidpf opaque, voidpf stream)
+static ZPOS64_T zlib_filefunc_tell(voidpf /*opaque*/, voidpf stream)
 {
     std::ifstream* fileStream = (std::ifstream*)stream;
     return fileStream->tellg();
 }
 
-static long zlib_filefunc_seek(voidpf opaque, voidpf stream, ZPOS64_T offset, int origin)
+static long zlib_filefunc_seek(voidpf /*opaque*/, voidpf stream, ZPOS64_T offset, int origin)
 {
     std::ifstream* fileStream = (std::ifstream*)stream;
     std::ios_base::seekdir seekOrigin;
@@ -81,14 +81,14 @@ static long zlib_filefunc_seek(voidpf opaque, voidpf stream, ZPOS64_T offset, in
     return fileStream->fail() ? -1 : 0;
 }
 
-static int zlib_filefunc_close(voidpf opaque, voidpf stream)
+static int zlib_filefunc_close(voidpf /*opaque*/, voidpf stream)
 {
     std::ifstream* fileStream = (std::ifstream*)stream;
     fileStream->close();
     return fileStream->fail() ? -1 : 0;
 }
 
-static int zlib_filefunc_testerror(voidpf opaque, voidpf stream)
+static int zlib_filefunc_testerror(voidpf /*opaque*/, voidpf /*stream*/)
 {
     return errno;
 }
