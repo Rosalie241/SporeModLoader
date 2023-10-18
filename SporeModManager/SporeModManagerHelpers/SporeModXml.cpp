@@ -160,10 +160,10 @@ static SporeMod::Xml::SporeModInfoComponent ParseComponentElement(tinyxml2::XMLE
 {
     SporeMod::Xml::SporeModInfoComponent component;
 
-    component.Name = GetAttributeText(element, "displayName");
-    component.UniqueName = GetAttributeText(element, "unique");
+    component.Name        = GetAttributeText(element, "displayName");
+    component.UniqueName  = GetAttributeText(element, "unique");
     component.Description = GetAttributeText(element, "description");
-    component.Files = ParseFiles(element);
+    component.Files       = ParseFiles(element);
 
     return component;
 }
@@ -223,7 +223,7 @@ static std::vector<SporeMod::Xml::SporeModFile> ParseInstalledSporeModFilesEleme
         {
             SporeMod::Xml::SporeModFile sporeModFile;
 
-            sporeModFile.FileName = GetElementText(FindElement(xmlElement, "FileName"));
+            sporeModFile.FileName        = GetElementText(FindElement(xmlElement, "FileName"));
             sporeModFile.InstallLocation = ParseInstallLocation(GetElementText(FindElement(xmlElement, "InstallLocation")));
 
             sporeModFiles.push_back(sporeModFile);
@@ -239,9 +239,9 @@ static SporeMod::Xml::InstalledSporeMod ParseInstalledSporeModElement(tinyxml2::
 {
     SporeMod::Xml::InstalledSporeMod installedSporeMod;
 
-    installedSporeMod.Name = GetElementText(FindElement(element, "Name"));
-    installedSporeMod.UniqueName = GetElementText(FindElement(element, "UniqueName"));
-    installedSporeMod.Description = GetElementText(FindElement(element, "Description"));
+    installedSporeMod.Name           = GetElementText(FindElement(element, "Name"));
+    installedSporeMod.UniqueName     = GetElementText(FindElement(element, "UniqueName"));
+    installedSporeMod.Description    = GetElementText(FindElement(element, "Description"));
     installedSporeMod.InstalledFiles = ParseInstalledSporeModFilesElement(FindElement(element, "Files"));
 
     return installedSporeMod;
@@ -274,14 +274,14 @@ bool SporeMod::Xml::ParseSporeModInfo(std::vector<char> buffer, SporeModInfo& sp
         return false;
     }
 
-    sporeModInfo.Name = GetAttributeText(xmlElement, "displayName");
-    sporeModInfo.UniqueName = GetAttributeText(xmlElement, "unique");
+    sporeModInfo.Name        = GetAttributeText(xmlElement, "displayName");
+    sporeModInfo.UniqueName  = GetAttributeText(xmlElement, "unique");
     sporeModInfo.Description = GetAttributeText(xmlElement, "description");
-    
-    sporeModInfo.IsExperimental = GetAttributeBool(xmlElement, "isExperimental");
-    sporeModInfo.RequiresGalaxyReset = GetAttributeBool(xmlElement, "requiresGalaxyReset");
+
+    sporeModInfo.IsExperimental           = GetAttributeBool(xmlElement, "isExperimental");
+    sporeModInfo.RequiresGalaxyReset      = GetAttributeBool(xmlElement, "requiresGalaxyReset");
     sporeModInfo.CausesSaveDataDependency = GetAttributeBool(xmlElement, "causesSaveDataDependency");
-    sporeModInfo.HasCustomInstaller = GetAttributeBool(xmlElement, "hasCustomInstaller");
+    sporeModInfo.HasCustomInstaller       = GetAttributeBool(xmlElement, "hasCustomInstaller");
 
     xmlAttributeText = GetAttributeText(xmlElement, "dllsBuild");
     if (!xmlAttributeText.empty())
@@ -292,10 +292,6 @@ bool SporeMod::Xml::ParseSporeModInfo(std::vector<char> buffer, SporeModInfo& sp
             std::cerr << "FileVersion::ParseString() Failed!" << std::endl;
             return false;
         }
-    }
-    else
-    {
-        sporeModInfo.MinimumModAPILibVersion = { 0 };
     }
 
     xmlElement = xmlElement->FirstChildElement();
