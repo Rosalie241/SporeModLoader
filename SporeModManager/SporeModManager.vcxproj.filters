@@ -16,12 +16,18 @@
     <Filter Include="Source Files\SporeModManagerHelpers">
       <UniqueIdentifier>{61ad4daa-3baa-44fa-a0fb-98a6919882c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\zlib">
+      <UniqueIdentifier>{a6d9c111-91ba-4900-acf6-60049f263cea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\minizip">
+      <UniqueIdentifier>{c8b1b946-c638-47a9-a404-6674639fb364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tinyxml2">
+      <UniqueIdentifier>{b88d4cd0-62a5-4033-a17e-38574d8fa513}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\3rdParty\tinyxml2\tinyxml2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SporeModManager.cpp">
@@ -48,11 +54,32 @@
     <ClCompile Include="SporeModManagerHelpers\FileVersion.cpp">
       <Filter>Source Files\SporeModManagerHelpers</Filter>
     </ClCompile>
+    <ClCompile Include="..\3rdParty\zlib\adler32.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\zlib\crc32.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\zlib\inffast.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\zlib\inflate.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\zlib\inftrees.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\zlib\zutil.c">
+      <Filter>Source Files\zlib</Filter>
+    </ClCompile>
     <ClCompile Include="..\3rdParty\zlib\contrib\minizip\unzip.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\minizip</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\zlib\contrib\minizip\ioapi.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\minizip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\tinyxml2\tinyxml2.cpp">
+      <Filter>Source Files\tinyxml2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
