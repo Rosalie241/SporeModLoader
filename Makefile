@@ -1,9 +1,10 @@
 #
 # SporeModManager Makefile
 #
-THIRDPARTY_DIR = 3rdParty
-BINARY_DIR     = bin
-SOURCE_DIR     = SporeModManager
+THIRDPARTY_DIR := 3rdParty
+BINARY_DIR     := bin
+SOURCE_DIR     := SporeModManager
+VERBOSE        := 0
 
 PKG_CONFIG := pkg-config
 CC         := gcc
@@ -45,22 +46,32 @@ THIRDPARTY_OBJECT_FILES = \
 THIRDPARTY_HEADERS = \
 	$(THIRDPARTY_DIR)/zlib/zconf.h
 
+ifeq ($(VERBOSE), 0)
+	QUIET := @
+else
+	QUIET :=
+endif
+
 %.o: %.c $(THIRDPARTY_HEADERS)
-	$(CC) -c $< -o $@ $(CFLAGS)
+	@echo "CC  $<"
+	$(QUIET)$(CC) -c $< -o $@ $(CFLAGS)
 
 %.o: %.cpp $(THIRDPARTY_HEADERS)
-	$(CXX) -c $< -o $@ $(CXXFLAGS)
+	@echo "CXX $<"
+	$(QUIET)$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 all: $(BINARY_DIR)/SporeModManager
 
 $(BINARY_DIR):
-	mkdir -p $@
+	$(QUIET)mkdir -p $@
 
 $(THIRDPARTY_DIR)/zlib/zconf.h:
-	cp $@.in $@
+	@echo "GEN $@"
+	$(QUIET)cp $@.in $@
 
 $(BINARY_DIR)/SporeModManager: $(BINARY_DIR) $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
-	$(CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS)
+	@echo "LD  $@"
+	$(QUIET)$(CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS)
 
 clean:
 	rm -rf $(BINARY_DIR) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) $(THIRDPARTY_HEADERS)
