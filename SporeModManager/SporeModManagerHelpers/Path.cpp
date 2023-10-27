@@ -65,6 +65,7 @@ bool Path::CheckIfPathsExist(void)
     if (!SporeMod::Xml::GetDirectories(l_CoreLibsPath, l_ModLibsPath, l_GalacticAdventuresDataPath, l_CoreSporeDataPath))
     {
         std::cerr << "SporeMod::Xml::GetDirectories() Failed!" << std::endl;
+        return false;
     }
 
     l_CoreLibsPath               = MakeAbsolutePath(l_CoreLibsPath);
