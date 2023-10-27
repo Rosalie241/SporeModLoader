@@ -147,7 +147,7 @@ namespace SporeModManagerHelpers
             /// <summary>
             ///     Parses SporeMod.xml buffer into a SporeModInfo
             /// </summary>
-            bool ParseSporeModInfo(std::vector<char> buffer, SporeModInfo& sporeModInfo);
+            bool ParseSporeModInfo(const std::vector<char>& buffer, SporeModInfo& sporeModInfo);
 
             /// <summary>
             ///     Retrieves directories 
@@ -167,7 +167,7 @@ namespace SporeModManagerHelpers
             /// <summary>
             ///     Saves installed mod list
             /// </summary>
-            bool SaveInstalledModList(std::vector<InstalledSporeMod> installedSporeModList);
+            bool SaveInstalledModList(const std::vector<InstalledSporeMod>& installedSporeModList);
         }
 
         /// <summary>

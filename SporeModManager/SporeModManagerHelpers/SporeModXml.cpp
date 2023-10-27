@@ -251,7 +251,7 @@ static SporeMod::Xml::InstalledSporeMod ParseInstalledSporeModElement(tinyxml2::
 // Exported Functions
 //
 
-bool SporeMod::Xml::ParseSporeModInfo(std::vector<char> buffer, SporeModInfo& sporeModInfo)
+bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModInfo& sporeModInfo)
 {
     tinyxml2::XMLDocument xmlDocument;
     tinyxml2::XMLElement* xmlElement;
@@ -498,7 +498,7 @@ bool SporeMod::Xml::GetInstalledModList(std::vector<InstalledSporeMod>& installe
     return true;
 }
 
-bool SporeMod::Xml::SaveInstalledModList(std::vector<InstalledSporeMod> installedSporeModList)
+bool SporeMod::Xml::SaveInstalledModList(const std::vector<InstalledSporeMod>& installedSporeModList)
 {
     std::filesystem::path configFilePath;
     tinyxml2::XMLDocument xmlDocument;
