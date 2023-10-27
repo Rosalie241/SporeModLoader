@@ -23,15 +23,16 @@ CXXFLAGS   := -std=c++17                     \
 LDFLAGS    := -flto -s
 
 OBJECT_FILES = \
-	$(SOURCE_DIR)/main.o \
-	$(SOURCE_DIR)/SporeModManager.o \
 	$(SOURCE_DIR)/SporeModManagerHelpers/FileVersion.o \
-	$(SOURCE_DIR)/SporeModManagerHelpers/Path.o \
-	$(SOURCE_DIR)/SporeModManagerHelpers/SporeMod.o \
+	$(SOURCE_DIR)/SporeModManagerHelpers/Path.o        \
+	$(SOURCE_DIR)/SporeModManagerHelpers/SporeMod.o    \
 	$(SOURCE_DIR)/SporeModManagerHelpers/SporeModXml.o \
-	$(SOURCE_DIR)/SporeModManagerHelpers/String.o \
-	$(SOURCE_DIR)/SporeModManagerHelpers/UI.o \
-	$(SOURCE_DIR)/SporeModManagerHelpers/Zip.o
+	$(SOURCE_DIR)/SporeModManagerHelpers/String.o      \
+	$(SOURCE_DIR)/SporeModManagerHelpers/UI.o          \
+	$(SOURCE_DIR)/SporeModManagerHelpers/Zip.o         \
+	$(SOURCE_DIR)/SporeModManager.o                    \
+	$(SOURCE_DIR)/main.o
+
 
 THIRDPARTY_OBJECT_FILES = \
 	$(THIRDPARTY_DIR)/tinyxml2/tinyxml2.o \
