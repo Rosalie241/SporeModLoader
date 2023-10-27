@@ -11,6 +11,7 @@
 #define SPOREMODMANAGERHELPERS_HPP
 
 #include <filesystem>
+#include <optional>
 #include <vector>
 
 namespace SporeModManagerHelpers
@@ -231,12 +232,12 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Asks user for an integer
         /// </summary>
-        void AskUserInput(std::string text, int& number, int min, int max);
+        void AskUserInput(std::string text, int& number, std::optional<int> defaultNumber, int min, int max);
 
         /// <summary>
         ///     Asks user for an integers
         /// </summary>
-        void AskUserInput(std::string text, char delimiter, std::vector<int>& numbers, int min, int max);
+        void AskUserInput(std::string text, char delimiter, std::vector<int>& numbers, std::vector<int> defaultNumbers, int min, int max);
 
         /// <summary>
         ///     Asks user for a boolean
@@ -280,6 +281,11 @@ namespace SporeModManagerHelpers
         ///     Splits the given string by the delimiter
         /// </summary>
         std::vector<std::string> Split(std::string string, char delimiter);
+
+        /// <summary>
+        ///     Joins numbers to string with delimiter
+        /// </summary>
+        std::string Join(std::vector<int> numbers, char delimiter);
 
         /// <summary>
         ///     Returns the lowercase version of the given string

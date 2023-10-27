@@ -28,6 +28,22 @@ std::vector<std::string> String::Split(std::string string, char delimiter)
     return result;
 }
 
+std::string String::Join(std::vector<int> numbers, char delimiter)
+{
+    std::string result;
+
+    for (size_t i = 0; i < numbers.size(); i++)
+    {
+        result += std::to_string(numbers[i]);
+        if (i < (numbers.size() - 1))
+        {
+            result += delimiter;
+        }
+    }
+
+    return result;
+}
+
 std::string String::Lowercase(std::string string)
 {
     std::transform(string.begin(), string.end(), string.begin(), [](unsigned char c) 

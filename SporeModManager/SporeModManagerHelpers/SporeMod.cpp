@@ -103,7 +103,12 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
     Xml::SporeModInfo sporeModInfo;
     Xml::InstalledSporeMod installedSporeMod;
     Xml::SporeModInfoComponent component;
-    size_t componentsSize;
+    size_t             componentsSize;
+    std::optional<int> defaultComponentId;
+    int                componentId;
+    std::vector<int>   defaultComponentIds;
+    std::vector<int>   componentIds;
+    std::string        uiText;
 
     if (!Zip::OpenFile(zipFile, path))
     {
@@ -175,16 +180,36 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
     {
         std::cout << "-> " << componentGroup.Name << std::endl;
 
-        componentsSize = componentGroup.Components.size();
+        componentsSize     = componentGroup.Components.size();
+        componentId        = 0;
+        defaultComponentId = std::nullopt;
 
         for (size_t i = 0; i < componentsSize; i++)
         {
             component = componentGroup.Components[i];
             std::cout << "[" << i << "] " << component.Name << std::endl;
+
+            // set default checked component id
+            if (component.DefaultChecked &&
+                !defaultComponentId.has_value())
+            {
+                defaultComponentId = i;
+            }
         }
 
-        int componentId = 0;
-        UI::AskUserInput("-> select which component you want: ", componentId, 0, componentsSize - 1);
+        uiText = "-> select which component you want";
+        if (defaultComponentId.has_value())
+        {
+            uiText += " [";
+            uiText += std::to_string(componentId);
+            uiText += "]: ";
+        }
+        else
+        {
+            uiText += ": ";
+        }
+
+        UI::AskUserInput(uiText, componentId, defaultComponentId, 0, componentsSize - 1);
 
         component = componentGroup.Components[componentId];
 
@@ -197,17 +222,35 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
     if (!sporeModInfo.Components.empty())
     {
         componentsSize = sporeModInfo.Components.size();
+        defaultComponentIds.clear();
+        componentIds.clear();
 
         for (size_t i = 0; i < componentsSize; i++)
         {
             component = sporeModInfo.Components[i];
             std::cout << "[" << i << "] " << component.Name << std::endl
-                      << "  " << component.Description << std::endl;
+                << "  " << component.Description << std::endl;
+
+            // set default checked component ids
+            if (component.DefaultChecked)
+            {
+                defaultComponentIds.push_back(i);
+            }
         }
 
-        std::vector<int> componentIds;
+        uiText = "-> select which components you want to install (comma seperated";
+        if (!defaultComponentIds.empty())
+        {
+            uiText += " or N for none) [";
+            uiText += String::Join(defaultComponentIds, ',');
+            uiText += "]: ";
+        }
+        else
+        {
+            uiText += "): ";
+        }
 
-        UI::AskUserInput("-> select which components you want to install (comma seperated): ", ',', componentIds, 0, componentsSize);
+        UI::AskUserInput(uiText, ',', componentIds, defaultComponentIds, 0, componentsSize);
 
         for (const auto& componentId : componentIds)
         {

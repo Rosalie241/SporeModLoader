@@ -14,39 +14,46 @@
 
 using namespace SporeModManagerHelpers;
 
-void UI::AskUserInput(std::string text, int& number, int min, int max)
+void UI::AskUserInput(std::string text, int& number, std::optional<int> defaultNumber, int min, int max)
 {
+    std::string inputLine;
+
     do
     {
-        if (std::cin.fail())
+        std::cout << text;
+
+        std::getline(std::cin, inputLine);
+        if (inputLine.empty() && defaultNumber.has_value())
         {
-            std::cin.clear();
-            std::cin.ignore();
+            number = defaultNumber.value();
+            return;
         }
 
-        std::cout << text;
-        std::cin >> number;
+        try
+        {
+            number = std::stoi(inputLine);
 
-        if (std::cin.fail() || number < min || number > max)
+            if (number < min || number > max)
+            {
+                throw std::exception();
+            }
+
+            break;
+        }
+        catch (...)
         {
             std::cerr << "invalid input" << std::endl;
             continue;
         }
-        else
-        {
-            std::cin.clear();
-            std::cin.ignore();
-            break;
-        }
     } while (true);
 }
 
-void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& numbers, int min, int max)
+void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& numbers, std::vector<int> defaultNumbers, int min, int max)
 {
-    std::string inputLine;
+    std::string       inputLine;
     std::stringstream stringStream;
-    std::string inputItem;
-    int number;
+    std::string       inputItem;
+    int  number;
     bool validInput = false;
     do
     {
@@ -55,6 +62,16 @@ void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& number
         std::cout << text;
 
         std::getline(std::cin, inputLine);
+        if (inputLine.empty())
+        {
+            numbers = defaultNumbers;
+            return;
+        }
+        else if (String::Lowercase(inputLine) == "n")
+        {
+            return;
+        }
+
         stringStream = std::stringstream(inputLine);
         while (std::getline(stringStream, inputItem, delimiter))
         {

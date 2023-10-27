@@ -163,10 +163,11 @@ static SporeMod::Xml::SporeModInfoComponent ParseComponentElement(tinyxml2::XMLE
 {
     SporeMod::Xml::SporeModInfoComponent component;
 
-    component.Name        = GetAttributeText(element, "displayName");
-    component.UniqueName  = GetAttributeText(element, "unique");
-    component.Description = GetAttributeText(element, "description");
-    component.Files       = ParseFiles(element);
+    component.Name           = GetAttributeText(element, "displayName");
+    component.UniqueName     = GetAttributeText(element, "unique");
+    component.Description    = GetAttributeText(element, "description");
+    component.DefaultChecked = GetAttributeBool(element, "defaultChecked");
+    component.Files          = ParseFiles(element);
 
     return component;
 }
