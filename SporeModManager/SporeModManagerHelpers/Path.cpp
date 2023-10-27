@@ -31,7 +31,7 @@ static std::filesystem::path l_CoreSporeDataPath;
 // Helper Functions
 //
 
-std::filesystem::path MakeAbsolutePath(std::filesystem::path& path)
+std::filesystem::path MakeAbsolutePath(std::filesystem::path path)
 {
     std::filesystem::path fullPath;
 
