@@ -108,6 +108,12 @@ namespace SporeModManagerHelpers
                 std::vector<SporeModFile> Files;
             };
 
+            struct SporeModInfoCompatFile
+            {
+                std::vector<SporeModFile> RequiredFiles;
+                std::vector<SporeModFile> Files;
+            };
+
             struct SporeModInfo
             {
                 std::string Name;
@@ -123,8 +129,9 @@ namespace SporeModManagerHelpers
                 FileVersion::FileVersionInfo MinimumModAPILibVersion;
 
                 std::vector<SporeModInfoComponentGroup> ComponentGroups;
-                std::vector<SporeModInfoComponent> Components;
-                std::vector<SporeModInfoPrerequisite> Prerequisites;
+                std::vector<SporeModInfoComponent>      Components;
+                std::vector<SporeModInfoPrerequisite>   Prerequisites;
+                std::vector<SporeModInfoCompatFile>     CompatFiles;
             };
 
             struct InstalledSporeMod

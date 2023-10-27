@@ -126,15 +126,18 @@ static tinyxml2::XMLElement* FindElement(tinyxml2::XMLElement* rootElement, std:
     return nullptr;
 }
 
-static std::vector<SporeMod::Xml::SporeModFile> ParseFiles(tinyxml2::XMLElement* element)
+static std::vector<SporeMod::Xml::SporeModFile> ParseFiles(tinyxml2::XMLElement* element, bool parseCompatFile = false)
 {
     std::vector<SporeMod::Xml::SporeModFile> files;
 
     std::vector<std::string> installLocations;
     std::vector<std::string> installFiles;
 
-    installLocations = String::Split(GetAttributeText(element, "game"), '?');
-    installFiles = String::Split(GetElementText(element), '?');
+    installLocations = String::Split(GetAttributeText(element, (parseCompatFile ? "compatTargetGame" : "game")), '?');
+    installFiles     = String::Split((parseCompatFile ? 
+                                        GetAttributeText(element, "compatTargetFileName") : 
+                                        GetElementText(element)), 
+                                     '?');
 
     for (size_t i = 0; i < installFiles.size(); i++)
     {
@@ -175,7 +178,7 @@ static SporeMod::Xml::SporeModInfoComponentGroup ParseComponentGroupElement(tiny
     tinyxml2::XMLElement* xmlElement;
     std::string xmlElementName;
 
-    componentGroup.Name = GetAttributeText(element, "displayName");
+    componentGroup.Name       = GetAttributeText(element, "displayName");
     componentGroup.UniqueName = GetAttributeText(element, "unique");
     
     xmlElement = element->FirstChildElement();
@@ -201,6 +204,16 @@ static SporeMod::Xml::SporeModInfoPrerequisite ParsePrerequisiteElement(tinyxml2
     prerequisite.Files = ParseFiles(element);
 
     return prerequisite;
+}
+
+static SporeMod::Xml::SporeModInfoCompatFile ParseCompatFileElement(tinyxml2::XMLElement* element)
+{
+    SporeMod::Xml::SporeModInfoCompatFile compatFile;
+
+    compatFile.RequiredFiles = ParseFiles(element, true);
+    compatFile.Files         = ParseFiles(element);
+
+    return compatFile;
 }
 
 static std::vector<SporeMod::Xml::SporeModFile> ParseInstalledSporeModFilesElement(tinyxml2::XMLElement* element)
@@ -332,6 +345,10 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
         else if (xmlElementName == "prerequisite")
         {
             sporeModInfo.Prerequisites.push_back(ParsePrerequisiteElement(xmlElement));
+        }
+        else if (xmlElementName == "compatFile")
+        {
+            sporeModInfo.CompatFiles.push_back(ParseCompatFileElement(xmlElement));
         }
 
         xmlElement = xmlElement->NextSiblingElement();

@@ -228,6 +228,29 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
         }
     }
 
+    for (const auto& compatFile : sporeModInfo.CompatFiles)
+    {
+        bool installFiles = true;
+
+        for (const auto& requiredFile : compatFile.RequiredFiles)
+        {
+            std::filesystem::path requiredFilePath = Path::GetFullInstallPath(requiredFile.InstallLocation, requiredFile.FileName);
+            if (!std::filesystem::is_regular_file(requiredFilePath))
+            {
+                installFiles = false;
+                break;
+            }
+        }
+
+        if (installFiles)
+        {
+            for (const auto& file : compatFile.Files)
+            {
+                installedSporeMod.InstalledFiles.push_back(file);
+            }
+        }
+    }
+
     // file collision detection
     if (CheckIfOtherModContainsFiles(installedSporeMod.InstalledFiles))
     {
@@ -276,7 +299,7 @@ bool SporeMod::InstallPackage(std::filesystem::path path)
     installedModFile.FileName = path.filename();
     installedModFile.InstallLocation = InstallLocation::GalacticAdventuresData;
 
-    installedSporeMod.Name = baseName;
+    installedSporeMod.Name       = baseName;
     installedSporeMod.UniqueName = baseName;
     installedSporeMod.InstalledFiles.push_back(installedModFile);
 
