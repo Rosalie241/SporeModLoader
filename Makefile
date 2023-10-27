@@ -4,6 +4,7 @@
 THIRDPARTY_DIR := 3rdParty
 BINARY_DIR     := bin
 SOURCE_DIR     := SporeModManager
+EXE_FILE       := SporeModManager
 VERBOSE        := 0
 
 PKG_CONFIG := pkg-config
@@ -60,7 +61,7 @@ endif
 	@echo "CXX $<"
 	$(QUIET)$(CXX) -c $< -o $@ $(CXXFLAGS)
 
-all: $(BINARY_DIR)/SporeModManager
+all: $(BINARY_DIR)/$(EXE_FILE)
 
 $(BINARY_DIR):
 	$(QUIET)mkdir -p $@
@@ -69,9 +70,11 @@ $(THIRDPARTY_DIR)/zlib/zconf.h:
 	@echo "GEN $@"
 	$(QUIET)cp $@.in $@
 
-$(BINARY_DIR)/SporeModManager: $(BINARY_DIR) $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
+$(BINARY_DIR)/$(EXE_FILE): $(BINARY_DIR) $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
 	@echo "LD  $@"
 	$(QUIET)$(CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS)
 
 clean:
-	rm -rf $(BINARY_DIR) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) $(THIRDPARTY_HEADERS)
+	rm -f $(BINARY_DIR)/$(EXE_FILE) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) $(THIRDPARTY_HEADERS)
+
+.PHONY: all clean
