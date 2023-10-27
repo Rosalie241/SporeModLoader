@@ -283,6 +283,28 @@ bool SporeMod::Xml::ParseSporeModInfo(std::vector<char> buffer, SporeModInfo& sp
     sporeModInfo.CausesSaveDataDependency = GetAttributeBool(xmlElement, "causesSaveDataDependency");
     sporeModInfo.HasCustomInstaller       = GetAttributeBool(xmlElement, "hasCustomInstaller");
 
+    xmlAttributeText = GetAttributeText(xmlElement, "installerSystemVersion");
+    if (!xmlAttributeText.empty())
+    {
+        ret = FileVersion::ParseString(xmlAttributeText, sporeModInfo.InstallerVersion);
+        if (!ret)
+        {
+            std::cerr << "FileVersion::ParseString() Failed!" << std::endl;
+            return false;
+        }
+        else
+        {
+            FileVersion::FileVersionInfo maxSupportedInstallerVersion;
+            FileVersion::ParseString("1.0.1.2", maxSupportedInstallerVersion);
+
+            if (sporeModInfo.InstallerVersion > maxSupportedInstallerVersion)
+            {
+                std::cerr << "installerSystemVersion \"" << sporeModInfo.InstallerVersion.string() << "\" is unsupported!" << std::endl;
+                return false;
+            }
+        }
+    }
+
     xmlAttributeText = GetAttributeText(xmlElement, "dllsBuild");
     if (!xmlAttributeText.empty())
     {

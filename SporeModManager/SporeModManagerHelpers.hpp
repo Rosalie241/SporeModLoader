@@ -114,11 +114,12 @@ namespace SporeModManagerHelpers
                 std::string UniqueName;
                 std::string Description;
 
-                bool IsExperimental;
-                bool RequiresGalaxyReset;
-                bool CausesSaveDataDependency;
-                bool HasCustomInstaller;
+                bool IsExperimental           = false;
+                bool RequiresGalaxyReset      = false;
+                bool CausesSaveDataDependency = false;
+                bool HasCustomInstaller       = false;
 
+                FileVersion::FileVersionInfo InstallerVersion;
                 FileVersion::FileVersionInfo MinimumModAPILibVersion;
 
                 std::vector<SporeModInfoComponentGroup> ComponentGroups;
