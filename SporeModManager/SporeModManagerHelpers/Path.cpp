@@ -123,9 +123,9 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
     }
 
     if (GetModuleFileNameW(nullptr, currentExecutablePathBuf, MAX_PATH) == 0)
-    {
+    { // fallback to current path
         std::cerr << "GetModuleFileNameW() Failed!" << std::endl;
-        return currentExecutablePath;
+        return std::filesystem::current_path();
     }
 
     currentExecutablePath = currentExecutablePathBuf;
@@ -137,7 +137,8 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
         return std::filesystem::canonical("/proc/self/exe").parent_path();
     }
     catch (...)
-    { // fail silently and fallback to current path
+    { // fallback to current path
+        std::cerr << "std::filesystem::canonical(\"/proc/self/exe\") Failed!" << std::endl;
         return std::filesystem::current_path();
     }
 #endif // _WIN32
