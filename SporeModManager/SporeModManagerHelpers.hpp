@@ -69,9 +69,9 @@ namespace SporeModManagerHelpers
     {
         enum class InstallLocation
         {
-            ModLibs = 0,
+            ModLibs                = 0,
             GalacticAdventuresData = 1,
-            CoreSporeData = 2
+            CoreSporeData          = 2
         };
 
         namespace Xml

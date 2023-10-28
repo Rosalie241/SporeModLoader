@@ -51,7 +51,7 @@ bool FileVersion::GetCoreLibFileVersionInfo(FileVersionInfo& fileVersionInfo)
         return false;
     }
 
-    cachedFileVersionInfo = fileVersionInfo;
+    cachedFileVersionInfo    = fileVersionInfo;
     hasCachedFileVersionInfo = true;
     return true;
 }
@@ -142,7 +142,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
     }
 
     std::vector<char> buffer((uint32_t)fileStreamLength);
-    fileStream.read(reinterpret_cast<char*>(buffer.data()), fileStreamLength);
+    fileStream.read(buffer.data(), fileStreamLength);
     
     if (fileStream.fail())
     {
@@ -170,8 +170,8 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
     // construct version string
     while (bufferIter != buffer.end())
     {
-        char byte = static_cast<char>(*bufferIter);
-        char nextByte = static_cast<char>(*(bufferIter + 1));
+        char byte     = *bufferIter;
+        char nextByte = *(bufferIter + 1);
 
         if (byte == '\0' && nextByte == '\0')
         {
