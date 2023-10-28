@@ -32,18 +32,15 @@ void UI::AskUserInput(std::string text, int& number, std::optional<int> defaultN
         try
         {
             number = std::stoi(inputLine);
-
             if (number < min || number > max)
             {
                 throw std::exception();
             }
-
             break;
         }
         catch (...)
         {
             std::cerr << "invalid input" << std::endl;
-            continue;
         }
     } while (true);
 }
