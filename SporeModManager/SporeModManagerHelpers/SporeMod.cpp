@@ -155,8 +155,8 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
         std::string Text;
     } warningOptions[] =
     {
-        { sporeModInfo.IsExperimental, "This mod is experimental" },
-        { sporeModInfo.RequiresGalaxyReset, "This mod requires a galaxy reset" },
+        { sporeModInfo.IsExperimental,           "This mod is experimental" },
+        { sporeModInfo.RequiresGalaxyReset,      "This mod requires a galaxy reset" },
         { sporeModInfo.CausesSaveDataDependency, "This mod causes save data dependency" }
     };
 
@@ -250,7 +250,7 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
             uiText += "): ";
         }
 
-        UI::AskUserInput(uiText, ',', componentIds, defaultComponentIds, 0, componentsSize);
+        UI::AskUserInput(uiText, ',', componentIds, defaultComponentIds, 0, componentsSize - 1);
 
         for (const auto& componentId : componentIds)
         {
