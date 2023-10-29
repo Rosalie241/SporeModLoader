@@ -167,19 +167,7 @@ std::filesystem::path Path::GetFullInstallPath(SporeMod::InstallLocation install
 
 std::filesystem::path Path::GetConfigFilePath(void)
 {
-    std::filesystem::path configFileName;
-    static std::filesystem::path configFilePath;
-
-    configFileName = "SporeModManager.xml";
-
-    if (!configFilePath.empty())
-    {
-        return configFilePath;
-    }
-
-    configFilePath = Path::Combine({ Path::GetCurrentExecutablePath(), configFileName });
-
-    return configFilePath;
+    return Path::Combine({ Path::GetCurrentExecutablePath(), "SporeModManager.xml" });;
 }
 
 std::filesystem::path Path::GetCoreLibsPath(void)
