@@ -33,6 +33,10 @@ OBJECT_FILES = \
 	$(SOURCE_DIR)/SporeModManager.o                    \
 	$(SOURCE_DIR)/main.o
 
+HEADER_FILES = \
+	$(SOURCE_DIR)/SporeModManager.hpp \
+	$(SOURCE_DIR)/SporeModManagerHelpers.hpp
+
 
 THIRDPARTY_OBJECT_FILES = \
 	$(THIRDPARTY_DIR)/tinyxml2/tinyxml2.o \
@@ -45,8 +49,9 @@ THIRDPARTY_OBJECT_FILES = \
 	$(THIRDPARTY_DIR)/zlib/contrib/minizip/unzip.o \
 	$(THIRDPARTY_DIR)/zlib/contrib/minizip/ioapi.o
 
-THIRDPARTY_HEADERS = \
+THIRDPARTY_HEADER_FILES = \
 	$(THIRDPARTY_DIR)/zlib/zconf.h
+
 
 ifeq ($(VERBOSE), 0)
 	QUIET := @
@@ -54,11 +59,11 @@ else
 	QUIET :=
 endif
 
-%.o: %.c $(THIRDPARTY_HEADERS)
+%.o: %.c $(THIRDPARTY_HEADER_FILES)
 	@echo "CC  $<"
 	$(QUIET)$(CC) -c $< -o $@ $(CFLAGS)
 
-%.o: %.cpp $(THIRDPARTY_HEADERS)
+%.o: %.cpp $(HEADER_FILES) $(THIRDPARTY_HEADER_FILES)
 	@echo "CXX $<"
 	$(QUIET)$(CXX) -c $< -o $@ $(CXXFLAGS)
 
@@ -76,6 +81,6 @@ $(BINARY_DIR)/$(EXE_FILE): $(BINARY_DIR) $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FIL
 	$(QUIET)$(CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS)
 
 clean:
-	rm -f $(BINARY_DIR)/$(EXE_FILE) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) $(THIRDPARTY_HEADERS)
+	rm -f $(BINARY_DIR)/$(EXE_FILE) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) $(THIRDPARTY_HEADER_FILES)
 
 .PHONY: all clean
