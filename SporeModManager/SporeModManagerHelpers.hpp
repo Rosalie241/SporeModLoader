@@ -199,6 +199,11 @@ namespace SporeModManagerHelpers
     namespace Path
     {
         /// <summary>
+        ///     Sets directories for current session
+        /// </summary>>
+        void SetDirectories(std::filesystem::path coreLibsPath, std::filesystem::path modLibsPath, std::filesystem::path galacticAdventuresDataPath, std::filesystem::path coreSporeDataPath);
+
+        /// <summary>
         ///     Returns wether all required paths exist
         /// </summary>
         bool CheckIfPathsExist(void);
@@ -231,6 +236,11 @@ namespace SporeModManagerHelpers
 
     namespace UI
     {
+        /// <summary>
+        ///     Sets no input mode
+        /// </summary>
+        void SetNoInputMode(bool value);
+
         /// <summary>
         ///     Asks user for an integer
         /// </summary>

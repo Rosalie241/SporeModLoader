@@ -14,6 +14,21 @@
 
 using namespace SporeModManagerHelpers;
 
+//
+// Local Variables
+//
+
+static bool l_NoInputMode = false;
+
+//
+// Exported Functions
+//
+
+void UI::SetNoInputMode(bool value)
+{
+    l_NoInputMode = value;
+}
+
 void UI::AskUserInput(std::string text, int& number, std::optional<int> defaultNumber, int min, int max)
 {
     std::string inputLine;
@@ -21,6 +36,13 @@ void UI::AskUserInput(std::string text, int& number, std::optional<int> defaultN
     do
     {
         std::cout << text;
+
+        if (l_NoInputMode)
+        {
+            std::cout << std::endl;
+            number = defaultNumber.has_value() ? defaultNumber.value() : 0;
+            return;
+        }
 
         std::getline(std::cin, inputLine);
         if (inputLine.empty() && defaultNumber.has_value())
@@ -57,6 +79,13 @@ void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& number
         numbers.clear();
 
         std::cout << text;
+
+        if (l_NoInputMode)
+        {
+            std::cout << std::endl;
+            numbers = defaultNumbers;
+            return;
+        }
 
         std::getline(std::cin, inputLine);
         if (inputLine.empty())
@@ -102,6 +131,13 @@ void UI::AskUserInput(std::string text, bool& boolValue, bool defaultValue)
     do
     {
         std::cout << text;
+
+        if (l_NoInputMode)
+        {
+            std::cout << std::endl;
+            boolValue = true;
+            return;
+        }
 
         std::getline(std::cin, inputLine);
         inputLine = String::Lowercase(inputLine);

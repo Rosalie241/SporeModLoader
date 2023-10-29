@@ -60,18 +60,44 @@ std::filesystem::path MakeAbsolutePath(std::filesystem::path path)
 // Exported Functions
 //
 
+void Path::SetDirectories(std::filesystem::path coreLibsPath, std::filesystem::path modLibsPath, std::filesystem::path galacticAdventuresDataPath, std::filesystem::path coreSporeDataPath)
+{
+    l_CoreLibsPath               = coreLibsPath;
+    l_ModLibsPath                = modLibsPath;
+    l_GalacticAdventuresDataPath = galacticAdventuresDataPath;
+    l_CoreSporeDataPath          = coreSporeDataPath;
+}
+
 bool Path::CheckIfPathsExist(void)
 {
-    if (!SporeMod::Xml::GetDirectories(l_CoreLibsPath, l_ModLibsPath, l_GalacticAdventuresDataPath, l_CoreSporeDataPath))
+    std::filesystem::path coreLibsPath;
+    std::filesystem::path modLibsPath;
+    std::filesystem::path galacticAdventuresDataPath;
+    std::filesystem::path coreSporeDataPath;
+
+    if (!SporeMod::Xml::GetDirectories(coreLibsPath, modLibsPath, galacticAdventuresDataPath, coreSporeDataPath))
     {
         std::cerr << "SporeMod::Xml::GetDirectories() Failed!" << std::endl;
         return false;
     }
 
-    l_CoreLibsPath               = MakeAbsolutePath(l_CoreLibsPath);
-    l_ModLibsPath                = MakeAbsolutePath(l_ModLibsPath);
-    l_GalacticAdventuresDataPath = MakeAbsolutePath(l_GalacticAdventuresDataPath);
-    l_CoreSporeDataPath          = MakeAbsolutePath(l_CoreSporeDataPath);
+    if (l_CoreLibsPath.empty())
+    {
+        l_CoreLibsPath = MakeAbsolutePath(coreLibsPath);
+    }
+    if (l_ModLibsPath.empty())
+    {
+        l_ModLibsPath = MakeAbsolutePath(modLibsPath);
+    }
+    if (l_GalacticAdventuresDataPath.empty())
+    {
+        l_GalacticAdventuresDataPath = MakeAbsolutePath(galacticAdventuresDataPath);
+    }
+    if (l_CoreSporeDataPath.empty())
+    {
+        l_CoreSporeDataPath = MakeAbsolutePath(coreSporeDataPath);
+    }
+
 
     for (const auto& path : { l_CoreLibsPath, l_ModLibsPath, l_GalacticAdventuresDataPath, l_CoreSporeDataPath })
     {

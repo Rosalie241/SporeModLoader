@@ -10,23 +10,73 @@
 #include "SporeModManager.hpp"
 #include "SporeModManagerHelpers.hpp"
 
+#include <algorithm>
+#include <filesystem>
 #include <iostream>
 #include <cstring>
 
 using namespace SporeModManagerHelpers;
 
+//
+// Local Defines
+//
+
+#ifdef _WIN32
+#define arg_str(str) L##str
+#define arg_str_type std::wstring
+#else
+#define arg_str(str) str
+#define arg_str_type std::string
+#endif // _WIN32
+
+//
+// Local Structures
+//
+
+struct option_argument
+{
+    arg_str_type shortArgument;
+    arg_str_type longArgument;
+    bool&        value;
+};
+
+struct path_argument
+{
+    arg_str_type           argument;
+    std::filesystem::path& path;
+};
+
+//
+// Local Functions
+//
+
 static void ShowUsage()
 {
-    std::cout << "Usage: SporeModManager [OPTION]" << std::endl
+    std::cout << "SporeModManager is a commandline mod manager for Spore" << std::endl
               << std::endl
-              << "Options:" << std::endl
+              << "Usage: SporeModManager [OPTION] [COMMAND]" << std::endl
+              << std::endl
+              << "Commands:" << std::endl
               << "  list-installed      lists installed mod(s) with id(s)" << std::endl
               << "  install file(s)     installs file(s)" << std::endl
               << "  update file(s)      updates mod(s) using file(s)" << std::endl
               << "  uninstall id(s)     uninstalls mod with id(s)" << std::endl
               << std::endl
-              << "  help                display this help and exit" << std::endl;
+              << "  help                display this help and exit" << std::endl
+              << std::endl
+              << "Options: " << std::endl
+              << "  -n, --no-input      disables user input during installation of mods" << std::endl
+              << "  -u, --update-needed updates mod when mod is already installed" << std::endl
+              << "      --corelibs-path sets corelibs path" << std::endl
+              << "      --modlibs-path  sets modlibs path"  << std::endl
+              << "      --data-path     sets data path"     << std::endl
+              << "      --ep1-path      sets ep1 data path" << std::endl
+              << std::endl;
 }
+
+//
+// Exported Functions
+//
 
 #ifdef _WIN32
 int wmain(int argc, wchar_t** argv)
@@ -34,36 +84,86 @@ int wmain(int argc, wchar_t** argv)
 int main(int argc, char** argv)
 #endif // _WIN32
 {
-    if (!Path::CheckIfPathsExist())
+    std::vector<arg_str_type> args(argv, argv + argc);
+
+    // parse options
+    bool hasNoInputOption = false;
+    bool hasUpdateOption  = false;
+    std::filesystem::path coreLibsPath;
+    std::filesystem::path modLibsPath;
+    std::filesystem::path dataPath;
+    std::filesystem::path ep1Path;
+
+    struct option_argument optionArgs[] =
     {
-        return 1;
+        { arg_str("-n"), arg_str("--no-input"),      hasNoInputOption },
+        { arg_str("-u"), arg_str("--update-needed"), hasUpdateOption }
+    };
+
+    struct path_argument pathArgs[] =
+    {
+        { arg_str("--corelibs-path"), coreLibsPath },
+        { arg_str("--modlibs-path"),  modLibsPath },
+        { arg_str("--data-path"),     dataPath },
+        { arg_str("--ep1-path"),      ep1Path },
+    };
+
+    for (size_t i = 0; i < args.size(); i++)
+    {
+        arg_str_type arg = args.at(i);
+
+        for (const auto& optionArg : optionArgs)
+        {
+            if (arg == optionArg.shortArgument ||
+                arg == optionArg.longArgument)
+            {
+                optionArg.value = true;
+                args.erase(args.begin() + i);
+                i -= 1;
+            }
+        }
+
+        for (const auto& pathArg : pathArgs)
+        {
+            if (arg == pathArg.argument)
+            {
+                if (i != (args.size() - 1))
+                {
+                    pathArg.path = args.at(i + 1);
+                    if (!std::filesystem::is_directory(pathArg.path))
+                    {
+                        ShowUsage();
+                        return 1;
+                    }
+                }
+                args.erase(args.begin() + i + 1);
+                args.erase(args.begin() + i);
+                i -= 1;
+            }
+        }
     }
 
-    if (argc < 2)
+    // apply options
+    UI::SetNoInputMode(hasNoInputOption);
+    Path::SetDirectories(coreLibsPath, modLibsPath, ep1Path, dataPath);
+
+    // ensure we have a command
+    if (args.size() < 2)
     {
         ShowUsage();
         return 1;
     }
 
-#ifdef _WIN32
-    // we know that wstring -> string conversion
-    // will possibly lose data, but that doesn't 
-    // matter for the first argument, so we can
-    // safely disable the warning
-#pragma warning(disable : 4244)
-    std::wstring waction = std::wstring(argv[1]);
-    std::string  action  = std::string(waction.begin(), waction.end());
-#else
-    std::string action = std::string(argv[1]);
-#endif // _WIN32
-    if (action == "help")
+    // parse commands
+    arg_str_type command = args.at(1);
+    if (command == arg_str("help"))
     {
         ShowUsage();
         return 0;
     }
-    else if (action == "list-installed")
+    else if (command == arg_str("list-installed"))
     {
-        if (argc != 2)
+        if (args.size() != 2)
         {
             ShowUsage();
             return 1;
@@ -72,41 +172,66 @@ int main(int argc, char** argv)
         SporeModManager::ListInstalledMods();
         return 0;
     }
-    else if (action == "install")
+    else if (command == arg_str("install"))
     {
-        if (argc < 3)
+        if (!Path::CheckIfPathsExist())
         {
-            ShowUsage();
             return 1;
         }
-        
-        for (int i = 2; i < argc; i++)
-        {
-            if (!SporeModManager::InstallMod(argv[i]))
-            {
-                return 1;
-            }
-        }
-    }
-    else if (action == "update")
-    {
-        if (argc < 3)
+
+        if (args.size() < 3)
         {
             ShowUsage();
             return 1;
         }
 
-        for (int i = 2; i < argc; i++)
+        for (size_t i = 2; i < args.size(); i++)
         {
-            if (!SporeModManager::UpdateMod(argv[i]))
+            if (hasUpdateOption)
+            {
+                if (!SporeModManager::UpdateMod(args[i], false))
+                {
+                    return 1;
+                }
+            }
+            else
+            {
+                if (!SporeModManager::InstallMod(args[i]))
+                {
+                    return 1;
+                }
+            }
+        }
+    }
+    else if (command == arg_str("update"))
+    {
+        if (!Path::CheckIfPathsExist())
+        {
+            return 1;
+        }
+
+        if (args.size() < 3)
+        {
+            ShowUsage();
+            return 1;
+        }
+
+        for (size_t i = 2; i < args.size(); i++)
+        {
+            if (!SporeModManager::UpdateMod(args[i]))
             {
                 return 1;
             }
         }
     }
-    else if (action == "uninstall")
+    else if (command == arg_str("uninstall"))
     {
-        if (argc < 3)
+        if (!Path::CheckIfPathsExist())
+        {
+            return 1;
+        }
+
+        if (args.size() < 3)
         {
             ShowUsage();
             return 1;
@@ -114,11 +239,11 @@ int main(int argc, char** argv)
 
         std::vector<int> ids;
 
-        for (int i = 2; i < argc; i++)
+        for (size_t i = 2; i < args.size(); i++)
         {
             try
             {
-                ids.push_back(std::stoi(argv[i]));
+                ids.push_back(std::stoi(args[i]));
             }
             catch (...)
             {

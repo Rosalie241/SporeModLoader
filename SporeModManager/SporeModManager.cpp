@@ -66,7 +66,7 @@ bool SporeModManager::InstallMod(std::filesystem::path path)
     return true;
 }
 
-bool SporeModManager::UpdateMod(std::filesystem::path path)
+bool SporeModManager::UpdateMod(std::filesystem::path path, bool requiresInstalled)
 {
     Zip::ZipFile zipFile;
     std::vector<char> modInfoFileBuffer;
@@ -126,12 +126,22 @@ bool SporeModManager::UpdateMod(std::filesystem::path path)
 
     if (!SporeMod::FindInstalledMod(installedSporeModUniqueName, installedSporeModId))
     {
-        std::cerr << "No mod found with the same unique name" << std::endl
-                  << "Did you mean install?" << std::endl;
-        return false;
+        if (requiresInstalled)
+        {
+            std::cerr << "No mod found with the same unique name" << std::endl
+                      << "Did you mean install?" << std::endl;
+            return false;
+        }
+    }
+    else
+    {
+        if (!UninstallMods({ installedSporeModId }))
+        {
+            return false;
+        }
     }
 
-    return UninstallMods({ installedSporeModId }) && InstallMod(path);
+    return InstallMod(path);
 }
 
 bool SporeModManager::UninstallMods(std::vector<int> ids)
