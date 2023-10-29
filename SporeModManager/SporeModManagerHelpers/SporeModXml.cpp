@@ -313,7 +313,7 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
 
             if (sporeModInfo.InstallerVersion > maxSupportedInstallerVersion)
             {
-                std::cerr << "installerSystemVersion \"" << sporeModInfo.InstallerVersion.string() << "\" is unsupported!" << std::endl;
+                std::cerr << "installerSystemVersion \"" << sporeModInfo.InstallerVersion.to_string() << "\" is unsupported!" << std::endl;
                 return false;
             }
         }

@@ -35,10 +35,10 @@ namespace SporeModManagerHelpers
                         Build == other.Build && Revision > other.Revision);
             }
 
-            std::string string(void)
-            {
+            std::string to_string(void) const
+            { 
                 std::string string;
-                string = std::to_string(Major) + ".";
+                string =  std::to_string(Major) + ".";
                 string += std::to_string(Minor) + ".";
                 string += std::to_string(Build) + ".";
                 string += std::to_string(Revision);

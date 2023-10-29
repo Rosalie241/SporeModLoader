@@ -68,8 +68,8 @@ bool FileVersion::CheckIfCoreLibMatchesVersion(FileVersionInfo& modFileVersionIn
 
     if (modFileVersionInfo > coreLibFileVersionInfo)
     {
-        std::cerr << "\"" << modName << "\" requires newer modapi dll (\"" << modFileVersionInfo.string() <<
-            "\") than what's currently installed (\"" << coreLibFileVersionInfo.string() << "\")" << std::endl;
+        std::cerr << "\"" << modName << "\" requires newer modapi dll (\"" << modFileVersionInfo.to_string() <<
+            "\") than what's currently installed (\"" << coreLibFileVersionInfo.to_string() << "\")" << std::endl;
         return false;
     }
 
