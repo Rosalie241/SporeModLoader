@@ -29,8 +29,10 @@ namespace SporeModManagerHelpers
             {
                 return (Major > other.Major) ||
                     (Major == other.Major && Minor > other.Minor) ||
-                    (Minor == other.Minor && Build > other.Build) ||
-                    (Build == other.Build && Revision > other.Revision);
+                    (Major == other.Major && Minor == other.Minor &&
+                        Build > other.Build) ||
+                    (Major == other.Major && Minor == other.Minor &&
+                        Build == other.Build && Revision > other.Revision);
             }
 
             std::string string(void)
