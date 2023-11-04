@@ -10,19 +10,18 @@ VERBOSE        := 0
 PKG_CONFIG := pkg-config
 CC         := gcc
 CXX        := g++
-CFLAGS     := -Os -flto                      \
+CFLAGS     := \
 				-I$(THIRDPARTY_DIR)/zlib     \
 				-I$(THIRDPARTY_DIR)/zlib/contrib/minizip
 CXXFLAGS   := -std=c++17                     \
-				-Os -flto                    \
 				-I$(SOURCE_DIR)              \
 				-I$(THIRDPARTY_DIR)/tinyxml2 \
 				-I$(THIRDPARTY_DIR)/zlib     \
 				-I$(THIRDPARTY_DIR)/zlib/contrib/minizip
-
+OPTFLAGS   := -Os -flto
 LDFLAGS    := -flto -s
 
-OBJECT_FILES = \
+OBJECT_FILES := \
 	$(SOURCE_DIR)/SporeModManagerHelpers/FileVersion.o \
 	$(SOURCE_DIR)/SporeModManagerHelpers/Path.o        \
 	$(SOURCE_DIR)/SporeModManagerHelpers/SporeMod.o    \
@@ -33,12 +32,12 @@ OBJECT_FILES = \
 	$(SOURCE_DIR)/SporeModManager.o                    \
 	$(SOURCE_DIR)/main.o
 
-HEADER_FILES = \
+HEADER_FILES := \
 	$(SOURCE_DIR)/SporeModManager.hpp \
 	$(SOURCE_DIR)/SporeModManagerHelpers.hpp
 
 
-THIRDPARTY_OBJECT_FILES = \
+THIRDPARTY_OBJECT_FILES := \
 	$(THIRDPARTY_DIR)/tinyxml2/tinyxml2.o \
 	$(THIRDPARTY_DIR)/zlib/adler32.o  \
 	$(THIRDPARTY_DIR)/zlib/crc32.o    \
@@ -49,7 +48,7 @@ THIRDPARTY_OBJECT_FILES = \
 	$(THIRDPARTY_DIR)/zlib/contrib/minizip/unzip.o \
 	$(THIRDPARTY_DIR)/zlib/contrib/minizip/ioapi.o
 
-THIRDPARTY_HEADER_FILES = \
+THIRDPARTY_HEADER_FILES := \
 	$(THIRDPARTY_DIR)/zlib/zconf.h
 
 
@@ -61,11 +60,11 @@ endif
 
 %.o: %.c $(THIRDPARTY_HEADER_FILES)
 	@echo "CC  $<"
-	$(QUIET)$(CC) -c $< -o $@ $(CFLAGS)
+	$(QUIET)$(CC) -c $< -o $@ $(OPTFLAGS) $(CFLAGS)
 
 %.o: %.cpp $(HEADER_FILES) $(THIRDPARTY_HEADER_FILES)
 	@echo "CXX $<"
-	$(QUIET)$(CXX) -c $< -o $@ $(CXXFLAGS)
+	$(QUIET)$(CXX) -c $< -o $@ $(OPTFLAGS) $(CXXFLAGS)
 
 all: $(BINARY_DIR)/$(EXE_FILE)
 
