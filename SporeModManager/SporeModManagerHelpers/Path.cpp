@@ -28,35 +28,6 @@ static std::filesystem::path l_GalacticAdventuresDataPath;
 static std::filesystem::path l_CoreSporeDataPath;
 
 //
-// Helper Functions
-//
-
-std::filesystem::path MakeAbsolutePath(std::filesystem::path path)
-{
-    std::filesystem::path fullPath;
-
-    if (path.is_absolute())
-    {
-        return path;
-    }
-
-    fullPath = Path::Combine({ Path::GetCurrentExecutablePath(), path });
-
-    try
-    {
-        fullPath = std::filesystem::canonical(fullPath);
-    }
-    catch (...)
-    {
-        // just return the original path,
-        // because the directory probably doesn't exist
-        return path;
-    }
-
-    return fullPath;
-}
-
-//
 // Exported Functions
 //
 
@@ -83,19 +54,19 @@ bool Path::CheckIfPathsExist(void)
 
     if (l_CoreLibsPath.empty())
     {
-        l_CoreLibsPath = MakeAbsolutePath(coreLibsPath);
+        l_CoreLibsPath = GetAbsolutePath(coreLibsPath);
     }
     if (l_ModLibsPath.empty())
     {
-        l_ModLibsPath = MakeAbsolutePath(modLibsPath);
+        l_ModLibsPath = GetAbsolutePath(modLibsPath);
     }
     if (l_GalacticAdventuresDataPath.empty())
     {
-        l_GalacticAdventuresDataPath = MakeAbsolutePath(galacticAdventuresDataPath);
+        l_GalacticAdventuresDataPath = GetAbsolutePath(galacticAdventuresDataPath);
     }
     if (l_CoreSporeDataPath.empty())
     {
-        l_CoreSporeDataPath = MakeAbsolutePath(coreSporeDataPath);
+        l_CoreSporeDataPath = GetAbsolutePath(coreSporeDataPath);
     }
 
 
@@ -135,6 +106,34 @@ std::filesystem::path Path::Combine(std::vector<std::filesystem::path> paths)
     }
 
     return combinedPath;
+}
+
+std::filesystem::path Path::GetAbsolutePath(std::filesystem::path path)
+{
+    std::filesystem::path fullPath = path;
+
+    if (fullPath.is_absolute())
+    {
+        return fullPath;
+    }
+
+    if (!std::filesystem::is_directory(fullPath))
+    {
+        fullPath = Path::Combine({ Path::GetCurrentExecutablePath(), path });
+    }
+
+    try
+    {
+        fullPath = std::filesystem::canonical(fullPath);
+    }
+    catch (...)
+    {
+        // just return the original path,
+        // because the directory probably doesn't exist
+        return path;
+    }
+
+    return fullPath;
 }
 
 std::filesystem::path Path::GetCurrentExecutablePath(void)

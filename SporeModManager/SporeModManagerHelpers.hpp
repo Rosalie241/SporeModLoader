@@ -214,6 +214,11 @@ namespace SporeModManagerHelpers
         std::filesystem::path Combine(std::vector<std::filesystem::path> paths);
 
         /// <summary>
+        ///     Returns the absolute path of path
+        /// </summary>
+        std::filesystem::path GetAbsolutePath(std::filesystem::path path);
+
+        /// <summary>
         ///     Retrieves full installation path
         /// </summary>
         std::filesystem::path GetFullInstallPath(SporeMod::InstallLocation installLocation, std::filesystem::path path);

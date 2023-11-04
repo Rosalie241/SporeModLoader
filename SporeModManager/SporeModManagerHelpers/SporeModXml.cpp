@@ -436,19 +436,77 @@ bool SporeMod::Xml::SaveDirectories(std::filesystem::path coreLibsPath, std::fil
     std::filesystem::path configFilePath;
     tinyxml2::XMLDocument xmlDocument;
     tinyxml2::XMLElement* rootXmlElement;
-    tinyxml2::XMLElement* directoriesElement;
+    tinyxml2::XMLElement* xmlElement;
+    tinyxml2::XMLElement* childXmlElement;
+    tinyxml2::XMLError    error;
+    std::string xmlElementName;
+
+    // do nothing when we've been given empty paths
+    if (coreLibsPath.empty() && modLibsPath.empty() &&
+        galacticAdventuresDataPath.empty() && coreSporeDataPath.empty())
+    {
+        return true;
+    }
 
     configFilePath = Path::GetConfigFilePath();
 
-    rootXmlElement = xmlDocument.NewElement("SporeModManager");
-    xmlDocument.InsertFirstChild(rootXmlElement);
+    error = xmlDocument.LoadFile(configFilePath.string().c_str());
+    if (error != tinyxml2::XMLError::XML_SUCCESS)
+    { // config file doesn't exist
+        rootXmlElement = xmlDocument.NewElement("SporeModManager");
+        xmlDocument.InsertFirstChild(rootXmlElement);
 
-    directoriesElement = rootXmlElement->InsertNewChildElement("Directories");
-    directoriesElement->InsertNewChildElement("CoreLibsDirectory")->SetText(coreLibsPath.string().c_str());
-    directoriesElement->InsertNewChildElement("ModLibsDirectory")->SetText(modLibsPath.string().c_str());
-    directoriesElement->InsertNewChildElement("GalacticAdventuresDataDirectory")->SetText(galacticAdventuresDataPath.string().c_str());
-    directoriesElement->InsertNewChildElement("CoreSporeDataDirectory")->SetText(coreSporeDataPath.string().c_str());
+        xmlElement = rootXmlElement->InsertNewChildElement("Directories");
+        xmlElement->InsertNewChildElement("CoreLibsDirectory")->SetText(coreLibsPath.string().c_str());
+        xmlElement->InsertNewChildElement("ModLibsDirectory")->SetText(modLibsPath.string().c_str());
+        xmlElement->InsertNewChildElement("GalacticAdventuresDataDirectory")->SetText(galacticAdventuresDataPath.string().c_str());
+        xmlElement->InsertNewChildElement("CoreSporeDataDirectory")->SetText(coreSporeDataPath.string().c_str());
 
+        xmlDocument.SaveFile(configFilePath.string().c_str());
+        return true;
+    }
+    
+    xmlElement = xmlDocument.RootElement();
+    if (xmlElement == nullptr)
+    {
+        std::cerr << "XDocument.RootElement() Failed!" << std::endl;
+        return false;
+    }
+
+    xmlElement = xmlElement->FirstChildElement();
+    while (xmlElement != nullptr)
+    {
+        xmlElementName = GetElementName(xmlElement);
+        if (xmlElementName == "Directories")
+        {
+            childXmlElement = xmlElement->FirstChildElement();
+            while (childXmlElement != nullptr)
+            {
+                xmlElementName = GetElementName(childXmlElement);
+                if (xmlElementName == "CoreLibsDirectory" && !coreLibsPath.empty())
+                {
+                    childXmlElement->SetText(Path::GetAbsolutePath(coreLibsPath).string().c_str());
+                }
+                else if (xmlElementName == "ModLibsDirectory" && !modLibsPath.empty())
+                {
+                    childXmlElement->SetText(Path::GetAbsolutePath(modLibsPath).string().c_str());
+                }
+                else if (xmlElementName == "GalacticAdventuresDataDirectory" && !galacticAdventuresDataPath.empty())
+                {
+                    childXmlElement->SetText(Path::GetAbsolutePath(galacticAdventuresDataPath).string().c_str());
+                }
+                else if (xmlElementName == "CoreSporeDataDirectory" && !coreSporeDataPath.empty())
+                {
+                    childXmlElement->SetText(Path::GetAbsolutePath(coreSporeDataPath).string().c_str());
+                }
+
+                childXmlElement = childXmlElement->NextSiblingElement();
+            }
+        }
+
+        xmlElement = xmlElement->NextSiblingElement();
+    }
+    
     xmlDocument.SaveFile(configFilePath.string().c_str());
     return true;
 }

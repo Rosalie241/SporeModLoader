@@ -67,6 +67,7 @@ static void ShowUsage()
               << "Options: " << std::endl
               << "  -n, --no-input      disables user input during installation of mods" << std::endl
               << "  -u, --update-needed updates mod when mod is already installed" << std::endl
+              << "  -s, --save-paths    saves paths to the configuration file" << std::endl
               << "      --corelibs-path sets corelibs path" << std::endl
               << "      --modlibs-path  sets modlibs path"  << std::endl
               << "      --data-path     sets data path"     << std::endl
@@ -87,8 +88,9 @@ int main(int argc, char** argv)
     std::vector<arg_str_type> args(argv, argv + argc);
 
     // parse options
-    bool hasNoInputOption = false;
-    bool hasUpdateOption  = false;
+    bool hasNoInputOption   = false;
+    bool hasUpdateOption    = false;
+    bool hasSavePathsOption = false;
     std::filesystem::path coreLibsPath;
     std::filesystem::path modLibsPath;
     std::filesystem::path dataPath;
@@ -97,7 +99,8 @@ int main(int argc, char** argv)
     struct option_argument optionArgs[] =
     {
         { arg_str("-n"), arg_str("--no-input"),      hasNoInputOption },
-        { arg_str("-u"), arg_str("--update-needed"), hasUpdateOption }
+        { arg_str("-u"), arg_str("--update-needed"), hasUpdateOption },
+        { arg_str("-s"), arg_str("--save-paths"),    hasSavePathsOption },
     };
 
     struct path_argument pathArgs[] =
@@ -127,14 +130,16 @@ int main(int argc, char** argv)
         {
             if (arg == pathArg.argument)
             {
-                if (i != (args.size() - 1))
+                if (i == (args.size() - 1))
                 {
-                    pathArg.path = args.at(i + 1);
-                    if (!std::filesystem::is_directory(pathArg.path))
-                    {
-                        ShowUsage();
-                        return 1;
-                    }
+                    ShowUsage();
+                    return 1;
+                }
+                pathArg.path = args.at(i + 1);
+                if (!std::filesystem::is_directory(pathArg.path))
+                {
+                    ShowUsage();
+                    return 1;
                 }
                 args.erase(args.begin() + i + 1);
                 args.erase(args.begin() + i);
@@ -146,6 +151,14 @@ int main(int argc, char** argv)
     // apply options
     UI::SetNoInputMode(hasNoInputOption);
     Path::SetDirectories(coreLibsPath, modLibsPath, ep1Path, dataPath);
+    if (hasSavePathsOption)
+    {
+        if (!SporeMod::Xml::SaveDirectories(coreLibsPath, modLibsPath, ep1Path, dataPath))
+        {
+            std::cerr << "SporeMod::Xml::SaveDirectories() Failed!" << std::endl;
+            return 1;
+        }
+    }
 
     // ensure we have a command
     if (args.size() < 2)
