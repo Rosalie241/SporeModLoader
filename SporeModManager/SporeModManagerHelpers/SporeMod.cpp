@@ -305,13 +305,30 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
     {
         std::cout << "-> Installing " << installedFile.FileName.string() << std::endl;
 
-        std::filesystem::path sourcePath = installedFile.FileName;
+        std::filesystem::path sourcePath  = installedFile.FileName;
         std::filesystem::path installPath = Path::GetFullInstallPath(installedFile.InstallLocation, installedFile.FileName);
 
         if (!Zip::ExtractFile(zipFile, sourcePath, installPath))
         {
             std::cerr << "Zip::ExtractFile() Failed!" << std::endl;
             Zip::CloseFile(zipFile);
+            // cleanup installed files that were left over
+            for (const auto& installedFileToRemove : installedSporeMod.InstalledFiles)
+            {
+                installPath = Path::GetFullInstallPath(installedFileToRemove.InstallLocation, installedFileToRemove.FileName);
+                if (std::filesystem::is_regular_file(installPath))
+                {
+                    try
+                    {
+                        std::cout << "-> Removing " << installPath.filename().string() << std::endl;
+                        std::filesystem::remove(installPath);
+                    }
+                    catch(...)
+                    {
+                        std::cerr << "std::filesystem::remove(" << installPath << "\") Failed!" << std::endl;
+                    }
+                }
+            }
             return false;
         }
     }
@@ -363,7 +380,7 @@ bool SporeMod::InstallPackage(std::filesystem::path path)
     {
         std::cout << "-> Installing " << installedFile.FileName.string() << std::endl;
 
-        std::filesystem::path sourcePath = path;
+        std::filesystem::path sourcePath  = path;
         std::filesystem::path installPath = Path::GetFullInstallPath(installedFile.InstallLocation, installedFile.FileName);
 
         try
