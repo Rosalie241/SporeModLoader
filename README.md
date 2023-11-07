@@ -14,7 +14,7 @@ It's inside the `SporeModLoader/SporeModManager`
 directory, with both a windows and linux executable  
 
 Example usage can be found when running the executable
-with the `help` parameter
+with the `help` argument
 
 ## Installation
 
