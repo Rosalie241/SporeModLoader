@@ -100,6 +100,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -108,8 +109,12 @@
       <AdditionalDependencies>detours.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll" (
-    "$(MSBuildProjectDirectory)\..\3rdParty\BuildSporeModAPI.bat"
+      <Command>if NOT EXIST  "$(MSBuildProjectDirectory)\..\3rdParty\Detours\lib.X86\detours.lib" (
+    CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildDetours.bat"
+)
+
+if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll" (
+    CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildSporeModAPI.bat"
 )</Command>
     </PreBuildEvent>
     <PostBuildEvent>
@@ -128,6 +133,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <Optimization>MinSpace</Optimization>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -157,6 +163,7 @@ if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\Sp
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -172,6 +179,7 @@ if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\Sp
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
