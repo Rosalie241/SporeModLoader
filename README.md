@@ -1,14 +1,22 @@
 ## SporeModLoader
 
-This is a very simple modloader for Spore,
-it only supports loading dll mods and injects
-them when the game boots, it has no GUI.
+This is a simple mod loader for Spore,
+it injects DLLs at runtime before executing
+the entry point of the Spore executable  
+
+## SporeModManager
+
+This is a simple commandline mod manager for Spore,
+it allows you to install, update and remove mods 
+easily using the commandline
+  
+It's inside the `SporeModLoader/SporeModManager`
+directory, with both a windows and linux executable  
+
+Example usage can be found when running the executable
+with the `help` parameter
 
 ## Installation
 
 Downloads the latest release and extract the
-archive into the game directory.
-
-## Installation of mods
-
-See the commandline utility `SporeModLoader/SporeModManager/SporeModManager.exe`
+archive into the game directory.  
