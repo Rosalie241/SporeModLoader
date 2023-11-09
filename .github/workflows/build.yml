@@ -61,9 +61,9 @@ jobs:
           echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
       - name: Build SporeModManager (Linux)
         run: |
-          make BINARY_DIR=artifacts/SporeModLoader/SporeModManager -j$(nproc)
+          make BINARY_DIR=bin/SporeModLoader/SporeModManager -j$(nproc)
       - name: Upload SporeModLoader (Linux)
         uses: actions/upload-artifact@v3
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
-          path: artifacts/*
+          path: bin/*
