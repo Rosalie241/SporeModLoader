@@ -23,7 +23,7 @@ namespace SporeModManager
     /// <summary>
     ///  Installs mod
     /// </summary>
-    bool InstallMods(std::vector<std::filesystem::path> paths);
+    bool InstallMods(std::vector<std::filesystem::path> paths, bool skipValidation = false);
 
     /// <summary>
     ///  Updates mod

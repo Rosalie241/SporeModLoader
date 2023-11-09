@@ -95,46 +95,49 @@ bool SporeModManager::ListInstalledMods(void)
     return true;
 }
 
-bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths)
+bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool skipValidation)
 {
     std::string uniqueName;
     std::vector<std::string> uniqueNames;
 
     // do some basic validation before attempting
     // to install the given mods
-    for (size_t i = 0; i < paths.size(); i++)
+    if (!skipValidation)
     {
-        const std::filesystem::path& path = paths.at(i);
-
-        if (!std::filesystem::is_regular_file(path))
+        for (size_t i = 0; i < paths.size(); i++)
         {
-            std::cerr << "\"" << path.string() << "\" is not a regular file or doesn't exist!" << std::endl;
-            return false;
-        }
+            const std::filesystem::path& path = paths.at(i);
 
-        std::string extension = String::Lowercase(path.extension().string());
-        if (extension == ".sporemod" || extension == ".package")
-        {
-            if (!GetUniqueName(path, extension, uniqueName))
+            if (!std::filesystem::is_regular_file(path))
             {
+                std::cerr << "\"" << path.string() << "\" is not a regular file or doesn't exist!" << std::endl;
                 return false;
             }
-        }
-        else
-        {
-            std::cerr << "\"" << extension << "\" is an invalid extension!" << std::endl;
-            return false;
-        }
 
-        // ensure we only have unique mod names
-        if (std::find(uniqueNames.begin(), uniqueNames.end(), uniqueName) != uniqueNames.end())
-        {
-            std::cerr << "Removing \"" << path.string() << "\" from the installation list due to another mod having the same unique name!" << std::endl;
-            paths.erase(paths.begin() + i);
-            i -= 1;
-            continue;
+            std::string extension = String::Lowercase(path.extension().string());
+            if (extension == ".sporemod" || extension == ".package")
+            {
+                if (!GetUniqueName(path, extension, uniqueName))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                std::cerr << "\"" << extension << "\" is an invalid extension!" << std::endl;
+                return false;
+            }
+
+            // ensure we only have unique mod names
+            if (std::find(uniqueNames.begin(), uniqueNames.end(), uniqueName) != uniqueNames.end())
+            {
+                std::cerr << "Removing \"" << path.string() << "\" from the installation list due to another mod having the same unique name!" << std::endl;
+                paths.erase(paths.begin() + i);
+                i -= 1;
+                continue;
+            }
+            uniqueNames.push_back(uniqueName);
         }
-        uniqueNames.push_back(uniqueName);
     }
 
     // install given mods
@@ -225,7 +228,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
         return false;
     }
 
-    return InstallMods(paths);
+    return InstallMods(paths, true);
 }
 
 bool SporeModManager::UninstallMods(std::vector<int> ids)
