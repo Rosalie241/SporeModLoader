@@ -142,13 +142,6 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
         return false;
     }
 
-    // make sure we have the modapi dll that the mod requires
-    if (!FileVersion::CheckIfCoreLibMatchesVersion(sporeModInfo.MinimumModAPILibVersion, sporeModInfo.Name))
-    {
-        Zip::CloseFile(zipFile);
-        return false;
-    }
-
     struct
     {
         bool NeedsWarn;
