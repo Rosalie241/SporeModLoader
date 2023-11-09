@@ -116,6 +116,12 @@ int main(int argc, char** argv)
     {
         arg_str_type arg = args.at(i);
 
+        // skip empty or invalid arguments
+        if (arg.empty() || arg.size() < 2)
+        {
+            continue;
+        }
+
         if (arg.at(0) == arg_char('-'))
         {
             if (arg.at(1) != arg_char('-'))
