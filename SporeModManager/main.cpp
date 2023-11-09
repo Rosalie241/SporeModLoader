@@ -146,20 +146,29 @@ int main(int argc, char** argv)
                 }
                 for (const auto& pathArg : pathArgs)
                 {
-                    if (arg == pathArg.argument)
+                    if (arg.rfind(pathArg.argument, 0) == 0)
                     {
-                        if (i == (args.size() - 1))
-                        {
-                            ShowUsage();
-                            return 1;
+                        arg.erase(0, pathArg.argument.size());
+                        if (!arg.empty() && arg.at(0) == arg_char('='))
+                        { // use path after =
+                            arg.erase(0, 1);
+                            pathArg.path = arg;
                         }
-                        pathArg.path = args.at(i + 1);
+                        else
+                        { // use next argument as path
+                            if (i == (args.size() - 1))
+                            {
+                                ShowUsage();
+                                return 1;
+                            }
+                            pathArg.path = args.at(i + 1);
+                            args.erase(args.begin() + i + 1);
+                        }
                         if (!std::filesystem::is_directory(pathArg.path))
                         {
                             ShowUsage();
                             return 1;
                         }
-                        args.erase(args.begin() + i + 1);
                         arg.clear();
                     }
                 }
