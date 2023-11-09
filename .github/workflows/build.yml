@@ -52,7 +52,6 @@ jobs:
           path: bin/*
   linux-build:
     runs-on: ubuntu-20.04
-    needs: build
     steps:
       - uses: actions/checkout@v4
         with:
@@ -60,18 +59,10 @@ jobs:
       - name: Prepare Environment
         run: |
           echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
-      - name: Download SporeModLoader
-        uses: actions/download-artifact@v3
-        with:
-          name: SporeModLoader-${{ env.GIT_REVISION }}
-          path: artifacts
       - name: Build SporeModManager (Linux)
         run: |
-          make -j$(nproc)
-      - name: Add SporeModManager (Linux) to SporeModLoader
-        run: |
-          cp bin/SporeModManager artifacts/SporeModLoader/SporeModManager/SporeModManager
-      - name: Upload SporeModLoader
+          make BINARY_DIR=artifacts/SporeModLoader/SporeModManager -j$(nproc)
+      - name: Upload SporeModLoader (Linux)
         uses: actions/upload-artifact@v3
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
