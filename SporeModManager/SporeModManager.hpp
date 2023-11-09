@@ -23,12 +23,12 @@ namespace SporeModManager
     /// <summary>
     ///  Installs mod
     /// </summary>
-    bool InstallMod(std::filesystem::path path);
+    bool InstallMods(std::vector<std::filesystem::path> paths);
 
     /// <summary>
     ///  Updates mod
     /// </summary>
-    bool UpdateMod(std::filesystem::path path, bool requiresInstalled = true);
+    bool UpdateMods(std::vector<std::filesystem::path> paths, bool requiresInstalled = true);
 
     /// <summary>
     ///  Uninstalls mods with ids

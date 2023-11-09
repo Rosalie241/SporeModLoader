@@ -234,21 +234,20 @@ int main(int argc, char** argv)
             return 1;
         }
 
-        for (size_t i = 2; i < args.size(); i++)
+        std::vector<std::filesystem::path> paths(args.begin() + 2, args.end());
+
+        if (hasUpdateOption)
         {
-            if (hasUpdateOption)
+            if (!SporeModManager::UpdateMods(paths, false))
             {
-                if (!SporeModManager::UpdateMod(args[i], false))
-                {
-                    return 1;
-                }
+                return 1;
             }
-            else
+        }
+        else
+        {
+            if (!SporeModManager::InstallMods(paths))
             {
-                if (!SporeModManager::InstallMod(args[i]))
-                {
-                    return 1;
-                }
+                return 1;
             }
         }
     }
@@ -265,12 +264,11 @@ int main(int argc, char** argv)
             return 1;
         }
 
-        for (size_t i = 2; i < args.size(); i++)
+        std::vector<std::filesystem::path> paths(args.begin() + 2, args.end());
+
+        if (!SporeModManager::UpdateMods(paths, false))
         {
-            if (!SporeModManager::UpdateMod(args[i]))
-            {
-                return 1;
-            }
+            return 1;
         }
     }
     else if (command == arg_str("uninstall"))

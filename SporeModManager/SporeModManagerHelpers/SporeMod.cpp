@@ -130,8 +130,8 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
         return false;
     }
 
-    installedSporeMod.Name = sporeModInfo.Name;
-    installedSporeMod.UniqueName = sporeModInfo.UniqueName;
+    installedSporeMod.Name        = sporeModInfo.Name;
+    installedSporeMod.UniqueName  = sporeModInfo.UniqueName;
     installedSporeMod.Description = sporeModInfo.Description;
 
     // check if mod with the same unique name is 

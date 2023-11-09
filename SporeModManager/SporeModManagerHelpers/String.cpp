@@ -44,6 +44,17 @@ std::string String::Join(std::vector<int> numbers, char delimiter)
     return result;
 }
 
+std::string String::Replace(std::string string, std::string findString, std::string replacementString)
+{
+    size_t pos = 0;
+    while ((pos = string.find(findString, pos)) != std::string::npos)
+    {
+        string.replace(pos, findString.size(), replacementString);
+        pos += replacementString.size();
+    }
+    return string;
+}
+
 std::string String::Lowercase(std::string string)
 {
     std::transform(string.begin(), string.end(), string.begin(), [](unsigned char c) 

@@ -305,6 +305,11 @@ namespace SporeModManagerHelpers
         std::string Join(std::vector<int> numbers, char delimiter);
 
         /// <summary>
+        ///     Replaces findString with replacementString in string
+        /// </summary>
+        std::string Replace(std::string string, std::string findString, std::string replacementString);
+
+        /// <summary>
         ///     Returns the lowercase version of the given string
         /// </summary>
         std::string Lowercase(std::string string);
