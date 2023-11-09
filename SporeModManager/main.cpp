@@ -10,7 +10,6 @@
 #include "SporeModManager.hpp"
 #include "SporeModManagerHelpers.hpp"
 
-#include <algorithm>
 #include <filesystem>
 #include <iostream>
 #include <cstring>
@@ -23,9 +22,11 @@ using namespace SporeModManagerHelpers;
 
 #ifdef _WIN32
 #define arg_str(str) L##str
+#define arg_char(c) L##c
 #define arg_str_type std::wstring
 #else
 #define arg_str(str) str
+#define arg_char(c) c
 #define arg_str_type std::string
 #endif // _WIN32
 
@@ -98,53 +99,79 @@ int main(int argc, char** argv)
 
     struct option_argument optionArgs[] =
     {
-        { arg_str("-n"), arg_str("--no-input"),      hasNoInputOption },
-        { arg_str("-u"), arg_str("--update-needed"), hasUpdateOption },
-        { arg_str("-s"), arg_str("--save-paths"),    hasSavePathsOption },
+        { arg_str("n"), arg_str("no-input"),      hasNoInputOption },
+        { arg_str("u"), arg_str("update-needed"), hasUpdateOption },
+        { arg_str("s"), arg_str("save-paths"),    hasSavePathsOption },
     };
 
     struct path_argument pathArgs[] =
     {
-        { arg_str("--corelibs-path"), coreLibsPath },
-        { arg_str("--modlibs-path"),  modLibsPath },
-        { arg_str("--data-path"),     dataPath },
-        { arg_str("--ep1-path"),      ep1Path },
+        { arg_str("corelibs-path"), coreLibsPath },
+        { arg_str("modlibs-path"),  modLibsPath },
+        { arg_str("data-path"),     dataPath },
+        { arg_str("ep1-path"),      ep1Path },
     };
 
     for (size_t i = 0; i < args.size(); i++)
     {
         arg_str_type arg = args.at(i);
 
-        for (const auto& optionArg : optionArgs)
+        if (arg.at(0) == arg_char('-'))
         {
-            if (arg == optionArg.shortArgument ||
-                arg == optionArg.longArgument)
-            {
-                optionArg.value = true;
-                args.erase(args.begin() + i);
-                i -= 1;
+            if (arg.at(1) != arg_char('-'))
+            { // short option
+                // strip '-'
+                arg.erase(0, 1);
+                for (const auto& optionArg : optionArgs)
+                {
+                    auto pos = arg.find(optionArg.shortArgument);
+                    if (pos != arg_str_type::npos)
+                    {
+                        optionArg.value = true;
+                        arg.erase(pos, 1);
+                    }
+                }
+            }
+            else
+            { // long option
+                // strip '--'
+                arg.erase(0, 2);
+                for (const auto& optionArg : optionArgs)
+                {
+                    if (arg == optionArg.longArgument)
+                    {
+                        optionArg.value = true;
+                        arg.clear();
+                    }
+                }
+                for (const auto& pathArg : pathArgs)
+                {
+                    if (arg == pathArg.argument)
+                    {
+                        if (i == (args.size() - 1))
+                        {
+                            ShowUsage();
+                            return 1;
+                        }
+                        pathArg.path = args.at(i + 1);
+                        if (!std::filesystem::is_directory(pathArg.path))
+                        {
+                            ShowUsage();
+                            return 1;
+                        }
+                        args.erase(args.begin() + i + 1);
+                        arg.clear();
+                    }
+                }
             }
         }
 
-        for (const auto& pathArg : pathArgs)
+        // when all options have been parsed,
+        // strip the arg and continue
+        if (arg.empty())
         {
-            if (arg == pathArg.argument)
-            {
-                if (i == (args.size() - 1))
-                {
-                    ShowUsage();
-                    return 1;
-                }
-                pathArg.path = args.at(i + 1);
-                if (!std::filesystem::is_directory(pathArg.path))
-                {
-                    ShowUsage();
-                    return 1;
-                }
-                args.erase(args.begin() + i + 1);
-                args.erase(args.begin() + i);
-                i -= 1;
-            }
+            args.erase(args.begin() + i);
+            i -= 1;
         }
     }
 
