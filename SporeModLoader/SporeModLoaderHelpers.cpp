@@ -7,7 +7,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-#include <Windows.h>
+#include <windows.h>
 
 #include <fstream>
 
@@ -145,7 +145,8 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
         std::wstring filename = entry.path().filename().wstring();
         for (const auto& postfix : excludePostfixes)
         {
-            if (filename.ends_with(postfix))
+            // HACK: TODO: rewrite ends_with in C++17
+            if (filename.find(postfix) != std::wstring::npos)
             {
                 skipLib = true;
                 break;

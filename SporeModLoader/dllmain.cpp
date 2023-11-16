@@ -7,7 +7,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-#include <Windows.h>
+#include <windows.h>
 #include "detours.h"
 
 #include "SporeModLoader.hpp"
@@ -46,7 +46,7 @@ static int SporeAppEntry_detoured(void)
 
 // The game calls this function but ignores the result,
 // so just return E_FAIL.
-HRESULT WINAPI DirectInput8Create(HINSTANCE hinst, DWORD dwVersion, REFIID riidltf, LPVOID* ppvOut, LPUNKNOWN punkOuter)
+extern "C" HRESULT WINAPI DirectInput8Create(HINSTANCE hinst, DWORD dwVersion, REFIID riidltf, LPVOID* ppvOut, LPUNKNOWN punkOuter)
 {
     return E_FAIL;
 }
@@ -68,7 +68,7 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID reserved)
         }
         DetourTransactionBegin();
         DetourUpdateThread(GetCurrentThread());
-        DetourAttach(&(PVOID&)SporeAppEntry_real, SporeAppEntry_detoured);
+        DetourAttach(&(PVOID&)SporeAppEntry_real, (PVOID)SporeAppEntry_detoured);
         DetourTransactionCommit();
     }
     else if (dwReason == DLL_PROCESS_DETACH)
@@ -77,7 +77,7 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID reserved)
         DetourUpdateThread(GetCurrentThread());
         if (SporeAppEntry_real != nullptr)
         {
-            DetourDetach(&(PVOID&)SporeAppEntry_real, SporeAppEntry_detoured);
+            DetourDetach(&(PVOID&)SporeAppEntry_real, (PVOID)SporeAppEntry_detoured);
         }
         DetourTransactionCommit();
     }
