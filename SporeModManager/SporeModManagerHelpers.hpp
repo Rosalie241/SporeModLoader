@@ -183,17 +183,17 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Tries to find installed mod with uniqueName
         /// </summary>
-        bool FindInstalledMod(std::string uniqueName, int& installedSporeModId);
+        bool FindInstalledMod(std::string uniqueName, int& installedSporeModId, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
 
         /// <summary>
         ///     Installs sporemod file
         /// </summary>
-        bool InstallSporeMod(std::filesystem::path path);
+        bool InstallSporeMod(std::filesystem::path path, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
 
         /// <summary>
         ///    Installs package file
         /// </summary>
-        bool InstallPackage(std::filesystem::path path);
+        bool InstallPackage(std::filesystem::path path, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
     }
 
     namespace Path

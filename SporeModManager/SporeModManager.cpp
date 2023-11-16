@@ -16,8 +16,42 @@
 using namespace SporeModManagerHelpers;
 
 //
+// Local Variables
+//
+
+static bool                                          l_HasInstalledSporeMods = false;
+static std::vector<SporeMod::Xml::InstalledSporeMod> l_InstalledSporeMods;
+static bool                                          l_SaveInstalledSporeMods = true;
+//
 // Helper Functions
 //
+
+static bool GetInstalledSporeModList(void)
+{
+    if (!l_HasInstalledSporeMods)
+    {
+        if (!SporeMod::Xml::GetInstalledModList(l_InstalledSporeMods))
+        {
+            std::cerr << "SporeMod::Xml::GetInstalledMostList() Failed!" << std::endl;
+            return false;
+        }
+        l_HasInstalledSporeMods = true;
+    }
+    return true;
+}
+
+static bool SaveInstalledSporeModList(void)
+{
+    if (l_SaveInstalledSporeMods)
+    {
+        if (!SporeMod::Xml::SaveInstalledModList(l_InstalledSporeMods))
+        {
+            std::cerr << "SporeMod::Xml::SaveInstalledModList() Failed!" << std::endl;
+            return false;
+        }
+    }
+    return true;
+}
 
 static bool GetUniqueName(const std::filesystem::path& path, const std::string& extension, std::string& uniqueName)
 {
@@ -71,18 +105,16 @@ static bool GetUniqueName(const std::filesystem::path& path, const std::string& 
 
 bool SporeModManager::ListInstalledMods(void)
 {
-    SporeMod::Xml::InstalledSporeMod              installedSporeMod;
-    std::vector<SporeMod::Xml::InstalledSporeMod> installedSporeMods;
+    SporeMod::Xml::InstalledSporeMod installedSporeMod;
 
-    if (!SporeMod::Xml::GetInstalledModList(installedSporeMods))
+    if (!GetInstalledSporeModList())
     {
-        std::cerr << "SporeMod::Xml::GetInstalledMostList() Failed!" << std::endl;
         return false;
     }
 
-    for (size_t i = 0; i < installedSporeMods.size(); i++)
+    for (size_t i = 0; i < l_InstalledSporeMods.size(); i++)
     {
-        installedSporeMod = installedSporeMods.at(i);
+        installedSporeMod = l_InstalledSporeMods.at(i);
 
         std::cout << "[" << i << "] " << installedSporeMod.Name << std::endl;
         if (!installedSporeMod.Description.empty())
@@ -99,6 +131,8 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
     std::string              uniqueName;
     std::vector<std::string> uniqueNames;
     std::string              extension;
+    bool                     returnValue = true;
+    SporeMod::Xml::InstalledSporeMod installedSporeMod;
 
     // do some basic validation before attempting
     // to install the given mods
@@ -140,27 +174,42 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
         }
     }
 
+    if (!GetInstalledSporeModList())
+    {
+        return false;
+    }
+
     // install given mods
     for (const auto& path : paths)
     {
+        installedSporeMod = {};
         extension = String::Lowercase(path.extension().string());
         if (extension == ".sporemod")
         {
-            if (!SporeMod::InstallSporeMod(path))
+            if (!SporeMod::InstallSporeMod(path, installedSporeMod, l_InstalledSporeMods))
             {
-                return false;
+                returnValue = false;
+                break;
             }
+            l_InstalledSporeMods.push_back(installedSporeMod);
         }
         else if (extension == ".package")
         {
-            if (!SporeMod::InstallPackage(path))
+            if (!SporeMod::InstallPackage(path, installedSporeMod, l_InstalledSporeMods))
             {
-                return false;
+                returnValue = false;
+                break;
             }
+            l_InstalledSporeMods.push_back(installedSporeMod);
         }
     }
 
-    return true;
+    if (!SaveInstalledSporeModList())
+    {
+        return false;
+    }
+
+    return returnValue;
 }
 
 bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool requiresInstalled)
@@ -170,6 +219,11 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
     std::string              uniqueName;
     std::vector<std::string> uniqueNames;
     std::string              extension;
+
+    if (!GetInstalledSporeModList())
+    {
+        return false;
+    }
 
     // do validation before attempting
     // to update the given mods
@@ -208,7 +262,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
         }
         uniqueNames.push_back(uniqueName);
 
-        if (!SporeMod::FindInstalledMod(uniqueName, installedSporeModId))
+        if (!SporeMod::FindInstalledMod(uniqueName, installedSporeModId, l_InstalledSporeMods))
         {
             if (requiresInstalled)
             {
@@ -223,31 +277,35 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
         }
     }
 
+    // disable saving the installed mod list when uninstalling mods
+    l_SaveInstalledSporeMods = false;
+
     // apply changes
     if (!installedSporeModIds.empty() && !UninstallMods(installedSporeModIds))
     {
         return false;
     }
 
+    // save installed mod list when installing mods
+    l_SaveInstalledSporeMods = true;
+
     return InstallMods(paths, true);
 }
 
 bool SporeModManager::UninstallMods(std::vector<int> ids)
 {
-    std::vector<SporeMod::Xml::InstalledSporeMod> installedSporeMods;
     std::vector<SporeMod::Xml::InstalledSporeMod> removedSporeMods;
     SporeMod::Xml::InstalledSporeMod installedSporeMod;
     std::filesystem::path fullInstallPath;
 
-    if (!SporeMod::Xml::GetInstalledModList(installedSporeMods))
+    if (!GetInstalledSporeModList())
     {
-        std::cerr << "SporeMod::Xml::GetInstalledModList() Failed!" << std::endl;
         return false;
     }
 
     for (const auto& id : ids)
     {
-        if (id < 0 || (size_t)id >= installedSporeMods.size() || installedSporeMods.empty())
+        if (id < 0 || (size_t)id >= l_InstalledSporeMods.size() || l_InstalledSporeMods.empty())
         {
             std::cerr << "ID(s) must be valid!" << std::endl;
             return false;
@@ -256,7 +314,7 @@ bool SporeModManager::UninstallMods(std::vector<int> ids)
 
     for (const auto& id : ids)
     {
-        installedSporeMod = installedSporeMods.at(id);
+        installedSporeMod = l_InstalledSporeMods.at(id);
 
         for (const auto& installedFile : installedSporeMod.InstalledFiles)
         {
@@ -280,16 +338,15 @@ bool SporeModManager::UninstallMods(std::vector<int> ids)
 
     for (const auto& removedSporeMod : removedSporeMods)
     {
-        auto installedSporeModIter = std::find(installedSporeMods.begin(), installedSporeMods.end(), removedSporeMod);
-        if (installedSporeModIter != installedSporeMods.end())
+        auto installedSporeModIter = std::find(l_InstalledSporeMods.begin(), l_InstalledSporeMods.end(), removedSporeMod);
+        if (installedSporeModIter != l_InstalledSporeMods.end())
         {
-            installedSporeMods.erase(installedSporeModIter);
+            l_InstalledSporeMods.erase(installedSporeModIter);
         }
     }
 
-    if (!SporeMod::Xml::SaveInstalledModList(installedSporeMods))
+    if (!SaveInstalledSporeModList())
     {
-        std::cerr << "SporeMod::Xml::SaveInstalledModList() Failed!" << std::endl;
         return false;
     }
 
