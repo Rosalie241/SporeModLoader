@@ -27,7 +27,6 @@ static bool GetUniqueName(const std::filesystem::path& path, const std::string& 
 
     if (extension == ".sporemod")
     {
-        modInfoFileBuffer.clear();
         if (!Zip::OpenFile(zipFile, path))
         {
             std::cerr << "Zip::OpenFile() Failed!" << std::endl;
@@ -72,6 +71,7 @@ static bool GetUniqueName(const std::filesystem::path& path, const std::string& 
 
 bool SporeModManager::ListInstalledMods(void)
 {
+    SporeMod::Xml::InstalledSporeMod              installedSporeMod;
     std::vector<SporeMod::Xml::InstalledSporeMod> installedSporeMods;
 
     if (!SporeMod::Xml::GetInstalledModList(installedSporeMods))
@@ -82,8 +82,7 @@ bool SporeModManager::ListInstalledMods(void)
 
     for (size_t i = 0; i < installedSporeMods.size(); i++)
     {
-        SporeMod::Xml::InstalledSporeMod installedSporeMod;
-        installedSporeMod = installedSporeMods[i];
+        installedSporeMod = installedSporeMods.at(i);
 
         std::cout << "[" << i << "] " << installedSporeMod.Name << std::endl;
         if (!installedSporeMod.Description.empty())
@@ -97,8 +96,9 @@ bool SporeModManager::ListInstalledMods(void)
 
 bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool skipValidation)
 {
-    std::string uniqueName;
+    std::string              uniqueName;
     std::vector<std::string> uniqueNames;
+    std::string              extension;
 
     // do some basic validation before attempting
     // to install the given mods
@@ -114,7 +114,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
                 return false;
             }
 
-            std::string extension = String::Lowercase(path.extension().string());
+            extension = String::Lowercase(path.extension().string());
             if (extension == ".sporemod" || extension == ".package")
             {
                 if (!GetUniqueName(path, extension, uniqueName))
@@ -143,7 +143,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
     // install given mods
     for (const auto& path : paths)
     {
-        std::string extension = String::Lowercase(path.extension().string());
+        extension = String::Lowercase(path.extension().string());
         if (extension == ".sporemod")
         {
             if (!SporeMod::InstallSporeMod(path))
@@ -169,6 +169,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
     std::vector<int>         installedSporeModIds;
     std::string              uniqueName;
     std::vector<std::string> uniqueNames;
+    std::string              extension;
 
     // do validation before attempting
     // to update the given mods
@@ -182,7 +183,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
             return false;
         }
 
-        std::string extension = String::Lowercase(path.extension().string());
+        extension = String::Lowercase(path.extension().string());
         if (extension == ".sporemod" || extension == ".package")
         {
             if (!GetUniqueName(path, extension, uniqueName))
