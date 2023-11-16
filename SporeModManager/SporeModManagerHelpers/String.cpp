@@ -34,7 +34,7 @@ std::string String::Join(std::vector<int> numbers, char delimiter)
 
     for (size_t i = 0; i < numbers.size(); i++)
     {
-        result += std::to_string(numbers[i]);
+        result += std::to_string(numbers.at(i));
         if (i < (numbers.size() - 1))
         {
             result += delimiter;

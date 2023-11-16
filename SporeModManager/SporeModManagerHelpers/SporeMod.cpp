@@ -85,7 +85,7 @@ bool SporeMod::FindInstalledMod(std::string uniqueName, int& installedSporeModId
 
     for (size_t i = 0; i < installedSporeMods.size(); i++)
     {
-        installedSporeMod = installedSporeMods[i];
+        installedSporeMod = installedSporeMods.at(i);
         if (installedSporeMod.UniqueName == uniqueName)
         {
             installedSporeModId = i;
@@ -179,7 +179,7 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
 
         for (size_t i = 0; i < componentsSize; i++)
         {
-            component = componentGroup.Components[i];
+            component = componentGroup.Components.at(i);
             std::cout << "[" << i << "] " << component.Name << std::endl;
 
             // set default checked component id
@@ -220,7 +220,7 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path)
 
         for (size_t i = 0; i < componentsSize; i++)
         {
-            component = sporeModInfo.Components[i];
+            component = sporeModInfo.Components.at(i);
             std::cout << "[" << i << "] " << component.Name << std::endl
                 << "  " << component.Description << std::endl;
 
