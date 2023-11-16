@@ -117,7 +117,7 @@ int main(int argc, char** argv)
         arg_str_type arg = args.at(i);
 
         // skip empty or invalid arguments
-        if (arg.empty() || arg.size() < 2)
+        if (arg.size() < 2)
         {
             continue;
         }
