@@ -145,7 +145,7 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
         std::wstring filename = entry.path().filename().wstring();
         for (const auto& postfix : excludePostfixes)
         {
-            // HACK: TODO: rewrite ends_with in C++17
+            // TODO: use ends_with when we can use C++20
             if (filename.find(postfix) != std::wstring::npos)
             {
                 skipLib = true;
