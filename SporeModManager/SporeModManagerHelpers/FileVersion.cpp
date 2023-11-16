@@ -120,7 +120,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
 {
     std::ifstream fileStream;
     std::string versionString;
-    uint64_t fileStreamLength;
+    size_t fileStreamLength;
 
     fileStream.open(path, std::ios_base::in | std::ios_base::binary);
     if (!fileStream.is_open())
@@ -141,7 +141,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
         return false;
     }
 
-    std::vector<char> buffer((uint32_t)fileStreamLength);
+    std::vector<char> buffer(fileStreamLength);
     fileStream.read(buffer.data(), fileStreamLength);
     
     if (fileStream.fail())
