@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <array>
 
 using namespace SporeModManagerHelpers;
 
@@ -79,7 +80,6 @@ bool FileVersion::CheckIfCoreLibMatchesVersion(FileVersionInfo& modFileVersionIn
 bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionInfo)
 {
     std::vector<std::string> splitString;
-    int numbersIndex = 0;
 
     splitString = String::Split(string, '.');
 
@@ -92,19 +92,19 @@ bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionIn
     // reset values to 0
     fileVersionInfo = { 0, 0, 0, 0 };
 
-    int* numbers[] =
+    const std::array<std::reference_wrapper<int>, 4> numbers
     {
-        &fileVersionInfo.Major,
-        &fileVersionInfo.Minor,
-        &fileVersionInfo.Build,
-        &fileVersionInfo.Revision
+        fileVersionInfo.Major,
+        fileVersionInfo.Minor,
+        fileVersionInfo.Build,
+        fileVersionInfo.Revision
     };
 
-    for (const auto& str : splitString)
+    for (size_t i = 0; i < std::min(splitString.size(), numbers.size()); i++)
     {
         try
         {
-            *numbers[numbersIndex++] = std::stoi(str);
+            numbers.at(i).get() = std::stoi(splitString.at(i));
         }
         catch (...)
         {
