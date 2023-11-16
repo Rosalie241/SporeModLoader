@@ -73,10 +73,15 @@ jobs:
       - name: Build SporeModManager (Linux)
         run: |
           make SporeModManager -j$(nproc)
-      - name: Upload SporeModLoader (Linux)
+      - name: Upload SporeModLoader (Linux for msvc)
         uses: actions/upload-artifact@v3
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
+          path: bin/*
+      - name: Upload SporeModLoader (Linux for mingw)
+        uses: actions/upload-artifact@v3
+        with:
+          name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
           path: bin/*
   mingw-build:
     runs-on: ubuntu-20.04
