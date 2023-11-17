@@ -1,7 +1,9 @@
 #
 # SporeModLoader & SporeModManager Makefile
 #
-BINARY_DIR := $(CURDIR)/bin
+
+# relative to project directories
+BINARY_DIR := ../bin
 
 CC         := gcc
 CXX        := g++
@@ -10,7 +12,7 @@ MINGW_CXX  := i686-w64-mingw32-g++
 
 export CC CXX MINGW_CC MINGW_CXX
 
-all: SporeModLoader SporeModManager SporeModManager.exe
+all: SporeModLoader SporeModManager.exe SporeModManager
 
 clean:
 	$(MAKE) -C SporeModLoader clean BINARY_DIR=$(BINARY_DIR)/SporebinEP1
