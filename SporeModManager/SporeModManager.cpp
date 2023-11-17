@@ -22,6 +22,7 @@ using namespace SporeModManagerHelpers;
 static bool                                          l_HasInstalledSporeMods = false;
 static std::vector<SporeMod::Xml::InstalledSporeMod> l_InstalledSporeMods;
 static bool                                          l_SaveInstalledSporeMods = true;
+
 //
 // Helper Functions
 //
