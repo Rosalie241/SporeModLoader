@@ -188,7 +188,7 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Installs sporemod file
         /// </summary>
-        bool InstallSporeMod(std::filesystem::path path, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
+        bool InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
 
         /// <summary>
         ///    Installs package file

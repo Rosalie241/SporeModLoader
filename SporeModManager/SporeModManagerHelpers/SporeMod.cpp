@@ -45,7 +45,7 @@ static bool CheckIfOtherModContainsFiles(std::vector<SporeMod::Xml::SporeModFile
             if (installedFileIter != installedSporeMod.InstalledFiles.end())
             {
                 std::cerr << "An already installed mod (" << installedSporeMod.Name
-                    << ") contains a file (\"" << sporeModFile.FileName.string() << "\") that this mod wants to install!" << std::endl;
+                          << ") contains a file (\"" << sporeModFile.FileName.string() << "\") that this mod wants to install!" << std::endl;
                 return true;
             }
         }
@@ -75,11 +75,8 @@ bool SporeMod::FindInstalledMod(std::string uniqueName, int& installedSporeModId
     return false;
 }
 
-bool SporeMod::InstallSporeMod(std::filesystem::path path, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods)
+bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods)
 {
-    Zip::ZipFile zipFile;
-    std::vector<char> modInfoFileBuffer;
-    Xml::SporeModInfo sporeModInfo;
     Xml::SporeModInfoComponent component;
     size_t             componentsSize;
     std::optional<int> defaultComponentId;
@@ -87,26 +84,6 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path, Xml::InstalledSporeMo
     std::vector<int>   defaultComponentIds;
     std::vector<int>   componentIds;
     std::string        uiText;
-
-    if (!Zip::OpenFile(zipFile, path))
-    {
-        std::cerr << "Zip::OpenFile() Failed!" << std::endl;
-        return false;
-    }
-
-    if (!Zip::ExtractFile(zipFile, "modinfo.xml", modInfoFileBuffer))
-    {
-        std::cerr << "Zip::ExtractFile() Failed!" << std::endl;
-        Zip::CloseFile(zipFile);
-        return false;
-    }
-
-    if (!Xml::ParseSporeModInfo(modInfoFileBuffer, sporeModInfo))
-    {
-        std::cerr << "Xml::ParseSporeModInfo() Failed!" << std::endl;
-        Zip::CloseFile(zipFile);
-        return false;
-    }
 
     installedSporeMod.Name        = sporeModInfo.Name;
     installedSporeMod.UniqueName  = sporeModInfo.UniqueName;
@@ -116,7 +93,6 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path, Xml::InstalledSporeMo
     // already installed
     if (IsModAlreadyInstalled(sporeModInfo.UniqueName, installedSporeMods))
     {
-        Zip::CloseFile(zipFile);
         return false;
     }
 
@@ -141,7 +117,6 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path, Xml::InstalledSporeMo
             UI::AskUserInput(inputText, userAnswer, false);
             if (!userAnswer)
             {
-                Zip::CloseFile(zipFile);
                 return false;
             }
         }
@@ -268,7 +243,6 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path, Xml::InstalledSporeMo
     // file collision detection
     if (CheckIfOtherModContainsFiles(installedSporeMod.InstalledFiles, installedSporeMods))
     {
-        Zip::CloseFile(zipFile);
         return false;
     }
 
@@ -282,7 +256,6 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path, Xml::InstalledSporeMo
         if (!Zip::ExtractFile(zipFile, sourcePath, installPath))
         {
             std::cerr << "Zip::ExtractFile() Failed!" << std::endl;
-            Zip::CloseFile(zipFile);
             // cleanup installed files that were left over
             for (const auto& installedFileToRemove : installedSporeMod.InstalledFiles)
             {
@@ -304,7 +277,6 @@ bool SporeMod::InstallSporeMod(std::filesystem::path path, Xml::InstalledSporeMo
         }
     }
 
-    Zip::CloseFile(zipFile);
     return true;
 }
 

@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <map>
 
 #include <unzip.h>
 
@@ -23,6 +24,12 @@ using namespace SporeModManagerHelpers;
 #define UNZIP_READ_SIZE 67108860 /* 64 MiB */
 
 //
+// Local Variables
+//
+
+static std::map<std::filesystem::path, std::ifstream> l_ZipFileStreams;
+
+//
 // Local Functions
 //
 
@@ -30,17 +37,24 @@ static voidpf zlib_filefunc_open(voidpf /*opaque*/, const void* filename, int /*
 {
     std::filesystem::path path = *(std::filesystem::path*)filename;
 
-    // we need a static filestream
-    static std::ifstream fileStream;
+    // if the stream is cached, ensure it's closed
+    auto iter = l_ZipFileStreams.find(path);
+    if (iter != l_ZipFileStreams.end())
+    {
+        if (iter->second.is_open())
+        {
+            iter->second.close();
+        }
+    }
 
     // attempt to open file
-    fileStream.open(path, std::ios::binary);
-    if (!fileStream.is_open())
+    l_ZipFileStreams[path] = std::ifstream(path, std::ios::binary | std::ios::in);
+    if (!l_ZipFileStreams[path].is_open())
     {
         return nullptr;
     }
 
-    return (voidpf)&fileStream;
+    return (voidpf)&l_ZipFileStreams[path];
 }
 
 static uLong zlib_filefunc_read(voidpf /*opaque*/, voidpf stream, void* buf, uLong size)
@@ -64,7 +78,7 @@ static long zlib_filefunc_seek(voidpf /*opaque*/, voidpf stream, ZPOS64_T offset
     switch (origin)
     {
     default:
-        return 0;
+        return -1;
     case ZLIB_FILEFUNC_SEEK_CUR:
         seekOrigin = std::ios::cur;
         break;
