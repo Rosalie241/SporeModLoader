@@ -133,7 +133,7 @@ bool Zip::CloseFile(ZipFile zipFile)
 
 bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesystem::path outputFile)
 {
-    std::vector<char> buffer(UNZIP_READ_SIZE);
+    static std::vector<char> buffer(UNZIP_READ_SIZE);
     int bytesRead = 0;
     std::ofstream outputFileStream;
 
@@ -166,8 +166,10 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
             std::cerr << "unzReadCurrentFile() Failed: " << std::to_string(bytesRead) << std::endl;
             return false;
         }
-
-        outputFileStream.write(buffer.data(), bytesRead);
+        else if (bytesRead > 0)
+        {
+            outputFileStream.write(buffer.data(), bytesRead);
+        }
     } while (bytesRead > 0);
 
     unzCloseCurrentFile(zipFile);
@@ -178,7 +180,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
 
 bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<char>& outBuffer)
 {
-    std::vector<char> buffer(UNZIP_READ_SIZE);
+    static std::vector<char> buffer(UNZIP_READ_SIZE);
     int bytesRead = 0;
 
     // try to find file in zip
