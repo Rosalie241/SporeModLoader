@@ -28,6 +28,7 @@ using namespace SporeModManagerHelpers;
 //
 
 static std::map<std::filesystem::path, std::ifstream> l_ZipFileStreams;
+static std::vector<char>                              l_ZipFileBuffer(UNZIP_READ_SIZE);
 
 //
 // Local Functions
@@ -133,7 +134,6 @@ bool Zip::CloseFile(ZipFile zipFile)
 
 bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesystem::path outputFile)
 {
-    static std::vector<char> buffer(UNZIP_READ_SIZE);
     int bytesRead = 0;
     std::ofstream outputFileStream;
 
@@ -159,7 +159,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
 
     do
     {
-        bytesRead = unzReadCurrentFile(zipFile, buffer.data(), UNZIP_READ_SIZE);
+        bytesRead = unzReadCurrentFile(zipFile, l_ZipFileBuffer.data(), UNZIP_READ_SIZE);
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
@@ -168,7 +168,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
         }
         else if (bytesRead > 0)
         {
-            outputFileStream.write(buffer.data(), bytesRead);
+            outputFileStream.write(l_ZipFileBuffer.data(), bytesRead);
         }
     } while (bytesRead > 0);
 
@@ -180,7 +180,6 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
 
 bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<char>& outBuffer)
 {
-    static std::vector<char> buffer(UNZIP_READ_SIZE);
     int bytesRead = 0;
 
     // try to find file in zip
@@ -200,7 +199,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
 
     do
     {
-        bytesRead = unzReadCurrentFile(zipFile, buffer.data(), UNZIP_READ_SIZE);
+        bytesRead = unzReadCurrentFile(zipFile, l_ZipFileBuffer.data(), UNZIP_READ_SIZE);
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
@@ -209,7 +208,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
         }
         else if (bytesRead > 0)
         {
-            outBuffer.insert(outBuffer.end(), buffer.begin(), std::next(buffer.begin(), bytesRead));
+            outBuffer.insert(outBuffer.end(), l_ZipFileBuffer.begin(), l_ZipFileBuffer.begin() + bytesRead);
         }
     } while (bytesRead > 0);
 
