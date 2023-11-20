@@ -58,7 +58,7 @@ static bool SaveInstalledSporeModList(void)
 
 static bool GetSporeModInfo(const std::filesystem::path& path, const std::string& extension, SporeMod::Xml::SporeModInfo& sporeModInfo)
 {
-    Zip::ZipFile zipFile = {};
+    Zip::ZipFile zipFile = nullptr;
     std::vector<char> modInfoFileBuffer;
 
     if (extension == ".sporemod")
