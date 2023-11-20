@@ -131,47 +131,6 @@ bool Zip::CloseFile(ZipFile zipFile)
     return unzClose(zipFile) == UNZ_OK;
 }
 
-bool Zip::GetFileList(ZipFile zipFile, std::vector<std::filesystem::path>& fileList)
-{
-    unz_global_info64  zipInfo;
-
-    if (unzGetGlobalInfo64(zipFile, &zipInfo) != UNZ_OK)
-    {
-        std::cerr << "unzGetGlobalInfo() Failed!" << std::endl;
-        return false;
-    }
-
-    for (uint64_t i = 0; i < zipInfo.number_entry; i++)
-    {
-        unz_file_info fileInfo;
-        char          fileName[2048];
-
-        // skip the file when we can't retrieve file info
-        if (unzGetCurrentFileInfo(zipFile, &fileInfo, fileName, 2048, nullptr, 0, nullptr, 0) != UNZ_OK)
-        {
-            continue;
-        }
-
-        fileList.push_back(fileName);
-
-        // break when we've iterated over all entries
-        if ((uint64_t)(i + 1) >= zipInfo.number_entry)
-        {
-            break;
-        }
-
-        // move to next file
-        if (unzGoToNextFile(zipFile) != UNZ_OK)
-        {
-            unzClose(zipFile);
-            std::cerr << "unzGoToNextFile() Failed!" << std::endl;
-            return false;
-        }
-    }
-
-    return true;
-}
-
 bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesystem::path outputFile)
 {
     std::vector<char> buffer(UNZIP_READ_SIZE);
@@ -254,7 +213,5 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
 
     unzCloseCurrentFile(zipFile);
     return true;
-
-
 }
 

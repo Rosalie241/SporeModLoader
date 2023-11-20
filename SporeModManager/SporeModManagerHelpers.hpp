@@ -277,11 +277,6 @@ namespace SporeModManagerHelpers
         bool CloseFile(ZipFile zipFile);
 
         /// <summary>
-        ///     Retrieves the file list of a zip file
-        /// </summary>
-        bool GetFileList(ZipFile zipFile, std::vector<std::filesystem::path>& fileList);
-
-        /// <summary>
         ///     Extracts file to outputFile
         /// </summary>
         bool ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesystem::path outputFile);
