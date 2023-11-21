@@ -28,7 +28,7 @@ using namespace SporeModManagerHelpers;
 //
 
 static std::map<std::filesystem::path, std::ifstream> l_ZipFileStreams;
-static std::vector<char>                              l_ZipFileBuffer(UNZIP_READ_SIZE);
+static std::vector<char>                              l_ZipFileBuffer;
 
 //
 // Local Functions
@@ -137,6 +137,9 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
     int bytesRead = 0;
     std::ofstream outputFileStream;
 
+    // ensure the global buffer has the size reserved
+    l_ZipFileBuffer.reserve(UNZIP_READ_SIZE);
+
     // try to find file in zip
     if (unzLocateFile(zipFile, file.string().c_str(), 2) != UNZ_OK)
     {
@@ -181,6 +184,9 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
 bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<char>& outBuffer)
 {
     int bytesRead = 0;
+
+    // ensure the global buffer has the size reserved
+    l_ZipFileBuffer.reserve(UNZIP_READ_SIZE);
 
     // try to find file in zip
     if (unzLocateFile(zipFile, file.string().c_str(), 2) != UNZ_OK)
