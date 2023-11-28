@@ -118,9 +118,9 @@ bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionIn
 
 bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVersionInfo)
 {
-    std::ifstream fileStream;
-    std::string versionString;
-    size_t fileStreamLength;
+    std::ifstream  fileStream;
+    std::string    versionString;
+    std::streamoff fileStreamLength;
 
     fileStream.open(path, std::ios_base::in | std::ios_base::binary);
     if (!fileStream.is_open())
@@ -141,9 +141,9 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
         return false;
     }
 
-    std::vector<char> buffer(fileStreamLength);
+    std::vector<char> buffer((size_t)fileStreamLength);
     fileStream.read(buffer.data(), fileStreamLength);
-    
+
     if (fileStream.fail())
     {
         std::cerr << "fileStream.fail()!" << std::endl;
