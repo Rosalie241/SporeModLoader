@@ -15,14 +15,14 @@ MINGW_CXX  ?= i686-w64-mingw32-g++
 
 ifeq ($(MINGW), 0)
 LDFLAGS    := -flto -s
-OPTFLAGS   := -Os -flto
+OPTFLAGS   := -Os -flto -Wall -Wextra -Wpedantic
 OBJ        := o
 EXE_EXT    :=
 else
 # mingw doesn't like LTO
 # and we need to statically link
 LDFLAGS    := -s -municode -static
-OPTFLAGS   := -Os
+OPTFLAGS   := -Os -Wall -Wextra -Wpedantic
 OBJ        := obj
 EXE_EXT    := .exe
 endif
