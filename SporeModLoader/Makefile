@@ -12,7 +12,7 @@ CXXFLAGS   := -std=c++17                     \
 				-I$(SOURCE_DIR)              \
 				-I$(THIRDPARTY_DIR)/Detours/src \
 				-Wno-attributes -Wp,-w
-OPTFLAGS   := -Os -flto
+OPTFLAGS   := -Os -flto -Wall -Wextra -Wpedantic
 LDFLAGS    := -s -flto
 
 OBJECT_FILES := \
