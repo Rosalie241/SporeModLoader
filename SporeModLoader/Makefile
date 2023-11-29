@@ -44,11 +44,9 @@ endif
 
 all: $(BINARY_DIR)/$(DLL_FILE)
 
-$(BINARY_DIR):
-	$(QUIET)mkdir -p $@
-
-$(BINARY_DIR)/$(DLL_FILE): $(BINARY_DIR) $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
+$(BINARY_DIR)/$(DLL_FILE): $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
 	@echo "MINGW_LD  $@"
+	$(QUIET)mkdir -p $(BINARY_DIR)
 	$(QUIET)$(MINGW_CXX) $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES) -static -shared $(SOURCE_DIR)/dllmain.def -o $@ $(LDFLAGS)
 
 clean:

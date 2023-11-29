@@ -1,12 +1,12 @@
 #
 # SporeModManager Makefile
 #
-THIRDPARTY_DIR ?= ../3rdParty
-BINARY_DIR     ?= bin
-SOURCE_DIR     ?= .
-EXE_FILE       ?= SporeModManager
-VERBOSE        ?= 0
-MINGW          ?= 0
+THIRDPARTY_DIR := ../3rdParty
+BINARY_DIR     := bin
+SOURCE_DIR     := .
+EXE_FILE       := SporeModManager
+VERBOSE        := 0
+MINGW          := 0
 
 CC         ?= gcc
 CXX        ?= g++
@@ -90,19 +90,18 @@ endif
 
 all: $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT)
 
-$(BINARY_DIR):
-	$(QUIET)mkdir -p $@
-
-$(THIRDPARTY_DIR)/zlib/zconf.h:
+$(THIRDPARTY_DIR)/zlib/zconf.h: $(THIRDPARTY_DIR)/zlib/zconf.h.in
 	@echo "GEN $@"
 	$(QUIET)cp -f $@.in $@
 
-$(BINARY_DIR)/$(EXE_FILE): $(BINARY_DIR) $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
+$(BINARY_DIR)/$(EXE_FILE): $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
 	@echo "LD  $@"
+	$(QUIET)mkdir -p $(BINARY_DIR)
 	$(QUIET)$(CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS)
 
-$(BINARY_DIR)/$(EXE_FILE).exe: $(BINARY_DIR) $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
+$(BINARY_DIR)/$(EXE_FILE).exe: $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
 	@echo "MINGW_LD  $@"
+	$(QUIET)mkdir -p $(BINARY_DIR)
 	$(QUIET)$(MINGW_CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS)
 
 clean:
