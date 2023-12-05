@@ -336,13 +336,18 @@ bool SporeModManager::UninstallMods(std::vector<int> ids)
     {
         installedSporeMod = l_InstalledSporeMods.at(id);
 
+        std::cout << "-> Removing " << installedSporeMod.Name << std::endl;
+
         for (const auto& installedFile : installedSporeMod.InstalledFiles)
         {
             try
             {
                 fullInstallPath = Path::GetFullInstallPath(installedFile.InstallLocation, installedFile.FileName);
 
-                std::cout << "-> Removing " << installedFile.FileName.string() << std::endl;
+                if (UI::GetVerboseMode())
+                {
+                    std::cout << "--> Removing " << installedFile.FileName.string() << std::endl;
+                }
 
                 std::filesystem::remove(fullInstallPath);
             }

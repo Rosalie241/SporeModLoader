@@ -18,11 +18,22 @@ using namespace SporeModManagerHelpers;
 // Local Variables
 //
 
+static bool l_VerboseMode = false;
 static bool l_NoInputMode = false;
 
 //
 // Exported Functions
 //
+
+void UI::SetVerboseMode(bool value)
+{
+    l_VerboseMode = value;
+}
+
+bool UI::GetVerboseMode(void)
+{
+    return l_VerboseMode;
+}
 
 void UI::SetNoInputMode(bool value)
 {

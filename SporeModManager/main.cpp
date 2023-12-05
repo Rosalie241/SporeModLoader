@@ -65,6 +65,7 @@ static void ShowUsage()
               << "  help                display this help and exit" << std::endl
               << std::endl
               << "Options: " << std::endl
+              << "  -v, --verbose       shows verbose output" << std::endl
               << "  -n, --no-input      disables user input during installation of mods" << std::endl
               << "  -u, --update-needed updates mod when mod is already installed" << std::endl
               << "  -s, --save-paths    saves paths to the configuration file" << std::endl
@@ -88,6 +89,7 @@ int main(int argc, char** argv)
     std::vector<arg_str_type> args(argv, argv + argc);
 
     // parse options
+    bool hasVerboseOption   = false;
     bool hasNoInputOption   = false;
     bool hasUpdateOption    = false;
     bool hasSavePathsOption = false;
@@ -98,6 +100,7 @@ int main(int argc, char** argv)
 
     struct option_argument optionArgs[] =
     {
+        { arg_str("v"), arg_str("verbose"),       hasVerboseOption },
         { arg_str("n"), arg_str("no-input"),      hasNoInputOption },
         { arg_str("u"), arg_str("update-needed"), hasUpdateOption },
         { arg_str("s"), arg_str("save-paths"),    hasSavePathsOption },
@@ -190,6 +193,7 @@ int main(int argc, char** argv)
     }
 
     // apply options
+    UI::SetVerboseMode(hasVerboseOption);
     UI::SetNoInputMode(hasNoInputOption);
     Path::SetDirectories(coreLibsPath, modLibsPath, ep1Path, dataPath);
     if (hasSavePathsOption)

@@ -242,6 +242,16 @@ namespace SporeModManagerHelpers
     namespace UI
     {
         /// <summary>
+        ///     Sets verbose mode
+        /// </summary>
+        void SetVerboseMode(bool value);
+
+        /// <summary>
+        ///     Gets verbose mode
+        /// </summary>
+        bool GetVerboseMode(void);
+
+        /// <summary>
         ///     Sets no input mode
         /// </summary>
         void SetNoInputMode(bool value);
