@@ -254,6 +254,7 @@ Game::GameVersion Game::GetCurrentVersion(void)
 
     switch (currentFileSize)
     {
+    case 24904192:
     case 24909584:
         return Game::GameVersion::Disk_1_5_1;
     case 31347984:
