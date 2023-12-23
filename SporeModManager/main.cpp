@@ -23,10 +23,12 @@ using namespace SporeModManagerHelpers;
 #define arg_str(str) L##str
 #define arg_char(c) L##c
 #define arg_str_type std::wstring
+#define arg_cerr wcerr
 #else
 #define arg_str(str) str
 #define arg_char(c) c
 #define arg_str_type std::string
+#define arg_cerr cerr
 #endif // _WIN32
 
 //
@@ -142,6 +144,11 @@ int main(int argc, char** argv)
                         arg.erase(pos, 1);
                     }
                 }
+                if (!arg.empty())
+                {
+                    std::arg_cerr << arg_str("unrecognized option: -") << arg << std::endl;
+                    return 1;
+                }
             }
             else
             { // long option
@@ -182,6 +189,11 @@ int main(int argc, char** argv)
                         }
                         arg.clear();
                     }
+                }
+                if (!arg.empty())
+                {
+                    std::arg_cerr << arg_str("unrecognized option: --") << arg << std::endl;
+                    return 1;
                 }
             }
         }
