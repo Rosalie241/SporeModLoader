@@ -21,6 +21,11 @@ with the `help` argument
 Downloads the latest release and extract the
 archive into the game directory.  
 
+If you're using Linux with WINE, ensure you
+set a DLL override for `dinput8.dll` to native,
+this can be achieved with `WINEDLLOVERRIDES="dinput8.dll=n"`
+or by using `winecfg`.
+
 ## Building
 
 #### Linux
