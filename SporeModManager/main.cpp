@@ -66,7 +66,8 @@ static void ShowUsage()
               << std::endl
               << "Options: " << std::endl
               << "  -v, --verbose       shows verbose output" << std::endl
-              << "  -n, --no-input      disables user input during installation of mods" << std::endl
+              << "  -y, --no-input      disables user input during installation of mods" << std::endl
+              << "  -n, --needed        only install mod when mod isn't installed" << std::endl
               << "  -u, --update-needed updates mod when mod is already installed" << std::endl
               << "  -s, --save-paths    saves paths to the configuration file" << std::endl
               << "      --corelibs-path sets corelibs path" << std::endl
@@ -91,6 +92,7 @@ int main(int argc, char** argv)
     // parse options
     bool hasVerboseOption   = false;
     bool hasNoInputOption   = false;
+    bool hasNeededOption    = false;
     bool hasUpdateOption    = false;
     bool hasSavePathsOption = false;
     std::filesystem::path coreLibsPath;
@@ -101,7 +103,8 @@ int main(int argc, char** argv)
     struct option_argument optionArgs[] =
     {
         { arg_str("v"), arg_str("verbose"),       hasVerboseOption },
-        { arg_str("n"), arg_str("no-input"),      hasNoInputOption },
+        { arg_str("y"), arg_str("no-input"),      hasNoInputOption },
+        { arg_str("n"), arg_str("needed"),        hasNeededOption  },
         { arg_str("u"), arg_str("update-needed"), hasUpdateOption },
         { arg_str("s"), arg_str("save-paths"),    hasSavePathsOption },
     };
@@ -192,6 +195,13 @@ int main(int argc, char** argv)
         }
     }
 
+    // validate options
+    if (hasUpdateOption && hasNeededOption)
+    {
+        std::cerr << "--needed cannot be combined with --update-needed!" << std::endl;
+        return 1;
+    }
+
     // apply options
     UI::SetVerboseMode(hasVerboseOption);
     UI::SetNoInputMode(hasNoInputOption);
@@ -254,7 +264,7 @@ int main(int argc, char** argv)
         }
         else
         {
-            if (!SporeModManager::InstallMods(paths))
+            if (!SporeModManager::InstallMods(paths, false, hasNeededOption))
             {
                 return 1;
             }

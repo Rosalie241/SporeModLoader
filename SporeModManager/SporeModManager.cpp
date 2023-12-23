@@ -135,13 +135,19 @@ bool SporeModManager::ListInstalledMods(void)
     return true;
 }
 
-bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool skipValidation)
+bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool skipValidation, bool skipInstalled)
 {
     std::vector<std::string> uniqueNames;
     std::string              extension;
     bool                     returnValue = true;
+    int                              installedSporeModId;
     SporeMod::Xml::InstalledSporeMod installedSporeMod;
-    SporeMod::Xml::SporeModInfo sporeModInfo;
+    SporeMod::Xml::SporeModInfo      sporeModInfo;
+
+    if (!GetInstalledSporeModList())
+    {
+        return false;
+    }
 
     // do some basic validation before attempting
     // to install the given mods
@@ -178,19 +184,22 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
             // ensure we only have unique mod names
             if (std::find(uniqueNames.begin(), uniqueNames.end(), sporeModInfo.UniqueName) != uniqueNames.end())
             {
-                std::cerr << "Removing \"" << path.string() << "\" from the installation list due to another mod having the same unique name!" << std::endl;
+                std::cerr << "Skipping \"" << path.string() << "\" due to another mod having the same unique name!" << std::endl;
                 paths.erase(paths.begin() + i);
                 i -= 1;
                 continue;
             }
             uniqueNames.push_back(sporeModInfo.UniqueName);
-        }
-    }
 
-    if (!GetInstalledSporeModList())
-    {
-        CloseZipFiles();
-        return false;
+            // skip already installed mods
+            if (skipInstalled && SporeMod::FindInstalledMod(sporeModInfo.UniqueName, installedSporeModId, l_InstalledSporeMods))
+            {
+                std::cerr << "Skipping \"" << path.string() << "\" as it's already installed!" << std::endl;
+                paths.erase(paths.begin() + i);
+                i -= 1;
+                continue;
+            }
+        }
     }
 
     // install given mods
