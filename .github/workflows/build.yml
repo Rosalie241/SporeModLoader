@@ -15,7 +15,7 @@ jobs:
           arch: amd64_x86
       - name: Prepare Environment
         run: |
-          $env:revision = git describe --tags --always
+          $env:revision = git describe --always
           echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
       - name: Build SporeModLoader (msvc)
         run: |
@@ -70,7 +70,7 @@ jobs:
           submodules: 'true'
       - name: Prepare Environment
         run: |
-          echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
+          echo "GIT_REVISION=$(git describe --always)" >> $GITHUB_ENV
       - name: Build SporeModManager (Linux)
         run: |
           make SporeModManager -j$(nproc)
@@ -95,7 +95,7 @@ jobs:
           sudo apt-get -y install gcc-mingw-w64-i686 g++-mingw-w64-i686
       - name: Prepare Environment
         run: |
-          echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
+          echo "GIT_REVISION=$(git describe --always)" >> $GITHUB_ENV
       - name: Build SporeModLoader (mingw)
         run: |
           make SporeModLoader -j$(nproc)
