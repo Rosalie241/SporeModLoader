@@ -9,7 +9,7 @@
  */
 #include "SporeModManagerHelpers.hpp"
 
-#include <iostream>
+#include <cstdio>
 #include <fstream>
 #include <algorithm>
 #include <array>
@@ -42,13 +42,13 @@ bool FileVersion::GetCoreLibFileVersionInfo(FileVersionInfo& fileVersionInfo)
 
     if (!std::filesystem::is_regular_file(coreLibPath))
     {
-        std::cerr << "\"" << coreLibPath.string() << "\" doesn't exist!" << std::endl;
+        fprintf(stderr, "\"%s\" doesn't exist!\n", coreLibPath.string().c_str());
         return false;
     }
 
     if (!FileVersion::ParseFile(coreLibPath, fileVersionInfo))
     {
-        std::cerr << "FileVersion::ParseFile() Failed!" << std::endl;
+        fprintf(stderr, "FileVersion::ParseFile() Failed!");
         return false;
     }
 
@@ -63,14 +63,14 @@ bool FileVersion::CheckIfCoreLibMatchesVersion(FileVersionInfo& modFileVersionIn
 
     if (!GetCoreLibFileVersionInfo(coreLibFileVersionInfo))
     {
-        std::cerr << "FileVersion::GetCoreLibFileVersionInfo() Failed!" << std::endl;
+        fprintf(stderr, "FileVersion::GetCoreLibFileVersionInfo() Failed!");
         return false;
     }
 
     if (modFileVersionInfo > coreLibFileVersionInfo)
     {
-        std::cerr << "\"" << modName << "\" requires newer modapi dll (\"" << modFileVersionInfo.to_string() <<
-            "\") than what's currently installed (\"" << coreLibFileVersionInfo.to_string() << "\")" << std::endl;
+        fprintf(stderr, "\"%s\" requires newer modapi dll (\"%s\") than what's currently installed (\"%s\")!\n",
+                        modName.c_str(), modFileVersionInfo.to_string().c_str(), coreLibFileVersionInfo.to_string().c_str());
         return false;
     }
 
@@ -85,7 +85,7 @@ bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionIn
 
     if (splitString.size() > 4)
     {
-        std::cerr << "\"" << string << "\" is not a valid version string!" << std::endl;
+        fprintf(stderr, "\"%s\" is not a valid version string!\n", string.c_str());
         return false;
     }
 
@@ -108,7 +108,7 @@ bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionIn
         }
         catch (...)
         {
-            std::cerr << "\"" << string << "\" is not a valid version string!" << std::endl;
+            fprintf(stderr, "\"%s\" is not a valid version string!\n", string.c_str());
             return false;
         }
     }
@@ -125,7 +125,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
     fileStream.open(path, std::ios_base::in | std::ios_base::binary);
     if (!fileStream.is_open())
     {
-        std::cerr << "fileStream.open() Failed!" << std::endl;
+        fprintf(stderr, "fileStream.open() Failed!\n");
         return false;
     }
 
@@ -137,7 +137,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
     // make sure it doesn't go over the hard-limit
     if (fileStreamLength > MAX_FILE_READ_SIZE)
     {
-        std::cerr << "refusing to read file bigger than 64MiB!" << std::endl;
+        fprintf(stderr, "refusing to read file bigger than 64MiB!\n");
         return false;
     }
 
@@ -146,7 +146,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
 
     if (fileStream.fail())
     {
-        std::cerr << "fileStream.fail()!" << std::endl;
+        fprintf(stderr, "fileStream.fail()!\n");
         return false;
     }
 
@@ -160,7 +160,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
     auto bufferIter = std::search(buffer.begin(), buffer.end(), searchBytes.begin(), searchBytes.end());
     if (bufferIter == buffer.end())
     {
-        std::cout << "std::search() didn't find the required bytes!" << std::endl;
+        fprintf(stderr, "std::search() didn't find the required bytes!\n");
         return false;
     }
 

@@ -10,7 +10,7 @@
 #include "SporeModManagerHelpers.hpp"
 
 #include <filesystem>
-#include <iostream>
+#include <cstdio>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -48,7 +48,7 @@ bool Path::CheckIfPathsExist(void)
 
     if (!SporeMod::Xml::GetDirectories(coreLibsPath, modLibsPath, galacticAdventuresDataPath, coreSporeDataPath))
     {
-        std::cerr << "SporeMod::Xml::GetDirectories() Failed!" << std::endl;
+        fprintf(stderr, "SporeMod::Xml::GetDirectories() Failed!\n");
         return false;
     }
 
@@ -74,8 +74,9 @@ bool Path::CheckIfPathsExist(void)
     {
         if (!std::filesystem::is_directory(path))
         {
-            std::cerr << "\"" << path.string() << "\" is not a directory or doesn't exist!" << std::endl
-                      << "If you want to change the configured directories, see SporeModManager.xml" << std::endl;
+            fprintf(stderr, "\"%s\" is not a directory or doesn't exist!\n"
+                            "If you want to change the configured directories, see SporeModManager.xml\n",
+                            path.string().c_str());
             return false;
         }
     }
@@ -149,7 +150,7 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
 
     if (GetModuleFileNameW(nullptr, currentExecutablePathBuf, MAX_PATH) == 0)
     { // fallback to current path
-        std::cerr << "GetModuleFileNameW() Failed!" << std::endl;
+        fprintf(stderr, "GetModuleFileNameW() Failed!\n");
         return std::filesystem::current_path();
     }
 
@@ -163,7 +164,7 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
     }
     catch (...)
     { // fallback to current path
-        std::cerr << "std::filesystem::canonical(\"/proc/self/exe\") Failed!" << std::endl;
+        fprintf(stderr, "std::filesystem::canonical(\"/proc/self/exe\") Failed!\n");
         return std::filesystem::current_path();
     }
 #endif // _WIN32

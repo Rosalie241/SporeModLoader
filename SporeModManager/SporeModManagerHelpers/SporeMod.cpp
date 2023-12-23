@@ -9,7 +9,7 @@
  */
 #include "SporeModManagerHelpers.hpp"
 
-#include <iostream>
+#include <cstdio>
 #include <algorithm>
 
 using namespace SporeModManagerHelpers;
@@ -25,8 +25,9 @@ static bool IsModAlreadyInstalled(std::string uniqueName,
     {
         if (installedSporeMod.UniqueName == uniqueName)
         {
-            std::cerr << "A mod with the same unique name (" << installedSporeMod.Name << ") has already been installed" << std::endl
-                      << "Did you mean update?" << std::endl;
+            fprintf(stderr, "A mod with the same unique name (%s) has already been installed\n"
+                            "Did you mean update?\n",
+                            installedSporeMod.Name.c_str());
             return true;
         }
     }
@@ -44,8 +45,8 @@ static bool CheckIfOtherModContainsFiles(std::vector<SporeMod::Xml::SporeModFile
             auto installedFileIter = std::find(installedSporeMod.InstalledFiles.begin(), installedSporeMod.InstalledFiles.end(), sporeModFile);
             if (installedFileIter != installedSporeMod.InstalledFiles.end())
             {
-                std::cerr << "An already installed mod (" << installedSporeMod.Name
-                          << ") contains a file (" << sporeModFile.FileName << ") that this mod wants to install!" << std::endl;
+                fprintf(stderr, "An already installed mod (%s) contains a file (\"%s\") that this mod wants to install!\n",
+                                installedSporeMod.Name.c_str(), sporeModFile.FileName.string().c_str());
                 return true;
             }
         }
@@ -105,11 +106,11 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
 
     if (configurationRequired)
     {
-        std::cout << "-> Configuring " << sporeModInfo.Name << std::endl;
+        fprintf(stdout, "-> Configuring %s\n", sporeModInfo.Name.c_str());
     }
     else
     {
-        std::cout << "-> Installing " << sporeModInfo.Name << std::endl;
+        fprintf(stdout, "-> Installing %s\n", sporeModInfo.Name.c_str());
     }
 
     struct
@@ -140,7 +141,7 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
 
     for (const auto& componentGroup : sporeModInfo.ComponentGroups)
     {
-        std::cout << "--> " << componentGroup.Name << std::endl;
+        fprintf(stdout, "--> %s\n", componentGroup.Name.c_str());
 
         componentsSize     = componentGroup.Components.size();
         componentId        = 0;
@@ -149,7 +150,7 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
         for (size_t i = 0; i < componentsSize; i++)
         {
             component = componentGroup.Components.at(i);
-            std::cout << "[" << i << "] " << component.Name << std::endl;
+            fprintf(stdout, "[%u] %s\n", (unsigned int)i, component.Name.c_str());
 
             // set default checked component id
             if (component.DefaultChecked &&
@@ -190,8 +191,10 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
         for (size_t i = 0; i < componentsSize; i++)
         {
             component = sporeModInfo.Components.at(i);
-            std::cout << "[" << i << "] " << component.Name << std::endl
-                << "  " << component.Description << std::endl;
+            fprintf(stdout, "[%u] %s\n"
+                            "  %s\n", 
+                            (unsigned int)i, component.Name.c_str(),
+                            component.Description.c_str());
 
             // set default checked component ids
             if (component.DefaultChecked)
@@ -258,7 +261,7 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
 
     if (configurationRequired)
     {
-        std::cout << "-> Installing " << sporeModInfo.Name << std::endl;
+        fprintf(stdout, "-> Installing %s\n", sporeModInfo.Name.c_str());
     }
 
     // file collision detection
@@ -274,12 +277,12 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
 
         if (UI::GetVerboseMode())
         {
-            std::cout << "--> Installing " << installedFile.FileName  << " to " << installPath << std::endl;
+            fprintf(stdout, "--> Installing %s to %s\n", installedFile.FileName.string().c_str(), installPath.string().c_str());
         }
 
         if (!Zip::ExtractFile(zipFile, sourcePath, installPath))
         {
-            std::cerr << "Zip::ExtractFile() Failed!" << std::endl;
+            fprintf(stderr, "Zip::ExtractFile() Failed!\n");
             // cleanup installed files that were left over
             for (const auto& installedFileToRemove : installedSporeMod.InstalledFiles)
             {
@@ -290,13 +293,13 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
                     {
                         if (UI::GetVerboseMode())
                         {
-                            std::cout << "--> Removing " << installPath << std::endl;
+                            fprintf(stdout, "--> Removing %s\n", installPath.filename().string().c_str());
                         }
                         std::filesystem::remove(installPath);
                     }
                     catch(...)
                     {
-                        std::cerr << "std::filesystem::remove(" << installPath << ") Failed!" << std::endl;
+                        fprintf(stderr, "std::filesystem::remove(\"%s\") Failed!\n", installPath.string().c_str());
                     }
                 }
             }
@@ -327,7 +330,7 @@ bool SporeMod::InstallPackage(std::filesystem::path path, Xml::InstalledSporeMod
         return false;
     }
 
-    std::cout << "-> Installing " << installedSporeMod.Name << std::endl;
+    fprintf(stdout, "-> Installing %s\n", installedSporeMod.Name.c_str());
 
     // file collision detection
     if (CheckIfOtherModContainsFiles(installedSporeMod.InstalledFiles, installedSporeMods))
@@ -343,7 +346,7 @@ bool SporeMod::InstallPackage(std::filesystem::path path, Xml::InstalledSporeMod
 
         if (UI::GetVerboseMode())
         {
-            std::cout << "--> Installing " << installedFile.FileName << " to " << installPath << std::endl;
+            fprintf(stdout, "--> Installing %s to %s\n", installedFile.FileName.string().c_str(), installPath.string().c_str());
         }
 
         try
@@ -352,7 +355,8 @@ bool SporeMod::InstallPackage(std::filesystem::path path, Xml::InstalledSporeMod
         }
         catch (...)
         {
-            std::cerr << "std::filesystem::copy_file(" << sourcePath << "," << installPath << ") Failed!" << std::endl;
+            fprintf(stderr, "std::filesystem::copy_file(\"%s\", \"%s\") Failed!\n",
+                             sourcePath.string().c_str(), installPath.string().c_str());
             return false;
         }
     }

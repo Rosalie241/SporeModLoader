@@ -9,7 +9,7 @@
  */
 #include "SporeModManagerHelpers.hpp"
 
-#include <iostream>
+#include <cstdio>
 #include <algorithm>
 #include <tinyxml2.h>
 
@@ -277,14 +277,14 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     error = xmlDocument.Parse(buffer.data(), buffer.size());
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
-        std::cerr << "XmlDocument.Parse() Failed!" << std::endl;
+        fprintf(stderr, "XmlDocument.Parse() Failed!\n");
         return false;
     }
 
     xmlElement = xmlDocument.RootElement();
     if (xmlElement == nullptr)
     {
-        std::cerr << "XDocument.RootElement() Failed!" << std::endl;
+        fprintf(stderr, "XDocument.RootElement() Failed!\n");
         return false;
     }
 
@@ -303,7 +303,7 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
         ret = FileVersion::ParseString(xmlAttributeText, sporeModInfo.InstallerVersion);
         if (!ret)
         {
-            std::cerr << "FileVersion::ParseString() Failed!" << std::endl;
+            fprintf(stderr, "FileVersion::ParseString() Failed!\n");
             return false;
         }
         else
@@ -313,7 +313,8 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
 
             if (sporeModInfo.InstallerVersion > maxSupportedInstallerVersion)
             {
-                std::cerr << "installerSystemVersion \"" << sporeModInfo.InstallerVersion.to_string() << "\" is unsupported!" << std::endl;
+                fprintf(stderr, "installerSystemVersion \"%s\" is unsupported!\n",
+                                sporeModInfo.InstallerVersion.to_string().c_str());
                 return false;
             }
         }
@@ -325,7 +326,7 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
         ret = FileVersion::ParseString(xmlAttributeText, sporeModInfo.MinimumModAPILibVersion);
         if (!ret)
         {
-            std::cerr << "FileVersion::ParseString() Failed!" << std::endl;
+            fprintf(stderr, "FileVersion::ParseString() Failed!\n");
             return false;
         }
     }
@@ -375,7 +376,7 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& coreLibsPath, std::fil
                                   Path::Combine({ "..", "..", "DataEP1" }),
                                   Path::Combine({ "..", "..", "Data" })))
         {
-            std::cerr << "Xml::SaveDirectories() Failed!" << std::endl;
+            fprintf(stderr, "Xml::SaveDirectories() Failed!\n");
             return false;
         }
     }
@@ -383,14 +384,14 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& coreLibsPath, std::fil
     error = xmlDocument.LoadFile(configFilePath.string().c_str());
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
-        std::cerr << "XmlDocument.LoadFile() Failed!" << std::endl;
+        fprintf(stderr, "XmlDocument.LoadFile() Failed!\n");
         return false;
     }
 
     xmlElement = xmlDocument.RootElement();
     if (xmlElement == nullptr)
     {
-        std::cerr << "XDocument.RootElement() Failed!" << std::endl;
+        fprintf(stderr, "XDocument.RootElement() Failed!\n");
         return false;
     }
 
@@ -469,7 +470,7 @@ bool SporeMod::Xml::SaveDirectories(std::filesystem::path coreLibsPath, std::fil
     xmlElement = xmlDocument.RootElement();
     if (xmlElement == nullptr)
     {
-        std::cerr << "XDocument.RootElement() Failed!" << std::endl;
+        fprintf(stderr, "XDocument.RootElement() Failed!\n");
         return false;
     }
 
@@ -530,14 +531,14 @@ bool SporeMod::Xml::GetInstalledModList(std::vector<InstalledSporeMod>& installe
     error = xmlDocument.LoadFile(configFilePath.string().c_str());
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
-        std::cerr << "XmlDocument.LoadFile() Failed!" << std::endl;
+        fprintf(stderr, "XmlDocument.LoadFile() Failed!\n");
         return false;
     }
 
     xmlElement = xmlDocument.RootElement();
     if (xmlElement == nullptr)
     {
-        std::cerr << "XDocument.RootElement() Failed!" << std::endl;
+        fprintf(stderr, "XDocument.RootElement() Failed!\n");
         return false;
     }
 
@@ -591,7 +592,7 @@ bool SporeMod::Xml::SaveInstalledModList(const std::vector<InstalledSporeMod>& i
     error = xmlDocument.LoadFile(configFilePath.string().c_str());
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
-        std::cerr << "XmlDocument.LoadFile() Failed!" << std::endl;
+        fprintf(stderr, "XmlDocument.LoadFile() Failed!\n");
         return false;
     }
 

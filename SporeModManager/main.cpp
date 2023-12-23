@@ -13,7 +13,7 @@
 #include "../version.h"
 
 #include <filesystem>
-#include <iostream>
+#include <stdio.h>
 
 using namespace SporeModManagerHelpers;
 
@@ -26,11 +26,13 @@ using namespace SporeModManagerHelpers;
 #define arg_char(c) L##c
 #define arg_str_type std::wstring
 #define arg_cerr wcerr
+#define arg_format "%ls"
 #else
 #define arg_str(str) str
 #define arg_char(c) c
 #define arg_str_type std::string
 #define arg_cerr cerr
+#define arg_format "%s"
 #endif // _WIN32
 
 //
@@ -56,30 +58,25 @@ struct path_argument
 
 static void ShowUsage()
 {
-    std::cout << "SporeModManager is a commandline mod manager for Spore" << std::endl
-              << std::endl
-              << "Usage: SporeModManager [OPTION] [COMMAND]" << std::endl
-              << std::endl
-              << "Commands:" << std::endl
-              << "  list-installed      lists installed mod(s) with id(s)" << std::endl
-              << "  install file(s)     installs file(s)" << std::endl
-              << "  update file(s)      updates mod(s) using file(s)" << std::endl
-              << "  uninstall id(s)     uninstalls mod with id(s)" << std::endl
-              << std::endl
-              << "  version             display version and exit"   << std::endl
-              << "  help                display this help and exit" << std::endl
-              << std::endl
-              << "Options: " << std::endl
-              << "  -v, --verbose       shows verbose output" << std::endl
-              << "  -y, --no-input      disables user input during installation of mods" << std::endl
-              << "  -n, --needed        only install mod when mod isn't installed" << std::endl
-              << "  -u, --update-needed updates mod when mod is already installed" << std::endl
-              << "  -s, --save-paths    saves paths to the configuration file" << std::endl
-              << "      --corelibs-path sets corelibs path" << std::endl
-              << "      --modlibs-path  sets modlibs path"  << std::endl
-              << "      --data-path     sets data path"     << std::endl
-              << "      --ep1-path      sets ep1 data path" << std::endl
-              << std::endl;
+    puts("SporeModManager is a commandline mod manager for Spore\n\n"
+           "Usage: SporeModManager [OPTION] [COMMAND]\n\n"
+           "Commands:\n"
+           "  list-installed      lists installed mod(s) with id(s)\n"
+           "  install file(s)     installs file(s)\n"
+           "  update file(s)      updates mod(s) using file(s)\n"
+           "  uninstall id(s)     uninstalls mod with id(s)\n\n"
+           "  version             display version and exit\n"
+           "  help                display this help and exit\n\n"
+           "Options: \n"
+           "  -v, --verbose       shows verbose output\n"
+           "  -y, --no-input      disables user input during installation of mods\n"
+           "  -n, --needed        only install mod when mod isn't installed\n"
+           "  -u, --update-needed updates mod when mod is already installed\n"
+           "  -s, --save-paths    saves paths to the configuration file\n"
+           "      --corelibs-path sets corelibs path\n"
+           "      --modlibs-path  sets modlibs path\n"
+           "      --data-path     sets data path\n"
+           "      --ep1-path      sets ep1 data path\n");
 }
 
 //
@@ -149,7 +146,7 @@ int main(int argc, char** argv)
                 }
                 if (!arg.empty())
                 {
-                    std::arg_cerr << arg_str("unrecognized option: -") << arg << std::endl;
+                    fprintf(stderr, "unrecognized option: -" arg_format, arg.c_str());
                     return 1;
                 }
             }
@@ -195,7 +192,7 @@ int main(int argc, char** argv)
                 }
                 if (!arg.empty())
                 {
-                    std::arg_cerr << arg_str("unrecognized option: --") << arg << std::endl;
+                    fprintf(stderr, "unrecognized option: --" arg_format, arg.c_str());
                     return 1;
                 }
             }
@@ -213,7 +210,7 @@ int main(int argc, char** argv)
     // validate options
     if (hasUpdateOption && hasNeededOption)
     {
-        std::cerr << "--needed cannot be combined with --update-needed!" << std::endl;
+        fprintf(stderr, "--needed cannot be combined with --update-needed!");
         return 1;
     }
 
@@ -225,7 +222,7 @@ int main(int argc, char** argv)
     {
         if (!SporeMod::Xml::SaveDirectories(coreLibsPath, modLibsPath, ep1Path, dataPath))
         {
-            std::cerr << "SporeMod::Xml::SaveDirectories() Failed!" << std::endl;
+            fprintf(stderr, "SporeMod::Xml::SaveDirectories() Failed!");
             return 1;
         }
     }
@@ -329,7 +326,7 @@ int main(int argc, char** argv)
             std::vector<arg_str_type> splitString = String::Split(args.at(2), arg_char('-'));
             if (splitString.size() != 2)
             {
-                std::cerr << "range can only contain 2 positive numbers!" << std::endl;
+                fprintf(stderr, "range can only contain 2 positive numbers!");
                 return 1;
             }
 
@@ -340,19 +337,19 @@ int main(int argc, char** argv)
             }
             catch (...)
             {
-                std::cerr << "range can only contain numbers!" << std::endl;
+                fprintf(stderr, "range can only contain numbers!");
                 return 1;
             }
 
             // validate start and end index
             if (startIndex == endIndex)
             {
-                std::cerr << "start number cannot be equal to the end number!" << std::endl;
+                fprintf(stderr, "start number cannot be equal to the end number!");
                 return 1;
             }
             else if (startIndex > endIndex)
             {
-                std::cerr << "start number must be less than the end number!" << std::endl;
+                fprintf(stderr, "start number must be less than the end number!");
                 return 1;
             }
 
@@ -371,7 +368,7 @@ int main(int argc, char** argv)
                 }
                 catch (...)
                 {
-                    std::cerr << "ID must be a number!" << std::endl;
+                    fprintf(stderr, "ID must be a number!");
                     return 1;
                 }
             }
@@ -384,7 +381,7 @@ int main(int argc, char** argv)
     }
     else if (command == arg_str("version"))
     {
-        std::cout << "SporeModManager " << VERSION_STR << std::endl;
+        fprintf(stdout, "SporeModManager %s\n", VERSION_STR);
         return 0;
     }
     else

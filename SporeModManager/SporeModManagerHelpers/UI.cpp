@@ -9,7 +9,7 @@
  */
 #include "SporeModManagerHelpers.hpp"
 
-#include <iostream>
+#include <cstdio>
 #include <sstream>
 
 using namespace SporeModManagerHelpers;
@@ -42,21 +42,23 @@ void UI::SetNoInputMode(bool value)
 
 void UI::AskUserInput(std::string text, int& number, std::optional<int> defaultNumber, int min, int max)
 {
+    char inputBuffer[256] = {0};
     std::string inputLine;
 
     do
     {
-        std::cout << text;
+        fprintf(stdout, "%s", text.c_str());
 
         if (l_NoInputMode)
         {
-            std::cout << std::endl;
+            fprintf(stdout, "\n");
             number = defaultNumber.has_value() ? defaultNumber.value() : 0;
             return;
         }
 
-        std::getline(std::cin, inputLine);
-        if (inputLine.empty() && defaultNumber.has_value())
+        fgets(inputBuffer, sizeof(inputBuffer), stdin);
+        inputLine = inputBuffer;
+        if ((inputLine.empty() || inputLine == "\n") && defaultNumber.has_value())
         {
             number = defaultNumber.value();
             return;
@@ -73,13 +75,14 @@ void UI::AskUserInput(std::string text, int& number, std::optional<int> defaultN
         }
         catch (...)
         {
-            std::cerr << "invalid input" << std::endl;
+            fprintf(stderr, "invalid input\n");
         }
     } while (true);
 }
 
 void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& numbers, std::vector<int> defaultNumbers, int min, int max)
 {
+    char inputBuffer[256] = {0};
     std::string       inputLine;
     std::stringstream stringStream;
     std::string       inputItem;
@@ -89,22 +92,23 @@ void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& number
     {
         numbers.clear();
 
-        std::cout << text;
+        fprintf(stdout, "%s", text.c_str());
 
         if (l_NoInputMode)
         {
-            std::cout << std::endl;
+            fprintf(stdout, "\n");
             numbers = defaultNumbers;
             return;
         }
 
-        std::getline(std::cin, inputLine);
-        if (inputLine.empty())
+        fgets(inputBuffer, sizeof(inputBuffer), stdin);
+        inputLine = inputBuffer;
+        if (inputLine.empty() || inputLine == "\n")
         {
             numbers = defaultNumbers;
             return;
         }
-        else if (String::Lowercase(inputLine) == "n")
+        else if (String::Lowercase(inputLine) == "n\n")
         {
             return;
         }
@@ -127,7 +131,7 @@ void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& number
             }
             catch (...)
             {
-                std::cout << "invalid input" << std::endl;
+                fprintf(stderr, "invalid input\n");
                 validInput = false;
                 break;
             }
@@ -137,30 +141,32 @@ void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& number
 
 void UI::AskUserInput(std::string text, bool& boolValue, bool defaultValue)
 {
+    char inputBuffer[256] = {0};
     std::string inputLine;
     bool validInput = false;
     do
     {
-        std::cout << text;
+        fprintf(stdout, "%s", text.c_str());
 
         if (l_NoInputMode)
         {
-            std::cout << std::endl;
+            fprintf(stdout, "\n");
             boolValue = true;
             return;
         }
 
-        std::getline(std::cin, inputLine);
+        fgets(inputBuffer, sizeof(inputBuffer), stdin);
+        inputLine = inputBuffer;
         inputLine = String::Lowercase(inputLine);
-        if (inputLine.empty())
+        if (inputLine.empty() || inputLine == "\n")
         {
             boolValue = defaultValue;
             validInput = true;
         }
-        else if (inputLine == "y" ||
-            inputLine == "n")
+        else if (inputLine == "y\n" ||
+            inputLine == "n\n")
         {
-            boolValue = (inputLine == "y");
+            boolValue = (inputLine == "y\n");
             validInput = true;
         }
     } while (!validInput);

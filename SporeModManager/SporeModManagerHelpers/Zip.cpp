@@ -9,7 +9,7 @@
  */
 #include "SporeModManagerHelpers.hpp"
 
-#include <iostream>
+#include <cstdio>
 #include <fstream>
 #include <map>
 
@@ -143,20 +143,20 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
     // try to find file in zip
     if (unzLocateFile(zipFile, file.string().c_str(), 2) != UNZ_OK)
     {
-        std::cerr << "Failed to find \"" << file << "\" in zip file!" << std::endl;
+        fprintf(stderr, "Failed to find \"%s\" in zip file!\n", file.string().c_str());
         return false;
     }
 
     outputFileStream.open(outputFile, std::ofstream::trunc | std::ofstream::binary);
     if (!outputFileStream.is_open())
     {
-        std::cerr << "ofstream.open() Failed!" << std::endl;
+        fprintf(stderr, "ofstream.open() Failed!\n");
         return false;
     }
 
     if (unzOpenCurrentFile(zipFile) != UNZ_OK)
     {
-        std::cerr << "unzOpenCurrentFile() Failed!" << std::endl;
+        fprintf(stderr, "unzOpenCurrentFile() Failed!\n");
         return false;
     }
 
@@ -166,7 +166,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
-            std::cerr << "unzReadCurrentFile() Failed: " << std::to_string(bytesRead) << std::endl;
+            fprintf(stderr, "unzReadCurrentFile() Failed: %i\n", bytesRead);
             return false;
         }
         else if (bytesRead > 0)
@@ -191,7 +191,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
     // try to find file in zip
     if (unzLocateFile(zipFile, file.string().c_str(), 2) != UNZ_OK)
     {
-        std::cerr << "Failed to find \"" << file << "\" in zip file!" << std::endl;
+        fprintf(stderr, "Failed to find \"%s\" in zip file!\n", file.string().c_str());
         return false;
     }
 
@@ -199,7 +199,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
 
     if (unzOpenCurrentFile(zipFile) != UNZ_OK)
     {
-        std::cerr << "unzOpenCurrentFile() Failed!" << std::endl;
+        fprintf(stderr, "unzOpenCurrentFile() Failed!\n");
         return false;
     }
 
@@ -209,7 +209,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
-            std::cerr << "unzReadCurrentFile() Failed: " << std::to_string(bytesRead) << std::endl;
+            fprintf(stderr, "unzReadCurrentFile() Failed: %i\n", bytesRead);
             return false;
         }
         else if (bytesRead > 0)

@@ -7,7 +7,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-#include <iostream>
+#include <cstdio>
 #include <algorithm>
 
 #include "SporeModManager.hpp"
@@ -35,7 +35,7 @@ static bool GetInstalledSporeModList(void)
     {
         if (!SporeMod::Xml::GetInstalledModList(l_InstalledSporeMods))
         {
-            std::cerr << "SporeMod::Xml::GetInstalledMostList() Failed!" << std::endl;
+            fprintf(stderr, "SporeMod::Xml::GetInstalledMostList() Failed!\n");
             return false;
         }
         l_HasInstalledSporeMods = true;
@@ -49,7 +49,7 @@ static bool SaveInstalledSporeModList(void)
     {
         if (!SporeMod::Xml::SaveInstalledModList(l_InstalledSporeMods))
         {
-            std::cerr << "SporeMod::Xml::SaveInstalledModList() Failed!" << std::endl;
+            fprintf(stderr, "SporeMod::Xml::SaveInstalledModList() Failed!\n");
             return false;
         }
     }
@@ -65,20 +65,20 @@ static bool GetSporeModInfo(const std::filesystem::path& path, const std::string
     {
         if (!Zip::OpenFile(zipFile, path))
         {
-            std::cerr << "Zip::OpenFile() Failed!" << std::endl;
+            fprintf(stderr, "Zip::OpenFile() Failed!\n");
             return false;
         }
 
         if (!Zip::ExtractFile(zipFile, "modinfo.xml", modInfoFileBuffer))
         {
-            std::cerr << "Zip::ExtractFile() Failed!" << std::endl;
+            fprintf(stderr, "Zip::ExtractFile() Failed!\n");
             Zip::CloseFile(zipFile);
             return false;
         }
 
         if (!SporeMod::Xml::ParseSporeModInfo(modInfoFileBuffer, sporeModInfo))
         {
-            std::cerr << "SporeMod::Xml::ParseSporeModInfo() Failed!" << std::endl;
+            fprintf(stderr, "SporeMod::Xml::ParseSporeModInfo() Failed!\n");
             Zip::CloseFile(zipFile);
             return false;
         }
@@ -125,10 +125,11 @@ bool SporeModManager::ListInstalledMods(void)
     {
         installedSporeMod = l_InstalledSporeMods.at(i);
 
-        std::cout << "[" << i << "] " << installedSporeMod.Name << std::endl;
+        fprintf(stdout, "[%u] %s\n",
+                         (unsigned int)i, installedSporeMod.Name.c_str());
         if (!installedSporeMod.Description.empty())
         {
-            std::cout << "  " << String::Replace(installedSporeMod.Description, "\n", "\n  ") << std::endl;
+            fprintf(stdout, "  %s\n", String::Replace(installedSporeMod.Description, "\n", "\n  ").c_str());
         }
     }
 
@@ -159,7 +160,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
 
             if (!std::filesystem::is_regular_file(path))
             {
-                std::cerr << path << " is not a regular file or doesn't exist!" << std::endl;
+                fprintf(stderr, "\"%s\" is not a regular file or doesn't exist!\n", path.string().c_str());
                 CloseZipFiles();
                 return false;
             }
@@ -176,7 +177,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
             }
             else
             {
-                std::cerr << "\"" << extension << "\" is an invalid extension!" << std::endl;
+                fprintf(stderr, "\"%s\" is an invalid extension!\n", extension.c_str());
                 CloseZipFiles();
                 return false;
             }
@@ -189,9 +190,14 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
             bool skipInstall   = skipInstalled && SporeMod::FindInstalledMod(sporeModInfo.UniqueName, installedSporeModId, l_InstalledSporeMods);
             if (hasUniqueName || skipInstall)
             {
-                std::cerr << "Skipping " << path << (hasUniqueName ? 
-                                " due to another mod having the same unique name!" : 
-                                " as it's already installed!") << std::endl;
+                if (hasUniqueName)
+                {
+                    fprintf(stderr, "Skipping \"%s\" due to another mod having the same unique name!\n", path.string().c_str());
+                }
+                else
+                {
+                    fprintf(stdout, "Skipping \"%s\" as it's already installed!\n", path.string().c_str());
+                }
                 paths.erase(paths.begin() + i);
                 l_ZipFiles.erase(l_ZipFiles.begin() + i);
                 l_SporeModInfos.erase(l_SporeModInfos.begin() + i);
@@ -259,7 +265,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
 
         if (!std::filesystem::is_regular_file(path))
         {
-            std::cerr << path << " is not a regular file or doesn't exist!" << std::endl;
+            fprintf(stderr, "\"%s\" is not a regular file or doesn't exist!\n", path.string().c_str());
             return false;
         }
 
@@ -275,14 +281,14 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
         }
         else
         {
-            std::cerr << "\"" << extension << "\" is an invalid extension!" << std::endl;
+            fprintf(stderr, "\"%s\" is an invalid extension!\n", extension.c_str());
             return false;
         }
 
         // ensure we only have unique mod names
         if (std::find(uniqueNames.begin(), uniqueNames.end(), sporeModInfo.UniqueName) != uniqueNames.end())
         {
-            std::cerr << "Skipping " << path << " due to another mod having the same unique name!" << std::endl;
+            fprintf(stderr, "Skipping \"%s\" due to another mod having the same unique name!\n", path.string().c_str());
             paths.erase(paths.begin() + i);
             l_ZipFiles.erase(l_ZipFiles.begin() + i);
             l_SporeModInfos.erase(l_SporeModInfos.begin() + i);
@@ -296,8 +302,9 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
             if (requiresInstalled)
             {
                 CloseZipFiles();
-                std::cerr << "No mod found with the same unique name (" << sporeModInfo.UniqueName << ")" << std::endl
-                          << "Did you mean install?" << std::endl;
+                fprintf(stderr, "No mod found with the same unique name (%s)\n"
+                                "Did you mean install?\n",
+                                sporeModInfo.UniqueName.c_str());
                 return false;
             }
         }
@@ -338,7 +345,7 @@ bool SporeModManager::UninstallMods(std::vector<int> ids)
     {
         if (id < 0 || (size_t)id >= l_InstalledSporeMods.size() || l_InstalledSporeMods.empty())
         {
-            std::cerr << "ID(s) must be valid!" << std::endl;
+            fprintf(stderr, "ID(s) must be valid!\n");
             return false;
         }
     }
@@ -347,7 +354,7 @@ bool SporeModManager::UninstallMods(std::vector<int> ids)
     {
         installedSporeMod = l_InstalledSporeMods.at(id);
 
-        std::cout << "-> Removing " << installedSporeMod.Name << std::endl;
+        fprintf(stdout, "-> Removing %s\n", installedSporeMod.Name.c_str());
 
         for (const auto& installedFile : installedSporeMod.InstalledFiles)
         {
@@ -357,14 +364,14 @@ bool SporeModManager::UninstallMods(std::vector<int> ids)
 
                 if (UI::GetVerboseMode())
                 {
-                    std::cout << "--> Removing " << fullInstallPath << std::endl;
+                    fprintf(stdout, "--> Removing %s\n", fullInstallPath.string().c_str());
                 }
 
                 std::filesystem::remove(fullInstallPath);
             }
             catch (...)
             {
-                std::cerr << "std::filesystem::remove(" << fullInstallPath << ") Failed!" << std::endl;
+                fprintf(stderr, "std::filesystem::remove(\"%s\") Failed!\n", fullInstallPath.string().c_str());
                 return false;
             }
         }
