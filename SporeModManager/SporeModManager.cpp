@@ -282,7 +282,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
         // ensure we only have unique mod names
         if (std::find(uniqueNames.begin(), uniqueNames.end(), sporeModInfo.UniqueName) != uniqueNames.end())
         {
-            std::cerr << "Removing \"" << path.string() << "\" from the installation/update list due to another mod having the same unique name!" << std::endl;
+            std::cerr << "Skipping \"" << path.string() << "\" due to another mod having the same unique name!" << std::endl;
             paths.erase(paths.begin() + i);
             i -= 1;
             continue;
