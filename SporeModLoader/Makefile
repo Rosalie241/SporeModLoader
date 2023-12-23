@@ -13,7 +13,7 @@ CXXFLAGS   := -std=c++17                     \
 				-I$(THIRDPARTY_DIR)/Detours/src \
 				-Wno-attributes -Wp,-w
 OPTFLAGS   := -Os -flto -Wall -Wextra -Wpedantic
-LDFLAGS    := -s -flto
+LDFLAGS    := -s -flto -Wl,--enable-stdcall-fixup
 
 OBJECT_FILES := \
 	$(SOURCE_DIR)/SporeModLoaderHelpers.obj \
