@@ -28,6 +28,20 @@ std::vector<std::string> String::Split(std::string string, char delimiter)
     return result;
 }
 
+std::vector<std::wstring> String::Split(std::wstring string, wchar_t delimiter)
+{
+    std::vector<std::wstring> result;
+    std::wstringstream stringStream(string);
+    std::wstring item;
+
+    while (std::getline(stringStream, item, delimiter))
+    {
+        result.push_back(item);
+    }
+
+    return result;
+}
+
 std::string String::Join(std::vector<int> numbers, char delimiter)
 {
     std::string result;

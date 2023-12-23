@@ -317,16 +317,60 @@ int main(int argc, char** argv)
 
         std::vector<int> ids;
 
-        for (size_t i = 2; i < args.size(); i++)
+        // we support 2 types to parse the IDs,
+        // either a range (i.e '0-3') or the IDs specified (i.e '0 1 2 3')
+        if (args.size() == 3 && args.at(2).find(arg_char("-")) != arg_str_type::npos)
         {
+            int startIndex = 0;
+            int endIndex   = 0;
+            std::vector<arg_str_type> splitString = String::Split(args.at(2), arg_char('-'));
+            if (splitString.size() > 2)
+            {
+                std::cerr << "range can only contain 2 positive numbers!" << std::endl;
+                return 1;
+            }
+
             try
             {
-                ids.push_back(std::stoi(args[i]));
+                startIndex = std::stoi(splitString.at(0));
+                endIndex   = std::stoi(splitString.at(1));
             }
             catch (...)
             {
-                std::cerr << "ID must be a number!" << std::endl;
+                std::cerr << "range can only contain numbers!" << std::endl;
                 return 1;
+            }
+
+            // validate start and end index
+            if (startIndex == endIndex)
+            {
+                std::cerr << "start number cannot be equal to the end number!" << std::endl;
+                return 1;
+            }
+            else if (startIndex > endIndex)
+            {
+                std::cerr << "start number must be less than the end number!" << std::endl;
+                return 1;
+            }
+
+            for (int i = startIndex; i <= endIndex; i++)
+            {
+                ids.push_back(i);
+            }
+        }
+        else
+        {
+            for (size_t i = 2; i < args.size(); i++)
+            {
+                try
+                {
+                    ids.push_back(std::stoi(args[i]));
+                }
+                catch (...)
+                {
+                    std::cerr << "ID must be a number!" << std::endl;
+                    return 1;
+                }
             }
         }
 

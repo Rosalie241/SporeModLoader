@@ -305,6 +305,11 @@ namespace SporeModManagerHelpers
         std::vector<std::string> Split(std::string string, char delimiter);
 
         /// <summary>
+        ///     Splits the given string by the delimiter
+        /// </summary>
+        std::vector<std::wstring> Split(std::wstring string, wchar_t delimiter);
+
+        /// <summary>
         ///     Joins numbers to string with delimiter
         /// </summary>
         std::string Join(std::vector<int> numbers, char delimiter);
