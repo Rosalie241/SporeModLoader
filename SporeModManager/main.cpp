@@ -319,12 +319,12 @@ int main(int argc, char** argv)
 
         // we support 2 types to parse the IDs,
         // either a range (i.e '0-3') or the IDs specified (i.e '0 1 2 3')
-        if (args.size() == 3 && args.at(2).find(arg_char("-")) != arg_str_type::npos)
+        if (args.size() == 3 && args.at(2).find(arg_char('-')) != arg_str_type::npos)
         {
             int startIndex = 0;
             int endIndex   = 0;
             std::vector<arg_str_type> splitString = String::Split(args.at(2), arg_char('-'));
-            if (splitString.size() > 2)
+            if (splitString.size() != 2)
             {
                 std::cerr << "range can only contain 2 positive numbers!" << std::endl;
                 return 1;
