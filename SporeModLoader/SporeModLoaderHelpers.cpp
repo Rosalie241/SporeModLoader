@@ -65,7 +65,7 @@ std::vector<std::filesystem::path> Path::GetCoreLibsPaths(void)
     std::filesystem::path coreLibsPath;
 
     coreLibsPath = GetModLoaderPath();
-    coreLibsPath += "\\CoreLibs";
+    coreLibsPath += "\\CoreLibs\\";
 
     switch (Game::GetCurrentVersion())
     {
@@ -83,12 +83,10 @@ std::vector<std::filesystem::path> Path::GetCoreLibsPaths(void)
         throw std::exception();
 
     case Game::GameVersion::GogOrSteam_March2017:
-        coreLibsPath += "\\march2017\\";
         legacyLibFile = "SporeModAPI-steam_patched.dll";
         break;
 
     case Game::GameVersion::Disk_1_5_1:
-        coreLibsPath += "\\disk\\";
         legacyLibFile = "SporeModAPI-disk.dll";
         break;
     }
