@@ -38,7 +38,7 @@ bool FileVersion::GetCoreLibFileVersionInfo(FileVersionInfo& fileVersionInfo)
         return true;
     }
 
-    coreLibPath = Path::Combine({ Path::GetCoreLibsPath(), "march2017", "SporeModAPI.dll" });
+    coreLibPath = Path::Combine({ Path::GetCoreLibsPath(), "SporeModAPI.dll" });
 
     if (!std::filesystem::is_regular_file(coreLibPath))
     {
