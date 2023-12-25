@@ -32,17 +32,14 @@ jobs:
       - name: Package SporeModLoader (msvc)
         run: |
           New-Item -ItemType Directory -Force -Path bin\SporebinEP1
-          New-Item -ItemType Directory -Force -Path bin\SporeModLoader\CoreLibs\disk
-          New-Item -ItemType Directory -Force -Path bin\SporeModLoader\CoreLibs\march2017
+          New-Item -ItemType Directory -Force -Path bin\SporeModLoader\CoreLibs\
           New-Item -ItemType Directory -Force -Path bin\SporeModLoader\ModLibs
           New-Item -ItemType Directory -Force -Path bin\SporeModLoader\SporeModManager
           New-Item -ItemType File -Force -Path bin\SporeModLoader\ModLibs\.keep
 
-          Copy "3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.disk.dll"      "bin\SporeModLoader\CoreLibs\disk\SporeModAPI.dll"
-          Copy "3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.march2017.dll" "bin\SporeModLoader\CoreLibs\march2017\SporeModAPI.dll"
-
-          Copy "3rdParty\Spore-ModAPI-legacy\SporeModAPI-disk.dll"          "bin\SporeModLoader\CoreLibs\disk\SporeModAPI-disk.dll"
-          copy "3rdParty\Spore-ModAPI-legacy\SporeModAPI-steam_patched.dll" "bin\SporeModLoader\CoreLibs\march2017\SporeModAPI-steam_patched.dll"
+          Copy "3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll"          "bin\SporeModLoader\CoreLibs\SporeModAPI.dll"
+          Copy "3rdParty\Spore-ModAPI-legacy\SporeModAPI-disk.dll"          "bin\SporeModLoader\CoreLibs\SporeModAPI-disk.dll"
+          copy "3rdParty\Spore-ModAPI-legacy\SporeModAPI-steam_patched.dll" "bin\SporeModLoader\CoreLibs\SporeModAPI-steam_patched.dll"
 
           Copy "SporeModLoader\Bin\Release\dinput8.dll"          "bin\SporebinEP1\dinput8.dll"
           Copy "SporeModManager\Bin\Release\SporeModManager.exe" "bin\SporeModLoader\SporeModManager\SporeModManager.exe"
