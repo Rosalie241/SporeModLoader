@@ -13,8 +13,6 @@ mkdir "%CUR_DIR%\bin"
 mkdir "%OBJ_DIR%\SporebinEP1"
 mkdir "%OBJ_DIR%\SporeModLoader"
 mkdir "%OBJ_DIR%\SporeModLoader\CoreLibs"
-mkdir "%OBJ_DIR%\SporeModLoader\CoreLibs\disk"
-mkdir "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017"
 mkdir "%OBJ_DIR%\SporeModLoader\ModLibs"
 mkdir "%OBJ_DIR%\SporeModLoader\SporeModManager"
 
@@ -31,10 +29,9 @@ msbuild "%CUR_DIR%\SporeModManager" ^
     /p:Platform=Win32 ^
     /m
 
-copy "%THIRDPARTY_DIR%\Spore-ModAPI\dll\Release\SporeModAPI.disk.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\disk\SporeModAPI.dll"
-copy "%THIRDPARTY_DIR%\Spore-ModAPI\dll\Release\SporeModAPI.march2017.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017\SporeModAPI.dll"
-copy "%THIRDPARTY_DIR%\Spore-ModAPI-legacy\SporeModAPI-disk.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\disk\SporeModAPI-disk.dll"
-copy "%THIRDPARTY_DIR%\Spore-ModAPI-legacy\SporeModAPI-steam_patched.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\march2017\SporeModAPI-steam_patched.dll"
+copy "%THIRDPARTY_DIR%\Spore-ModAPI\dll\Release\SporeModAPI.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\SporeModAPI.dll"
+copy "%THIRDPARTY_DIR%\Spore-ModAPI-legacy\SporeModAPI-disk.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\SporeModAPI-disk.dll"
+copy "%THIRDPARTY_DIR%\Spore-ModAPI-legacy\SporeModAPI-steam_patched.dll" "%OBJ_DIR%\SporeModLoader\CoreLibs\SporeModAPI-steam_patched.dll"
 copy "%CUR_DIR%\SporeModLoader\Bin\Release\dinput8.dll" "%OBJ_DIR%\SporebinEP1\dinput8.dll"
 copy "%CUR_DIR%\SporeModManager\Bin\Release\SporeModManager.exe" "%OBJ_DIR%\SporeModLoader\SporeModManager"
 
