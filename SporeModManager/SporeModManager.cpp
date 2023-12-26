@@ -181,24 +181,24 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
                 return false;
             }
 
-            // ensure we only have unique mod names
-            if (std::find(uniqueNames.begin(), uniqueNames.end(), sporeModInfo.UniqueName) != uniqueNames.end())
+            // check if we need to skip the file due to
+            // either already having a mod in the install list
+            // with the same unique name or a mod with the same
+            // unique name already being installed
+            bool hasUniqueName = std::find(uniqueNames.begin(), uniqueNames.end(), sporeModInfo.UniqueName) != uniqueNames.end();
+            bool skipInstall   = skipInstalled && SporeMod::FindInstalledMod(sporeModInfo.UniqueName, installedSporeModId, l_InstalledSporeMods);
+            if (hasUniqueName || skipInstall)
             {
-                std::cerr << "Skipping " << path << " due to another mod having the same unique name!" << std::endl;
+                std::cerr << "Skipping " << path << (hasUniqueName ? 
+                                " due to another mod having the same unique name!" : 
+                                " as it's already installed!") << std::endl;
                 paths.erase(paths.begin() + i);
+                l_ZipFiles.erase(l_ZipFiles.begin() + i);
+                l_SporeModInfos.erase(l_SporeModInfos.begin() + i);
                 i -= 1;
                 continue;
             }
             uniqueNames.push_back(sporeModInfo.UniqueName);
-
-            // skip already installed mods
-            if (skipInstalled && SporeMod::FindInstalledMod(sporeModInfo.UniqueName, installedSporeModId, l_InstalledSporeMods))
-            {
-                std::cerr << "Skipping " << path << " as it's already installed!" << std::endl;
-                paths.erase(paths.begin() + i);
-                i -= 1;
-                continue;
-            }
         }
     }
 
@@ -284,6 +284,8 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
         {
             std::cerr << "Skipping " << path << " due to another mod having the same unique name!" << std::endl;
             paths.erase(paths.begin() + i);
+            l_ZipFiles.erase(l_ZipFiles.begin() + i);
+            l_SporeModInfos.erase(l_SporeModInfos.begin() + i);
             i -= 1;
             continue;
         }
