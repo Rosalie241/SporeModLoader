@@ -1,0 +1,16 @@
+################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/dll
+/EASTL-3.02.01/out/build/x64-Debug
+/lib
+.vs
+.vscode
+__pycache__
+Debug
+Release
+Projects/*
+!Projects/Example Projects/
+/SDKtoGhidra/temp.cpp
+modapi-generated-docs

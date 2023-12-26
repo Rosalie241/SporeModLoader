@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:emd4600/Spore-ModAPI.git
+	branch = master
+	commit = 735b4430e8fdafeb8e08523333deb93844793570
+	parent = 7111c81f1c845742f3084d88a1b5da0cc6c4e432
+	method = merge
+	cmdver = 0.4.6

@@ -1,9 +1,6 @@
 [submodule "3rdParty/tinyxml2"]
 	path = 3rdParty/tinyxml2
 	url = https://github.com/leethomason/tinyxml2
-[submodule "3rdParty/Spore-ModAPI"]
-	path = 3rdParty/Spore-ModAPI
-	url = https://github.com/emd4600/Spore-ModAPI/
 [submodule "3rdParty/zlib"]
 	path = 3rdParty/zlib
 	url = https://github.com/madler/zlib
