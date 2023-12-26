@@ -45,7 +45,7 @@ static bool CheckIfOtherModContainsFiles(std::vector<SporeMod::Xml::SporeModFile
             if (installedFileIter != installedSporeMod.InstalledFiles.end())
             {
                 std::cerr << "An already installed mod (" << installedSporeMod.Name
-                          << ") contains a file (\"" << sporeModFile.FileName.string() << "\") that this mod wants to install!" << std::endl;
+                          << ") contains a file (" << sporeModFile.FileName << ") that this mod wants to install!" << std::endl;
                 return true;
             }
         }
@@ -296,7 +296,7 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
                     }
                     catch(...)
                     {
-                        std::cerr << "std::filesystem::remove(" << installPath << "\") Failed!" << std::endl;
+                        std::cerr << "std::filesystem::remove(" << installPath << ") Failed!" << std::endl;
                     }
                 }
             }
@@ -352,7 +352,7 @@ bool SporeMod::InstallPackage(std::filesystem::path path, Xml::InstalledSporeMod
         }
         catch (...)
         {
-            std::cerr << "std::filesystem::copy_file(\"" << sourcePath.string() << "\",\"" << installPath.string() << "\") Failed!" << std::endl;
+            std::cerr << "std::filesystem::copy_file(" << sourcePath << "," << installPath << ") Failed!" << std::endl;
             return false;
         }
     }
