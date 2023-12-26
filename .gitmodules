@@ -1,9 +1,6 @@
 [submodule "3rdParty/tinyxml2"]
 	path = 3rdParty/tinyxml2
 	url = https://github.com/leethomason/tinyxml2
-[submodule "3rdParty/Detours"]
-	path = 3rdParty/Detours
-	url = https://github.com/microsoft/Detours
 [submodule "3rdParty/Spore-ModAPI"]
 	path = 3rdParty/Spore-ModAPI
 	url = https://github.com/emd4600/Spore-ModAPI/

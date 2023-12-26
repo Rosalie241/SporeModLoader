@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:microsoft/Detours.git
+	branch = main
+	commit = 4b8c659f549b0ab21cf649377c7a84eb708f5e68
+	parent = 61482d06f4b40a99808d3d1e101d5f6799f96401
+	method = merge
+	cmdver = 0.4.6
