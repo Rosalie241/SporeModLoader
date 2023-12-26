@@ -3,8 +3,8 @@
 set SPOREMODAPI_CUR_DIR=%~dp0
 
 msbuild "%SPOREMODAPI_CUR_DIR%\Spore-ModAPI\Spore ModAPI" ^
-	/t:BuildDlls ^
-	/p:BuildVer=291 ^
-	/p:Config=Release ^
+	/p:Configuration="Release DLL" ^
+	/p:SDK_BUILD_VER=291 ^
+	/p:EXECUTABLE_TYPE=10 ^
 	/p:Platform=Win32 ^
 	/m
