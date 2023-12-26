@@ -269,13 +269,13 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
 
     for (const auto& installedFile : installedSporeMod.InstalledFiles)
     {
-        if (UI::GetVerboseMode())
-        {
-            std::cout << "--> Installing " << installedFile.FileName.string() << std::endl;
-        }
-
         std::filesystem::path sourcePath  = installedFile.FileName;
         std::filesystem::path installPath = Path::GetFullInstallPath(installedFile.InstallLocation, installedFile.FileName);
+
+        if (UI::GetVerboseMode())
+        {
+            std::cout << "--> Installing " << installedFile.FileName  << " to " << installPath << std::endl;
+        }
 
         if (!Zip::ExtractFile(zipFile, sourcePath, installPath))
         {
@@ -290,7 +290,7 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
                     {
                         if (UI::GetVerboseMode())
                         {
-                            std::cout << "--> Removing " << installPath.filename().string() << std::endl;
+                            std::cout << "--> Removing " << installPath << std::endl;
                         }
                         std::filesystem::remove(installPath);
                     }
@@ -343,7 +343,7 @@ bool SporeMod::InstallPackage(std::filesystem::path path, Xml::InstalledSporeMod
 
         if (UI::GetVerboseMode())
         {
-            std::cout << "--> Installing " << installedFile.FileName.string() << std::endl;
+            std::cout << "--> Installing " << installedFile.FileName << " to " << installPath << std::endl;
         }
 
         try

@@ -355,7 +355,7 @@ bool SporeModManager::UninstallMods(std::vector<int> ids)
 
                 if (UI::GetVerboseMode())
                 {
-                    std::cout << "--> Removing " << installedFile.FileName.string() << std::endl;
+                    std::cout << "--> Removing " << fullInstallPath << std::endl;
                 }
 
                 std::filesystem::remove(fullInstallPath);
