@@ -46,9 +46,15 @@ OBJECT_FILES := \
 	$(SOURCE_DIR)/SporeModManager.$(OBJ)                    \
 	$(SOURCE_DIR)/main.$(OBJ)
 
+ifneq ($(MINGW), 0)
+	OBJECT_FILES += \
+		$(SOURCE_DIR)/version.$(OBJ)
+endif
+
 HEADER_FILES := \
 	$(SOURCE_DIR)/SporeModManager.hpp \
-	$(SOURCE_DIR)/SporeModManagerHelpers.hpp
+	$(SOURCE_DIR)/SporeModManagerHelpers.hpp \
+	$(SOURCE_DIR)/../version.h
 
 
 THIRDPARTY_OBJECT_FILES := \
@@ -87,6 +93,10 @@ endif
 %.obj: %.cpp $(HEADER_FILES) $(THIRDPARTY_HEADER_FILES)
 	@echo "MINGW_CXX $<"
 	$(QUIET)$(MINGW_CXX) -c $< -o $@ $(OPTFLAGS) $(CXXFLAGS)
+
+%.obj: %.rc $(HEADER_FILES)
+	@echo "MINGW_RES $<"
+	$(QUIET)$(MINGW_WINDRES) -i $< -o $@
 
 all: $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT)
 
