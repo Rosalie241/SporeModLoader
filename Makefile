@@ -6,12 +6,13 @@ THIRDPARTY_DIR := 3rdParty
 # relative to project directories
 BINARY_DIR     := ../bin
 
-CC         := gcc
-CXX        := g++
-MINGW_CC   := i686-w64-mingw32-gcc
-MINGW_CXX  := i686-w64-mingw32-g++
+CC            := gcc
+CXX           := g++
+MINGW_CC      := i686-w64-mingw32-gcc
+MINGW_CXX     := i686-w64-mingw32-g++
+MINGW_WINDRES := i686-w64-mingw32-windres
 
-export CC CXX MINGW_CC MINGW_CXX
+export CC CXX MINGW_CC MINGW_CXX MINGW_WINDRES
 
 all: SporeModLoader SporeModManager.exe SporeModManager
 
