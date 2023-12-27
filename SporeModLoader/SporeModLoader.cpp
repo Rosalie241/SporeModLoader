@@ -22,8 +22,7 @@ bool SporeModLoader::Initialize()
 {
     try
     {
-        Logger::Clear();
-               
+        Logger::Open();
 
         for (const auto& path : Path::GetCoreLibsPaths())
         {

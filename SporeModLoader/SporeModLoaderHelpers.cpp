@@ -15,6 +15,16 @@
 
 using namespace SporeModLoaderHelpers;
 
+//
+// Local Variables
+//
+
+static std::wofstream l_LogFileStream;
+
+//
+// Exported Functions
+//
+
 std::filesystem::path Path::GetCurrentExecutablePath(void)
 {
     static std::filesystem::path currentExecutablePath;
@@ -44,16 +54,6 @@ std::filesystem::path Path::GetModLoaderPath(void)
     modLoaderPath += "\\SporeModLoader";
 
     return modLoaderPath;
-}
-
-std::filesystem::path Path::GetLogFilePath(void)
-{
-    std::filesystem::path logFilePath;
-
-    logFilePath = GetModLoaderPath();
-    logFilePath += "\\SporeModLoader.log";
-
-    return logFilePath;
 }
 
 std::vector<std::filesystem::path> Path::GetCoreLibsPaths(void)
@@ -156,39 +156,40 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
     return modLibsPaths;
 }
 
-void Logger::Clear(void)
+void Logger::Open(void)
 {
-    std::filesystem::path logFilePath;
-
-    logFilePath = Path::GetLogFilePath();
-
-    if (std::filesystem::exists(logFilePath))
+    try
     {
-        try
+        std::filesystem::path logFilePath;
+        logFilePath = Path::GetModLoaderPath();
+        logFilePath += "\\SporeModLoader.log";
+
+        // try to open the log file at the modloader path,
+        // if that fails, try the temporary path
+        l_LogFileStream.open(logFilePath);
+        if (!l_LogFileStream.good())
         {
-            std::filesystem::remove(logFilePath);
+            logFilePath = std::filesystem::temp_directory_path();
+            logFilePath += "\\SporeModLoader.log";
+            l_LogFileStream.open(logFilePath);
+            if (!l_LogFileStream.good())
+            {
+                throw std::exception();
+            }
         }
-        catch (...)
-        {
-            std::wstring errorMessage;
-            errorMessage = L"std::filesystem::remove(\"";
-            errorMessage += logFilePath.wstring();
-            errorMessage += L"\") Failed!";
-            UI::ShowErrorMessage(errorMessage);
-            throw std::exception();
-        }
+    }
+    catch (...)
+    {
+        std::wstring errorMessage;
+        errorMessage = L"Failed to find a working log file location!";
+        UI::ShowErrorMessage(errorMessage);
+        throw std::exception();
     }
 }
 
 void Logger::AddMessage(std::wstring message)
 {
-    std::wofstream logFileStream;
-    logFileStream.open(Path::GetLogFilePath(), std::ios_base::app);
-    if (logFileStream.is_open())
-    {
-        logFileStream << message << "\n";
-    }
-    logFileStream.close();
+    l_LogFileStream << message << std::endl;
 }
 
 void UI::ShowErrorMessage(std::wstring message)

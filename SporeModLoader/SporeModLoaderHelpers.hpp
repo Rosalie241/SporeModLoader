@@ -29,11 +29,6 @@ namespace SporeModLoaderHelpers
         std::filesystem::path GetModLoaderPath(void);
 
         /// <summary>
-        ///     Returns path to the log file
-        /// </summary>
-        std::filesystem::path GetLogFilePath(void);
-
-        /// <summary>
         ///     Returns paths to the core libs
         /// </summary>
         std::vector<std::filesystem::path> GetCoreLibsPaths(void);
@@ -47,9 +42,10 @@ namespace SporeModLoaderHelpers
     namespace Logger
     {
         /// <summary>
-        ///     Clears log file
+        ///     Opens log file
         /// </summary>
-        void Clear(void);
+        /// <param name=""></param>
+        void Open(void);
 
         /// <summary>
         ///     Adds message to the log file
