@@ -77,10 +77,7 @@ namespace SporeModLoaderHelpers
     {
         enum class GameVersion
         {
-            Disk_1_5_1,
-            Origin_1_5_1,
-            Origin_March2017,
-            GogOrSteam_1_5_1,
+            Disk_1_5_1 = 0,
             GogOrSteam_March2017,
             Unknown
         };

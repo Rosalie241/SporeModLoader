@@ -69,19 +69,6 @@ std::vector<std::filesystem::path> Path::GetCoreLibsPaths(void)
 
     switch (Game::GetCurrentVersion())
     {
-    case Game::GameVersion::Unknown:
-        UI::ShowErrorMessage(L"Unknown Spore version!");
-        throw std::exception();
-
-    case Game::GameVersion::Origin_1_5_1:
-    case Game::GameVersion::Origin_March2017:
-        UI::ShowErrorMessage(L"Unsupported Spore version!");
-        throw std::exception();
-
-    case Game::GameVersion::GogOrSteam_1_5_1:
-        UI::ShowErrorMessage(L"Update Spore to the latest version!");
-        throw std::exception();
-
     case Game::GameVersion::GogOrSteam_March2017:
         legacyLibFile = "SporeModAPI-steam_patched.dll";
         break;
@@ -89,6 +76,10 @@ std::vector<std::filesystem::path> Path::GetCoreLibsPaths(void)
     case Game::GameVersion::Disk_1_5_1:
         legacyLibFile = "SporeModAPI-disk.dll";
         break;
+
+    default:
+        UI::ShowErrorMessage(L"Unsupported Spore version!");
+        throw std::exception();
     }
 
     coreLibPath = coreLibsPath;
@@ -235,8 +226,14 @@ bool Library::LoadAll(std::vector<std::filesystem::path> paths)
 
 Game::GameVersion Game::GetCurrentVersion(void)
 {
+    static std::optional<Game::GameVersion> cachedGameVersion;
     std::filesystem::path currentExecutablePath;
     uintmax_t currentFileSize;
+
+    if (cachedGameVersion.has_value())
+    {
+        return cachedGameVersion.value();
+    }
 
     currentExecutablePath = Path::GetCurrentExecutablePath();
 
@@ -258,17 +255,17 @@ Game::GameVersion Game::GetCurrentVersion(void)
     {
     case 24904192:
     case 24909584:
-        return Game::GameVersion::Disk_1_5_1;
-    case 31347984:
-        return Game::GameVersion::Origin_1_5_1;
-    case 24898224:
-        return Game::GameVersion::Origin_March2017;
-    case 24888320:
-        return Game::GameVersion::GogOrSteam_1_5_1;
+        cachedGameVersion = Game::GameVersion::Disk_1_5_1;
+        break;
+
     case 24885248:
-        return Game::GameVersion::GogOrSteam_March2017;
+        cachedGameVersion = Game::GameVersion::GogOrSteam_March2017;
+        break;
 
     default:
-        return Game::GameVersion::Unknown;
+        cachedGameVersion = Game::GameVersion::Unknown;
+        break;
     }
+
+    return cachedGameVersion.value();
 }
