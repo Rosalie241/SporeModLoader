@@ -128,7 +128,7 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
         excludePostfixes.push_back(L"-steam_patched.dll");
     }
 
-    for (const auto& entry : std::filesystem::recursive_directory_iterator(modLibsPath))
+    for (const auto& entry : std::filesystem::directory_iterator(modLibsPath))
     {
         // skip non-files & non-dlls
         if (!entry.is_regular_file() ||
