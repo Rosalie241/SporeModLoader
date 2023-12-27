@@ -7,7 +7,9 @@ SOURCE_DIR     ?= .
 DLL_FILE       ?= dinput8.dll
 VERBOSE        ?= 0
 
-MINGW_CXX  ?= i686-w64-mingw32-g++
+MINGW_CXX     ?= i686-w64-mingw32-g++
+MINGW_WINDRES ?= i686-w64-mingw32-windres
+
 CXXFLAGS   := -std=c++17                     \
 				-I$(SOURCE_DIR)              \
 				-I$(THIRDPARTY_DIR)/Detours/src \
@@ -18,11 +20,13 @@ LDFLAGS    := -s -flto -Wl,--enable-stdcall-fixup
 OBJECT_FILES := \
 	$(SOURCE_DIR)/SporeModLoaderHelpers.obj \
 	$(SOURCE_DIR)/SporeModLoader.obj \
-	$(SOURCE_DIR)/dllmain.obj
+	$(SOURCE_DIR)/dllmain.obj \
+	$(SOURCE_DIR)/version.obj
 
 HEADER_FILES := \
 	$(SOURCE_DIR)/SporeModLoaderHelpers.hpp \
-	$(SOURCE_DIR)/SporeModLoader.hpp
+	$(SOURCE_DIR)/SporeModLoader.hpp \
+	$(SOURCE_DIR)/../version.h
 
 THIRDPARTY_OBJECT_FILES := \
 	$(THIRDPARTY_DIR)/Detours/src/detours.obj  \
@@ -37,6 +41,10 @@ ifeq ($(VERBOSE), 0)
 else
 	QUIET :=
 endif
+
+%.obj: %.rc $(HEADER_FILES)
+	@echo "MINGW_RES $<"
+	$(QUIET)$(MINGW_WINDRES) -i $< -o $@
 
 %.obj: %.cpp $(HEADER_FILES)
 	@echo "MINGW_CXX $<"

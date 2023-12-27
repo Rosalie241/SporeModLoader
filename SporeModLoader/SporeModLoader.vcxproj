@@ -139,7 +139,7 @@ if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\Sp
     <None Include="dllmain.def" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="dllmain.rc" />
+    <ResourceCompile Include="version.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

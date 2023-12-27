@@ -41,7 +41,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="dllmain.rc">
+    <ResourceCompile Include="version.rc">
       <Filter>Source Files</Filter>
     </ResourceCompile>
   </ItemGroup>
