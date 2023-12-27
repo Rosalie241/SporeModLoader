@@ -10,6 +10,7 @@
 #include <windows.h>
 
 #include <fstream>
+#include <optional>
 
 #include "SporeModLoaderHelpers.hpp"
 
