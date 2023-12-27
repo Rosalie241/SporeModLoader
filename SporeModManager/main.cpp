@@ -10,6 +10,8 @@
 #include "SporeModManager.hpp"
 #include "SporeModManagerHelpers.hpp"
 
+#include "../version.h"
+
 #include <filesystem>
 #include <iostream>
 
@@ -64,6 +66,7 @@ static void ShowUsage()
               << "  update file(s)      updates mod(s) using file(s)" << std::endl
               << "  uninstall id(s)     uninstalls mod with id(s)" << std::endl
               << std::endl
+              << "  version             display version and exit"   << std::endl
               << "  help                display this help and exit" << std::endl
               << std::endl
               << "Options: " << std::endl
@@ -378,7 +381,12 @@ int main(int argc, char** argv)
         {
             return 1;
         }
-    } 
+    }
+    else if (command == arg_str("version"))
+    {
+        std::cout << "SporeModManager " << VERSION_STR << std::endl;
+        return 0;
+    }
     else
     {
         ShowUsage();
