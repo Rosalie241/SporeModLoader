@@ -205,7 +205,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
     bytesRead = unzOpenCurrentFile(zipFile);
     if (bytesRead != UNZ_OK)
     {
-        std::cerr << "Error: unzOpenCurrentFile() Failed: " << std::to_string(bytesRead)  << std::endl;
+        std::cerr << "Error: unzOpenCurrentFile() Failed: " << bytesRead  << std::endl;
         return false;
     }
 
@@ -215,7 +215,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
-            std::cerr << "Error: unzReadCurrentFile() Failed: " << std::to_string(bytesRead) << std::endl;
+            std::cerr << "Error: unzReadCurrentFile() Failed: " << bytesRead << std::endl;
             return false;
         }
         else if (bytesRead > 0)
