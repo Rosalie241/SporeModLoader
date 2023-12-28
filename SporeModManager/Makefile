@@ -8,10 +8,11 @@ EXE_FILE       := SporeModManager
 VERBOSE        := 0
 MINGW          := 0
 
-CC         ?= gcc
-CXX        ?= g++
-MINGW_CC   ?= i686-w64-mingw32-gcc
-MINGW_CXX  ?= i686-w64-mingw32-g++
+CC            ?= gcc
+CXX           ?= g++
+MINGW_CC      ?= i686-w64-mingw32-gcc
+MINGW_CXX     ?= i686-w64-mingw32-g++
+MINGW_WINDRES ?= i686-w64-mingw32-windres
 
 ifeq ($(MINGW), 0)
 LDFLAGS    := -flto -s
