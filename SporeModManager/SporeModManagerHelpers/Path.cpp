@@ -11,6 +11,7 @@
 
 #include <filesystem>
 #include <iostream>
+#include <cstdlib>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -74,8 +75,7 @@ bool Path::CheckIfPathsExist(void)
     {
         if (!std::filesystem::is_directory(path))
         {
-            std::cerr << "\"" << path.string() << "\" is not a directory or doesn't exist!" << std::endl
-                      << "If you want to change the configured directories, see SporeModManager.xml" << std::endl;
+            std::cerr << "Error: " << path << " is not a directory or doesn't exist!" << std::endl;
             return false;
         }
     }
@@ -149,8 +149,8 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
 
     if (GetModuleFileNameW(nullptr, currentExecutablePathBuf, MAX_PATH) == 0)
     { // fallback to current path
-        std::cerr << "GetModuleFileNameW() Failed!" << std::endl;
-        return std::filesystem::current_path();
+        std::cerr << "Error: GetModuleFileNameW() Failed!" << std::endl;
+        std::exit(1);
     }
 
     currentExecutablePath = currentExecutablePathBuf;
@@ -163,8 +163,8 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
     }
     catch (...)
     { // fallback to current path
-        std::cerr << "std::filesystem::canonical(\"/proc/self/exe\") Failed!" << std::endl;
-        return std::filesystem::current_path();
+        std::cerr << "Error: std::filesystem::canonical(\"/proc/self/exe\") Failed!" << std::endl;
+        std::exit(1);
     }
 #endif // _WIN32
 }

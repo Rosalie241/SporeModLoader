@@ -42,13 +42,13 @@ bool FileVersion::GetCoreLibFileVersionInfo(FileVersionInfo& fileVersionInfo)
 
     if (!std::filesystem::is_regular_file(coreLibPath))
     {
-        std::cerr << "\"" << coreLibPath.string() << "\" doesn't exist!" << std::endl;
+        std::cerr << "Error: " << coreLibPath << " doesn't exist!" << std::endl;
         return false;
     }
 
     if (!FileVersion::ParseFile(coreLibPath, fileVersionInfo))
     {
-        std::cerr << "FileVersion::ParseFile() Failed!" << std::endl;
+        std::cerr << "Error: FileVersion::ParseFile() Failed!" << std::endl;
         return false;
     }
 
@@ -63,13 +63,13 @@ bool FileVersion::CheckIfCoreLibMatchesVersion(FileVersionInfo& modFileVersionIn
 
     if (!GetCoreLibFileVersionInfo(coreLibFileVersionInfo))
     {
-        std::cerr << "FileVersion::GetCoreLibFileVersionInfo() Failed!" << std::endl;
+        std::cerr << "Error: FileVersion::GetCoreLibFileVersionInfo() Failed!" << std::endl;
         return false;
     }
 
     if (modFileVersionInfo > coreLibFileVersionInfo)
     {
-        std::cerr << "\"" << modName << "\" requires newer modapi dll (\"" << modFileVersionInfo.to_string() <<
+        std::cerr << "Error: \"" << modName << "\" requires newer modapi dll (\"" << modFileVersionInfo.to_string() <<
             "\") than what's currently installed (\"" << coreLibFileVersionInfo.to_string() << "\")" << std::endl;
         return false;
     }
@@ -85,7 +85,7 @@ bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionIn
 
     if (splitString.size() > 4)
     {
-        std::cerr << "\"" << string << "\" is not a valid version string!" << std::endl;
+        std::cerr << "Error: \"" << string << "\" is not a valid version string!" << std::endl;
         return false;
     }
 
@@ -108,7 +108,7 @@ bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionIn
         }
         catch (...)
         {
-            std::cerr << "\"" << string << "\" is not a valid version string!" << std::endl;
+            std::cerr << "Error: \"" << string << "\" is not a valid version string!" << std::endl;
             return false;
         }
     }
@@ -125,7 +125,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
     fileStream.open(path, std::ios_base::in | std::ios_base::binary);
     if (!fileStream.is_open())
     {
-        std::cerr << "fileStream.open() Failed!" << std::endl;
+        std::cerr << "Error: fileStream.open() Failed!" << std::endl;
         return false;
     }
 
@@ -137,7 +137,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
     // make sure it doesn't go over the hard-limit
     if (fileStreamLength > MAX_FILE_READ_SIZE)
     {
-        std::cerr << "refusing to read file bigger than 64MiB!" << std::endl;
+        std::cerr << "Error: refusing to read file bigger than 64MiB!" << std::endl;
         return false;
     }
 
@@ -146,7 +146,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
 
     if (fileStream.fail())
     {
-        std::cerr << "fileStream.fail()!" << std::endl;
+        std::cerr << "Error: fileStream.fail()!" << std::endl;
         return false;
     }
 
@@ -160,7 +160,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
     auto bufferIter = std::search(buffer.begin(), buffer.end(), searchBytes.begin(), searchBytes.end());
     if (bufferIter == buffer.end())
     {
-        std::cout << "std::search() didn't find the required bytes!" << std::endl;
+        std::cout << "Error: std::search() didn't find the required bytes!" << std::endl;
         return false;
     }
 

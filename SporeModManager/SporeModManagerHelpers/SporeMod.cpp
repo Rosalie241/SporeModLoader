@@ -25,8 +25,7 @@ static bool IsModAlreadyInstalled(std::string uniqueName,
     {
         if (installedSporeMod.UniqueName == uniqueName)
         {
-            std::cerr << "A mod with the same unique name (" << installedSporeMod.Name << ") has already been installed" << std::endl
-                      << "Did you mean update?" << std::endl;
+            std::cerr << "Error: a mod with the same unique name (" << installedSporeMod.Name << ") has already been installed" << std::endl;
             return true;
         }
     }
@@ -44,7 +43,7 @@ static bool CheckIfOtherModContainsFiles(std::vector<SporeMod::Xml::SporeModFile
             auto installedFileIter = std::find(installedSporeMod.InstalledFiles.begin(), installedSporeMod.InstalledFiles.end(), sporeModFile);
             if (installedFileIter != installedSporeMod.InstalledFiles.end())
             {
-                std::cerr << "An already installed mod (" << installedSporeMod.Name
+                std::cerr << "Error: an already installed mod (" << installedSporeMod.Name
                           << ") contains a file (" << sporeModFile.FileName << ") that this mod wants to install!" << std::endl;
                 return true;
             }
@@ -191,7 +190,7 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
         {
             component = sporeModInfo.Components.at(i);
             std::cout << "[" << i << "] " << component.Name << std::endl
-                << "  " << component.Description << std::endl;
+                      << "  " << component.Description << std::endl;
 
             // set default checked component ids
             if (component.DefaultChecked)
@@ -279,7 +278,7 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
 
         if (!Zip::ExtractFile(zipFile, sourcePath, installPath))
         {
-            std::cerr << "Zip::ExtractFile() Failed!" << std::endl;
+            std::cerr << "Error: Zip::ExtractFile() Failed!" << std::endl;
             // cleanup installed files that were left over
             for (const auto& installedFileToRemove : installedSporeMod.InstalledFiles)
             {
@@ -296,7 +295,7 @@ bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModI
                     }
                     catch(...)
                     {
-                        std::cerr << "std::filesystem::remove(" << installPath << ") Failed!" << std::endl;
+                        std::cerr << "Error: std::filesystem::remove(" << installPath << ") Failed!" << std::endl;
                     }
                 }
             }
@@ -352,7 +351,7 @@ bool SporeMod::InstallPackage(std::filesystem::path path, Xml::InstalledSporeMod
         }
         catch (...)
         {
-            std::cerr << "std::filesystem::copy_file(" << sourcePath << "," << installPath << ") Failed!" << std::endl;
+            std::cerr << "Error: std::filesystem::copy_file(" << sourcePath << "," << installPath << ") Failed!" << std::endl;
             return false;
         }
     }

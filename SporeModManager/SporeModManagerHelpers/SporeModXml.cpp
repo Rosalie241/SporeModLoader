@@ -284,7 +284,7 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     xmlElement = xmlDocument.RootElement();
     if (xmlElement == nullptr)
     {
-        std::cerr << "XDocument.RootElement() Failed!" << std::endl;
+        std::cerr << "XMLDocument.RootElement() Failed!" << std::endl;
         return false;
     }
 
@@ -390,7 +390,7 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& coreLibsPath, std::fil
     xmlElement = xmlDocument.RootElement();
     if (xmlElement == nullptr)
     {
-        std::cerr << "XDocument.RootElement() Failed!" << std::endl;
+        std::cerr << "XMLDocument.RootElement() Failed!" << std::endl;
         return false;
     }
 
@@ -469,7 +469,7 @@ bool SporeMod::Xml::SaveDirectories(std::filesystem::path coreLibsPath, std::fil
     xmlElement = xmlDocument.RootElement();
     if (xmlElement == nullptr)
     {
-        std::cerr << "XDocument.RootElement() Failed!" << std::endl;
+        std::cerr << "XMLDocument.RootElement() Failed!" << std::endl;
         return false;
     }
 
@@ -537,7 +537,7 @@ bool SporeMod::Xml::GetInstalledModList(std::vector<InstalledSporeMod>& installe
     xmlElement = xmlDocument.RootElement();
     if (xmlElement == nullptr)
     {
-        std::cerr << "XDocument.RootElement() Failed!" << std::endl;
+        std::cerr << "XMLDocument.RootElement() Failed!" << std::endl;
         return false;
     }
 

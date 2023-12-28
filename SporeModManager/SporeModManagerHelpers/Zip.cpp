@@ -124,6 +124,10 @@ bool Zip::OpenFile(ZipFile& zipFile, std::filesystem::path path)
     filefuncs.opaque       = nullptr;
 
     zipFile = unzOpen2_64((const void*)&path, &filefuncs);
+    if (zipFile == nullptr)
+    {
+        std::cerr << "Error: unzOpen2_64(" << path << ") Failed!" << std::endl; 
+    }
     return zipFile != nullptr;
 }
 
@@ -143,20 +147,21 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
     // try to find file in zip
     if (unzLocateFile(zipFile, file.string().c_str(), 2) != UNZ_OK)
     {
-        std::cerr << "Failed to find \"" << file << "\" in zip file!" << std::endl;
+        std::cerr << "Error: failed to find " << file << " in zip file!" << std::endl;
         return false;
     }
 
     outputFileStream.open(outputFile, std::ofstream::trunc | std::ofstream::binary);
     if (!outputFileStream.is_open())
     {
-        std::cerr << "ofstream.open() Failed!" << std::endl;
+        std::cerr << "Error: ofstream.open() Failed!" << std::endl;
         return false;
     }
 
-    if (unzOpenCurrentFile(zipFile) != UNZ_OK)
+    bytesRead = unzOpenCurrentFile(zipFile);
+    if (bytesRead != UNZ_OK)
     {
-        std::cerr << "unzOpenCurrentFile() Failed!" << std::endl;
+        std::cerr << "Error: unzOpenCurrentFile() Failed: " << bytesRead << std::endl;
         return false;
     }
 
@@ -166,7 +171,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
-            std::cerr << "unzReadCurrentFile() Failed: " << std::to_string(bytesRead) << std::endl;
+            std::cerr << "Error: unzReadCurrentFile() Failed: " << bytesRead << std::endl;
             return false;
         }
         else if (bytesRead > 0)
@@ -191,15 +196,16 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
     // try to find file in zip
     if (unzLocateFile(zipFile, file.string().c_str(), 2) != UNZ_OK)
     {
-        std::cerr << "Failed to find \"" << file << "\" in zip file!" << std::endl;
+        std::cerr << "Error: failed to find " << file << " in zip file!" << std::endl;
         return false;
     }
 
     outBuffer.reserve(UNZIP_READ_SIZE);
 
-    if (unzOpenCurrentFile(zipFile) != UNZ_OK)
+    bytesRead = unzOpenCurrentFile(zipFile);
+    if (bytesRead != UNZ_OK)
     {
-        std::cerr << "unzOpenCurrentFile() Failed!" << std::endl;
+        std::cerr << "Error: unzOpenCurrentFile() Failed: " << std::to_string(bytesRead)  << std::endl;
         return false;
     }
 
@@ -209,7 +215,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
-            std::cerr << "unzReadCurrentFile() Failed: " << std::to_string(bytesRead) << std::endl;
+            std::cerr << "Error: unzReadCurrentFile() Failed: " << std::to_string(bytesRead) << std::endl;
             return false;
         }
         else if (bytesRead > 0)

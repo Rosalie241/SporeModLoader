@@ -149,7 +149,7 @@ int main(int argc, char** argv)
                 }
                 if (!arg.empty())
                 {
-                    std::arg_cerr << arg_str("unrecognized option: -") << arg << std::endl;
+                    std::arg_cerr << arg_str("Error: unrecognized option: -") << arg << std::endl;
                     return 1;
                 }
             }
@@ -195,7 +195,7 @@ int main(int argc, char** argv)
                 }
                 if (!arg.empty())
                 {
-                    std::arg_cerr << arg_str("unrecognized option: --") << arg << std::endl;
+                    std::arg_cerr << arg_str("Error: unrecognized option: --") << arg << std::endl;
                     return 1;
                 }
             }
@@ -213,7 +213,7 @@ int main(int argc, char** argv)
     // validate options
     if (hasUpdateOption && hasNeededOption)
     {
-        std::cerr << "--needed cannot be combined with --update-needed!" << std::endl;
+        std::cerr << "Error: --needed cannot be combined with --update-needed!" << std::endl;
         return 1;
     }
 
@@ -225,7 +225,7 @@ int main(int argc, char** argv)
     {
         if (!SporeMod::Xml::SaveDirectories(coreLibsPath, modLibsPath, ep1Path, dataPath))
         {
-            std::cerr << "SporeMod::Xml::SaveDirectories() Failed!" << std::endl;
+            std::cerr << "Error: SporeMod::Xml::SaveDirectories() Failed!" << std::endl;
             return 1;
         }
     }
@@ -242,6 +242,11 @@ int main(int argc, char** argv)
     if (command == arg_str("help"))
     {
         ShowUsage();
+        return 0;
+    }
+    else if (command == arg_str("version"))
+    {
+        std::cout << "SporeModManager " << VERSION_STR << std::endl;
         return 0;
     }
     else if (command == arg_str("list-installed"))
@@ -329,7 +334,7 @@ int main(int argc, char** argv)
             std::vector<arg_str_type> splitString = String::Split(args.at(2), arg_char('-'));
             if (splitString.size() != 2)
             {
-                std::cerr << "range can only contain 2 positive numbers!" << std::endl;
+                std::cerr << "Error: range can only contain 2 positive numbers!" << std::endl;
                 return 1;
             }
 
@@ -340,19 +345,19 @@ int main(int argc, char** argv)
             }
             catch (...)
             {
-                std::cerr << "range can only contain numbers!" << std::endl;
+                std::cerr << "Error: range can only contain numbers!" << std::endl;
                 return 1;
             }
 
             // validate start and end index
             if (startIndex == endIndex)
             {
-                std::cerr << "start number cannot be equal to the end number!" << std::endl;
+                std::cerr << "Error: start number cannot be equal to the end number!" << std::endl;
                 return 1;
             }
             else if (startIndex > endIndex)
             {
-                std::cerr << "start number must be less than the end number!" << std::endl;
+                std::cerr << "Error: start number must be less than the end number!" << std::endl;
                 return 1;
             }
 
@@ -371,7 +376,7 @@ int main(int argc, char** argv)
                 }
                 catch (...)
                 {
-                    std::cerr << "ID must be a number!" << std::endl;
+                    std::cerr << "Error: ID must be a number!" << std::endl;
                     return 1;
                 }
             }
@@ -381,11 +386,6 @@ int main(int argc, char** argv)
         {
             return 1;
         }
-    }
-    else if (command == arg_str("version"))
-    {
-        std::cout << "SporeModManager " << VERSION_STR << std::endl;
-        return 0;
     }
     else
     {

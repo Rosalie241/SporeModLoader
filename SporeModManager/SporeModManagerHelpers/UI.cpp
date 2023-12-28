@@ -73,7 +73,7 @@ void UI::AskUserInput(std::string text, int& number, std::optional<int> defaultN
         }
         catch (...)
         {
-            std::cerr << "invalid input" << std::endl;
+            std::cerr << "Error: invalid input" << std::endl;
         }
     } while (true);
 }
@@ -127,7 +127,7 @@ void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& number
             }
             catch (...)
             {
-                std::cout << "invalid input" << std::endl;
+                std::cerr << "Error: invalid input" << std::endl;
                 validInput = false;
                 break;
             }
@@ -158,7 +158,7 @@ void UI::AskUserInput(std::string text, bool& boolValue, bool defaultValue)
             validInput = true;
         }
         else if (inputLine == "y" ||
-            inputLine == "n")
+                 inputLine == "n")
         {
             boolValue = (inputLine == "y");
             validInput = true;
