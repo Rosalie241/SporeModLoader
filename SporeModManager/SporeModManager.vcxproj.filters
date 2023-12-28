@@ -16,14 +16,17 @@
     <Filter Include="Source Files\SporeModManagerHelpers">
       <UniqueIdentifier>{61ad4daa-3baa-44fa-a0fb-98a6919882c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\zlib">
-      <UniqueIdentifier>{a6d9c111-91ba-4900-acf6-60049f263cea}</UniqueIdentifier>
+    <Filter Include="Source Files\3rdParty">
+      <UniqueIdentifier>{6ef044f3-19a0-44ec-b9cc-4163e4c0a2d6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\minizip">
+    <Filter Include="Source Files\3rdParty\minizip">
       <UniqueIdentifier>{c8b1b946-c638-47a9-a404-6674639fb364}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\tinyxml2">
+    <Filter Include="Source Files\3rdParty\tinyxml2">
       <UniqueIdentifier>{b88d4cd0-62a5-4033-a17e-38574d8fa513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rdParty\zlib">
+      <UniqueIdentifier>{a6d9c111-91ba-4900-acf6-60049f263cea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,31 +58,31 @@
       <Filter>Source Files\SporeModManagerHelpers</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\zlib\adler32.c">
-      <Filter>Source Files\zlib</Filter>
+      <Filter>Source Files\3rdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\zlib\crc32.c">
-      <Filter>Source Files\zlib</Filter>
+      <Filter>Source Files\3rdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\zlib\inffast.c">
-      <Filter>Source Files\zlib</Filter>
+      <Filter>Source Files\3rdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\zlib\inflate.c">
-      <Filter>Source Files\zlib</Filter>
+      <Filter>Source Files\3rdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\zlib\inftrees.c">
-      <Filter>Source Files\zlib</Filter>
+      <Filter>Source Files\3rdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\zlib\zutil.c">
-      <Filter>Source Files\zlib</Filter>
+      <Filter>Source Files\3rdParty\zlib</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\zlib\contrib\minizip\unzip.c">
-      <Filter>Source Files\minizip</Filter>
+      <Filter>Source Files\3rdParty\minizip</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\zlib\contrib\minizip\ioapi.c">
-      <Filter>Source Files\minizip</Filter>
+      <Filter>Source Files\3rdParty\minizip</Filter>
     </ClCompile>
     <ClCompile Include="..\3rdParty\tinyxml2\tinyxml2.cpp">
-      <Filter>Source Files\tinyxml2</Filter>
+      <Filter>Source Files\3rdParty\tinyxml2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
