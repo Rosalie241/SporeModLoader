@@ -48,16 +48,16 @@
     <TargetName>dinput8</TargetName>
     <OutDir>Bin\$(Configuration)\</OutDir>
     <IntDir>Obj\$(Configuration)\</IntDir>
-    <LibraryPath>$(MSBuildProjectDirectory)\..\3rdParty\Detours\lib.X86;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(MSBuildProjectDirectory)\..\3rdParty\Detours\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IncludePath>$(MSBuildProjectDirectory)\..\3rdParty\Detours\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>dinput8</TargetName>
     <OutDir>Bin\$(Configuration)\</OutDir>
     <IntDir>Obj\$(Configuration)\</IntDir>
-    <LibraryPath>$(MSBuildProjectDirectory)\..\3rdParty\Detours\lib.X86;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(MSBuildProjectDirectory)\..\3rdParty\Detours\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IncludePath>$(MSBuildProjectDirectory)\..\3rdParty\Detours\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -73,14 +73,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>dllmain.def</ModuleDefinitionFile>
-      <AdditionalDependencies>detours.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>if NOT EXIST  "$(MSBuildProjectDirectory)\..\3rdParty\Detours\lib.X86\detours.lib" (
-    CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildDetours.bat"
-)
-
-if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll" (
+      <Command>if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll" (
     CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildSporeModAPI.bat"
 )</Command>
     </PreBuildEvent>
@@ -108,14 +104,10 @@ if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\Sp
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>dllmain.def</ModuleDefinitionFile>
-      <AdditionalDependencies>detours.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>if NOT EXIST  "$(MSBuildProjectDirectory)\..\3rdParty\Detours\lib.X86\detours.lib" (
-    CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildDetours.bat"
-)
-
-if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll" (
+      <Command>if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll" (
     CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildSporeModAPI.bat"
 )</Command>
     </PreBuildEvent>
@@ -131,6 +123,12 @@ if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\Sp
     <ClInclude Include="SporeModLoaderHelpers.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\3rdParty\Detours\src\creatwth.cpp" />
+    <ClCompile Include="..\3rdParty\Detours\src\detours.cpp" />
+    <ClCompile Include="..\3rdParty\Detours\src\disasm.cpp" />
+    <ClCompile Include="..\3rdParty\Detours\src\disolx86.cpp" />
+    <ClCompile Include="..\3rdParty\Detours\src\image.cpp" />
+    <ClCompile Include="..\3rdParty\Detours\src\modules.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="SporeModLoader.cpp" />
     <ClCompile Include="SporeModLoaderHelpers.cpp" />

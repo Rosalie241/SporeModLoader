@@ -9,6 +9,12 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Source Files\3rdParty">
+      <UniqueIdentifier>{f90a0a95-426b-4279-9f1e-2cf4e5a38ef8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rdParty\Detours">
+      <UniqueIdentifier>{7379803f-572b-4f5d-b2cf-dc05f0fe9419}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SporeModLoader.hpp">
@@ -33,6 +39,24 @@
     </ClCompile>
     <ClCompile Include="SporeModLoaderHelpers.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\Detours\src\creatwth.cpp">
+      <Filter>Source Files\3rdParty\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\Detours\src\detours.cpp">
+      <Filter>Source Files\3rdParty\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\Detours\src\disasm.cpp">
+      <Filter>Source Files\3rdParty\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\Detours\src\disolx86.cpp">
+      <Filter>Source Files\3rdParty\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\Detours\src\image.cpp">
+      <Filter>Source Files\3rdParty\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\Detours\src\modules.cpp">
+      <Filter>Source Files\3rdParty\Detours</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
