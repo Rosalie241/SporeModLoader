@@ -43,21 +43,10 @@ jobs:
           Copy "SporeModLoader\Bin\Release\dinput8.dll"          "bin\SporebinEP1\dinput8.dll"
           Copy "SporeModManager\Bin\Release\SporeModManager.exe" "bin\SporeModLoader\SporeModManager\SporeModManager.exe"
       - name: Upload SporeModLoader (msvc)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: SporeModLoader-${{ env.GIT_REVISION }}
+          name: msvc-build-artifacts
           path: bin/*
-      # the modapi dlls cannot be compiled using mingw
-      # due to needing to keep ABI compatability with
-      # existing mods compiled with msvc
-      - name: Upload SporeModLoader (modapi dlls for mingw)
-        uses: actions/upload-artifact@v3
-        with:
-          name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
-          path: |
-            bin/*
-            !bin/SporebinEP1/dinput8.dll
-            !bin/SporeModLoader/SporeModManager/SporeModManager.exe
   linux-build:
     runs-on: ubuntu-20.04
     steps:
@@ -71,14 +60,9 @@ jobs:
         run: |
           make SporeModManager -j$(nproc)
       - name: Upload SporeModLoader (Linux for msvc)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: SporeModLoader-${{ env.GIT_REVISION }}
-          path: bin/*
-      - name: Upload SporeModLoader (Linux for mingw)
-        uses: actions/upload-artifact@v3
-        with:
-          name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
+          name: linux-build-artifacts
           path: bin/*
   mingw-build:
     runs-on: ubuntu-20.04
@@ -95,11 +79,67 @@ jobs:
       - name: Build SporeModLoader (mingw)
         run: |
           make SporeModLoader -j$(nproc)
-      - name: Build SporeModManager (mingw)
-        run: |
-          make SporeModManager.exe -j$(nproc)
-      - name: Upload SporeModLoader (mingw)
-        uses: actions/upload-artifact@v3
+  package-artifacts:
+    runs-on: ubuntu-20.04
+    needs: [ msvc-build, linux-build ]
+    steps:
+      - uses: actions/checkout@v4
         with:
-          name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
-          path: bin/*
+          fetch-depth: 0
+      - name: Prepare Environment
+        run: |
+          echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
+      - name: Download msvc-build-artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: msvc-build-artifacts
+          path: artifacts
+      - name: Download linux-build-artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-build-artifacts
+          path: artifacts
+      - name: Upload SporeModLoader
+        uses: actions/upload-artifact@v4
+        with:
+          name: SporeModLoader-${{ env.GIT_REVISION }}
+          path: artifacts/*
+  msvc-test:
+    runs-on: windows-2022
+    needs: [ package-artifacts ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prepare Environment
+        run: |
+          $env:revision = git describe --tags --always
+          echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
+      - name: Download SporeModManager (msvc)
+        uses: actions/download-artifact@v4
+        with:
+          name: SporeModLoader-${{ env.GIT_REVISION }}
+          path: artifact
+      - name: Test SporeModManager (msvc)
+        run: |
+          python3 ./SporeModManager/test.py ./artifact/SporeModLoader/SporeModManager/SporeModManager.exe
+  linux-test:
+    runs-on: ubuntu-20.04
+    needs: [ package-artifacts ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prepare Environment
+        run: |
+          echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
+      - name: Download SporeModManager (Linux)
+        uses: actions/download-artifact@v4
+        with:
+          name: SporeModLoader-${{ env.GIT_REVISION }}
+          path: artifact
+      - name: Test SporeModManager (Linux)
+        run: |
+          chmod +x ./artifact/SporeModLoader/SporeModManager/SporeModManager
+          python3 ./SporeModManager/test.py ./artifact/SporeModLoader/SporeModManager/SporeModManager
+
