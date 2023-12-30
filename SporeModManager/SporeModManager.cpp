@@ -244,7 +244,6 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
             if (!SporeMod::InstallSporeMod(l_ZipFiles.at(i), l_SporeModInfos.at(i), installedSporeMod))
             {
                 returnValue = false;
-                break;
             }
         }
         else if (extension == ".package")
@@ -252,13 +251,13 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
             if (!SporeMod::InstallPackage(path, installedSporeMod))
             {
                 returnValue = false;
-                break;
             }
         }
 
         if (!returnValue)
         {
             l_InstalledSporeMods.erase(l_InstalledSporeMods.begin() + installedSporeModIndex);
+            break;
         }
     }
 
