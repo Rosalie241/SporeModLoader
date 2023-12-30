@@ -21,6 +21,9 @@ clean:
 	$(MAKE) -C SporeModManager clean BINARY_DIR=$(BINARY_DIR)/SporeModLoader/SporeModManager
 	$(MAKE) -C SporeModManager clean MINGW=1 BINARY_DIR=$(BINARY_DIR)/SporeModLoader/SporeModManager
 
+check:
+	$(MAKE) -C SporeModManager check BINARY_DIR=$(BINARY_DIR)/SporeModLoader/SporeModManager
+
 # this is needed due to compiling SporeModLoader twice,
 # which, when compiling with multiple threads, will cause
 # zconf.h to be generated twice, causing a build failure
@@ -38,4 +41,4 @@ SporeModManager: $(THIRDPARTY_DIR)/zlib/zconf.h
 SporeModManager.exe: $(THIRDPARTY_DIR)/zlib/zconf.h
 	$(MAKE) -C $(basename $@) BINARY_DIR=$(BINARY_DIR)/SporeModLoader/SporeModManager MINGW=1
 
-.PHONY: SporeModLoader SporeModManager SporeModManager.exe all clean
+.PHONY: SporeModLoader SporeModManager SporeModManager.exe all clean check
