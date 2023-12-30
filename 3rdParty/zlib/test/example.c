@@ -36,12 +36,12 @@ static uLong dictId;    /* Adler32 value of the dictionary */
 
 #ifdef Z_SOLO
 
-static void *myalloc(void *q, unsigned n, unsigned m) {
+void *myalloc(void *q, unsigned n, unsigned m) {
     (void)q;
     return calloc(n, m);
 }
 
-static void myfree(void *q, void *p) {
+void myfree(void *q, void *p) {
     (void)q;
     free(p);
 }
@@ -57,7 +57,7 @@ static free_func zfree = (free_func)0;
 /* ===========================================================================
  * Test compress() and uncompress()
  */
-static void test_compress(Byte *compr, uLong comprLen, Byte *uncompr,
+void test_compress(Byte *compr, uLong comprLen, Byte *uncompr,
                    uLong uncomprLen) {
     int err;
     uLong len = (uLong)strlen(hello)+1;
@@ -81,7 +81,7 @@ static void test_compress(Byte *compr, uLong comprLen, Byte *uncompr,
 /* ===========================================================================
  * Test read/write of .gz files
  */
-static void test_gzio(const char *fname, Byte *uncompr, uLong uncomprLen) {
+void test_gzio(const char *fname, Byte *uncompr, uLong uncomprLen) {
 #ifdef NO_GZCOMPRESS
     fprintf(stderr, "NO_GZCOMPRESS -- gz* functions cannot compress\n");
 #else
@@ -163,7 +163,7 @@ static void test_gzio(const char *fname, Byte *uncompr, uLong uncomprLen) {
 /* ===========================================================================
  * Test deflate() with small buffers
  */
-static void test_deflate(Byte *compr, uLong comprLen) {
+void test_deflate(Byte *compr, uLong comprLen) {
     z_stream c_stream; /* compression stream */
     int err;
     uLong len = (uLong)strlen(hello)+1;
@@ -198,7 +198,7 @@ static void test_deflate(Byte *compr, uLong comprLen) {
 /* ===========================================================================
  * Test inflate() with small buffers
  */
-static void test_inflate(Byte *compr, uLong comprLen, Byte *uncompr,
+void test_inflate(Byte *compr, uLong comprLen, Byte *uncompr,
                   uLong uncomprLen) {
     int err;
     z_stream d_stream; /* decompression stream */
@@ -237,7 +237,7 @@ static void test_inflate(Byte *compr, uLong comprLen, Byte *uncompr,
 /* ===========================================================================
  * Test deflate() with large buffers and dynamic change of compression level
  */
-static void test_large_deflate(Byte *compr, uLong comprLen, Byte *uncompr,
+void test_large_deflate(Byte *compr, uLong comprLen, Byte *uncompr,
                         uLong uncomprLen) {
     z_stream c_stream; /* compression stream */
     int err;
@@ -290,7 +290,7 @@ static void test_large_deflate(Byte *compr, uLong comprLen, Byte *uncompr,
 /* ===========================================================================
  * Test inflate() with large buffers
  */
-static void test_large_inflate(Byte *compr, uLong comprLen, Byte *uncompr,
+void test_large_inflate(Byte *compr, uLong comprLen, Byte *uncompr,
                         uLong uncomprLen) {
     int err;
     z_stream d_stream; /* decompression stream */
@@ -329,7 +329,7 @@ static void test_large_inflate(Byte *compr, uLong comprLen, Byte *uncompr,
 /* ===========================================================================
  * Test deflate() with full flush
  */
-static void test_flush(Byte *compr, uLong *comprLen) {
+void test_flush(Byte *compr, uLong *comprLen) {
     z_stream c_stream; /* compression stream */
     int err;
     uInt len = (uInt)strlen(hello)+1;
@@ -364,8 +364,7 @@ static void test_flush(Byte *compr, uLong *comprLen) {
 /* ===========================================================================
  * Test inflateSync()
  */
-static void test_sync(Byte *compr, uLong comprLen, Byte *uncompr,
-                      uLong uncomprLen) {
+void test_sync(Byte *compr, uLong comprLen, Byte *uncompr, uLong uncomprLen) {
     int err;
     z_stream d_stream; /* decompression stream */
 
@@ -405,7 +404,7 @@ static void test_sync(Byte *compr, uLong comprLen, Byte *uncompr,
 /* ===========================================================================
  * Test deflate() with preset dictionary
  */
-static void test_dict_deflate(Byte *compr, uLong comprLen) {
+void test_dict_deflate(Byte *compr, uLong comprLen) {
     z_stream c_stream; /* compression stream */
     int err;
 
@@ -439,7 +438,7 @@ static void test_dict_deflate(Byte *compr, uLong comprLen) {
 /* ===========================================================================
  * Test inflate() with a preset dictionary
  */
-static void test_dict_inflate(Byte *compr, uLong comprLen, Byte *uncompr,
+void test_dict_inflate(Byte *compr, uLong comprLen, Byte *uncompr,
                        uLong uncomprLen) {
     int err;
     z_stream d_stream; /* decompression stream */

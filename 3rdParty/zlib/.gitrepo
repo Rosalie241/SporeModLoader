@@ -5,8 +5,8 @@
 ;
 [subrepo]
 	remote = git@github.com:madler/zlib.git
-	branch = develop
-	commit = 643e17b7498d12ab8d15565662880579692f769d
-	parent = 2259c0b78c5d84859dfcde430a791aa0046ebf68
+	branch = master
+	commit = 09155eaa2f9270dc4ed1fa13e2b4b2613e6e4851
+	parent = 1fcc0142316f7a4bc97f0576fdd815db63ba124c
 	method = merge
 	cmdver = 0.4.6
