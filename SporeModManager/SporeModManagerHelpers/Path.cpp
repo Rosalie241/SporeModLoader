@@ -98,11 +98,8 @@ std::filesystem::path Path::Combine(std::vector<std::filesystem::path> paths)
         { // break when at end
             break;
         }
-#ifdef _WIN32
-        combinedPath += "\\";
-#else
-        combinedPath += "/";
-#endif // _WIN32
+        // add seperator
+        combinedPath += std::filesystem::path::preferred_separator;
     }
 
     return combinedPath;
