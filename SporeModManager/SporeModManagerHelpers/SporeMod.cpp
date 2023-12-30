@@ -18,21 +18,6 @@ using namespace SporeModManagerHelpers;
 // Helper Functions
 //
 
-static bool IsModAlreadyInstalled(const std::string& uniqueName, 
-                                  const std::vector<SporeMod::Xml::InstalledSporeMod>& installedSporeMods)
-{
-    for (const auto& installedSporeMod : installedSporeMods)
-    {
-        if (installedSporeMod.UniqueName == uniqueName)
-        {
-            std::cerr << "Error: a mod with the same unique name (" << installedSporeMod.Name << ") has already been installed" << std::endl;
-            return true;
-        }
-    }
-
-    return false;
-}
-
 static bool CheckIfOtherModContainsFiles(const SporeMod::Xml::InstalledSporeMod& installedSporeMod,
                                          const std::vector<SporeMod::Xml::InstalledSporeMod>& installedSporeMods)
 {
@@ -40,7 +25,7 @@ static bool CheckIfOtherModContainsFiles(const SporeMod::Xml::InstalledSporeMod&
     {
         for (const auto& sporeModFile : installedSporeMod.InstalledFiles)
         {
-            auto predicate = [installedSporeMod, installedSporeModIter, sporeModFile](const SporeMod::Xml::SporeModFile file)
+            auto predicate = [installedSporeMod, installedSporeModIter, sporeModFile](const SporeMod::Xml::SporeModFile& file)
             {
                 return installedSporeMod.UniqueName != installedSporeModIter.UniqueName && file == sporeModFile;
             };
@@ -78,7 +63,7 @@ bool SporeMod::FindInstalledMod(std::string uniqueName, int& installedSporeModId
     return false;
 }
 
-bool SporeMod::ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod> &installedSporeMods, const bool update)
+bool SporeMod::ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod> &installedSporeMods)
 {
     Xml::SporeModInfoComponent component;
     size_t             componentsSize;
@@ -92,13 +77,6 @@ bool SporeMod::ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::Ins
     installedSporeMod.Name        = sporeModInfo.Name;
     installedSporeMod.UniqueName  = sporeModInfo.UniqueName;
     installedSporeMod.Description = sporeModInfo.Description;
-
-    // check if mod with the same unique name is 
-    // already installed
-    if (!update && IsModAlreadyInstalled(sporeModInfo.UniqueName, installedSporeMods))
-    {
-        return false;
-    }
 
     configurationRequired = sporeModInfo.IsExperimental           || 
                             sporeModInfo.RequiresGalaxyReset      ||
@@ -264,7 +242,7 @@ bool SporeMod::ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::Ins
     return true;
 }
 
-bool SporeMod::ConfigurePackage(const std::filesystem::path& path, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods, const bool update)
+bool SporeMod::ConfigurePackage(const std::filesystem::path& path, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods)
 {
     Xml::SporeModFile installedModFile;
 
@@ -276,13 +254,6 @@ bool SporeMod::ConfigurePackage(const std::filesystem::path& path, Xml::Installe
     installedSporeMod.Name       = baseName;
     installedSporeMod.UniqueName = baseName;
     installedSporeMod.InstalledFiles.push_back(installedModFile);
-
-    // check if mod with the same unique name is 
-    // already installed
-    if (!update && IsModAlreadyInstalled(baseName, installedSporeMods))
-    {
-        return false;
-    }
 
     // file collision detection
     if (CheckIfOtherModContainsFiles(installedSporeMod, installedSporeMods))

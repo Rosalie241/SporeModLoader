@@ -188,12 +188,12 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Configures sporemod file
         /// </summary>
-        bool ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods, const bool update = false);
+        bool ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
 
         /// <summary>
         ///     Configures package file
         /// </summary>
-        bool ConfigurePackage(const std::filesystem::path& path, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods, const bool update = false);
+        bool ConfigurePackage(const std::filesystem::path& path, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
 
         /// <summary>
         ///     Installs sporemod file
