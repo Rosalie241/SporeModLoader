@@ -182,12 +182,8 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
             }
 
             // ensure the mod isn't already installed
-            auto predicate = [sporeModInfo](const SporeMod::Xml::InstalledSporeMod& installedSporeModIter)
-            {
-                return sporeModInfo.UniqueName == installedSporeModIter.UniqueName;
-            };
-            auto installedSporeModIter = std::find_if(l_InstalledSporeMods.begin(), l_InstalledSporeMods.end(), predicate);
-            if (installedSporeModIter != l_InstalledSporeMods.end())
+            const bool hasInstalled = SporeMod::FindInstalledMod(sporeModInfo.UniqueName, installedSporeModId, l_InstalledSporeMods);
+            if (!skipInstalled && hasInstalled)
             {
                 std::cerr << "Error: a mod with the same unique name (" << sporeModInfo.Name << ") has already been installed" << std::endl;
                 CloseZipFiles();
@@ -199,7 +195,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
             // with the same unique name or a mod with the same
             // unique name already being installed
             const bool hasUniqueName = std::find(uniqueNames.begin(), uniqueNames.end(), sporeModInfo.UniqueName) != uniqueNames.end();
-            const bool skipInstall   = skipInstalled && SporeMod::FindInstalledMod(sporeModInfo.UniqueName, installedSporeModId, l_InstalledSporeMods);
+            const bool skipInstall   = skipInstalled && hasInstalled;
             if (hasUniqueName || skipInstall)
             {
                 std::cerr << "Skipping " << path << (hasUniqueName ? 
