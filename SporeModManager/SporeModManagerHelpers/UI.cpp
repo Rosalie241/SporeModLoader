@@ -163,6 +163,10 @@ void UI::AskUserInput(std::string text, bool& boolValue, bool defaultValue)
             boolValue = (inputLine == "y");
             validInput = true;
         }
+        else
+        {
+            std::cerr << "Error: invalid input" << std::endl;
+        }
     } while (!validInput);
 }
 
