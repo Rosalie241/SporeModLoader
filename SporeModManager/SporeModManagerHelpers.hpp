@@ -186,14 +186,24 @@ namespace SporeModManagerHelpers
         bool FindInstalledMod(std::string uniqueName, int& installedSporeModId, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
 
         /// <summary>
+        ///     Configures sporemod file
+        /// </summary>
+        bool ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods, const bool update = false);
+
+        /// <summary>
+        ///     Configures package file
+        /// </summary>
+        bool ConfigurePackage(const std::filesystem::path& path, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods, const bool update = false);
+
+        /// <summary>
         ///     Installs sporemod file
         /// </summary>
-        bool InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
+        bool InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModInfo, const Xml::InstalledSporeMod& installedSporeMod);
 
         /// <summary>
         ///    Installs package file
         /// </summary>
-        bool InstallPackage(std::filesystem::path path, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
+        bool InstallPackage(const std::filesystem::path& path, const Xml::InstalledSporeMod& installedSporeMod);
     }
 
     namespace Path

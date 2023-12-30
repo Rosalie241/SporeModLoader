@@ -135,7 +135,7 @@ bool SporeModManager::ListInstalledMods(void)
     return true;
 }
 
-bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool skipValidation, bool skipInstalled)
+bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool skipValidation, bool skipInstalled, bool skipConfiguration)
 {
     std::vector<std::string> uniqueNames;
     std::string              extension;
@@ -202,16 +202,46 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
         }
     }
 
+    // configure given mods
+    if (!skipConfiguration)
+    {
+        for (size_t i = 0; i < paths.size(); i++)
+        {
+            const std::filesystem::path& path = paths.at(i);
+
+            installedSporeMod = {};
+            extension = String::Lowercase(path.extension().string());
+            if (extension == ".sporemod")
+            {
+                if (!SporeMod::ConfigureSporeMod(l_SporeModInfos.at(i), installedSporeMod, l_InstalledSporeMods))
+                {
+                    CloseZipFiles();
+                    return false;
+                }
+            }
+            else if (extension == ".package")
+            {
+                if (!SporeMod::ConfigurePackage(path, installedSporeMod, l_InstalledSporeMods))
+                {
+                    CloseZipFiles();
+                    return false;
+                }
+            }
+            l_InstalledSporeMods.push_back(installedSporeMod);
+        }
+    }
+
     // install given mods
     for (size_t i = 0; i < paths.size(); i++)
     {
         const std::filesystem::path& path = paths.at(i);
+        const size_t installedSporeModIndex = l_InstalledSporeMods.size() - paths.size() + i;
+        const SporeMod::Xml::InstalledSporeMod& installedSporeMod = l_InstalledSporeMods.at(installedSporeModIndex);
 
-        installedSporeMod = {};
         extension = String::Lowercase(path.extension().string());
         if (extension == ".sporemod")
         {
-            if (!SporeMod::InstallSporeMod(l_ZipFiles.at(i), l_SporeModInfos.at(i), installedSporeMod, l_InstalledSporeMods))
+            if (!SporeMod::InstallSporeMod(l_ZipFiles.at(i), l_SporeModInfos.at(i), installedSporeMod))
             {
                 returnValue = false;
                 break;
@@ -219,13 +249,17 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
         }
         else if (extension == ".package")
         {
-            if (!SporeMod::InstallPackage(path, installedSporeMod, l_InstalledSporeMods))
+            if (!SporeMod::InstallPackage(path, installedSporeMod))
             {
                 returnValue = false;
                 break;
             }
         }
-        l_InstalledSporeMods.push_back(installedSporeMod);
+
+        if (!returnValue)
+        {
+            l_InstalledSporeMods.erase(l_InstalledSporeMods.begin() + installedSporeModIndex);
+        }
     }
 
     if (!SaveInstalledSporeModList())
@@ -240,6 +274,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
 
 bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool requiresInstalled)
 {
+    SporeMod::Xml::InstalledSporeMod installedSporeMod;
     int                      installedSporeModId = 0;
     std::vector<int>         installedSporeModIds;
     std::vector<std::string> uniqueNames;
@@ -306,6 +341,33 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
         }
     }
 
+    // configure mods before attempting
+    // to updating the given mods
+    for (size_t i = 0; i < paths.size(); i++)
+    {
+        const std::filesystem::path& path = paths.at(i);
+
+        installedSporeMod = {};
+        extension = String::Lowercase(path.extension().string());
+        if (extension == ".sporemod")
+        {
+            if (!SporeMod::ConfigureSporeMod(l_SporeModInfos.at(i), installedSporeMod, l_InstalledSporeMods, true))
+            {
+                CloseZipFiles();
+                return false;
+            }
+        }
+        else if (extension == ".package")
+        {
+            if (!SporeMod::ConfigurePackage(path, installedSporeMod, l_InstalledSporeMods, true))
+            {
+                CloseZipFiles();
+                return false;
+            }
+        }
+        l_InstalledSporeMods.push_back(installedSporeMod);
+    }
+
     // disable saving the installed mod list when uninstalling mods
     l_SaveInstalledSporeMods = false;
 
@@ -319,7 +381,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
     // save installed mod list when installing mods
     l_SaveInstalledSporeMods = true;
 
-    return InstallMods(paths, true);
+    return InstallMods(paths, true, false, true);
 }
 
 bool SporeModManager::UninstallMods(std::vector<int> ids)
