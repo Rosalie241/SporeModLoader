@@ -37,11 +37,15 @@ static SporeMod::InstallLocation ParseInstallLocation(std::string text)
 {
     SporeMod::InstallLocation installLocation;
 
-    if (text == "GalacticAdventures" || text == "GalacticAdventuresData")
+    // lowercase text to make the 
+    // value case insensitive
+    text = String::Lowercase(text);
+
+    if (text == "galacticadventures" || text == "galacticadventuresdata")
     {
         installLocation = SporeMod::InstallLocation::GalacticAdventuresData;
     }
-    else if (text == "CoreSpore" || text == "CoreSporeData")
+    else if (text == "spore" || text == "coresporedata")
     {
         installLocation = SporeMod::InstallLocation::CoreSporeData;
     }
