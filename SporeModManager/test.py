@@ -34,12 +34,6 @@ os_environment  = os.environ.copy()
 #
 
 def cleanup_smm():
-	if os.path.isfile(config_file):
-		os.remove(config_file)
-
-	if os.path.isfile(sporemod_file):
-		os.remove(sporemod_file)
-
 	shutil.rmtree(sporemod_path)
 	shutil.rmtree(config_path)
 	shutil.rmtree(modlibs_path)
