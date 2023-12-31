@@ -134,14 +134,18 @@ def test_install():
 				description="test_install_1" 
 				installerSystemVersion="1.0.1.1" 
 				dllsBuild="2.5.20">
-				<prerequisite>test_install.dll</prerequisite>
-				<prerequisite game="CoreSpore">test_install.package</prerequisite>
-				<prerequisite game="GalacticAdventures">test_install_ep1.package</prerequisite>
+				<prerequisite>test_install_1.dll</prerequisite>
+				<prerequisite game="Spore">test_install_1.package</prerequisite>
+				<prerequisite game="spore">test_install_1_lowercase.package</prerequisite>
+				<prerequisite game="GalacticAdventures">test_install_1_ep1.package</prerequisite>
+				<prerequisite game="galacticAdventures">test_install_1_ep1_mixedcase.package</prerequisite>
 			</mod>"""
 	files = [
-		[ 'test_install.dll', 'dll' ],
-		[ 'test_install.package', 'package' ],
-		[ 'test_install_ep1.package', 'package_ep1' ]
+		[ 'test_install_1.dll', 'dll' ],
+		[ 'test_install_1.package', 'package' ],
+		[ 'test_install_1_lowercase.package', 'package' ],
+		[ 'test_install_1_ep1.package', 'package_ep1' ],
+		[ 'test_install_1_ep1_mixedcase.package', 'package_ep1' ]
 	]
 	write_sporemod(xml, files)
 
@@ -150,23 +154,32 @@ def test_install():
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
-	assert os.path.isfile(os.path.join(modlibs_path, 'test_install.dll'))
-	assert os.path.isfile(os.path.join(data_path, 'test_install.package'))
-	assert os.path.isfile(os.path.join(ep1_path, 'test_install_ep1.package'))
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_1.dll'))
+	assert os.path.isfile(os.path.join(data_path, 'test_install_1.package'))
+	assert os.path.isfile(os.path.join(data_path, 'test_install_1_lowercase.package'))
+	assert os.path.isfile(os.path.join(ep1_path, 'test_install_1_ep1.package'))
+	assert os.path.isfile(os.path.join(ep1_path, 'test_install_1_ep1_mixedcase.package'))
 
 	# now check if <compatFile /> works
+	os.close(os.open(os.path.join(data_path, 'test_install_2_compatfile'), os.O_CREAT))
 	os.close(os.open(os.path.join(ep1_path, 'test_install_2_compatfile'), os.O_CREAT))
 	xml = """<mod displayName="test_install_2" 
 				unique="test_install_2" 
 				description="test_install_2" 
 				installerSystemVersion="1.0.1.1" 
 				dllsBuild="2.5.20">
+				<compatFile game="spore" compatTargetFileName="test_install_2_compatfile" 
+					compatTargetGame="spore">test_install_2_1.package</compatFile>
 				<compatFile game="GalacticAdventures" compatTargetFileName="test_install_2_compatfile" 
 					compatTargetGame="GalacticAdventures">test_install_2_ep1_1.package</compatFile>
+				<compatFile game="spore" compatTargetFileName="test_no_install_2_compatfile" 
+					compatTargetGame="spore">test_install_2_2.package</compatFile>
 				<compatFile game="GalacticAdventures" compatTargetFileName="test_no_install_2_compatfile" 
 					compatTargetGame="GalacticAdventures">test_install_2_ep1_2.package</compatFile>
 			</mod>"""
 	files = [
+		[ 'test_install_2_1.package', 'package '],
+		[ 'test_install_2_2.package', 'package '],
 		[ 'test_install_2_ep1_1.package', 'package_ep1' ],
 		[ 'test_install_2_ep1_2.package', 'package_ep1' ],
 	]
@@ -176,7 +189,9 @@ def test_install():
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
+	assert os.path.isfile(os.path.join(data_path, 'test_install_2_1.package'))
 	assert os.path.isfile(os.path.join(ep1_path, 'test_install_2_ep1_1.package'))
+	assert not os.path.isfile(os.path.join(data_path, 'test_install_2_2.package'))
 	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_2_ep1_2.package'))
 
 	# verify that an invalid dllsBuild doesn't work
@@ -184,7 +199,7 @@ def test_install():
 				unique="test_install_3" 
 				description="test_install_3" 
 				installerSystemVersion="1.0.1.1" 
-				dllsBuild="9.9.999">
+				dllsBuild="999.999.999">
 			</mod>"""
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
