@@ -46,7 +46,7 @@ def reset_smm():
 
 def run_smm(args):
 	os_environment["SPOREMODMANAGER_CONFIGFILE"] = str(config_file)
-	cmd = [sporemodmanager, f'--modlibs-path={modlibs_path}', f'--data-path={data_path}', f'--ep1-path={ep1_path}']
+	cmd = [sporemodmanager, '--verbose', f'--modlibs-path={modlibs_path}', f'--data-path={data_path}', f'--ep1-path={ep1_path}']
 	for arg in args:
 		cmd.append(arg)
 	if verbose:
@@ -78,7 +78,6 @@ def test_help():
 	reset_smm()
 
 	result = run_smm([ 'help' ])
-
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
@@ -89,7 +88,6 @@ def test_version():
 	reset_smm()
 
 	result = run_smm([ 'version' ])
-
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
@@ -107,13 +105,13 @@ def test_install():
 				dllsBuild="2.5.20">
 			</mod>"""
 	write_sporemod(xml)
-	result = run_smm([ 'install', '-v', sporemod_file ])
+	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
 
 	# installing the same mod should fail
-	result = run_smm([ 'install', '-v', sporemod_file ])
+	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode != 0
 	assert result.stdout == b''
 	assert result.stderr != b''
@@ -147,7 +145,7 @@ def test_install():
 	]
 	write_sporemod(xml, files)
 
-	result = run_smm([ 'install', '-v', sporemod_file ])
+	result = run_smm([ 'install', sporemod_file ])
 
 	assert result.returncode == 0
 	assert result.stdout != b''
@@ -173,7 +171,7 @@ def test_install():
 		[ 'test_install_2_ep1_2.package', 'package_ep1' ],
 	]
 	write_sporemod(xml, files)
-	result = run_smm([ 'install', '-v', sporemod_file ])
+	result = run_smm([ 'install', sporemod_file ])
 
 	assert result.returncode == 0
 	assert result.stdout != b''
@@ -189,7 +187,7 @@ def test_install():
 				dllsBuild="9.9.999">
 			</mod>"""
 	write_sporemod(xml)
-	result = run_smm([ 'install', '-v', sporemod_file ])
+	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode != 0
 	assert result.stdout == b''
 	assert result.stderr != b''
@@ -197,7 +195,7 @@ def test_install():
 	# no modinfo.xml should fail
 	xml = ''
 	write_sporemod(xml)
-	result = run_smm([ 'install', '-v', sporemod_file ])
+	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode != 0
 	assert result.stdout == b''
 	assert result.stderr != b''
@@ -205,7 +203,7 @@ def test_install():
 	# empty modinfo.xml should also fail
 	xml = " "
 	write_sporemod(xml)
-	result = run_smm([ 'install', '-v', sporemod_file ])
+	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode != 0
 	assert result.stdout == b''
 	assert result.stderr != b''
@@ -262,7 +260,7 @@ def test_update():
 				dllsBuild="2.5.20">
 			</mod>"""
 	write_sporemod(xml)
-	result = run_smm([ 'update', '-v', sporemod_file ])
+	result = run_smm([ 'update', sporemod_file ])
 	assert result.returncode != 0
 	assert result.stdout == b''
 	assert result.stderr != b''
@@ -275,13 +273,13 @@ def test_update():
 				dllsBuild="2.5.20">
 			</mod>"""
 	write_sporemod(xml)
-	result = run_smm([ 'install', '-v', sporemod_file ])
+	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
 
 	# updating an existing mod should succeed
-	result = run_smm([ 'update', '-v', sporemod_file ])
+	result = run_smm([ 'update', sporemod_file ])
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
