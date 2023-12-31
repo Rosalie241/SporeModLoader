@@ -305,7 +305,7 @@ int main(int argc, char** argv)
 
         std::vector<std::filesystem::path> paths(args.begin() + 2, args.end());
 
-        if (!SporeModManager::UpdateMods(paths, false))
+        if (!SporeModManager::UpdateMods(paths))
         {
             return 1;
         }
