@@ -56,7 +56,7 @@ def run_smm(args):
 	for arg in args:
 		cmd.append(arg)
 	if verbose:
-		print(f'Running {' '.join(cmd)}')
+		print(f'Running {" ".join(cmd)}')
 	result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=os_environment)
 	if verbose:
 		print(result.returncode)
