@@ -72,11 +72,12 @@ THIRDPARTY_OBJECT_FILES := \
 THIRDPARTY_HEADER_FILES := \
 	$(THIRDPARTY_DIR)/zlib/zconf.h
 
-
 ifeq ($(VERBOSE), 0)
-	QUIET := @
+	QUIET     := @
+	TEST_ARGS :=
 else
-	QUIET :=
+	QUIET     :=
+	TEST_ARGS := --verbose
 endif
 
 %.o: %.c $(THIRDPARTY_HEADER_FILES)
@@ -119,6 +120,6 @@ clean:
 	rm -f $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) $(THIRDPARTY_HEADER_FILES)
 
 check: $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT)
-	python3 $(SOURCE_DIR)/test.py $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT)
+	python3 $(SOURCE_DIR)/test.py $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT) $(TEST_ARGS)
 
 .PHONY: all clean check
