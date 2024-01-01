@@ -35,6 +35,14 @@ namespace SporeModManagerHelpers
                         Build == other.Build && Revision > other.Revision);
             }
 
+            bool operator==(const FileVersionInfo& other) const
+            {
+                return Major == other.Major &&
+                        Minor == other.Minor &&
+                        Build == other.Build &&
+                        Revision == other.Revision;
+            }
+
             std::string to_string(void) const
             { 
                 std::string string;
@@ -127,6 +135,7 @@ namespace SporeModManagerHelpers
                 bool RequiresGalaxyReset      = false;
                 bool CausesSaveDataDependency = false;
                 bool HasCustomInstaller       = false;
+                bool CompatOnly               = false;
 
                 FileVersion::FileVersionInfo InstallerVersion;
                 FileVersion::FileVersionInfo MinimumModAPILibVersion;

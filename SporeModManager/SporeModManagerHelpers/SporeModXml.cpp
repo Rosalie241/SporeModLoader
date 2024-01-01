@@ -300,6 +300,7 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     sporeModInfo.RequiresGalaxyReset      = GetAttributeBool(xmlElement, "requiresGalaxyReset");
     sporeModInfo.CausesSaveDataDependency = GetAttributeBool(xmlElement, "causesSaveDataDependency");
     sporeModInfo.HasCustomInstaller       = GetAttributeBool(xmlElement, "hasCustomInstaller");
+    sporeModInfo.CompatOnly               = GetAttributeBool(xmlElement, "compatOnly");
 
     xmlAttributeText = GetAttributeText(xmlElement, "installerSystemVersion");
     if (!xmlAttributeText.empty())
@@ -312,15 +313,23 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
         }
         else
         {
-            FileVersion::FileVersionInfo maxSupportedInstallerVersion;
-            FileVersion::ParseString("1.0.1.2", maxSupportedInstallerVersion);
-
+            FileVersion::FileVersionInfo maxSupportedInstallerVersion = {1, 0, 1, 2};
             if (sporeModInfo.InstallerVersion > maxSupportedInstallerVersion)
             {
                 std::cerr << "installerSystemVersion \"" << sporeModInfo.InstallerVersion.to_string() << "\" is unsupported!" << std::endl;
                 return false;
             }
         }
+    }
+
+    // installer version 1.0.0.0 doesn't have the hasCustomInstaller attribute,
+    // so keep backwards compatibility by enabling hasCustomInstaller when
+    // the compatOnly attribute is false, see the code in Spore-Mod-Manager:
+    // https://github.com/Splitwirez/Spore-Mod-Manager/blob/b07dabf53716fe2ea455d6dad21b213720b5ad91/SporeMods.Core/Mods/XmlModIdentityV1.cs#L175
+    FileVersion::FileVersionInfo installerVersion = {1, 0, 0, 0};
+    if (!sporeModInfo.HasCustomInstaller && sporeModInfo.InstallerVersion == installerVersion)
+    {
+        sporeModInfo.HasCustomInstaller = !sporeModInfo.CompatOnly;
     }
 
     xmlAttributeText = GetAttributeText(xmlElement, "dllsBuild");
