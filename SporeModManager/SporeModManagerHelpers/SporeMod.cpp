@@ -18,7 +18,7 @@ using namespace SporeModManagerHelpers;
 // Helper Functions
 //
 
-static bool CheckIfOtherModContainsFiles(const SporeMod::Xml::InstalledSporeMod& installedSporeMod,
+static bool check_other_mod_files(const SporeMod::Xml::InstalledSporeMod& installedSporeMod,
                                          const std::vector<SporeMod::Xml::InstalledSporeMod>& installedSporeMods)
 {
     for (const auto& installedSporeModIter : installedSporeMods)
@@ -238,7 +238,7 @@ bool SporeMod::ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::Ins
     }
 
     // file collision detection
-    if (CheckIfOtherModContainsFiles(installedSporeMod, installedSporeMods))
+    if (check_other_mod_files(installedSporeMod, installedSporeMods))
     {
         return false;
     }
@@ -260,7 +260,7 @@ bool SporeMod::ConfigurePackage(const std::filesystem::path& path, Xml::Installe
     installedSporeMod.InstalledFiles.push_back(installedModFile);
 
     // file collision detection
-    if (CheckIfOtherModContainsFiles(installedSporeMod, installedSporeMods))
+    if (check_other_mod_files(installedSporeMod, installedSporeMods))
     {
         return false;
     }

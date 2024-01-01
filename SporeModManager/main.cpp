@@ -54,7 +54,7 @@ struct path_argument
 // Local Functions
 //
 
-static void ShowUsage()
+static void show_usage()
 {
     std::cout << "SporeModManager is a commandline mod manager for Spore" << std::endl
               << std::endl
@@ -179,7 +179,7 @@ int main(int argc, char** argv)
                         { // use next argument as path
                             if (i == (args.size() - 1))
                             {
-                                ShowUsage();
+                                show_usage();
                                 return 1;
                             }
                             pathArg.path = args.at(i + 1);
@@ -187,7 +187,7 @@ int main(int argc, char** argv)
                         }
                         if (!std::filesystem::is_directory(pathArg.path))
                         {
-                            ShowUsage();
+                            show_usage();
                             return 1;
                         }
                         arg.clear();
@@ -233,7 +233,7 @@ int main(int argc, char** argv)
     // ensure we have a command
     if (args.size() < 2)
     {
-        ShowUsage();
+        show_usage();
         return 1;
     }
 
@@ -241,7 +241,7 @@ int main(int argc, char** argv)
     arg_str_type command = args.at(1);
     if (command == arg_str("help"))
     {
-        ShowUsage();
+        show_usage();
         return 0;
     }
     else if (command == arg_str("version"))
@@ -253,7 +253,7 @@ int main(int argc, char** argv)
     {
         if (args.size() != 2)
         {
-            ShowUsage();
+            show_usage();
             return 1;
         }
 
@@ -269,7 +269,7 @@ int main(int argc, char** argv)
 
         if (args.size() < 3)
         {
-            ShowUsage();
+            show_usage();
             return 1;
         }
 
@@ -299,7 +299,7 @@ int main(int argc, char** argv)
 
         if (args.size() < 3)
         {
-            ShowUsage();
+            show_usage();
             return 1;
         }
 
@@ -319,7 +319,7 @@ int main(int argc, char** argv)
 
         if (args.size() < 3)
         {
-            ShowUsage();
+            show_usage();
             return 1;
         }
 
@@ -389,7 +389,7 @@ int main(int argc, char** argv)
     }
     else
     {
-        ShowUsage();
+        show_usage();
         return 1;
     }
 

@@ -19,7 +19,7 @@ using namespace SporeModManagerHelpers;
 // Helper Functions
 //
 
-static std::string InstallLocationToString(SporeMod::InstallLocation installLocation)
+static std::string install_location_to_string(SporeMod::InstallLocation installLocation)
 {
     switch (installLocation)
     {
@@ -33,7 +33,7 @@ static std::string InstallLocationToString(SporeMod::InstallLocation installLoca
     }
 }
 
-static SporeMod::InstallLocation ParseInstallLocation(std::string text)
+static SporeMod::InstallLocation parse_install_location(std::string text, bool configuration)
 {
     SporeMod::InstallLocation installLocation;
 
@@ -41,11 +41,13 @@ static SporeMod::InstallLocation ParseInstallLocation(std::string text)
     // value case insensitive
     text = String::Lowercase(text);
 
-    if (text == "galacticadventures" || text == "galacticadventuresdata")
+    if ((!configuration && text == "galacticadventures") || 
+        (configuration  && text == "galacticadventuresdata"))
     {
         installLocation = SporeMod::InstallLocation::GalacticAdventuresData;
     }
-    else if (text == "spore" || text == "coresporedata")
+    else if ((!configuration && text == "spore") || 
+             (configuration  && text == "coresporedata"))
     {
         installLocation = SporeMod::InstallLocation::CoreSporeData;
     }
@@ -57,7 +59,7 @@ static SporeMod::InstallLocation ParseInstallLocation(std::string text)
     return installLocation;
 }
 
-static std::string GetAttributeText(tinyxml2::XMLElement* element, std::string attributeName)
+static std::string get_attribute_text(tinyxml2::XMLElement* element, std::string attributeName)
 {
     const tinyxml2::XMLAttribute* xmlAttribute;
 
@@ -73,16 +75,16 @@ static std::string GetAttributeText(tinyxml2::XMLElement* element, std::string a
     return "";
 }
 
-static bool GetAttributeBool(tinyxml2::XMLElement* element, std::string attributeName)
+static bool get_attribute_bool(tinyxml2::XMLElement* element, std::string attributeName)
 {
     std::string boolString;
 
-    boolString = GetAttributeText(element, attributeName);
+    boolString = get_attribute_text(element, attributeName);
 
     return String::Lowercase(boolString) == "true";
 }
 
-static std::string GetElementText(tinyxml2::XMLElement* element)
+static std::string get_element_text(tinyxml2::XMLElement* element)
 {
     const char* text;
 
@@ -100,7 +102,7 @@ static std::string GetElementText(tinyxml2::XMLElement* element)
     return "";
 }
 
-static std::string GetElementName(tinyxml2::XMLElement* element)
+static std::string get_element_name(tinyxml2::XMLElement* element)
 {
     if (element->Name() != nullptr)
     {
@@ -110,7 +112,7 @@ static std::string GetElementName(tinyxml2::XMLElement* element)
     return "";
 }
 
-static tinyxml2::XMLElement* FindElement(tinyxml2::XMLElement* rootElement, std::string name)
+static tinyxml2::XMLElement* find_element(tinyxml2::XMLElement* rootElement, std::string name)
 {
     tinyxml2::XMLElement* xmlElement;
     std::string xmlElementName;
@@ -118,7 +120,7 @@ static tinyxml2::XMLElement* FindElement(tinyxml2::XMLElement* rootElement, std:
     xmlElement = rootElement->FirstChildElement();
     while (xmlElement != nullptr)
     {
-        xmlElementName = GetElementName(xmlElement);
+        xmlElementName = get_element_name(xmlElement);
         if (xmlElementName == name)
         {
             return xmlElement;
@@ -130,17 +132,17 @@ static tinyxml2::XMLElement* FindElement(tinyxml2::XMLElement* rootElement, std:
     return nullptr;
 }
 
-static std::vector<SporeMod::Xml::SporeModFile> ParseFiles(tinyxml2::XMLElement* element, bool parseCompatFile = false)
+static std::vector<SporeMod::Xml::SporeModFile> parse_files_element(tinyxml2::XMLElement* element, bool parseCompatFile = false)
 {
     std::vector<SporeMod::Xml::SporeModFile> files;
 
     std::vector<std::string> installLocations;
     std::vector<std::string> installFiles;
 
-    installLocations = String::Split(GetAttributeText(element, (parseCompatFile ? "compatTargetGame" : "game")), '?');
+    installLocations = String::Split(get_attribute_text(element, (parseCompatFile ? "compatTargetGame" : "game")), '?');
     installFiles     = String::Split((parseCompatFile ? 
-                                        GetAttributeText(element, "compatTargetFileName") : 
-                                        GetElementText(element)), 
+                                        get_attribute_text(element, "compatTargetFileName") : 
+                                        get_element_text(element)), 
                                      '?');
 
     for (size_t i = 0; i < installFiles.size(); i++)
@@ -149,7 +151,7 @@ static std::vector<SporeMod::Xml::SporeModFile> ParseFiles(tinyxml2::XMLElement*
 
         if (installLocations.size() > i)
         {
-            file.InstallLocation = ParseInstallLocation(installLocations.at(i));
+            file.InstallLocation = parse_install_location(installLocations.at(i), false);
         }
         else
         {
@@ -163,37 +165,37 @@ static std::vector<SporeMod::Xml::SporeModFile> ParseFiles(tinyxml2::XMLElement*
     return files;
 }
 
-static SporeMod::Xml::SporeModInfoComponent ParseComponentElement(tinyxml2::XMLElement* element)
+static SporeMod::Xml::SporeModInfoComponent parse_component_element(tinyxml2::XMLElement* element)
 {
     SporeMod::Xml::SporeModInfoComponent component;
 
-    component.Name           = GetAttributeText(element, "displayName");
-    component.UniqueName     = GetAttributeText(element, "unique");
-    component.Description    = GetAttributeText(element, "description");
-    component.DefaultChecked = GetAttributeBool(element, "defaultChecked");
-    component.Files          = ParseFiles(element);
+    component.Name           = get_attribute_text(element, "displayName");
+    component.UniqueName     = get_attribute_text(element, "unique");
+    component.Description    = get_attribute_text(element, "description");
+    component.DefaultChecked = get_attribute_bool(element, "defaultChecked");
+    component.Files          = parse_files_element(element);
 
     return component;
 }
 
 
-static SporeMod::Xml::SporeModInfoComponentGroup ParseComponentGroupElement(tinyxml2::XMLElement* element)
+static SporeMod::Xml::SporeModInfoComponentGroup parse_componentgroup_element(tinyxml2::XMLElement* element)
 {
     SporeMod::Xml::SporeModInfoComponentGroup componentGroup;
     tinyxml2::XMLElement* xmlElement;
     std::string xmlElementName;
 
-    componentGroup.Name       = GetAttributeText(element, "displayName");
-    componentGroup.UniqueName = GetAttributeText(element, "unique");
+    componentGroup.Name       = get_attribute_text(element, "displayName");
+    componentGroup.UniqueName = get_attribute_text(element, "unique");
     
     xmlElement = element->FirstChildElement();
     while (xmlElement != nullptr)
     {
-        xmlElementName = GetElementName(xmlElement);
+        xmlElementName = get_element_name(xmlElement);
 
         if (xmlElementName == "component")
         {
-            componentGroup.Components.push_back(ParseComponentElement(xmlElement));
+            componentGroup.Components.push_back(parse_component_element(xmlElement));
         }
 
         xmlElement = xmlElement->NextSiblingElement();
@@ -202,26 +204,26 @@ static SporeMod::Xml::SporeModInfoComponentGroup ParseComponentGroupElement(tiny
     return componentGroup;
 }
 
-static SporeMod::Xml::SporeModInfoPrerequisite ParsePrerequisiteElement(tinyxml2::XMLElement* element)
+static SporeMod::Xml::SporeModInfoPrerequisite parse_prerequisite_element(tinyxml2::XMLElement* element)
 {
     SporeMod::Xml::SporeModInfoPrerequisite prerequisite;
 
-    prerequisite.Files = ParseFiles(element);
+    prerequisite.Files = parse_files_element(element);
 
     return prerequisite;
 }
 
-static SporeMod::Xml::SporeModInfoCompatFile ParseCompatFileElement(tinyxml2::XMLElement* element)
+static SporeMod::Xml::SporeModInfoCompatFile parse_compatfile_element(tinyxml2::XMLElement* element)
 {
     SporeMod::Xml::SporeModInfoCompatFile compatFile;
 
-    compatFile.RequiredFiles = ParseFiles(element, true);
-    compatFile.Files         = ParseFiles(element);
+    compatFile.RequiredFiles = parse_files_element(element, true);
+    compatFile.Files         = parse_files_element(element);
 
     return compatFile;
 }
 
-static std::vector<SporeMod::Xml::SporeModFile> ParseInstalledSporeModFilesElement(tinyxml2::XMLElement* element)
+static std::vector<SporeMod::Xml::SporeModFile> parse_installedsporemodfiles_element(tinyxml2::XMLElement* element)
 {
     std::vector<SporeMod::Xml::SporeModFile> sporeModFiles;
     tinyxml2::XMLElement* xmlElement;
@@ -235,14 +237,14 @@ static std::vector<SporeMod::Xml::SporeModFile> ParseInstalledSporeModFilesEleme
     xmlElement = element->FirstChildElement();
     while (xmlElement != nullptr)
     {
-        xmlElementName = GetElementName(xmlElement);
+        xmlElementName = get_element_name(xmlElement);
 
         if (xmlElementName == "InstalledModFile")
         {
             SporeMod::Xml::SporeModFile sporeModFile;
 
-            sporeModFile.FileName        = GetElementText(FindElement(xmlElement, "FileName"));
-            sporeModFile.InstallLocation = ParseInstallLocation(GetElementText(FindElement(xmlElement, "InstallLocation")));
+            sporeModFile.FileName        = get_element_text(find_element(xmlElement, "FileName"));
+            sporeModFile.InstallLocation = parse_install_location(get_element_text(find_element(xmlElement, "InstallLocation")), true);
 
             sporeModFiles.push_back(sporeModFile);
         }
@@ -253,14 +255,14 @@ static std::vector<SporeMod::Xml::SporeModFile> ParseInstalledSporeModFilesEleme
     return sporeModFiles;
 }
 
-static SporeMod::Xml::InstalledSporeMod ParseInstalledSporeModElement(tinyxml2::XMLElement* element)
+static SporeMod::Xml::InstalledSporeMod parse_installedsporemod_element(tinyxml2::XMLElement* element)
 {
     SporeMod::Xml::InstalledSporeMod installedSporeMod;
 
-    installedSporeMod.Name           = GetElementText(FindElement(element, "Name"));
-    installedSporeMod.UniqueName     = GetElementText(FindElement(element, "UniqueName"));
-    installedSporeMod.Description    = GetElementText(FindElement(element, "Description"));
-    installedSporeMod.InstalledFiles = ParseInstalledSporeModFilesElement(FindElement(element, "Files"));
+    installedSporeMod.Name           = get_element_text(find_element(element, "Name"));
+    installedSporeMod.UniqueName     = get_element_text(find_element(element, "UniqueName"));
+    installedSporeMod.Description    = get_element_text(find_element(element, "Description"));
+    installedSporeMod.InstalledFiles = parse_installedsporemodfiles_element(find_element(element, "Files"));
 
     return installedSporeMod;
 }
@@ -292,17 +294,17 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
         return false;
     }
 
-    sporeModInfo.Name        = GetAttributeText(xmlElement, "displayName");
-    sporeModInfo.UniqueName  = GetAttributeText(xmlElement, "unique");
-    sporeModInfo.Description = GetAttributeText(xmlElement, "description");
+    sporeModInfo.Name        = get_attribute_text(xmlElement, "displayName");
+    sporeModInfo.UniqueName  = get_attribute_text(xmlElement, "unique");
+    sporeModInfo.Description = get_attribute_text(xmlElement, "description");
 
-    sporeModInfo.IsExperimental           = GetAttributeBool(xmlElement, "isExperimental");
-    sporeModInfo.RequiresGalaxyReset      = GetAttributeBool(xmlElement, "requiresGalaxyReset");
-    sporeModInfo.CausesSaveDataDependency = GetAttributeBool(xmlElement, "causesSaveDataDependency");
-    sporeModInfo.HasCustomInstaller       = GetAttributeBool(xmlElement, "hasCustomInstaller");
-    sporeModInfo.CompatOnly               = GetAttributeBool(xmlElement, "compatOnly");
+    sporeModInfo.IsExperimental           = get_attribute_bool(xmlElement, "isExperimental");
+    sporeModInfo.RequiresGalaxyReset      = get_attribute_bool(xmlElement, "requiresGalaxyReset");
+    sporeModInfo.CausesSaveDataDependency = get_attribute_bool(xmlElement, "causesSaveDataDependency");
+    sporeModInfo.HasCustomInstaller       = get_attribute_bool(xmlElement, "hasCustomInstaller");
+    sporeModInfo.CompatOnly               = get_attribute_bool(xmlElement, "compatOnly");
 
-    xmlAttributeText = GetAttributeText(xmlElement, "installerSystemVersion");
+    xmlAttributeText = get_attribute_text(xmlElement, "installerSystemVersion");
     if (!xmlAttributeText.empty())
     {
         ret = FileVersion::ParseString(xmlAttributeText, sporeModInfo.InstallerVersion);
@@ -332,7 +334,7 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
         sporeModInfo.HasCustomInstaller = !sporeModInfo.CompatOnly;
     }
 
-    xmlAttributeText = GetAttributeText(xmlElement, "dllsBuild");
+    xmlAttributeText = get_attribute_text(xmlElement, "dllsBuild");
     if (!xmlAttributeText.empty())
     {
         ret = FileVersion::ParseString(xmlAttributeText, sporeModInfo.MinimumModAPILibVersion);
@@ -346,23 +348,23 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     xmlElement = xmlElement->FirstChildElement();
     while (xmlElement != nullptr)
     {
-        xmlElementName = GetElementName(xmlElement);
+        xmlElementName = get_element_name(xmlElement);
 
         if (xmlElementName == "componentGroup")
         {
-            sporeModInfo.ComponentGroups.push_back(ParseComponentGroupElement(xmlElement));
+            sporeModInfo.ComponentGroups.push_back(parse_componentgroup_element(xmlElement));
         }
         else if (xmlElementName == "component")
         {
-            sporeModInfo.Components.push_back(ParseComponentElement(xmlElement));
+            sporeModInfo.Components.push_back(parse_component_element(xmlElement));
         }
         else if (xmlElementName == "prerequisite")
         {
-            sporeModInfo.Prerequisites.push_back(ParsePrerequisiteElement(xmlElement));
+            sporeModInfo.Prerequisites.push_back(parse_prerequisite_element(xmlElement));
         }
         else if (xmlElementName == "compatFile")
         {
-            sporeModInfo.CompatFiles.push_back(ParseCompatFileElement(xmlElement));
+            sporeModInfo.CompatFiles.push_back(parse_compatfile_element(xmlElement));
         }
 
         xmlElement = xmlElement->NextSiblingElement();
@@ -410,28 +412,28 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& coreLibsPath, std::fil
     xmlElement = xmlElement->FirstChildElement();
     while (xmlElement != nullptr)
     {
-        xmlElementName = GetElementName(xmlElement);
+        xmlElementName = get_element_name(xmlElement);
         if (xmlElementName == "Directories")
         {
             childXmlElement = xmlElement->FirstChildElement();
             while (childXmlElement != nullptr)
             {
-                xmlElementName = GetElementName(childXmlElement);
+                xmlElementName = get_element_name(childXmlElement);
                 if (xmlElementName == "CoreLibsDirectory")
                 {
-                    coreLibsPath = GetElementText(childXmlElement);
+                    coreLibsPath = get_element_text(childXmlElement);
                 }
                 else if (xmlElementName == "ModLibsDirectory")
                 {
-                    modLibsPath = GetElementText(childXmlElement);
+                    modLibsPath = get_element_text(childXmlElement);
                 }
                 else if (xmlElementName == "GalacticAdventuresDataDirectory")
                 {
-                    galacticAdventuresDataPath = GetElementText(childXmlElement);
+                    galacticAdventuresDataPath = get_element_text(childXmlElement);
                 }
                 else if (xmlElementName == "CoreSporeDataDirectory")
                 {
-                    coreSporeDataPath = GetElementText(childXmlElement);
+                    coreSporeDataPath = get_element_text(childXmlElement);
                 }
 
                 childXmlElement = childXmlElement->NextSiblingElement();
@@ -489,13 +491,13 @@ bool SporeMod::Xml::SaveDirectories(std::filesystem::path coreLibsPath, std::fil
     xmlElement = xmlElement->FirstChildElement();
     while (xmlElement != nullptr)
     {
-        xmlElementName = GetElementName(xmlElement);
+        xmlElementName = get_element_name(xmlElement);
         if (xmlElementName == "Directories")
         {
             childXmlElement = xmlElement->FirstChildElement();
             while (childXmlElement != nullptr)
             {
-                xmlElementName = GetElementName(childXmlElement);
+                xmlElementName = get_element_name(childXmlElement);
                 if (xmlElementName == "CoreLibsDirectory" && !coreLibsPath.empty())
                 {
                     childXmlElement->SetText(Path::GetAbsolutePath(coreLibsPath).string().c_str());
@@ -557,16 +559,16 @@ bool SporeMod::Xml::GetInstalledModList(std::vector<InstalledSporeMod>& installe
     xmlElement = xmlElement->FirstChildElement();
     while (xmlElement != nullptr)
     {
-        xmlElementName = GetElementName(xmlElement);
+        xmlElementName = get_element_name(xmlElement);
         if (xmlElementName == "InstalledSporeMods")
         {
             childXmlElement = xmlElement->FirstChildElement();
             while (childXmlElement != nullptr)
             {
-                xmlElementName = GetElementName(childXmlElement);
+                xmlElementName = get_element_name(childXmlElement);
                 if (xmlElementName == "InstalledSporeMod")
                 {
-                    installedSporeModList.push_back(ParseInstalledSporeModElement(childXmlElement));
+                    installedSporeModList.push_back(parse_installedsporemod_element(childXmlElement));
                 }
 
                 childXmlElement = childXmlElement->NextSiblingElement();
@@ -611,7 +613,7 @@ bool SporeMod::Xml::SaveInstalledModList(const std::vector<InstalledSporeMod>& i
     rootXmlElement = xmlDocument.RootElement();
     xmlDocument.InsertFirstChild(rootXmlElement);
 
-    installedSporeModsElement = FindElement(rootXmlElement, "InstalledSporeMods");
+    installedSporeModsElement = find_element(rootXmlElement, "InstalledSporeMods");
     if (installedSporeModsElement != nullptr)
     { // element exists, so remove all children
         installedSporeModsElement->DeleteChildren();
@@ -633,7 +635,7 @@ bool SporeMod::Xml::SaveInstalledModList(const std::vector<InstalledSporeMod>& i
         for (const auto& installedFile : installedSporeMod.InstalledFiles)
         {
             std::string fileName = installedFile.FileName.string();
-            std::string installLocation = InstallLocationToString(installedFile.InstallLocation);
+            std::string installLocation = install_location_to_string(installedFile.InstallLocation);
 
             installedModFileElement = filesXmlElement->InsertNewChildElement("InstalledModFile");
             installedModFileElement->InsertNewChildElement("FileName")->SetText(fileName.c_str());
