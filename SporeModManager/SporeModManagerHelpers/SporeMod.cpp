@@ -140,7 +140,7 @@ bool SporeMod::ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::Ins
         if (defaultComponentId.has_value())
         {
             uiText += " [";
-            uiText += std::to_string(componentId);
+            uiText += std::to_string(defaultComponentId.value());
             uiText += "]: ";
         }
         else
