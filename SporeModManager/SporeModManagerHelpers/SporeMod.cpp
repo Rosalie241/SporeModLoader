@@ -81,8 +81,9 @@ bool SporeMod::ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::Ins
     configurationRequired = sporeModInfo.IsExperimental           || 
                             sporeModInfo.RequiresGalaxyReset      ||
                             sporeModInfo.CausesSaveDataDependency ||
-                            !sporeModInfo.ComponentGroups.empty() ||
-                            !sporeModInfo.Components.empty();
+                            (sporeModInfo.HasCustomInstaller &&
+                            (!sporeModInfo.ComponentGroups.empty() ||
+                             !sporeModInfo.Components.empty()));
 
     if (configurationRequired)
     {
@@ -115,89 +116,92 @@ bool SporeMod::ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::Ins
         }
     }
 
-    for (const auto& componentGroup : sporeModInfo.ComponentGroups)
+    if (sporeModInfo.HasCustomInstaller)
     {
-        std::cout << "--> " << componentGroup.Name << std::endl;
-
-        componentsSize     = componentGroup.Components.size();
-        componentId        = 0;
-        defaultComponentId = std::nullopt;
-
-        for (size_t i = 0; i < componentsSize; i++)
+        for (const auto& componentGroup : sporeModInfo.ComponentGroups)
         {
-            component = componentGroup.Components.at(i);
-            std::cout << "[" << i << "] " << component.Name << std::endl;
+            std::cout << "--> " << componentGroup.Name << std::endl;
 
-            // set default checked component id
-            if (component.DefaultChecked &&
-                !defaultComponentId.has_value())
+            componentsSize     = componentGroup.Components.size();
+            componentId        = 0;
+            defaultComponentId = std::nullopt;
+
+            for (size_t i = 0; i < componentsSize; i++)
             {
-                defaultComponentId = i;
+                component = componentGroup.Components.at(i);
+                std::cout << "[" << i << "] " << component.Name << std::endl;
+
+                // set default checked component id
+                if (component.DefaultChecked &&
+                    !defaultComponentId.has_value())
+                {
+                    defaultComponentId = i;
+                }
             }
-        }
 
-        uiText = "--> select which component you want";
-        if (defaultComponentId.has_value())
-        {
-            uiText += " [";
-            uiText += std::to_string(defaultComponentId.value());
-            uiText += "]: ";
-        }
-        else
-        {
-            uiText += ": ";
-        }
-
-        UI::AskUserInput(uiText, componentId, defaultComponentId, 0, componentsSize - 1);
-
-        component = componentGroup.Components[componentId];
-
-        for (const auto& file : component.Files)
-        {
-            installedSporeMod.InstalledFiles.push_back(file);
-        }
-    }
-
-    if (!sporeModInfo.Components.empty())
-    {
-        componentsSize = sporeModInfo.Components.size();
-        defaultComponentIds.clear();
-        componentIds.clear();
-
-        for (size_t i = 0; i < componentsSize; i++)
-        {
-            component = sporeModInfo.Components.at(i);
-            std::cout << "[" << i << "] " << component.Name << std::endl
-                      << "  " << component.Description << std::endl;
-
-            // set default checked component ids
-            if (component.DefaultChecked)
+            uiText = "--> select which component you want";
+            if (defaultComponentId.has_value())
             {
-                defaultComponentIds.push_back(i);
+                uiText += " [";
+                uiText += std::to_string(defaultComponentId.value());
+                uiText += "]: ";
             }
-        }
+            else
+            {
+                uiText += ": ";
+            }
 
-        uiText = "--> select which components you want to install (comma seperated";
-        if (!defaultComponentIds.empty())
-        {
-            uiText += " or N for none) [";
-            uiText += String::Join(defaultComponentIds, ',');
-            uiText += "]: ";
-        }
-        else
-        {
-            uiText += "): ";
-        }
+            UI::AskUserInput(uiText, componentId, defaultComponentId, 0, componentsSize - 1);
 
-        UI::AskUserInput(uiText, ',', componentIds, defaultComponentIds, 0, componentsSize - 1);
-
-        for (const auto& componentId : componentIds)
-        {
-            component = sporeModInfo.Components[componentId];
+            component = componentGroup.Components[componentId];
 
             for (const auto& file : component.Files)
             {
                 installedSporeMod.InstalledFiles.push_back(file);
+            }
+        }
+
+        if (!sporeModInfo.Components.empty())
+        {
+            componentsSize = sporeModInfo.Components.size();
+            defaultComponentIds.clear();
+            componentIds.clear();
+
+            for (size_t i = 0; i < componentsSize; i++)
+            {
+                component = sporeModInfo.Components.at(i);
+                std::cout << "[" << i << "] " << component.Name << std::endl
+                          << "  " << component.Description << std::endl;
+
+                // set default checked component ids
+                if (component.DefaultChecked)
+                {
+                    defaultComponentIds.push_back(i);
+                }
+            }
+
+            uiText = "--> select which components you want to install (comma seperated";
+            if (!defaultComponentIds.empty())
+            {
+                uiText += " or N for none) [";
+                uiText += String::Join(defaultComponentIds, ',');
+                uiText += "]: ";
+            }
+            else
+            {
+                uiText += "): ";
+            }
+
+            UI::AskUserInput(uiText, ',', componentIds, defaultComponentIds, 0, componentsSize - 1);
+
+            for (const auto& componentId : componentIds)
+            {
+                component = sporeModInfo.Components[componentId];
+
+                for (const auto& file : component.Files)
+                {
+                    installedSporeMod.InstalledFiles.push_back(file);
+                }
             }
         }
     }
