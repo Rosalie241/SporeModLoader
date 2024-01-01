@@ -198,7 +198,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
             const bool skipInstall   = skipInstalled && hasInstalled;
             if (hasUniqueName || skipInstall)
             {
-                std::cerr << "Skipping " << path << (hasUniqueName ? 
+                std::cout << "Skipping " << path << (hasUniqueName ? 
                                 " due to another mod having the same unique name!" : 
                                 " as it's already installed!") << std::endl;
                 paths.erase(paths.begin() + i);
@@ -325,7 +325,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
         // ensure we only have unique mod names
         if (std::find(uniqueNames.begin(), uniqueNames.end(), sporeModInfo.UniqueName) != uniqueNames.end())
         {
-            std::cerr << "Skipping " << path << " due to another mod having the same unique name!" << std::endl;
+            std::cout << "Skipping " << path << " due to another mod having the same unique name!" << std::endl;
             paths.erase(paths.begin() + i);
             l_ZipFiles.erase(l_ZipFiles.begin() + i);
             l_SporeModInfos.erase(l_SporeModInfos.begin() + i);

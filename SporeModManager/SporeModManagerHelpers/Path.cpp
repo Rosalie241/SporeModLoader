@@ -49,7 +49,7 @@ bool Path::CheckIfPathsExist(void)
 
     if (!SporeMod::Xml::GetDirectories(coreLibsPath, modLibsPath, galacticAdventuresDataPath, coreSporeDataPath))
     {
-        std::cerr << "SporeMod::Xml::GetDirectories() Failed!" << std::endl;
+        std::cerr << "Error: SporeMod::Xml::GetDirectories() Failed!" << std::endl;
         return false;
     }
 

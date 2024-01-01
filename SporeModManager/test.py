@@ -119,8 +119,8 @@ def test_install():
 	# but using --needed should work
 	result = run_smm([ 'install', '--needed', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout != b''
+	assert result.stderr == b''
 
 	# --update-needed should also work
 	result = run_smm([ 'install', '--update-needed', sporemod_file ])
