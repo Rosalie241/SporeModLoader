@@ -290,10 +290,30 @@ def test_install():
 	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_5_ep1_5.package'))
 	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_5_ep1_6.package'))
 
+	# check if a hasCustomInstaller is enabled when installer version is 1.0.0.0
+	xml = """<mod displayName="test_install_6"
+				unique="test_install_6"
+				description="test_install_6"
+				installerSystemVersion="1.0.0.0">
+				<component unique="test_install_6_component_1" 
+					displayName="test_install_6_component_1" 
+					description="test_install_6_component_1"
+					game="GalacticAdventures" defaultChecked="true">test_install_6_ep1_1.package</component>
+				</mod>"""	
+	files = [
+		[ 'test_install_6_ep1_1.package', 'package_ep1' ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != b''
+	assert result.stderr == b''
+	assert os.path.isfile(os.path.join(ep1_path, 'test_install_6_ep1_1.package'))
+
 	# verify that an invalid dllsBuild doesn't work
-	xml = """<mod displayName="test_install_6" 
-				unique="test_install_6" 
-				description="test_install_6" 
+	xml = """<mod displayName="test_install_7" 
+				unique="test_install_7" 
+				description="test_install_7" 
 				installerSystemVersion="1.0.1.1" 
 				dllsBuild="999.999.999">
 			</mod>"""
