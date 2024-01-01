@@ -122,11 +122,13 @@ jobs:
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
           path: artifacts/*
+          compression-level: 9
       - name: Upload SporeModLoader (mingw)
         uses: actions/upload-artifact@v4
         with:
           name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
           path: mingw-artifacts/*
+          compression-level: 9
   msvc-test:
     runs-on: windows-2022
     needs: [ package-artifacts ]
