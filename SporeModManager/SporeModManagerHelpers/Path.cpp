@@ -7,7 +7,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-#define _CRT_SECURE_NO_WARNINGS // TODO for getenv() for msvc
 #include "SporeModManagerHelpers.hpp"
 
 #include <filesystem>
@@ -200,12 +199,30 @@ std::filesystem::path Path::GetFullInstallPath(SporeMod::InstallLocation install
 
 std::filesystem::path Path::GetConfigFilePath(void)
 {
-    static const char* configFile = std::getenv("SPOREMODMANAGER_CONFIGFILE");
+    static std::filesystem::path cachedConfigFilePath;
+    if (!cachedConfigFilePath.empty())
+    {
+        return cachedConfigFilePath;
+    }
+
+#ifdef _WIN32
+    wchar_t envBuffer[MAX_PATH] = {0};
+    if (GetEnvironmentVariableW(L"SPOREMODMANAGER_CONFIGFILE", envBuffer, MAX_PATH) != 0)
+    {
+        cachedConfigFilePath = envBuffer;
+    }
+#else
+    const char* configFile = std::getenv("SPOREMODMANAGER_CONFIGFILE");
     if (configFile != nullptr)
     {
-        return configFile;
+        cachedConfigFilePath = configFile;
     }
-    return Path::Combine({ Path::GetCurrentExecutablePath(), "SporeModManager.xml" });;
+#endif
+    if (cachedConfigFilePath.empty())
+    {
+        cachedConfigFilePath = Path::Combine({ Path::GetCurrentExecutablePath(), "SporeModManager.xml" });
+    }
+    return cachedConfigFilePath;
 }
 
 std::filesystem::path Path::GetCoreLibsPath(void)
