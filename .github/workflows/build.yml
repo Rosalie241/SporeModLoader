@@ -79,9 +79,17 @@ jobs:
       - name: Build SporeModLoader (mingw)
         run: |
           make SporeModLoader -j$(nproc)
+      - name: Build SporeModManager (mingw)
+        run: |
+          make SporeModManager.exe -j$(nproc)
+      - name: Upload SporeModLoader (mingw)
+        uses: actions/upload-artifact@v4
+        with:
+          name: mingw-build-artifacts
+          path: bin/*
   package-artifacts:
     runs-on: ubuntu-20.04
-    needs: [ msvc-build, linux-build ]
+    needs: [ msvc-build, linux-build, mingw-build ]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -99,11 +107,26 @@ jobs:
         with:
           name: linux-build-artifacts
           path: artifacts
-      - name: Upload SporeModLoader
+      - name: Download mingw-build-artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: mingw-build-artifacts
+          path: mingw-artifacts
+      - name: Prepare SporeModLoader (mingw)
+        run: |
+          cp -r artifacts/SporeModLoader/CoreLibs/ mingw-artifacts/SporeModLoader/CoreLibs
+          cp -r artifacts/SporeModLoader/ModLibs/  mingw-artifacts/SporeModLoader/ModLibs
+          cp artifacts/SporeModLoader/SporeModManager/SporeModManager mingw-artifacts/SporeModLoader/SporeModManager/SporeModManager
+      - name: Upload SporeModLoader (msvc)
         uses: actions/upload-artifact@v4
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
           path: artifacts/*
+      - name: Upload SporeModLoader (mingw)
+        uses: actions/upload-artifact@v4
+        with:
+          name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
+          path: mingw-artifacts/*
   msvc-test:
     runs-on: windows-2022
     needs: [ package-artifacts ]
@@ -142,4 +165,23 @@ jobs:
         run: |
           chmod +x ./artifact/SporeModLoader/SporeModManager/SporeModManager
           python3 ./SporeModManager/test.py ./artifact/SporeModLoader/SporeModManager/SporeModManager
+  mingw-test:
+    runs-on: windows-2022
+    needs: [ package-artifacts ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prepare Environment
+        run: |
+          $env:revision = git describe --tags --always
+          echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
+      - name: Download SporeModManager (mingw)
+        uses: actions/download-artifact@v4
+        with:
+          name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
+          path: artifact
+      - name: Test SporeModManager (mingw)
+        run: |
+          python3 ./SporeModManager/test.py ./artifact/SporeModLoader/SporeModManager/SporeModManager.exe
 
