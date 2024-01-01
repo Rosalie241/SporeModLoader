@@ -323,6 +323,23 @@ def test_install():
 	assert result.stdout == b''
 	assert result.stderr != b''
 
+	# verify that file collision with other mods fails
+	xml = """<mod displayName="test_install_8" 
+				unique="test_install_8" 
+				description="test_install_8" 
+				installerSystemVersion="1.0.1.1" 
+				dllsBuild="2.5.20">
+					<prerequisite>test_install_1.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_install_1.dll', 'dll' ],
+	]
+	write_sporemod(xml)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode != 0
+	assert result.stdout == b''
+	assert result.stderr != b''
+
 	# no modinfo.xml should fail
 	xml = ''
 	write_sporemod(xml)
@@ -332,7 +349,7 @@ def test_install():
 	assert result.stderr != b''
 
 	# empty modinfo.xml should also fail
-	xml = " "
+	xml = ' '
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode != 0
