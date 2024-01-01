@@ -126,6 +126,16 @@ std::filesystem::path Path::GetAbsolutePath(std::filesystem::path path)
     }
     catch (...)
     {
+        // mingw has weird behavior with std::filesystem::canonical(),
+        // it throws an exception even though the relative path exists,
+        // so to workaround that, we'll check if the fullPath exists and
+        // return that
+#ifdef __MINGW32__
+        if (std::filesystem::is_directory(fullPath))
+        {
+            return fullPath;
+        }
+#endif
         // just return the original path,
         // because the directory probably doesn't exist
         return path;
