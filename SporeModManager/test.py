@@ -134,27 +134,28 @@ def test_install():
 				description="test_install_1" 
 				installerSystemVersion="1.0.1.1" 
 				dllsBuild="2.5.20">
-				<prerequisite>test_install_1.dll</prerequisite>
+				<prerequisite>test_install_1_1.dll</prerequisite>
+				<prerequisite game="invalid">test_install_1_2.dll</prerequisite>
 				<prerequisite game="Spore">test_install_1.package</prerequisite>
 				<prerequisite game="spore">test_install_1_lowercase.package</prerequisite>
 				<prerequisite game="GalacticAdventures">test_install_1_ep1.package</prerequisite>
 				<prerequisite game="galacticAdventures">test_install_1_ep1_mixedcase.package</prerequisite>
 			</mod>"""
 	files = [
-		[ 'test_install_1.dll', 'dll' ],
+		[ 'test_install_1_1.dll', 'dll' ],
+		[ 'test_install_1_2.dll', 'dll' ],
 		[ 'test_install_1.package', 'package' ],
 		[ 'test_install_1_lowercase.package', 'package' ],
 		[ 'test_install_1_ep1.package', 'package_ep1' ],
 		[ 'test_install_1_ep1_mixedcase.package', 'package_ep1' ]
 	]
 	write_sporemod(xml, files)
-
 	result = run_smm([ 'install', sporemod_file ])
-
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
-	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_1.dll'))
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_1_1.dll'))
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_1_2.dll'))
 	assert os.path.isfile(os.path.join(data_path, 'test_install_1.package'))
 	assert os.path.isfile(os.path.join(data_path, 'test_install_1_lowercase.package'))
 	assert os.path.isfile(os.path.join(ep1_path, 'test_install_1_ep1.package'))
@@ -185,7 +186,6 @@ def test_install():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
@@ -243,7 +243,6 @@ def test_install():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
@@ -279,7 +278,6 @@ def test_install():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
@@ -329,12 +327,12 @@ def test_install():
 				description="test_install_8" 
 				installerSystemVersion="1.0.1.1" 
 				dllsBuild="2.5.20">
-					<prerequisite>test_install_1.dll</prerequisite>
+					<prerequisite>test_install_1_1.dll</prerequisite>
 			</mod>"""
 	files = [
-		[ 'test_install_1.dll', 'dll' ],
+		[ 'test_install_1_1.dll', 'dll' ],
 	]
-	write_sporemod(xml)
+	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode != 0
 	assert result.stdout == b''
