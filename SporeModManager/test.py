@@ -338,6 +338,20 @@ def test_install():
 	assert result.stdout == b''
 	assert result.stderr != b''
 
+	# verify that a non-existent file fails
+	xml = """<mod displayName="test_install_9" 
+				unique="test_install_9" 
+				description="test_install_9" 
+				installerSystemVersion="1.0.1.1" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_install_9.dll</prerequisite>
+			</mod>"""
+	write_sporemod(xml)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode != 0
+	assert result.stdout != b''
+	assert result.stderr != b''
+
 	# no modinfo.xml should fail
 	xml = ''
 	write_sporemod(xml)
