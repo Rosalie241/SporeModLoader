@@ -69,7 +69,7 @@ bool FileVersion::CheckIfCoreLibMatchesVersion(FileVersionInfo& modFileVersionIn
 
     if (modFileVersionInfo > coreLibFileVersionInfo)
     {
-        std::cerr << "Error: \"" << modName << "\" requires newer modapi dll (\"" << modFileVersionInfo.to_string() <<
+        std::cerr << "Error: \"" << modName << "\" requires newer Spore ModAPI DLL (\"" << modFileVersionInfo.to_string() <<
             "\") than what's currently installed (\"" << coreLibFileVersionInfo.to_string() << "\")" << std::endl;
         return false;
     }
