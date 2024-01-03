@@ -329,7 +329,7 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     // the compatOnly attribute is false, see the code in Spore-Mod-Manager:
     // https://github.com/Splitwirez/Spore-Mod-Manager/blob/b07dabf53716fe2ea455d6dad21b213720b5ad91/SporeMods.Core/Mods/XmlModIdentityV1.cs#L175
     FileVersion::FileVersionInfo installerVersion = {1, 0, 0, 0};
-    if (!sporeModInfo.HasCustomInstaller && sporeModInfo.InstallerVersion == installerVersion)
+    if (sporeModInfo.InstallerVersion == installerVersion && !sporeModInfo.HasCustomInstaller)
     {
         sporeModInfo.HasCustomInstaller = !sporeModInfo.CompatOnly;
     }
