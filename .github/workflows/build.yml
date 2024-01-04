@@ -186,4 +186,38 @@ jobs:
       - name: Test SporeModManager (mingw)
         run: |
           python3 ./SporeModManager/test.py ./artifact/SporeModLoader/SporeModManager/SporeModManager.exe
-
+  # actions/upload-artifact still doesn't retain
+  # file permissions, so we'll need to download
+  # the artifact, mark the linux executable as
+  # executable, re-archive it (with better compression)
+  # and then add it to a draft release
+  create-draft-release:
+    runs-on: ubuntu-20.04
+    needs: [ msvc-test, linux-test, mingw-test ]
+    if: github.ref_type == 'tag'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prepare Environment
+        run: |
+          echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
+      - name: Download SporeModManager (msvc)
+        uses: actions/download-artifact@v4
+        with:
+          name: SporeModLoader-${{ env.GIT_REVISION }}
+          path: artifact
+      - name: Prepare SporeModManager (msvc)
+        run: |
+          pushd artifact
+          rm SporeModLoader/ModLibs/.keep -f
+          chmod +x SporeModLoader/SporeModManager/SporeModManager
+          7za a -mm=Deflate -mx=9 -r "../SporeModLoader-${GIT_REVISION}.zip" *
+          popd
+      - name: Create Draft Release
+        uses: ncipollo/release-action@v1.13.0
+        with:
+          draft: true
+          makeLatest: true
+          tag: ${{ env.GIT_REVISION }}
+          artifacts: SporeModLoader-${{ env.GIT_REVISION }}.zip
