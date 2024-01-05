@@ -368,9 +368,6 @@ def test_install():
 	assert result.stdout == b''
 	assert result.stderr != b''
 
-	# TODO: add more validation to SporeModManager
-	# and then add more tests here
-
 # Tests whether uninstall works correctly
 def test_uninstall():
 	print(f'Running {test_uninstall.__name__}...')
@@ -382,21 +379,23 @@ def test_uninstall():
 	assert result.stdout == b''
 	assert result.stderr != b''
 
-	# install a dummy mod
-	xml = """<mod displayName="test_uninstall" 
-				unique="test_uninstall" 
-				description="test_uninstall" 
-				installerSystemVersion="1.0.1.1" 
-				dllsBuild="2.5.20">
-			</mod>"""
-	write_sporemod(xml)
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	# install a dummy mods
+	# TODO: rewrite this to use a single install command
+	for num in range(25):
+		xml = f"""<mod displayName="test_uninstall_{num}" 
+					unique="test_uninstall_{num}" 
+					description="test_uninstall_{num}" 
+					installerSystemVersion="1.0.1.1" 
+					dllsBuild="2.5.20">
+				</mod>"""
+		write_sporemod(xml)
+		result = run_smm([ 'install', sporemod_file ])
+		assert result.returncode == 0
+		assert result.stdout != b''
+		assert result.stderr == b''
 
 	# uninstall with a too high ID shouldn't work
-	result = run_smm([ 'uninstall', '1'])
+	result = run_smm([ 'uninstall', '26'])
 	assert result.returncode != 0
 	assert result.stdout == b''
 	assert result.stderr != b''
@@ -406,6 +405,31 @@ def test_uninstall():
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
+
+	# uninstall with a valid range should work
+	result = run_smm([ 'uninstall', '0-20'])
+	assert result.returncode == 0
+	assert result.stdout != b''
+	assert result.stderr == b''
+
+	# uninstall with an invalid range shouldn't work
+	result = run_smm([ 'uninstall', '0-30'])
+	assert result.returncode != 0
+	assert result.stdout == b''
+	assert result.stderr != b''
+
+	# uninstall with another invalid range shouldn't work
+	result = run_smm([ 'uninstall', '10-0'])
+	assert result.returncode != 0
+	assert result.stdout == b''
+	assert result.stderr != b''
+
+	# uninstall with an insanely big range shouldn't work or crash
+	result = run_smm([ 'uninstall', '0-2147483646'])
+	assert result.returncode != 0
+	assert result.stdout == b''
+	assert result.stderr != b''
+
 
 # Tests whether update works correctly
 def test_update():
