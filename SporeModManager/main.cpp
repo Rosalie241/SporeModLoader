@@ -360,7 +360,13 @@ int main(int argc, char** argv)
                 std::cerr << "Error: start number must be less than the end number!" << std::endl;
                 return 1;
             }
+            else if (endIndex > 256)
+            {
+                std::cerr << "Error: end number cannot be bigger than 256!" << std::endl;
+                return 1;
+            }
 
+            ids.reserve(endIndex - startIndex);
             for (int i = startIndex; i <= endIndex; i++)
             {
                 ids.push_back(i);
