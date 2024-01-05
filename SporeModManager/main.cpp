@@ -124,7 +124,7 @@ int main(int argc, char** argv)
 
     for (size_t i = 0; i < args.size(); i++)
     {
-        arg_str_type arg = args.at(i);
+        arg_str_type arg = args[i];
 
         // skip empty or invalid arguments
         if (arg.size() < 2)
@@ -132,9 +132,9 @@ int main(int argc, char** argv)
             continue;
         }
 
-        if (arg.at(0) == arg_char('-'))
+        if (arg[0] == arg_char('-'))
         {
-            if (arg.at(1) != arg_char('-'))
+            if (arg[1] != arg_char('-'))
             { // short option
                 // strip '-'
                 arg.erase(0, 1);
@@ -170,7 +170,7 @@ int main(int argc, char** argv)
                     if (arg.rfind(pathArg.argument, 0) == 0)
                     {
                         arg.erase(0, pathArg.argument.size());
-                        if (!arg.empty() && arg.at(0) == arg_char('='))
+                        if (!arg.empty() && arg[0] == arg_char('='))
                         { // use path after =
                             arg.erase(0, 1);
                             pathArg.path = arg;
@@ -182,7 +182,7 @@ int main(int argc, char** argv)
                                 show_usage();
                                 return 1;
                             }
-                            pathArg.path = args.at(i + 1);
+                            pathArg.path = args[i + 1];
                             args.erase(args.begin() + i + 1);
                         }
                         if (!std::filesystem::is_directory(pathArg.path))
@@ -238,7 +238,7 @@ int main(int argc, char** argv)
     }
 
     // parse commands
-    arg_str_type command = args.at(1);
+    arg_str_type command = args[1];
     if (command == arg_str("help"))
     {
         show_usage();
@@ -327,11 +327,11 @@ int main(int argc, char** argv)
 
         // we support 2 types to parse the IDs,
         // either a range (i.e '0-3') or the IDs specified (i.e '0 1 2 3')
-        if (args.size() == 3 && args.at(2).find(arg_char('-')) != arg_str_type::npos)
+        if (args.size() == 3 && args[2].find(arg_char('-')) != arg_str_type::npos)
         {
             int startIndex = 0;
             int endIndex   = 0;
-            std::vector<arg_str_type> splitString = String::Split(args.at(2), arg_char('-'));
+            std::vector<arg_str_type> splitString = String::Split(args[2], arg_char('-'));
             if (splitString.size() != 2)
             {
                 std::cerr << "Error: range can only contain 2 positive numbers!" << std::endl;
@@ -340,8 +340,8 @@ int main(int argc, char** argv)
 
             try
             {
-                startIndex = std::stoi(splitString.at(0));
-                endIndex   = std::stoi(splitString.at(1));
+                startIndex = std::stoi(splitString[0]);
+                endIndex   = std::stoi(splitString[1]);
             }
             catch (...)
             {

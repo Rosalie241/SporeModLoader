@@ -89,11 +89,11 @@ std::filesystem::path Path::Combine(std::vector<std::filesystem::path> paths)
 
     for (size_t i = 0; i < paths.size(); i++)
     {
-        if (paths.at(i).empty())
+        if (paths[i].empty())
         { // skip empty paths
             continue; 
         }
-        combinedPath += paths.at(i);
+        combinedPath += paths[i];
         if (i == (paths.size() - 1))
         { // break when at end
             break;

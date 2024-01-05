@@ -104,7 +104,7 @@ bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionIn
     {
         try
         {
-            numbers.at(i).get() = std::stoi(splitString.at(i));
+            numbers[i].get() = std::stoi(splitString[i]);
         }
         catch (...)
         {

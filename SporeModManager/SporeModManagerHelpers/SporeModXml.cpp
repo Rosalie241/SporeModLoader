@@ -151,13 +151,13 @@ static std::vector<SporeMod::Xml::SporeModFile> parse_files_element(tinyxml2::XM
 
         if (installLocations.size() > i)
         {
-            file.InstallLocation = parse_install_location(installLocations.at(i), false);
+            file.InstallLocation = parse_install_location(installLocations[i], false);
         }
         else
         {
             file.InstallLocation = SporeMod::InstallLocation::ModLibs;
         }
-        file.FileName = installFiles.at(i);
+        file.FileName = installFiles[i];
 
         files.push_back(file);
     }
