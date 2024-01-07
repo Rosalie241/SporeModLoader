@@ -62,7 +62,7 @@ def run_smm(args):
 
 def write_sporemod(xml, extra = None):
 	with zipfile.ZipFile(sporemod_file, mode="w") as archive:
-		if xml != '':
+		if xml is not None:
 			archive.writestr("ModInfo.xml", xml)
 		if extra is not None:
 			for list_str in extra:
@@ -308,10 +308,23 @@ def test_install():
 	assert result.stderr == b''
 	assert os.path.isfile(os.path.join(ep1_path, 'test_install_6_ep1_1.package'))
 
+	# check if a pre-modinfo.xml mod works
+	files = [
+		[ 'test_install_7.dll', 'dll' ],
+		[ 'test_install_7_ep1.package', 'package_ep1' ],
+	]
+	write_sporemod(None, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != b''
+	assert result.stderr == b''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_7.dll'))
+	assert os.path.isfile(os.path.join(ep1_path, 'test_install_7_ep1.package'))
+
 	# verify that an invalid dllsBuild doesn't work
-	xml = """<mod displayName="test_install_7" 
-				unique="test_install_7" 
-				description="test_install_7" 
+	xml = """<mod displayName="test_install_8" 
+				unique="test_install_8" 
+				description="test_install_8" 
 				installerSystemVersion="1.0.1.1" 
 				dllsBuild="999.999.999">
 			</mod>"""
@@ -322,9 +335,9 @@ def test_install():
 	assert result.stderr != b''
 
 	# verify that file collision with other mods fails
-	xml = """<mod displayName="test_install_8" 
-				unique="test_install_8" 
-				description="test_install_8" 
+	xml = """<mod displayName="test_install_9" 
+				unique="test_install_9" 
+				description="test_install_9" 
 				installerSystemVersion="1.0.1.1" 
 				dllsBuild="2.5.20">
 					<prerequisite>test_install_1_1.dll</prerequisite>
@@ -339,12 +352,12 @@ def test_install():
 	assert result.stderr != b''
 
 	# verify that a non-existent file fails
-	xml = """<mod displayName="test_install_9" 
-				unique="test_install_9" 
-				description="test_install_9" 
+	xml = """<mod displayName="test_install_10" 
+				unique="test_install_10" 
+				description="test_install_10" 
 				installerSystemVersion="1.0.1.1" 
 				dllsBuild="2.5.20">
-				<prerequisite>test_install_9.dll</prerequisite>
+				<prerequisite>test_install_10.dll</prerequisite>
 			</mod>"""
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
@@ -352,16 +365,8 @@ def test_install():
 	assert result.stdout != b''
 	assert result.stderr != b''
 
-	# no modinfo.xml should fail
+	# verify that an empty modinfo.xml fails
 	xml = ''
-	write_sporemod(xml)
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
-	assert result.stdout == b''
-	assert result.stderr != b''
-
-	# empty modinfo.xml should also fail
-	xml = ' '
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode != 0
