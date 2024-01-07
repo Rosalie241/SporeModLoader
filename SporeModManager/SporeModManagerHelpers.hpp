@@ -89,12 +89,14 @@ namespace SporeModManagerHelpers
             struct SporeModFile
             {
                 SporeMod::InstallLocation InstallLocation;
-                std::filesystem::path FileName;
+                std::filesystem::path     FileName;
+                std::filesystem::path     FullPath;
 
                 bool operator==(const SporeModFile& other) const
                 {
                     return InstallLocation == other.InstallLocation &&
-                        FileName == other.FileName;
+                            FileName == other.FileName &&
+                            FullPath == other.FullPath;
                 }
             };
 
@@ -131,6 +133,7 @@ namespace SporeModManagerHelpers
                 std::string UniqueName;
                 std::string Description;
 
+                bool HasModInfoXml            = false;
                 bool IsExperimental           = false;
                 bool RequiresGalaxyReset      = false;
                 bool CausesSaveDataDependency = false;
@@ -197,7 +200,7 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Configures sporemod file
         /// </summary>
-        bool ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
+        bool ConfigureSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
 
         /// <summary>
         ///     Configures package file
@@ -207,7 +210,7 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Installs sporemod file
         /// </summary>
-        bool InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModInfo, const Xml::InstalledSporeMod& installedSporeMod);
+        bool InstallSporeMod(void* zipFile, const Xml::InstalledSporeMod& installedSporeMod);
 
         /// <summary>
         ///    Installs package file
@@ -304,6 +307,16 @@ namespace SporeModManagerHelpers
         ///     Closes the given zip
         /// </summary>
         bool CloseFile(ZipFile zipFile);
+
+        /// <summary>
+        ///     Retrieves file list of the given zip
+        /// </summary>
+        bool GetFileList(ZipFile zipFile, std::vector<std::filesystem::path>& fileList);
+
+        /// <summary>
+        ///     Locates file in given zip
+        /// </summary>
+        bool LocateFile(ZipFile zipFile, std::filesystem::path file);
 
         /// <summary>
         ///     Extracts file to outputFile

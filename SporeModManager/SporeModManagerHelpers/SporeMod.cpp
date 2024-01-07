@@ -63,7 +63,7 @@ bool SporeMod::FindInstalledMod(std::string uniqueName, int& installedSporeModId
     return false;
 }
 
-bool SporeMod::ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod> &installedSporeMods)
+bool SporeMod::ConfigureSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod> &installedSporeMods)
 {
     Xml::SporeModInfoComponent component;
     size_t             componentsSize;
@@ -73,6 +73,34 @@ bool SporeMod::ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::Ins
     std::vector<int>   componentIds;
     std::string        uiText;
     bool               configurationRequired = false;
+    std::vector<std::filesystem::path> zipFileList;
+
+    // support for pre-modinfo.xml mods
+    if (!sporeModInfo.HasModInfoXml)
+    {
+        installedSporeMod.UniqueName = sporeModInfo.UniqueName;
+        installedSporeMod.Name       = sporeModInfo.UniqueName;
+
+        if (!Zip::GetFileList(zipFile, zipFileList))
+        {
+            std::cerr << "Zip::GetFileList() Failed!" << std::endl;
+            return false;
+        }
+
+        for (const auto& path : zipFileList)
+        {
+            const std::string extension = String::Lowercase(path.extension().string());
+            if (extension == ".dll")
+            {
+                installedSporeMod.InstalledFiles.push_back({InstallLocation::ModLibs, path.filename(), path});
+            }
+            else if (extension == ".package")
+            {
+                installedSporeMod.InstalledFiles.push_back({InstallLocation::GalacticAdventuresData, path.filename(), path});
+            }
+        }
+        return true;
+    }
 
     installedSporeMod.Name        = sporeModInfo.Name;
     installedSporeMod.UniqueName  = sporeModInfo.UniqueName;
@@ -90,7 +118,7 @@ bool SporeMod::ConfigureSporeMod(const Xml::SporeModInfo& sporeModInfo, Xml::Ins
         std::cout << "-> Configuring " << sporeModInfo.Name << std::endl;
     }
 
-    struct
+    const struct
     {
         bool NeedsWarn;
         std::string Text;
@@ -268,13 +296,15 @@ bool SporeMod::ConfigurePackage(const std::filesystem::path& path, Xml::Installe
     return true;
 }
 
-bool SporeMod::InstallSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModInfo, const Xml::InstalledSporeMod& installedSporeMod)
+bool SporeMod::InstallSporeMod(void* zipFile, const Xml::InstalledSporeMod& installedSporeMod)
 {
-    std::cout << "-> Installing " << sporeModInfo.Name << std::endl;
+    std::cout << "-> Installing " << installedSporeMod.Name << std::endl;
 
     for (const auto& installedFile : installedSporeMod.InstalledFiles)
     {
-        std::filesystem::path sourcePath  = installedFile.FileName;
+        std::filesystem::path sourcePath  = installedFile.FullPath.empty() ? 
+                                                installedFile.FileName :
+                                                installedFile.FullPath;
         std::filesystem::path installPath = Path::GetFullInstallPath(installedFile.InstallLocation, installedFile.FileName);
 
         if (UI::GetVerboseMode())

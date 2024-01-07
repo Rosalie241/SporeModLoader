@@ -136,6 +136,59 @@ bool Zip::CloseFile(ZipFile zipFile)
     return unzClose(zipFile) == UNZ_OK;
 }
 
+bool Zip::LocateFile(ZipFile zipFile, std::filesystem::path file)
+{
+    return unzLocateFile(zipFile, file.string().c_str(), 2) == UNZ_OK;
+}
+
+bool Zip::GetFileList(ZipFile zipFile, std::vector<std::filesystem::path>& fileList)
+{
+    unz_global_info64 zipInfo;
+    unz_file_info     zipFileInfo;
+    char              zipFileName[2048];
+    int ret = 0;
+
+    ret = unzGetGlobalInfo64(zipFile, &zipInfo);
+    if (ret != UNZ_OK)
+    {
+        std::cerr << "Error: unzGetGlobalInfo64() Failed: " << ret << std::endl;
+        return false;
+    }
+
+    for (ZPOS64_T i = 0; i < zipInfo.number_entry; i++)
+    {
+        // skip invalid files from the file list
+        if (unzGetCurrentFileInfo(zipFile, &zipFileInfo, zipFileName, 2048, nullptr, 0, nullptr, 0) != UNZ_OK)
+        {
+            continue;
+        }
+
+        const std::filesystem::path path(zipFileName);
+
+        // add filename to file list
+        if (path.has_filename())
+        {
+            fileList.push_back(path);
+        }
+
+        // break when we've iterated over all entries
+        if ((i + 1) >= zipInfo.number_entry)
+        {
+            break;
+        }
+
+        // move to next file
+        ret = unzGoToNextFile(zipFile);
+        if (ret != UNZ_OK)
+        {
+            std::cerr << "Error: unzGoToNextFile() Failed: " << ret << std::endl;
+            return false;
+        }
+    }
+
+    return true;
+}
+
 bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesystem::path outputFile)
 {
     int bytesRead = 0;
@@ -194,7 +247,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
     l_ZipFileBuffer.reserve(UNZIP_READ_SIZE);
 
     // try to find file in zip
-    if (unzLocateFile(zipFile, file.string().c_str(), 2) != UNZ_OK)
+    if (!file.empty() && unzLocateFile(zipFile, file.string().c_str(), 2) != UNZ_OK)
     {
         std::cerr << "Error: failed to find " << file << " in zip file!" << std::endl;
         return false;
