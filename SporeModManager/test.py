@@ -311,6 +311,7 @@ def test_install():
 	# check if a pre-modinfo.xml mod works
 	files = [
 		[ 'test_install_7.dll', 'dll' ],
+		[ 'test_install_7.txt', 'txt'],
 		[ 'test_install_7_ep1.package', 'package_ep1' ],
 	]
 	write_sporemod(None, files)
@@ -319,6 +320,9 @@ def test_install():
 	assert result.stdout != b''
 	assert result.stderr == b''
 	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_7.dll'))
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_install_7.txt'))
+	assert not os.path.isfile(os.path.join(data_path, 'test_install_7.txt'))
+	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_7.txt'))
 	assert os.path.isfile(os.path.join(ep1_path, 'test_install_7_ep1.package'))
 
 	# verify that an invalid dllsBuild doesn't work
