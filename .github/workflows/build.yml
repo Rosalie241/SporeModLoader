@@ -129,6 +129,13 @@ jobs:
           name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
           path: mingw-artifacts/*
           compression-level: 9
+      - name: Delete leftover artifacts
+        uses: geekyeggo/delete-artifact@v4
+        with:
+          name: |
+            msvc-build-artifacts
+            linux-build-artifacts
+            mingw-build-artifacts
   msvc-test:
     runs-on: windows-2022
     needs: [ package-artifacts ]
