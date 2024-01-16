@@ -11,9 +11,10 @@
 #include "String.hpp"
 #include "Path.hpp"
 
+#include <algorithm>
+#include <optional>
 #include <iostream>
 #include <fstream>
-#include <algorithm>
 #include <array>
 
 using namespace SporeModManagerHelpers;
@@ -31,12 +32,11 @@ using namespace SporeModManagerHelpers;
 bool FileVersion::GetCoreLibFileVersionInfo(FileVersionInfo& fileVersionInfo)
 {
     std::filesystem::path coreLibPath;
-    static FileVersionInfo cachedFileVersionInfo;
-    static bool hasCachedFileVersionInfo = false;
+    static std::optional<FileVersionInfo> cachedFileVersionInfo;
 
-    if (hasCachedFileVersionInfo)
+    if (cachedFileVersionInfo.has_value())
     {
-        fileVersionInfo = cachedFileVersionInfo;
+        fileVersionInfo = cachedFileVersionInfo.value();
         return true;
     }
 
@@ -54,8 +54,7 @@ bool FileVersion::GetCoreLibFileVersionInfo(FileVersionInfo& fileVersionInfo)
         return false;
     }
 
-    cachedFileVersionInfo    = fileVersionInfo;
-    hasCachedFileVersionInfo = true;
+    cachedFileVersionInfo = fileVersionInfo;
     return true;
 }
 
