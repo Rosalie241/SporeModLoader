@@ -7,8 +7,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
+#include "SporeModManagerHelpers/String.hpp"
+#include "SporeModManagerHelpers/Path.hpp"
+#include "SporeModManagerHelpers/UI.hpp"
 #include "SporeModManager.hpp"
-#include "SporeModManagerHelpers.hpp"
 
 #include "../version.h"
 

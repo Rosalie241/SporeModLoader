@@ -7,7 +7,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-#include "SporeModManagerHelpers.hpp"
+#include "SporeMod.hpp"
+#include "String.hpp"
+#include "Path.hpp"
+#include "UI.hpp"
 
 #include <iostream>
 #include <algorithm>
@@ -63,7 +66,7 @@ bool SporeMod::FindInstalledMod(std::string uniqueName, int& installedSporeModId
     return false;
 }
 
-bool SporeMod::ConfigureSporeMod(void* zipFile, const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod> &installedSporeMods)
+bool SporeMod::ConfigureSporeMod(Zip::ZipFile zipFile, const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod> &installedSporeMods)
 {
     Xml::SporeModInfoComponent component;
     size_t             componentsSize;
@@ -296,7 +299,7 @@ bool SporeMod::ConfigurePackage(const std::filesystem::path& path, Xml::Installe
     return true;
 }
 
-bool SporeMod::InstallSporeMod(void* zipFile, const Xml::InstalledSporeMod& installedSporeMod)
+bool SporeMod::InstallSporeMod(Zip::ZipFile zipFile, const Xml::InstalledSporeMod& installedSporeMod)
 {
     std::cout << "-> Installing " << installedSporeMod.Name << std::endl;
 

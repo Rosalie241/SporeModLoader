@@ -10,8 +10,12 @@
 #include <iostream>
 #include <algorithm>
 
+#include "SporeModManagerHelpers/SporeMod.hpp"
+#include "SporeModManagerHelpers/String.hpp"
+#include "SporeModManagerHelpers/Path.hpp"
+#include "SporeModManagerHelpers/Zip.hpp"
+#include "SporeModManagerHelpers/UI.hpp"
 #include "SporeModManager.hpp"
-#include "SporeModManagerHelpers.hpp"
 
 using namespace SporeModManagerHelpers;
 

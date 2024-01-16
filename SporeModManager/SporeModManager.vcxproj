@@ -136,7 +136,13 @@
     <ClInclude Include="..\version.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SporeModManager.hpp" />
-    <ClInclude Include="SporeModManagerHelpers.hpp" />
+    <ClInclude Include="SporeModManagerHelpers\FileVersion.hpp" />
+    <ClInclude Include="SporeModManagerHelpers\Path.hpp" />
+    <ClInclude Include="SporeModManagerHelpers\SporeMod.hpp" />
+    <ClInclude Include="SporeModManagerHelpers\SporeModXml.hpp" />
+    <ClInclude Include="SporeModManagerHelpers\String.hpp" />
+    <ClInclude Include="SporeModManagerHelpers\UI.hpp" />
+    <ClInclude Include="SporeModManagerHelpers\Zip.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />

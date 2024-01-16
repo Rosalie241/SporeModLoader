@@ -53,8 +53,14 @@ ifneq ($(MINGW), 0)
 endif
 
 HEADER_FILES := \
-	$(SOURCE_DIR)/SporeModManager.hpp \
-	$(SOURCE_DIR)/SporeModManagerHelpers.hpp \
+	$(SOURCE_DIR)/SporeModManager.hpp                    \
+	$(SOURCE_DIR)/SporeModManagerHelpers/FileVersion.hpp \
+	$(SOURCE_DIR)/SporeModManagerHelpers/SporeModXml.hpp \
+	$(SOURCE_DIR)/SporeModManagerHelpers/SporeMod.hpp    \
+	$(SOURCE_DIR)/SporeModManagerHelpers/String.hpp      \
+	$(SOURCE_DIR)/SporeModManagerHelpers/Path.hpp        \
+	$(SOURCE_DIR)/SporeModManagerHelpers/Zip.hpp         \
+	$(SOURCE_DIR)/SporeModManagerHelpers/UI.hpp          \
 	$(SOURCE_DIR)/../version.h
 
 

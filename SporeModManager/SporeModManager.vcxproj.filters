@@ -28,6 +28,9 @@
     <Filter Include="Source Files\3rdParty\zlib">
       <UniqueIdentifier>{a6d9c111-91ba-4900-acf6-60049f263cea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SporeModManagerHelpers">
+      <UniqueIdentifier>{9e43d5cf-31db-4c9d-946e-0dba04fb85fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -92,9 +95,6 @@
     <ClInclude Include="SporeModManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SporeModManagerHelpers.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\3rdParty\zlib\contrib\minizip\unzip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -103,6 +103,27 @@
     </ClInclude>
     <ClInclude Include="..\version.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SporeModManagerHelpers\FileVersion.hpp">
+      <Filter>Header Files\SporeModManagerHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="SporeModManagerHelpers\Path.hpp">
+      <Filter>Header Files\SporeModManagerHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="SporeModManagerHelpers\SporeMod.hpp">
+      <Filter>Header Files\SporeModManagerHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="SporeModManagerHelpers\SporeModXml.hpp">
+      <Filter>Header Files\SporeModManagerHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="SporeModManagerHelpers\String.hpp">
+      <Filter>Header Files\SporeModManagerHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="SporeModManagerHelpers\UI.hpp">
+      <Filter>Header Files\SporeModManagerHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="SporeModManagerHelpers\Zip.hpp">
+      <Filter>Header Files\SporeModManagerHelpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
