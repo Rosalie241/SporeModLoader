@@ -12,7 +12,7 @@
 
 #include <filesystem>
 
-#include "SporeMod.hpp"
+#include "SporeModXml.hpp"
 
 namespace SporeModManagerHelpers
 {
