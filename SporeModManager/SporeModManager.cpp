@@ -114,6 +114,12 @@ static bool get_sporemodinfo(const std::filesystem::path& path, const std::strin
     return true;
 }
 
+static void reserve_list_items(size_t size)
+{
+    l_SporeModInfos.reserve(size);
+    l_ZipFiles.reserve(size);
+}
+
 static void close_zipfiles(void)
 {
     for (const Zip::ZipFile& zipFile : l_ZipFiles)
@@ -167,6 +173,9 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
     // to install the given mods
     if (!skipValidation)
     {
+        // reserve list items
+        reserve_list_items(paths.size());
+
         for (size_t i = 0; i < paths.size(); i++)
         {
             const std::filesystem::path& path = paths[i];
@@ -307,6 +316,9 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
     {
         return false;
     }
+
+    // reserve list items
+    reserve_list_items(paths.size());
 
     // do validation before attempting
     // to update the given mods
