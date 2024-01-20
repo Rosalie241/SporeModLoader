@@ -421,6 +421,18 @@ def test_uninstall():
 	assert result.stdout != b''
 	assert result.stderr == b''
 
+	# uninstall with a range with numbers + letters shouldn't work
+	result = run_smm([ 'uninstall', '0x1-1x0'])
+	assert result.returncode != 0
+	assert result.stdout == b''
+	assert result.stderr != b''
+
+	# uninstall with a range with letters shouldn't work
+	result = run_smm([ 'uninstall', 'a-b'])
+	assert result.returncode != 0
+	assert result.stdout == b''
+	assert result.stderr != b''
+
 	# uninstall with an invalid range shouldn't work
 	result = run_smm([ 'uninstall', '0-30'])
 	assert result.returncode != 0
