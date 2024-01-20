@@ -20,27 +20,29 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Splits the given string by the delimiter
         /// </summary>
-        std::vector<std::string> Split(std::string string, char delimiter);
-
-        /// <summary>
-        ///     Splits the given string by the delimiter
-        /// </summary>
-        std::vector<std::wstring> Split(std::wstring string, wchar_t delimiter);
+        std::vector<std::string>  Split(const std::string& string, char delimiter);
+        std::vector<std::wstring> Split(const std::wstring& string, wchar_t delimiter);
 
         /// <summary>
         ///     Joins numbers to string with delimiter
         /// </summary>
-        std::string Join(std::vector<int> numbers, char delimiter);
+        std::string Join(const std::vector<int>& numbers, char delimiter);
 
         /// <summary>
         ///     Replaces findString with replacementString in string
         /// </summary>
-        std::string Replace(std::string string, std::string findString, std::string replacementString);
+        std::string Replace(const std::string& string, const std::string& findString, const std::string& replacementString);
 
         /// <summary>
         ///     Returns the lowercase version of the given string
         /// </summary>
-        std::string Lowercase(std::string string);
+        std::string Lowercase(const std::string& string);
+
+        /// <summary>
+        ///     Returns whether converting the string to number succeeds
+        /// </summary>
+        bool ToInt(const std::string& string, int& number);
+        bool ToInt(const std::wstring& string, int& number);
     }
 }
 

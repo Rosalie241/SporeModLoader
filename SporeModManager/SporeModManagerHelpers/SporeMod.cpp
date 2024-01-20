@@ -301,6 +301,8 @@ bool SporeMod::ConfigurePackage(const std::filesystem::path& path, Xml::Installe
 
 bool SporeMod::InstallSporeMod(Zip::ZipFile zipFile, const Xml::InstalledSporeMod& installedSporeMod)
 {
+    std::error_code error;
+
     std::cout << "-> Installing " << installedSporeMod.Name << std::endl;
 
     for (const auto& installedFile : installedSporeMod.InstalledFiles)
@@ -324,17 +326,14 @@ bool SporeMod::InstallSporeMod(Zip::ZipFile zipFile, const Xml::InstalledSporeMo
                 installPath = Path::GetFullInstallPath(installedFileToRemove.InstallLocation, installedFileToRemove.FileName);
                 if (std::filesystem::is_regular_file(installPath))
                 {
-                    try
+                    if (UI::GetVerboseMode())
                     {
-                        if (UI::GetVerboseMode())
-                        {
-                            std::cout << "--> Removing " << installPath << std::endl;
-                        }
-                        std::filesystem::remove(installPath);
+                        std::cout << "--> Removing " << installPath << std::endl;
                     }
-                    catch(...)
+                    std::filesystem::remove(installPath, error);
+                    if (error)
                     {
-                        std::cerr << "Error: std::filesystem::remove(" << installPath << ") Failed!" << std::endl;
+                        std::cerr << "Error: failed to remove " << installPath << ": " << error.message() << std::endl;
                     }
                 }
             }
@@ -347,6 +346,8 @@ bool SporeMod::InstallSporeMod(Zip::ZipFile zipFile, const Xml::InstalledSporeMo
 
 bool SporeMod::InstallPackage(const std::filesystem::path& path, const Xml::InstalledSporeMod& installedSporeMod)
 {
+    std::error_code error;
+
     std::cout << "-> Installing " << installedSporeMod.Name << std::endl;
     
     for (const auto& installedFile : installedSporeMod.InstalledFiles)
@@ -360,13 +361,10 @@ bool SporeMod::InstallPackage(const std::filesystem::path& path, const Xml::Inst
             std::cout << "--> Installing " << installedFile.FileName << " to " << installPath << std::endl;
         }
 
-        try
+        std::filesystem::copy_file(sourcePath, installPath, std::filesystem::copy_options::overwrite_existing, error);
+        if (error)
         {
-            std::filesystem::copy_file(sourcePath, installPath, std::filesystem::copy_options::overwrite_existing);
-        }
-        catch (...)
-        {
-            std::cerr << "Error: std::filesystem::copy_file(" << sourcePath << "," << installPath << ") Failed!" << std::endl;
+            std::cerr << "Error: failed to copy " << sourcePath << " to " << installPath << ": " << error.message() << std::endl;
             return false;
         }
     }

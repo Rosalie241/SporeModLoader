@@ -103,11 +103,7 @@ bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionIn
 
     for (size_t i = 0; i < std::min(splitString.size(), numbers.size()); i++)
     {
-        try
-        {
-            numbers[i].get() = std::stoi(splitString[i]);
-        }
-        catch (...)
+        if (!String::ToInt(splitString[i], numbers[i].get()))
         {
             std::cerr << "Error: \"" << string << "\" is not a valid version string!" << std::endl;
             return false;
