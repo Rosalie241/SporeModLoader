@@ -107,32 +107,31 @@ std::filesystem::path Path::Combine(std::vector<std::filesystem::path> paths)
 
 std::filesystem::path Path::GetAbsolutePath(std::filesystem::path path)
 {
-    std::filesystem::path fullPath = path;
+    std::filesystem::path sourcePath = path;
+    std::filesystem::path fullPath;
+    std::error_code error;
 
-    if (fullPath.is_absolute())
+    if (sourcePath.is_absolute())
     {
-        return fullPath;
+        return sourcePath;
     }
 
-    if (!std::filesystem::is_directory(fullPath))
+    if (!std::filesystem::is_directory(sourcePath))
     {
-        fullPath = Path::Combine({ Path::GetCurrentExecutablePath(), path });
+        sourcePath = Path::Combine({ Path::GetCurrentExecutablePath(), path });
     }
 
-    try
-    {
-        fullPath = std::filesystem::canonical(fullPath);
-    }
-    catch (...)
+    fullPath = std::filesystem::canonical(sourcePath, error);
+    if (error)
     {
         // mingw has weird behavior with std::filesystem::canonical(),
         // it throws an exception even though the relative path exists,
         // so to workaround that, we'll check if the fullPath exists and
         // return that
 #ifdef __MINGW32__
-        if (std::filesystem::is_directory(fullPath))
+        if (std::filesystem::is_directory(sourcePath))
         {
-            return fullPath;
+            return sourcePath;
         }
 #endif
         // just return the original path,
@@ -164,15 +163,23 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
     currentExecutablePath = currentExecutablePath.parent_path();
     return currentExecutablePath;
 #else // _WIN32
-    try
+    static std::filesystem::path currentExecutablePath;
+    std::error_code error;
+
+    if (!currentExecutablePath.empty())
     {
-        return std::filesystem::canonical("/proc/self/exe").parent_path();
+        return currentExecutablePath;
     }
-    catch (...)
-    { // fallback to current path
-        std::cerr << "Error: std::filesystem::canonical(\"/proc/self/exe\") Failed!" << std::endl;
+
+    currentExecutablePath = std::filesystem::canonical("/proc/self/exe", error);
+    if (error)
+    {
+        std::cerr << "Error: failed to retrieve path of current executable: " << error.message() << std::endl;
         std::exit(1);
     }
+
+    currentExecutablePath = currentExecutablePath.parent_path();
+    return currentExecutablePath;
 #endif // _WIN32
 }
 

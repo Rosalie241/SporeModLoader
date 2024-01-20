@@ -340,12 +340,9 @@ int main(int argc, char** argv)
                 return 1;
             }
 
-            try
-            {
-                startIndex = std::stoi(splitString[0]);
-                endIndex   = std::stoi(splitString[1]);
-            }
-            catch (...)
+            // attempt to parse the strings into numbers
+            if (!String::ToInt(splitString[0], startIndex) ||
+                !String::ToInt(splitString[1], endIndex))
             {
                 std::cerr << "Error: range can only contain numbers!" << std::endl;
                 return 1;
@@ -376,17 +373,15 @@ int main(int argc, char** argv)
         }
         else
         {
+            int number = 0;
             for (size_t i = 2; i < args.size(); i++)
             {
-                try
-                {
-                    ids.push_back(std::stoi(args[i]));
-                }
-                catch (...)
+                if (!String::ToInt(args[i], number))
                 {
                     std::cerr << "Error: ID must be a number!" << std::endl;
                     return 1;
                 }
+                ids.push_back(number);
             }
         }
 

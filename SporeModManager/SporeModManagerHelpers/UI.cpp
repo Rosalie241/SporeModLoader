@@ -63,18 +63,14 @@ void UI::AskUserInput(std::string text, int& number, std::optional<int> defaultN
             return;
         }
 
-        try
-        {
-            number = std::stoi(inputLine);
-            if (number < min || number > max)
-            {
-                throw std::exception();
-            }
-            break;
-        }
-        catch (...)
-        {
+        if (!String::ToInt(inputLine, number) ||
+            (number < min || number > max))
+        { // invalid input
             std::cerr << "Error: invalid input" << std::endl;
+        }
+        else
+        { // valid input
+            break;
         }
     } while (true);
 }
@@ -113,24 +109,17 @@ void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& number
         stringStream = std::stringstream(inputLine);
         while (std::getline(stringStream, inputItem, delimiter))
         {
-            try
-            {
-                number = std::stoi(inputItem);
-                if (number < min || number > max)
-                {
-                    throw std::exception();
-                }
-                else
-                {
-                    numbers.push_back(number);
-                    validInput = true;
-                }
-            }
-            catch (...)
-            {
+            if (!String::ToInt(inputLine, number) ||
+                (number < min || number > max))
+            { // invalid input
                 std::cerr << "Error: invalid input" << std::endl;
                 validInput = false;
                 break;
+            }
+            else
+            { // valid input
+                numbers.push_back(number);
+                validInput = true;
             }
         }        
     } while (!validInput);

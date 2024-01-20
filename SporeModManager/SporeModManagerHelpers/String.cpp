@@ -9,12 +9,13 @@
  */
 #include "String.hpp"
 
-#include <sstream>
 #include <algorithm>
+#include <sstream>
+#include <cerrno>
 
 using namespace SporeModManagerHelpers;
 
-std::vector<std::string> String::Split(std::string string, char delimiter)
+std::vector<std::string> String::Split(const std::string& string, char delimiter)
 {
     std::vector<std::string> result;
     std::stringstream stringStream(string);
@@ -28,7 +29,7 @@ std::vector<std::string> String::Split(std::string string, char delimiter)
     return result;
 }
 
-std::vector<std::wstring> String::Split(std::wstring string, wchar_t delimiter)
+std::vector<std::wstring> String::Split(const std::wstring& string, wchar_t delimiter)
 {
     std::vector<std::wstring> result;
     std::wstringstream stringStream(string);
@@ -42,7 +43,7 @@ std::vector<std::wstring> String::Split(std::wstring string, wchar_t delimiter)
     return result;
 }
 
-std::string String::Join(std::vector<int> numbers, char delimiter)
+std::string String::Join(const std::vector<int>& numbers, char delimiter)
 {
     std::string result;
 
@@ -58,23 +59,38 @@ std::string String::Join(std::vector<int> numbers, char delimiter)
     return result;
 }
 
-std::string String::Replace(std::string string, std::string findString, std::string replacementString)
+std::string String::Replace(const std::string& string, const std::string& findString, const std::string& replacementString)
 {
+    std::string str = string;
     size_t pos = 0;
-    while ((pos = string.find(findString, pos)) != std::string::npos)
+    while ((pos = str.find(findString, pos)) != std::string::npos)
     {
-        string.replace(pos, findString.size(), replacementString);
+        str.replace(pos, findString.size(), replacementString);
         pos += replacementString.size();
     }
-    return string;
+    return str;
 }
 
-std::string String::Lowercase(std::string string)
+std::string String::Lowercase(const std::string& string)
 {
-    std::transform(string.begin(), string.end(), string.begin(), [](unsigned char c) 
+    std::string str = string;
+    std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) 
     { 
         return (c >= 'A' && c <= 'Z') ? (c + 'a' - 'A') : c; 
     });
-    return string;
+    return str;
 }
 
+bool String::ToInt(const std::string& string, int& number)
+{
+    char* endptr;
+    number = strtol(string.c_str(), &endptr, 10);
+    return errno != ERANGE && endptr == (string.c_str() + string.size());
+}
+
+bool String::ToInt(const std::wstring& string, int& number)
+{
+    wchar_t* endptr;
+    number = wcstol(string.c_str(), &endptr, 10);
+    return errno != ERANGE && endptr == (string.c_str() + string.size());
+}

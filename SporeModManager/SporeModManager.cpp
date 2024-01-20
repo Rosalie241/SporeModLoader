@@ -423,6 +423,7 @@ bool SporeModManager::UninstallMods(std::vector<int> ids)
     std::vector<SporeMod::Xml::InstalledSporeMod> removedSporeMods;
     SporeMod::Xml::InstalledSporeMod installedSporeMod;
     std::filesystem::path fullInstallPath;
+    std::error_code error;
 
     if (!get_installedsporemodlist())
     {
@@ -446,20 +447,15 @@ bool SporeModManager::UninstallMods(std::vector<int> ids)
 
         for (const auto& installedFile : installedSporeMod.InstalledFiles)
         {
-            try
+            fullInstallPath = Path::GetFullInstallPath(installedFile.InstallLocation, installedFile.FileName);
+            if (UI::GetVerboseMode())
             {
-                fullInstallPath = Path::GetFullInstallPath(installedFile.InstallLocation, installedFile.FileName);
-
-                if (UI::GetVerboseMode())
-                {
-                    std::cout << "--> Removing " << fullInstallPath << std::endl;
-                }
-
-                std::filesystem::remove(fullInstallPath);
+                std::cout << "--> Removing " << fullInstallPath << std::endl;
             }
-            catch (...)
+            std::filesystem::remove(fullInstallPath, error);
+            if (error)
             {
-                std::cerr << "Error: std::filesystem::remove(" << fullInstallPath << ") Failed!" << std::endl;
+                std::cerr << "Error: failed to remove " << fullInstallPath << ": " << error.message() << std::endl;
                 return false;
             }
         }
