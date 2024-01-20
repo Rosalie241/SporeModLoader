@@ -16,14 +16,14 @@ MINGW_WINDRES ?= i686-w64-mingw32-windres
 
 ifeq ($(MINGW), 0)
 LDFLAGS    := -flto -s
-OPTFLAGS   := -Os -flto -Wall -Wextra -Wpedantic
+OPTFLAGS   := -Os -fno-exceptions -flto -Wall -Wextra -Wpedantic
 OBJ        := o
 EXE_EXT    :=
 else
 # mingw doesn't like LTO
 # and we need to statically link
 LDFLAGS    := -s -municode -static
-OPTFLAGS   := -Os -Wall -Wextra -Wpedantic
+OPTFLAGS   := -Os -fno-exceptions -Wall -Wextra -Wpedantic
 OBJ        := obj
 EXE_EXT    := .exe
 endif
