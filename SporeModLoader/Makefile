@@ -6,6 +6,7 @@ BINARY_DIR     ?= bin
 SOURCE_DIR     ?= .
 DLL_FILE       ?= dinput8.dll
 VERBOSE        ?= 0
+DEBUG          ?= 0
 
 MINGW_CXX     ?= i686-w64-mingw32-g++
 MINGW_WINDRES ?= i686-w64-mingw32-windres
@@ -14,8 +15,15 @@ CXXFLAGS   := -std=c++17                     \
 				-I$(SOURCE_DIR)              \
 				-I$(THIRDPARTY_DIR)/Detours/src \
 				-Wno-attributes -Wp,-w
-OPTFLAGS   := -Os -flto -Wall -Wextra -Wpedantic
-LDFLAGS    := -s -flto -Wl,--enable-stdcall-fixup
+OPTFLAGS   := -Os -flto
+WARNFLAGS  := -Wall -Wextra -Wpedantic
+LDFLAGS    := -Wl,--enable-stdcall-fixup
+
+ifeq ($(DEBUG), 1)
+OPTFLAGS   += -g3
+else
+LDFLAGS    += -s
+endif
 
 OBJECT_FILES := \
 	$(SOURCE_DIR)/SporeModLoaderHelpers.obj \
@@ -48,7 +56,7 @@ endif
 
 %.obj: %.cpp $(HEADER_FILES)
 	@echo "MINGW_CXX $<"
-	$(QUIET)$(MINGW_CXX) -c $< -o $@ $(OPTFLAGS) $(CXXFLAGS)
+	$(QUIET)$(MINGW_CXX) -c $< -o $@ $(OPTFLAGS) $(WARNFLAGS) $(CXXFLAGS)
 
 all: $(BINARY_DIR)/$(DLL_FILE)
 

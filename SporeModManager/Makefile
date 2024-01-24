@@ -7,6 +7,7 @@ SOURCE_DIR     := .
 EXE_FILE       := SporeModManager
 VERBOSE        := 0
 MINGW          := 0
+DEBUG          := 0
 
 CC            ?= gcc
 CXX           ?= g++
@@ -15,18 +16,27 @@ MINGW_CXX     ?= i686-w64-mingw32-g++
 MINGW_WINDRES ?= i686-w64-mingw32-windres
 
 ifeq ($(MINGW), 0)
-LDFLAGS    := -flto -s
-OPTFLAGS   := -Os -flto -Wall -Wextra -Wpedantic
+LDFLAGS    :=
+OPTFLAGS   := -Os -flto
+WARNFLAGS  := -Wall -Wextra -Wpedantic
 OBJ        := o
 EXE_EXT    :=
 else
 # mingw doesn't like LTO
 # and we need to statically link
-LDFLAGS    := -s -municode -static
-OPTFLAGS   := -Os -Wall -Wextra -Wpedantic
+LDFLAGS    := -municode -static
+OPTFLAGS   := -Os
+WARNFLAGS  := -Wall -Wextra -Wpedantic
 OBJ        := obj
 EXE_EXT    := .exe
 endif
+
+ifeq ($(DEBUG), 1)
+OPTFLAGS   += -g3
+else
+LDFLAGS    += -s
+endif
+
 CFLAGS     := \
 				-I$(THIRDPARTY_DIR)/zlib     \
 				-I$(THIRDPARTY_DIR)/zlib/contrib/minizip
@@ -88,19 +98,19 @@ endif
 
 %.o: %.c $(THIRDPARTY_HEADER_FILES)
 	@echo "CC  $<"
-	$(QUIET)$(CC) -c $< -o $@ $(OPTFLAGS) $(CFLAGS)
+	$(QUIET)$(CC) -c $< -o $@ $(OPTFLAGS) $(WARNFLAGS) $(CFLAGS)
 
 %.o: %.cpp $(HEADER_FILES) $(THIRDPARTY_HEADER_FILES)
 	@echo "CXX $<"
-	$(QUIET)$(CXX) -c $< -o $@ $(OPTFLAGS) $(CXXFLAGS)
+	$(QUIET)$(CXX) -c $< -o $@ $(OPTFLAGS) $(WARNFLAGS) $(CXXFLAGS)
 
 %.obj: %.c $(THIRDPARTY_HEADER_FILES)
 	@echo "MINGW_CC  $<"
-	$(QUIET)$(MINGW_CC) -c $< -o $@ $(OPTFLAGS) $(CFLAGS)
+	$(QUIET)$(MINGW_CC) -c $< -o $@ $(OPTFLAGS) $(WARNFLAGS) $(CFLAGS)
 
 %.obj: %.cpp $(HEADER_FILES) $(THIRDPARTY_HEADER_FILES)
 	@echo "MINGW_CXX $<"
-	$(QUIET)$(MINGW_CXX) -c $< -o $@ $(OPTFLAGS) $(CXXFLAGS)
+	$(QUIET)$(MINGW_CXX) -c $< -o $@ $(OPTFLAGS) $(WARNFLAGS) $(CXXFLAGS)
 
 %.obj: %.rc $(HEADER_FILES)
 	@echo "MINGW_RES $<"
