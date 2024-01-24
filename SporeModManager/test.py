@@ -377,6 +377,14 @@ def test_install():
 	assert result.stdout == b''
 	assert result.stderr != b''
 
+	# verify that an invalid modinfo.xml fails
+	xml = '<mod <prerequisite> />'
+	write_sporemod(xml)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode != 0
+	assert result.stdout == b''
+	assert result.stderr != b''
+
 # Tests whether uninstall works correctly
 def test_uninstall():
 	print(f'Running {test_uninstall.__name__}...')
