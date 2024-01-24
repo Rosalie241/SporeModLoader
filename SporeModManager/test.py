@@ -29,6 +29,9 @@ ep1_path        = tempfile.mkdtemp()
 
 os_environment  = os.environ.copy()
 
+# global for write_sporemod
+write_mod_num   = 0
+
 #
 # Helper Functions
 #
@@ -60,13 +63,19 @@ def run_smm(args):
 			print(f'stderr:\n{result.stderr.decode("utf-8").rstrip()}')
 	return result
 
-def write_sporemod(xml, extra = None):
-	with zipfile.ZipFile(sporemod_file, mode="w") as archive:
+def write_sporemod(xml, extra = None, createNew = False):
+	file = sporemod_file
+	if createNew:
+		global write_mod_num
+		file = os.path.join(sporemod_path, f'test_{write_mod_num}.sporemod')
+		write_mod_num = write_mod_num + 1
+	with zipfile.ZipFile(file, mode="w") as archive:
 		if xml is not None:
 			archive.writestr("ModInfo.xml", xml)
 		if extra is not None:
 			for list_str in extra:
 				archive.writestr(list_str[0], list_str[1])
+	return file
 
 #
 # Test Functions
@@ -396,8 +405,8 @@ def test_uninstall():
 	assert result.stdout == b''
 	assert result.stderr != b''
 
-	# install a dummy mods
-	# TODO: rewrite this to use a single install command
+	# install multiple dummy mods
+	install_cmd = [ 'install' ]
 	for num in range(25):
 		xml = f"""<mod displayName="test_uninstall_{num}" 
 					unique="test_uninstall_{num}" 
@@ -405,11 +414,11 @@ def test_uninstall():
 					installerSystemVersion="1.0.1.1" 
 					dllsBuild="2.5.20">
 				</mod>"""
-		write_sporemod(xml)
-		result = run_smm([ 'install', sporemod_file ])
-		assert result.returncode == 0
-		assert result.stdout != b''
-		assert result.stderr == b''
+		install_cmd += [ write_sporemod(xml, None, True) ]
+	result = run_smm(install_cmd)
+	assert result.returncode == 0
+	assert result.stdout != b''
+	assert result.stderr == b''
 
 	# uninstall with a too high ID shouldn't work
 	result = run_smm([ 'uninstall', '26'])
