@@ -39,7 +39,7 @@ static bool get_installedsporemodlist(void)
     {
         if (!SporeMod::Xml::GetInstalledModList(l_InstalledSporeMods))
         {
-            std::cerr << "Error: SporeMod::Xml::GetInstalledMostList() Failed!" << std::endl;
+            std::cerr << "Error: failed to retrieve installed mod list!" << std::endl;
             return false;
         }
         l_HasInstalledSporeMods = true;
@@ -53,7 +53,7 @@ static bool save_installedsporemodlist(void)
     {
         if (!SporeMod::Xml::SaveInstalledModList(l_InstalledSporeMods))
         {
-            std::cerr << "Error: SporeMod::Xml::SaveInstalledModList() Failed!" << std::endl;
+            std::cerr << "Error: failed to save installed mod list!" << std::endl;
             return false;
         }
     }
@@ -69,7 +69,7 @@ static bool get_sporemodinfo(const std::filesystem::path& path, const std::strin
     {
         if (!Zip::OpenFile(zipFile, path))
         {
-            std::cerr << "Error: Zip::OpenFile() Failed!" << std::endl;
+            std::cerr << "Error: failed to open zip file!" << std::endl;
             return false;
         }
 
@@ -83,14 +83,14 @@ static bool get_sporemodinfo(const std::filesystem::path& path, const std::strin
         { // has modinfo.xml
             if (!Zip::ExtractFile(zipFile, "", modInfoFileBuffer))
             {
-                std::cerr << "Error: Zip::ExtractFile() Failed!" << std::endl;
+                std::cerr << "Error: failed to extract ModInfo.xml from zip file!" << std::endl;
                 Zip::CloseFile(zipFile);
                 return false;
             }
 
             if (!SporeMod::Xml::ParseSporeModInfo(modInfoFileBuffer, sporeModInfo))
             {
-                std::cerr << "Error: SporeMod::Xml::ParseSporeModInfo() Failed!" << std::endl;
+                std::cerr << "Error: failed to parse ModInfo.xml!" << std::endl;
                 Zip::CloseFile(zipFile);
                 return false;
             }

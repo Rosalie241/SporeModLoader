@@ -50,7 +50,7 @@ bool FileVersion::GetCoreLibFileVersionInfo(FileVersionInfo& fileVersionInfo)
 
     if (!FileVersion::ParseFile(coreLibPath, fileVersionInfo))
     {
-        std::cerr << "Error: FileVersion::ParseFile() Failed!" << std::endl;
+        std::cerr << "Error: failed to parse file version!" << std::endl;
         return false;
     }
 
@@ -64,13 +64,13 @@ bool FileVersion::CheckIfCoreLibMatchesVersion(FileVersionInfo& modFileVersionIn
 
     if (!GetCoreLibFileVersionInfo(coreLibFileVersionInfo))
     {
-        std::cerr << "Error: FileVersion::GetCoreLibFileVersionInfo() Failed!" << std::endl;
+        std::cerr << "Error: failed to retrieve SporeModAPI.dll version!" << std::endl;
         return false;
     }
 
     if (modFileVersionInfo > coreLibFileVersionInfo)
     {
-        std::cerr << "Error: \"" << modName << "\" requires newer Spore ModAPI DLL (\"" << modFileVersionInfo.to_string() <<
+        std::cerr << "Error: \"" << modName << "\" requires newer SporeModAPI.dll (\"" << modFileVersionInfo.to_string() <<
             "\") than what's currently installed (\"" << coreLibFileVersionInfo.to_string() << "\")" << std::endl;
         return false;
     }
@@ -122,7 +122,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
     fileStream.open(path, std::ios_base::in | std::ios_base::binary);
     if (!fileStream.is_open())
     {
-        std::cerr << "Error: fileStream.open() Failed!" << std::endl;
+        std::cerr << "Error: failed to open " << path << std::endl;
         return false;
     }
 
@@ -143,7 +143,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
 
     if (fileStream.fail())
     {
-        std::cerr << "Error: fileStream.fail()!" << std::endl;
+        std::cerr << "Error: failed to read data from " << path << std::endl;
         return false;
     }
 
@@ -157,7 +157,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
     auto bufferIter = std::search(buffer.begin(), buffer.end(), searchBytes.begin(), searchBytes.end());
     if (bufferIter == buffer.end())
     {
-        std::cout << "Error: std::search() didn't find the required bytes!" << std::endl;
+        std::cout << "Error: failed to find file version bytes!" << std::endl;
         return false;
     }
 

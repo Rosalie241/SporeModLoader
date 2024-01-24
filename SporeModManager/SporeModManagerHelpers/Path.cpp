@@ -49,7 +49,7 @@ bool Path::CheckIfPathsExist(void)
 
     if (!SporeMod::Xml::GetDirectories(coreLibsPath, modLibsPath, galacticAdventuresDataPath, coreSporeDataPath))
     {
-        std::cerr << "Error: SporeMod::Xml::GetDirectories() Failed!" << std::endl;
+        std::cerr << "Error: failed to retrieve directories from configuration file!" << std::endl;
         return false;
     }
 
@@ -155,7 +155,7 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
 
     if (GetModuleFileNameW(nullptr, currentExecutablePathBuf, MAX_PATH) == 0)
     { // fallback to current path
-        std::cerr << "Error: GetModuleFileNameW() Failed!" << std::endl;
+        std::cerr << "Error: failed to retrieve path of current executable!" << std::endl;
         std::exit(1);
     }
 

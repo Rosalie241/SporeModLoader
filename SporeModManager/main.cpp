@@ -227,7 +227,7 @@ int main(int argc, char** argv)
     {
         if (!SporeMod::Xml::SaveDirectories(coreLibsPath, modLibsPath, ep1Path, dataPath))
         {
-            std::cerr << "Error: SporeMod::Xml::SaveDirectories() Failed!" << std::endl;
+            std::cerr << "Error: failed to save directories to configuration file!" << std::endl;
             return 1;
         }
     }

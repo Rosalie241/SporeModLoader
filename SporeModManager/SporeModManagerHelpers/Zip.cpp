@@ -151,7 +151,7 @@ bool Zip::GetFileList(ZipFile zipFile, std::vector<std::filesystem::path>& fileL
     ret = unzGetGlobalInfo64(zipFile, &zipInfo);
     if (ret != UNZ_OK)
     {
-        std::cerr << "Error: unzGetGlobalInfo64() Failed: " << ret << std::endl;
+        std::cerr << "Error: failed to retrieve zip file info: " << ret << std::endl;
         return false;
     }
 
@@ -181,7 +181,7 @@ bool Zip::GetFileList(ZipFile zipFile, std::vector<std::filesystem::path>& fileL
         ret = unzGoToNextFile(zipFile);
         if (ret != UNZ_OK)
         {
-            std::cerr << "Error: unzGoToNextFile() Failed: " << ret << std::endl;
+            std::cerr << "Error: failed to advance to next file in zip file: " << ret << std::endl;
             return false;
         }
     }
@@ -207,14 +207,14 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
     outputFileStream.open(outputFile, std::ofstream::trunc | std::ofstream::binary);
     if (!outputFileStream.is_open())
     {
-        std::cerr << "Error: ofstream.open() Failed!" << std::endl;
+        std::cerr << "Error: failed to open " << outputFile << std::endl;
         return false;
     }
 
     bytesRead = unzOpenCurrentFile(zipFile);
     if (bytesRead != UNZ_OK)
     {
-        std::cerr << "Error: unzOpenCurrentFile() Failed: " << bytesRead << std::endl;
+        std::cerr << "Error: failed to open file in zip file: " << bytesRead << std::endl;
         return false;
     }
 
@@ -224,7 +224,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
-            std::cerr << "Error: unzReadCurrentFile() Failed: " << bytesRead << std::endl;
+            std::cerr << "Error: failed to read data from file in zip file: " << bytesRead << std::endl;
             return false;
         }
         else if (bytesRead > 0)
@@ -258,7 +258,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
     bytesRead = unzOpenCurrentFile(zipFile);
     if (bytesRead != UNZ_OK)
     {
-        std::cerr << "Error: unzOpenCurrentFile() Failed: " << bytesRead  << std::endl;
+        std::cerr << "Error: failed to open file in zip file: " << bytesRead << std::endl;
         return false;
     }
 
@@ -268,7 +268,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<c
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
-            std::cerr << "Error: unzReadCurrentFile() Failed: " << bytesRead << std::endl;
+            std::cerr << "Error: failed to read data from file in zip file: " << bytesRead << std::endl;
             return false;
         }
         else if (bytesRead > 0)

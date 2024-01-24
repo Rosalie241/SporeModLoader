@@ -285,14 +285,14 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     error = xmlDocument.Parse(buffer.data(), buffer.size());
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
-        std::cerr << "Error: XmlDocument.Parse() Failed!" << std::endl;
+        std::cerr << "Error: failed to parse XML: " << xmlDocument.ErrorName() << std::endl;
         return false;
     }
 
     xmlElement = xmlDocument.RootElement();
     if (xmlElement == nullptr)
     {
-        std::cerr << "Error: XMLDocument.RootElement() Failed!" << std::endl;
+        std::cerr << "Error: failed to retrieve root element from XML: " << xmlDocument.ErrorName() << std::endl;
         return false;
     }
 
@@ -312,7 +312,7 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
         ret = FileVersion::ParseString(xmlAttributeText, sporeModInfo.InstallerVersion);
         if (!ret)
         {
-            std::cerr << "Error: FileVersion::ParseString() Failed!" << std::endl;
+            std::cerr << "Error: failed to parse installerSystemVersion attribute!" << std::endl;
             return false;
         }
         else
@@ -342,7 +342,7 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
         ret = FileVersion::ParseString(xmlAttributeText, sporeModInfo.MinimumModAPILibVersion);
         if (!ret)
         {
-            std::cerr << "Error: FileVersion::ParseString() Failed!" << std::endl;
+            std::cerr << "Error: failed to parse dllsBuild attribute!" << std::endl;
             return false;
         }
     }
@@ -392,7 +392,7 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& coreLibsPath, std::fil
                                   Path::Combine({ "..", "..", "DataEP1" }),
                                   Path::Combine({ "..", "..", "Data" })))
         {
-            std::cerr << "Error: Xml::SaveDirectories() Failed!" << std::endl;
+            std::cerr << "Error: failed to save configuration file!" << std::endl;
             return false;
         }
     }
@@ -400,14 +400,14 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& coreLibsPath, std::fil
     error = xmlDocument.LoadFile(configFilePath.string().c_str());
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
-        std::cerr << "Error: XmlDocument.LoadFile() Failed!" << std::endl;
+        std::cerr << "Error: failed to load XML file: " << xmlDocument.ErrorName() << std::endl;
         return false;
     }
 
     xmlElement = xmlDocument.RootElement();
     if (xmlElement == nullptr)
     {
-        std::cerr << "Error: XMLDocument.RootElement() Failed!" << std::endl;
+        std::cerr << "Error: failed to retrieve root element from XML: " << xmlDocument.ErrorName() << std::endl;
         return false;
     }
 
@@ -486,7 +486,7 @@ bool SporeMod::Xml::SaveDirectories(std::filesystem::path coreLibsPath, std::fil
     xmlElement = xmlDocument.RootElement();
     if (xmlElement == nullptr)
     {
-        std::cerr << "Error: XMLDocument.RootElement() Failed!" << std::endl;
+        std::cerr << "Error: failed to retrieve root element from XML: " << xmlDocument.ErrorName() << std::endl;
         return false;
     }
 
@@ -547,14 +547,14 @@ bool SporeMod::Xml::GetInstalledModList(std::vector<InstalledSporeMod>& installe
     error = xmlDocument.LoadFile(configFilePath.string().c_str());
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
-        std::cerr << "Error: XmlDocument.LoadFile() Failed!" << std::endl;
+        std::cerr << "Error: failed to load XML file: " << xmlDocument.ErrorName() << std::endl;
         return false;
     }
 
     xmlElement = xmlDocument.RootElement();
     if (xmlElement == nullptr)
     {
-        std::cerr << "Error: XMLDocument.RootElement() Failed!" << std::endl;
+        std::cerr << "Error: failed to retrieve root element from XML: " << xmlDocument.ErrorName() << std::endl;
         return false;
     }
 
@@ -608,7 +608,7 @@ bool SporeMod::Xml::SaveInstalledModList(const std::vector<InstalledSporeMod>& i
     error = xmlDocument.LoadFile(configFilePath.string().c_str());
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
-        std::cerr << "Error: XmlDocument.LoadFile() Failed!" << std::endl;
+        std::cerr << "Error: failed to load XML file: " << xmlDocument.ErrorName() << std::endl;
         return false;
     }
 
