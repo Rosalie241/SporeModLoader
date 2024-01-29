@@ -109,7 +109,7 @@ void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& number
         stringStream = std::stringstream(inputLine);
         while (std::getline(stringStream, inputItem, delimiter))
         {
-            if (!String::ToInt(inputLine, number) ||
+            if (!String::ToInt(inputItem, number) ||
                 (number < min || number > max))
             { // invalid input
                 std::cerr << "Error: invalid input" << std::endl;
