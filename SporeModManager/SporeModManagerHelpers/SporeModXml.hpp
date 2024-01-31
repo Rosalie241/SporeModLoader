@@ -22,9 +22,9 @@ namespace SporeModManagerHelpers
     {
         enum class InstallLocation
         {
-            ModLibs = 0,
+            ModLibs                = 0,
             GalacticAdventuresData = 1,
-            CoreSporeData = 2
+            CoreSporeData          = 2
         };
 
         namespace Xml
@@ -76,12 +76,12 @@ namespace SporeModManagerHelpers
                 std::string UniqueName;
                 std::string Description;
 
-                bool HasModInfoXml = false;
-                bool IsExperimental = false;
-                bool RequiresGalaxyReset = false;
+                bool HasModInfoXml            = false;
+                bool IsExperimental           = false;
+                bool RequiresGalaxyReset      = false;
                 bool CausesSaveDataDependency = false;
-                bool HasCustomInstaller = false;
-                bool CompatOnly = false;
+                bool HasCustomInstaller       = false;
+                bool CompatOnly               = false;
 
                 FileVersion::FileVersionInfo InstallerVersion;
                 FileVersion::FileVersionInfo MinimumModAPILibVersion;

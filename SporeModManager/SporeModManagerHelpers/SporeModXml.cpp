@@ -11,9 +11,9 @@
 #include "String.hpp"
 #include "Path.hpp"
 
-#include <iostream>
-#include <algorithm>
 #include <tinyxml2.h>
+#include <algorithm>
+#include <iostream>
 
 using namespace SporeModManagerHelpers;
 
