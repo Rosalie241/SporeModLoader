@@ -48,4 +48,4 @@ SporeModManager: $(THIRDPARTY_DIR)/zlib/zconf.h
 SporeModManager.exe: $(THIRDPARTY_DIR)/zlib/zconf.h
 	$(MAKE) -C $(basename $@) BINARY_DIR=$(BINARY_DIR)/SporeModLoader/SporeModManager MINGW=1
 
-.PHONY: SporeModLoader SporeModManager SporeModManager.exe all clean check
+.PHONY: SporeModLoader SporeModManager SporeModManager.exe all clean check help
