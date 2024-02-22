@@ -107,7 +107,7 @@ int main(int argc, char** argv)
     std::filesystem::path dataPath;
     std::filesystem::path ep1Path;
 
-    struct option_argument optionArgs[] =
+    const struct option_argument optionArgs[] =
     {
         { arg_str("v"), arg_str("verbose"),       hasVerboseOption },
         { arg_str("y"), arg_str("no-input"),      hasNoInputOption },
@@ -116,7 +116,7 @@ int main(int argc, char** argv)
         { arg_str("s"), arg_str("save-paths"),    hasSavePathsOption },
     };
 
-    struct path_argument pathArgs[] =
+    const struct path_argument pathArgs[] =
     {
         { arg_str("corelibs-path"), coreLibsPath },
         { arg_str("modlibs-path"),  modLibsPath },
