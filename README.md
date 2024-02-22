@@ -31,7 +31,7 @@ or by using `winecfg`
 #### Linux
 
 * Install `make`, `gcc`, `g++` and optionally `i686-w64-mingw32-gcc` and `i686-w64-mingw32-g++`
-* Execute `make`, if you don't have mingw installed, execute `make SporeModManager` instead
+* Execute `make all`, if you don't have mingw installed, execute `make SporeModManager` instead
 
 #### Windows
 * Open `SporeModLoader.sln` with Visual Studio or execute `msbuild` manually
