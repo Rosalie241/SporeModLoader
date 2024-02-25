@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Simulator\cSpaceInventoryItem.h>
-#include <Spore\Simulator\cSpeciesProfile.h>
-#include <Spore\Simulator\cGameData.h>
+#include <Spore/Simulator/cSpaceInventoryItem.h>
+#include <Spore/Simulator/cSpeciesProfile.h>
+#include <Spore/Simulator/cGameData.h>
 
 #define cObjectInstanceInventoryItemPtr eastl::intrusive_ptr<Simulator::cObjectInstanceInventoryItem>
 

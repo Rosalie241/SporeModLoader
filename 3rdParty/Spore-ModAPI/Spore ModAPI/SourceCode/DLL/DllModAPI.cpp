@@ -2,8 +2,9 @@
 
 #include "stdafx.h"
 #include "Application.h"
-#include <Spore\ModAPI.h>
-#include <Psapi.h>
+#include <Spore/ModAPI.h>
+#include <psapi.h>
+#include <exception>
 
 namespace ModAPI
 {
@@ -33,6 +34,7 @@ namespace ModAPI
 	char logScratch[SCRATCH_SIZE];
 
 	void Log(const char* fmt, ...) {
+#ifndef __GNUC__
 		unsigned int offset = 0;
 		
 		__time64_t long_time;
@@ -66,6 +68,7 @@ namespace ModAPI
 			logFile->Flush();
 		}
 		App::ConsolePrintF(logScratch + offset);
+#endif // __GNUC__
 	}
 
 	bool AddSimulatorStrategy(Simulator::ISimulatorStrategy* strategy, uint32_t id) {

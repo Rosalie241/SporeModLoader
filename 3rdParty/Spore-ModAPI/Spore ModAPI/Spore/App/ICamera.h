@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\App\PropertyList.h>
-#include <Spore\App\cViewer.h>
-#include <Spore\Input.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/App/cViewer.h>
+#include <Spore/Input.h>
 
 #define ICameraPtr eastl::intrusive_ptr<App::ICamera>
 

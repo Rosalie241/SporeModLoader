@@ -19,14 +19,14 @@
 ****************************************************************************/
 
 
-#include <Spore\ArgScript\IParser.h>
-#include <Spore\ArgScript\ICommand.h>
-#include <Spore\ArgScript\IBlock.h>
-#include <Spore\ArgScript\ISpecialBlock.h>
-#include <Spore\ArgScript\LambdaParser.h>
-#include <Spore\ArgScript\Lexer.h>
-#include <Spore\ArgScript\Line.h>
-#include <Spore\ArgScript\FormatParser.h>
+#include <Spore/ArgScript/IParser.h>
+#include <Spore/ArgScript/ICommand.h>
+#include <Spore/ArgScript/IBlock.h>
+#include <Spore/ArgScript/ISpecialBlock.h>
+#include <Spore/ArgScript/LambdaParser.h>
+#include <Spore/ArgScript/Lexer.h>
+#include <Spore/ArgScript/Line.h>
+#include <Spore/ArgScript/FormatParser.h>
 
 RedirectStaticMethod_noargs(ArgScript, CreateStream, ArgScript::FormatParser*);
 

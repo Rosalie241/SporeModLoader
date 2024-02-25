@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Pollinator\cSPAchievementSerializer.h>
-#include <EASTL\hash_map.h>
-#include <EASTL\vector_map.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Pollinator/cSPAchievementSerializer.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/vector_map.h>
 
 #define AchievementsManager (*Pollinator::cAchievementsManager::Get())
 

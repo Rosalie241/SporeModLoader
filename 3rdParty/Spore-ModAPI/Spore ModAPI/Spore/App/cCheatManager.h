@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include <Spore\App\ICheatManager.h>
-#include <Spore\ArgScript\FormatParser.h>
-#include <Spore\ArgScript\IParser.h>
-#include <Spore\Object.h>
+#include <Spore/App/ICheatManager.h>
+#include <Spore/ArgScript/FormatParser.h>
+#include <Spore/ArgScript/IParser.h>
+#include <Spore/Object.h>
 
-#include <EASTL\map.h>
-#include <EASTL\set.h>
-#include <EASTL\string.h>
+#include <EASTL/map.h>
+#include <EASTL/set.h>
+#include <EASTL/string.h>
 
 
 namespace App

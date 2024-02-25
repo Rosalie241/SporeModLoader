@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Graphics\MaterialShader.h>
-#include <Spore\Graphics\ShaderDataUniform.h>
-#include <EASTL\vector.h>
+#include <Spore/Graphics/MaterialShader.h>
+#include <Spore/Graphics/ShaderDataUniform.h>
+#include <EASTL/vector.h>
 #include <d3d9.h>
 
 namespace Graphics

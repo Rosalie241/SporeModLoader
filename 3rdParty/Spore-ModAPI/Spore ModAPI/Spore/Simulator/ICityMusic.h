@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Simulator\ISimulatorSerializable.h>
-#include <Spore\MathUtils.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
+#include <Spore/MathUtils.h>
 
 #define ICityMusicPtr eastl::intrusive_ptr<Simulator::ICityMusic>
 

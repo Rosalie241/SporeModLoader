@@ -1,9 +1,9 @@
 #pragma once
 
-#include <EASTL\vector.h>
-#include <Spore\RenderWare\RenderWareFile.h>
-#include <Spore\RenderWare\KeyframeAnim.h>
-#include <Spore\RenderWare\SkeletonsInK.h>
+#include <EASTL/vector.h>
+#include <Spore/RenderWare/RenderWareFile.h>
+#include <Spore/RenderWare/KeyframeAnim.h>
+#include <Spore/RenderWare/SkeletonsInK.h>
 
 #define cModelInstanceAnimationsPtr eastl::intrusive_ptr<Graphics::cModelInstanceAnimations>
 

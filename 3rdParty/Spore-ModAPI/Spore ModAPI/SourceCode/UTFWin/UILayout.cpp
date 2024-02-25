@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\UILayout.h>
+#include <Spore/UTFWin/UILayout.h>
 
 namespace UTFWin
 {

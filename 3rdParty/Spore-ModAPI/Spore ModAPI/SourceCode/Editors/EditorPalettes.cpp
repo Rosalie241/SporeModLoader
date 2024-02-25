@@ -18,17 +18,17 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Palettes\PaletteMain.h>
-#include <Spore\Palettes\PaletteCategory.h>
-#include <Spore\Palettes\PalettePage.h>
-#include <Spore\Palettes\PaletteItem.h>
-#include <Spore\Palettes\PaletteUI.h>
-#include <Spore\Palettes\PaletteCategoryUI.h>
-#include <Spore\Palettes\PalettePageUI.h>
-#include <Spore\Palettes\PaletteIterator.h>
-#include <Spore\Palettes\ItemViewer.h>
-#include <Spore\Palettes\AdvancedItemViewer.h>
-#include <Spore\Palettes\SwatchManager.h>
+#include <Spore/Palettes/PaletteMain.h>
+#include <Spore/Palettes/PaletteCategory.h>
+#include <Spore/Palettes/PalettePage.h>
+#include <Spore/Palettes/PaletteItem.h>
+#include <Spore/Palettes/PaletteUI.h>
+#include <Spore/Palettes/PaletteCategoryUI.h>
+#include <Spore/Palettes/PalettePageUI.h>
+#include <Spore/Palettes/PaletteIterator.h>
+#include <Spore/Palettes/ItemViewer.h>
+#include <Spore/Palettes/AdvancedItemViewer.h>
+#include <Spore/Palettes/SwatchManager.h>
 
 namespace Palettes
 {

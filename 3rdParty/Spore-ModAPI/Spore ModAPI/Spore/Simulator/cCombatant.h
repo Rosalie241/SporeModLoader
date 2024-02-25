@@ -18,11 +18,11 @@
 ****************************************************************************/
 #pragma once
 
-#include <EASTL\vector.h>
-#include <EASTL\map.h>
-#include <Spore\MathUtils.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\cSpaceToolData.h>
+#include <EASTL/vector.h>
+#include <EASTL/map.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/cSpaceToolData.h>
 
 #define cCombatantPtr eastl::intrusive_ptr<Simulator::cCombatant>
 

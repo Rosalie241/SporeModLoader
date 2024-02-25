@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\RenderWare\RWSectionInfo.h>
-#include <Spore\Internal.h>
+#include <Spore/RenderWare/RWSectionInfo.h>
+#include <Spore/Internal.h>
 
 namespace RenderWare
 {

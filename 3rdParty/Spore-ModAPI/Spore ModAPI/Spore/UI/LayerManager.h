@@ -18,12 +18,12 @@
 ****************************************************************************/
 #pragma once
 
-#include <EASTL\vector.h>
-#include <EASTL\fixed_vector.h>
-#include <Spore\Graphics\ILayer.h>
-#include <Spore\Graphics\IModelWorld.h>
-#include <Spore\Object.h>
-#include <Spore\UI\cSPUILayeredObject.h>
+#include <EASTL/vector.h>
+#include <EASTL/fixed_vector.h>
+#include <Spore/Graphics/ILayer.h>
+#include <Spore/Graphics/IModelWorld.h>
+#include <Spore/Object.h>
+#include <Spore/UI/cSPUILayeredObject.h>
 
 /// Access the active layer manager.
 #define LayerManager (*UI::cLayerManager::Get())

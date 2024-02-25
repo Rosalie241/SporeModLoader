@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Spore\ResourceID.h>
-#include <Spore\Swarm\cSurfaceInfo.h>
-#include <Spore\Swarm\Components\cDescription.h>
-#include <Spore\Swarm\Components\cTextureSlot.h>
-#include <Spore\Transform.h>
-#include <EASTL\vector.h>
+#include <Spore/ResourceID.h>
+#include <Spore/Swarm/cSurfaceInfo.h>
+#include <Spore/Swarm/Components/cDescription.h>
+#include <Spore/Swarm/Components/cTextureSlot.h>
+#include <Spore/Transform.h>
+#include <EASTL/vector.h>
 
 namespace Swarm
 {

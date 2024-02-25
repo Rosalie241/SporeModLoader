@@ -20,9 +20,9 @@
 #pragma once
 
 #include "Internal.h"
-#include <EASTL\functional.h>
-#include <Spore\CommonIDs.h>
-#include <Spore\Hash.h>
+#include <EASTL/functional.h>
+#include <Spore/CommonIDs.h>
+#include <Spore/Hash.h>
 
 ///
 /// A structure used to point a resource in the game, made by three IDs: instance, group and type.
@@ -68,11 +68,11 @@ struct ResourceKey {
 	static bool Parse(ResourceKey& dst, const char16_t* pString, uint32_t defaultTypeID = 0, uint32_t defaultGroupID = 0);
 
 #ifndef SDK_TO_GHIDRA
-	bool ResourceKey::operator ==(const ResourceKey &b) const;
-	bool ResourceKey::operator !=(const ResourceKey &b) const;
+	bool operator ==(const ResourceKey &b) const;
+	bool operator !=(const ResourceKey &b) const;
 
-	bool ResourceKey::operator <(const ResourceKey &b) const;
-	bool ResourceKey::operator >(const ResourceKey &b) const;
+	bool operator <(const ResourceKey &b) const;
+	bool operator >(const ResourceKey &b) const;
 #endif
 };
 ASSERT_SIZE(ResourceKey, 0xC);

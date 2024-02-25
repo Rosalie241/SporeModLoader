@@ -18,12 +18,12 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cVisiblePlanet.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\cSolarHitSphere.h>
-#include <Spore\Simulator\cPlanetRecord.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cVisiblePlanet.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/cSolarHitSphere.h>
+#include <Spore/Simulator/cPlanetRecord.h>
 
 #define cPlanetPtr eastl::intrusive_ptr<Simulator::cPlanet>
 

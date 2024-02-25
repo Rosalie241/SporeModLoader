@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\UTFWin\Image.h>
-#include <Spore\UTFWin\OutlineFormat.h>
-#include <Spore\MathUtils.h>
-#include <Spore\Object.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/UTFWin/Image.h>
+#include <Spore/UTFWin/OutlineFormat.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Object.h>
 
 #define SporeStdDrawableImageInfoPtr eastl::intrusive_ptr<UTFWin::SporeStdDrawableImageInfo>
 

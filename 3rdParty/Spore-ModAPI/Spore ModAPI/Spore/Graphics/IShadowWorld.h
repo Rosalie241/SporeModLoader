@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Graphics\ILightingWorld.h>
-#include <Spore\Graphics\IModelWorld.h>
-#include <Spore\Internal.h>
+#include <Spore/Graphics/ILightingWorld.h>
+#include <Spore/Graphics/IModelWorld.h>
+#include <Spore/Internal.h>
 
 /// Access the active shadow manager.
 #define ShadowWorld (*Graphics::IShadowWorld::Get())

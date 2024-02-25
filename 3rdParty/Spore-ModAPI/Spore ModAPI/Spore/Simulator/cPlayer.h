@@ -18,17 +18,17 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Simulator\StarID.h>
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cCollectableItems.h>
-#include <EASTL\hash_set.h>
-#include <EASTL\vector_map.h>
-#include <EASTL\map.h>
-#include <EASTL\fixed_hash_set.h>
-#include <EASTL\fixed_hash_map.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Simulator/StarID.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cCollectableItems.h>
+#include <EASTL/hash_set.h>
+#include <EASTL/vector_map.h>
+#include <EASTL/map.h>
+#include <EASTL/fixed_hash_set.h>
+#include <EASTL/fixed_hash_map.h>
 
 #define cPlayerPtr eastl::intrusive_ptr<Simulator::cPlayer>
 
@@ -42,7 +42,7 @@ namespace Simulator
 		/* 08h */	virtual bool Read(ISerializerStream* stream) = 0;
 
 	public:
-#ifdef SDK_TO_GHIDRA
+#if defined(SDK_TO_GHIDRA) || defined(__GNUC__)
 		/* 04h */	int field_4;
 #endif
 		/* 08h */	uint32_t mEnemyEmpireID;
@@ -62,7 +62,7 @@ namespace Simulator
 		/* 08h */	virtual ~PlayerPlanetData() = 0;
 
 	public:
-#ifdef SDK_TO_GHIDRA
+#if defined(SDK_TO_GHIDRA) || defined(__GNUC__)
 		/* 04h */	int field_4;
 #endif
 		/* 08h */	eastl::vector_map<ResourceKey, bool> mSpeciesIsScanned;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Swarm\IVisualEffect.h>
-#include <Spore\Swarm\Components\cDescription.h>
+#include <Spore/Swarm/IVisualEffect.h>
+#include <Spore/Swarm/Components/cDescription.h>
 
 namespace Swarm
 {

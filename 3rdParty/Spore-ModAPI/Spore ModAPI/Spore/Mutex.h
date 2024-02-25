@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Windows.h>
-#include <Spore\Internal.h>
+#include <windows.h>
+#include <Spore/Internal.h>
 
 class Mutex
 {

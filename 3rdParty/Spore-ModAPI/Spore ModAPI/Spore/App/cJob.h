@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Internal.h>
+#include <Spore/Internal.h>
 
 #define cJobPtr eastl::intrusive_ptr<App::cJob>
 

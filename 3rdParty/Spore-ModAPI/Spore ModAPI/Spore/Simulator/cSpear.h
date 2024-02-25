@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Simulator\cArtilleryProjectile.h>
+#include <Spore/Simulator/cArtilleryProjectile.h>
 
 #define cSpearPtr eastl::intrusive_ptr<Simulator::cSpear>
 

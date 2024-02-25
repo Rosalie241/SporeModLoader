@@ -18,10 +18,10 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cBehaviorList.h>
-#include <Spore\Object.h>
-#include <EASTL\string.h>
-#include <EASTL\deque.h>
+#include <Spore/Simulator/cBehaviorList.h>
+#include <Spore/Object.h>
+#include <EASTL/string.h>
+#include <EASTL/deque.h>
 
 #define cBehaviorAgentPtr eastl::intrusive_ptr<Simulator::cBehaviorAgent>
 

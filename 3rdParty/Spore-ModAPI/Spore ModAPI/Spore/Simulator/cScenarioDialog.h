@@ -18,7 +18,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cScenarioString.h>
+#include <Spore/Simulator/cScenarioString.h>
 
 namespace Simulator
 {

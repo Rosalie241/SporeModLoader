@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\RenderWare\Skeleton.h>
-#include <Spore\RenderWare\CompiledState.h>
+#include <Spore/RenderWare/Skeleton.h>
+#include <Spore/RenderWare/CompiledState.h>
 
 namespace RenderWare
 {

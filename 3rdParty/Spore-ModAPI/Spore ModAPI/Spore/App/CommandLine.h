@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
+#include <Spore/Internal.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
 
 #define AppCommandLine (*App::GetAppCommandLine())
 

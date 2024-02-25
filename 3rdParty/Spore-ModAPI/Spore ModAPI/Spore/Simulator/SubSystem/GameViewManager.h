@@ -19,20 +19,20 @@
 
 #pragma once
 
-#include <Spore\Anim\IAnimWorld.h>
-#include <Spore\Graphics\ILayer.h>
-#include <Spore\Graphics\ILightingWorld.h>
-#include <Spore\Graphics\IModelWorld.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\cViewer.h>
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <EASTL\intrusive_list.h>
-#include <EASTL\vector.h>
-#include <EASTL\map.h>
-#include <EASTL\hash_map.h>
-#include <EASTL\fixed_vector.h>
+#include <Spore/Anim/IAnimWorld.h>
+#include <Spore/Graphics/ILayer.h>
+#include <Spore/Graphics/ILightingWorld.h>
+#include <Spore/Graphics/IModelWorld.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/cViewer.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <EASTL/intrusive_list.h>
+#include <EASTL/vector.h>
+#include <EASTL/map.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/fixed_vector.h>
 
 /// Gets the active game view manager.
 #define GameViewManager (*Simulator::cGameViewManager::Get())

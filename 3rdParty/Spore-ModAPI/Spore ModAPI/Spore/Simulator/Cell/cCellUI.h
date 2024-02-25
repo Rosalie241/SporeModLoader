@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include <Spore\MathUtils.h>
-#include <Spore\Input.h>
-#include <Spore\LocalizedString.h>
-#include <Spore\Simulator\cObjectPool.h>
-#include <Spore\Simulator\Cell\cCellObjectData.h>
-#include <Spore\UTFWin\UILayout.h>
-#include <Spore\UI\cUINewProgressBar.h>
-#include <EASTL\string.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Input.h>
+#include <Spore/LocalizedString.h>
+#include <Spore/Simulator/cObjectPool.h>
+#include <Spore/Simulator/Cell/cCellObjectData.h>
+#include <Spore/UTFWin/UILayout.h>
+#include <Spore/UI/cUINewProgressBar.h>
+#include <EASTL/string.h>
 
 #define CellUI (*Simulator::Cell::cCellUI::Get())
 

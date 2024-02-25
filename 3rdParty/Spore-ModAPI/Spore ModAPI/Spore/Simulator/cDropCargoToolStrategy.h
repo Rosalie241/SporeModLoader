@@ -18,7 +18,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cDefaultBeamTool.h>
+#include <Spore/Simulator/cDefaultBeamTool.h>
 
 #define cDropCargoToolStrategyPtr eastl::intrusive_ptr<Simulator::cDropCargoToolStrategy>
 

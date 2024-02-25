@@ -1,17 +1,17 @@
 #ifdef MODAPI_DLL_EXPORT
-#include <Spore\Skinner\cPaintSystem.h>
-#include <Spore\Skinner\cSkinnerTexturePainter.h>
-#include <Spore\Skinner\cSkinPainter.h>
-#include <Spore\Skinner\cSkinPainterPipeline.h>
-#include <Spore\Skinner\cSkinPainterJob.h>
-#include <Spore\Skinner\cSkinPainterJobAmbientOcclusion.h>
-#include <Spore\Skinner\cSkinPainterJobApplyBrushes.h>
-#include <Spore\Skinner\cSkinPainterJobBumpToNormal.h>
-#include <Spore\Skinner\cSkinPainterJobColorDilateRepeat.h>
-#include <Spore\Skinner\cSkinPainterJobCopyRigblocksTintMaskAlpha.h>
-#include <Spore\Skinner\cSkinPainterJobCopyTex1AlphaToTex0.h>
-#include <Spore\Skinner\cSkinPainterJobExtractTexture.h>
-#include <Spore\Skinner\cSkinPainterJobPaintParts.h>
+#include <Spore/Skinner/cPaintSystem.h>
+#include <Spore/Skinner/cSkinnerTexturePainter.h>
+#include <Spore/Skinner/cSkinPainter.h>
+#include <Spore/Skinner/cSkinPainterPipeline.h>
+#include <Spore/Skinner/cSkinPainterJob.h>
+#include <Spore/Skinner/cSkinPainterJobAmbientOcclusion.h>
+#include <Spore/Skinner/cSkinPainterJobApplyBrushes.h>
+#include <Spore/Skinner/cSkinPainterJobBumpToNormal.h>
+#include <Spore/Skinner/cSkinPainterJobColorDilateRepeat.h>
+#include <Spore/Skinner/cSkinPainterJobCopyRigblocksTintMaskAlpha.h>
+#include <Spore/Skinner/cSkinPainterJobCopyTex1AlphaToTex0.h>
+#include <Spore/Skinner/cSkinPainterJobExtractTexture.h>
+#include <Spore/Skinner/cSkinPainterJobPaintParts.h>
 
 namespace Skinner
 {

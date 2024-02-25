@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\UTFWin\LayoutReader.h>
+#include <Spore/UTFWin/LayoutReader.h>
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
 namespace UTFWin
 {

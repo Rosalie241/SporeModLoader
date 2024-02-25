@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\App\PropertyList.h>
+#include <Spore/App/PropertyList.h>
 
 #define EditorAnimationsPtr eastl::intrusive_ptr<Editors::EditorAnimations>
 

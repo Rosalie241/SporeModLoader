@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\UTFWin\InteractiveWinProc.h>
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <EASTL\string.h>
+#include <Spore/UTFWin/InteractiveWinProc.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <EASTL/string.h>
 
 #define SporeTooltipWinProcPtr eastl::intrusive_ptr<UTFWin::SporeTooltipWinProc>
 

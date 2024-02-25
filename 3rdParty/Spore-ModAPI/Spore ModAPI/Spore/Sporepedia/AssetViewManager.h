@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Sporepedia\AssetData.h>
+#include <Spore/Sporepedia/AssetData.h>
 
 #define AssetViewManager (*Sporepedia::cAssetViewManager::Get())
 

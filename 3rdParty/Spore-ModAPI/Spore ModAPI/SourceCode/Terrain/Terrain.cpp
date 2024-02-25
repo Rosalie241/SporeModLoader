@@ -1,12 +1,12 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Internal.h>
-#include <Spore\Terrain\ITerrainResourceManager.h>
-#include <Spore\Terrain\cTerrainMapSet.h>
-#include <Spore\Terrain\cTerrainSphere.h>
-#include <Spore\Terrain\TerrainRendering.h>
-#include <Spore\Graphics\ITextureManager.h>
-#include <Spore\Properties.h>
-#include <Spore\CommonIDs.h>
+#include <Spore/Internal.h>
+#include <Spore/Terrain/ITerrainResourceManager.h>
+#include <Spore/Terrain/cTerrainMapSet.h>
+#include <Spore/Terrain/cTerrainSphere.h>
+#include <Spore/Terrain/TerrainRendering.h>
+#include <Spore/Graphics/ITextureManager.h>
+#include <Spore/Properties.h>
+#include <Spore/CommonIDs.h>
 
 namespace Terrain
 {

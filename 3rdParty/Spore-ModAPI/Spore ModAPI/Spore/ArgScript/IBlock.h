@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\ArgScript\IParser.h>
+#include <Spore/ArgScript/IParser.h>
 
-#include <EASTL\hash_map.h>
-#include <EASTL\string.h>
-#include <EASTL\intrusive_ptr.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/string.h>
+#include <EASTL/intrusive_ptr.h>
 
 #define IBlockPtr eastl::intrusive_ptr<ArgScript::IBlock>
 

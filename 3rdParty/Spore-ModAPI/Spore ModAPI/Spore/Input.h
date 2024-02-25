@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <EASTL\bitset.h>
-#include <Spore\Internal.h>
-#include <Spore\MathUtils.h>
-#include <WinUser.h>
+#include <EASTL/bitset.h>
+#include <Spore/Internal.h>
+#include <Spore/MathUtils.h>
+#include <winuser.h>
 
 enum KeyModifierFlags
 {

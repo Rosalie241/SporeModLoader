@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Spore\Simulator\ISimulatorSerializable.h>
-#include <Spore\ResourceKey.h>
-#include <EASTL\vector.h>
-#include <EASTL\hash_map.h>
-#include <EASTL\list.h>
-#include <EASTL\fixed_map.h>
-#include <EASTL\fixed_vector.h>
-#include <EASTL\fixed_hash_set.h>
-#include <EASTL\fixed_hash_map.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
+#include <Spore/ResourceKey.h>
+#include <EASTL/vector.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/list.h>
+#include <EASTL/fixed_map.h>
+#include <EASTL/fixed_vector.h>
+#include <EASTL/fixed_hash_set.h>
+#include <EASTL/fixed_hash_map.h>
 
 
 #define cCollectableItemsPtr eastl::intrusive_ptr<Simulator::cCollectableItems>
@@ -27,7 +27,7 @@ namespace Simulator
 		uint32_t groupID;
 	};
 
-	constexpr cCollectableItemID COLLECTABLE_ITEM_NULL_ID = { -1, -1 };
+	constexpr cCollectableItemID COLLECTABLE_ITEM_NULL_ID = { 0, 0 };
 }
 
 #ifndef SDK_TO_GHIDRA

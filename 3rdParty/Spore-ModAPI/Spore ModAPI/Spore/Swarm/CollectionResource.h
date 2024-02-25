@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\Swarm\EffectDirectory.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/Swarm/EffectDirectory.h>
 
 #define CollectionResourcePtr eastl::intrusive_ptr<Swarm::CollectionResource>
 

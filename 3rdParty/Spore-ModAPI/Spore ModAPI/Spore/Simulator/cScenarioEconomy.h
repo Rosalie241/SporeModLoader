@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Editors\EditorLimits.h>
+#include <Spore/Editors/EditorLimits.h>
 
 #define cScenarioDataEconomyPtr eastl::intrusive_ptr<Simulator::cScenarioDataEconomy>
 #define cScenarioTerraformEconomyPtr eastl::intrusive_ptr<Simulator::cScenarioTerraformEconomy>

@@ -1,5 +1,5 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\UI\SpaceGameUI.h>
+#include <Spore/UI/SpaceGameUI.h>
 
 namespace UI
 {

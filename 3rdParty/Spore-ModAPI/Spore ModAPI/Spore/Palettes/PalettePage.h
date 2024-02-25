@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <EASTL\vector.h>
-#include <Spore\Palettes\PaletteItem.h>
-#include <Spore\Object.h>
-#include <Spore\MathUtils.h>
+#include <EASTL/vector.h>
+#include <Spore/Palettes/PaletteItem.h>
+#include <Spore/Object.h>
+#include <Spore/MathUtils.h>
 
 #define PalettePagePtr eastl::intrusive_ptr<Palettes::PalettePage>
 

@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\Swarm\IEffectsWorld.h>
-#include <Spore\Swarm\IEffectsManager.h>
-#include <Spore\Object.h>
+#include <Spore/Swarm/IEffectsWorld.h>
+#include <Spore/Swarm/IEffectsManager.h>
+#include <Spore/Object.h>
 
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
 
 namespace Swarm
 {

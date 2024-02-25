@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\UTFWin\Graphics2D.h>
+#include <Spore/UTFWin/Graphics2D.h>
 
 namespace UTFWin
 {

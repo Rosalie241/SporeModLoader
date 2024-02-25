@@ -19,44 +19,44 @@
 
 #pragma once
 
-#include <Spore\Clock.h>
-#include <Spore\MathUtils.h>
+#include <Spore/Clock.h>
+#include <Spore/MathUtils.h>
 
-#include <Spore\App\PropertyList.h>
-#include <Spore\App\cViewer.h>
-#include <Spore\App\IGameMode.h>
-#include <Spore\App\IGameModeManager.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/App/cViewer.h>
+#include <Spore/App/IGameMode.h>
+#include <Spore/App/IGameModeManager.h>
 
-#include <Spore\Palettes\PaletteMain.h>
-#include <Spore\Palettes\PaletteUI.h>
-#include <Spore\Editors\EditorRigblock.h>
-#include <Spore\Editors\EditorCamera.h>
-#include <Spore\Editors\EditorModel.h>
-#include <Spore\Editors\EditorPlayMode.h>
-#include <Spore\Editors\EditorRequest.h>
-#include <Spore\Editors\EditorLimits.h>
-#include <Spore\Editors\INameableEntity.h>
-#include <Spore\Editors\cEditorSkin.h>
-#include <Spore\Editors\cEditorAnimEvent.h>
-#include <Spore\Editors\cEditorAnimWorld.h>
+#include <Spore/Palettes/PaletteMain.h>
+#include <Spore/Palettes/PaletteUI.h>
+#include <Spore/Editors/EditorRigblock.h>
+#include <Spore/Editors/EditorCamera.h>
+#include <Spore/Editors/EditorModel.h>
+#include <Spore/Editors/EditorPlayMode.h>
+#include <Spore/Editors/EditorRequest.h>
+#include <Spore/Editors/EditorLimits.h>
+#include <Spore/Editors/INameableEntity.h>
+#include <Spore/Editors/cEditorSkin.h>
+#include <Spore/Editors/cEditorAnimEvent.h>
+#include <Spore/Editors/cEditorAnimWorld.h>
 
-#include <Spore\Graphics\Model.h>
-#include <Spore\Graphics\ILayer.h>
-#include <Spore\Graphics\ILightingWorld.h>
-#include <Spore\Graphics\IModelWorld.h>
-#include <Spore\Graphics\IShadowWorld.h>
-#include <Spore\Graphics\ShaderData.h>
+#include <Spore/Graphics/Model.h>
+#include <Spore/Graphics/ILayer.h>
+#include <Spore/Graphics/ILightingWorld.h>
+#include <Spore/Graphics/IModelWorld.h>
+#include <Spore/Graphics/IShadowWorld.h>
+#include <Spore/Graphics/ShaderData.h>
 
-#include <Spore\Swarm\IEffectsWorld.h>
+#include <Spore/Swarm/IEffectsWorld.h>
 
-#include <Spore\UI\HintManager.h>
-#include <Spore\UI\EditorNamePanel.h>
+#include <Spore/UI/HintManager.h>
+#include <Spore/UI/EditorNamePanel.h>
 
-#include <Spore\UTFWin\UILayout.h>
+#include <Spore/UTFWin/UILayout.h>
 
-#include <EASTL\map.h>
-#include <EASTL\string.h>
-#include <EASTL\vector.h>
+#include <EASTL/map.h>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
 
 /// Access the active editor object; check Editors::cEditor
 #define Editor (*Editors::GetEditor())

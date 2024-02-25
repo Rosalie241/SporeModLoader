@@ -20,10 +20,10 @@
 #pragma once
 
 #include <cstdint>
-#include <Spore\Object.h>
-#include <Spore\Clock.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <EASTL\functional.h>
+#include <Spore/Object.h>
+#include <Spore/Clock.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <EASTL/functional.h>
 
 #define IMessageListenerPtr eastl::intrusive_ptr<App::IMessageListener>
 #define IUpdatablePtr eastl::intrusive_ptr<App::IUpdatable>

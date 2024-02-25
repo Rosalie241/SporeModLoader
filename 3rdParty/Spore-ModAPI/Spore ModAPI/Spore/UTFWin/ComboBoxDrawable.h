@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\UTFWin\IDrawable.h>
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\UTFWin\Image.h>
+#include <Spore/UTFWin/IDrawable.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/UTFWin/Image.h>
 
 #define IComboBoxDrawablePtr eastl::intrusive_ptr<UTFWin::IComboBoxDrawable>
 

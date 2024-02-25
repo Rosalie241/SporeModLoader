@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <Spore\Graphics\ILightingManager.h>
+#include <Spore/Graphics/ILightingManager.h>
 
 namespace Graphics
 {

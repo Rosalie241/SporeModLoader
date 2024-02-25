@@ -18,10 +18,10 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\Graphics\Model.h>
-#include <Spore\Anim\anim_cid.h>
-#include <Spore\Anim\SPAnimation.h>
+#include <Spore/Internal.h>
+#include <Spore/Graphics/Model.h>
+#include <Spore/Anim/anim_cid.h>
+#include <Spore/Anim/SPAnimation.h>
 
 
 // ??? Spore calls it "new_ac" so don't really know what it stands for

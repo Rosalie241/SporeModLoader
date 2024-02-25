@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\IO\IStream.h>
-#include <EASTL\intrusive_ptr.h>
-#include <Spore\RenderWare\Mesh.h>
+#include <Spore/Internal.h>
+#include <Spore/IO/IStream.h>
+#include <EASTL/intrusive_ptr.h>
+#include <Spore/RenderWare/Mesh.h>
 
 namespace Graphics
 {

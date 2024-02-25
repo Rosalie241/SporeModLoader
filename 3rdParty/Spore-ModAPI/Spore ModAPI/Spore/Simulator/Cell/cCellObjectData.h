@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Simulator\Cell\cCellResource.h>
-#include <Spore\Simulator\Cell\CellAnimations.h>
-#include <Spore\Simulator\cObjectPool.h>
-#include <Spore\MathUtils.h>
-#include <Spore\Transform.h>
+#include <Spore/Simulator/Cell/cCellResource.h>
+#include <Spore/Simulator/Cell/CellAnimations.h>
+#include <Spore/Simulator/cObjectPool.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Transform.h>
 
 namespace Simulator
 {

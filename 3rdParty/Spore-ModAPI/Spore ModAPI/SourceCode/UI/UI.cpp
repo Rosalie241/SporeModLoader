@@ -1,6 +1,6 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\UI\GameSettings.h>
-#include <Spore\UI\EditorNamePanel.h>
+#include <Spore/UI/GameSettings.h>
+#include <Spore/UI/EditorNamePanel.h>
 
 namespace UI
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
+#include <Spore/Simulator/cGameData.h>
 
 namespace Simulator
 {

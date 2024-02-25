@@ -1,6 +1,6 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Editors\EditorRequest.h>
-#include <Spore\App\IGameModeManager.h>
+#include <Spore/Editors/EditorRequest.h>
+#include <Spore/App/IGameModeManager.h>
 
 namespace Editors
 {

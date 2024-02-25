@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cEmpire.h>
-#include <Spore\Simulator\SubSystem\cStrategy.h>
+#include <Spore/Simulator/cEmpire.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
 
 namespace Simulator
 {

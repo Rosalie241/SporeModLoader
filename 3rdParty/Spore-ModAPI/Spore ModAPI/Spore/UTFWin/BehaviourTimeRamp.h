@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\UTFWin\EventTimeFunctionBase.h>
+#include <Spore/UTFWin/EventTimeFunctionBase.h>
 
 namespace UTFWin
 {

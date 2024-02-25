@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Editors\EditorModel.h>
-#include <Spore\App\IMessageRC.h>
-#include <Spore\Object.h>
+#include <Spore/Editors/EditorModel.h>
+#include <Spore/App/IMessageRC.h>
+#include <Spore/Object.h>
 
 #define cEditorAnimEventPtr eastl::intrusive_ptr<Editors::cEditorAnimEvent>
 

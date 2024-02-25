@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\App\PropertyList.h>
-#include <Spore\App\cViewer.h>
-#include <Spore\Transform.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/App/cViewer.h>
+#include <Spore/Transform.h>
 
 #define ILightingWorldPtr eastl::intrusive_ptr<Graphics::ILightingWorld>
 

@@ -1,10 +1,10 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Editors\Editor.h>
-#include <Spore\Editors\EditorRigblock.h>
-#include <Spore\Editors\EditorModel.h>
-#include <Spore\Editors\TuningSpine.h>
-#include <Spore\Editors\cEditorAnimEvent.h>
-#include <EASTL\internal\thread_support.h>
+#include <Spore/Editors/Editor.h>
+#include <Spore/Editors/EditorRigblock.h>
+#include <Spore/Editors/EditorModel.h>
+#include <Spore/Editors/TuningSpine.h>
+#include <Spore/Editors/cEditorAnimEvent.h>
+#include <EASTL/internal/thread_support.h>
 
 namespace Editors
 {

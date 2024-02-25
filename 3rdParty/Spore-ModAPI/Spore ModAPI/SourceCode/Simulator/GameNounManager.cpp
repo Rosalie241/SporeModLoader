@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Simulator\SubSystem\GameNounManager.h>
+#include <Spore/Simulator/SubSystem/GameNounManager.h>
 
 namespace Simulator
 {

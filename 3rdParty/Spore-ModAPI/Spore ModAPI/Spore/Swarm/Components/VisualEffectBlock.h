@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\Transform.h>
+#include <Spore/Transform.h>
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
 namespace Swarm
 {

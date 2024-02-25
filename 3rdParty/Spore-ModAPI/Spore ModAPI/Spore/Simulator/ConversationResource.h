@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\LocalizedString.h>
-#include <EASTL\map.h>
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
-#include <EASTL\bitset.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/LocalizedString.h>
+#include <EASTL/map.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
+#include <EASTL/bitset.h>
 
 namespace Simulator
 {

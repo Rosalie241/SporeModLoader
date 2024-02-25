@@ -18,24 +18,24 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Audio\AudioSystem.h>
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cGameBundleContainer.h>
-#include <Spore\Simulator\cSpeciesProfile.h>
-#include <Spore\Simulator\cBehaviorAgent.h>
-#include <Spore\Simulator\cLocomotiveObject.h>
-#include <Spore\Simulator\cBehaviorList.h>
-#include <Spore\Simulator\cCombatant.h>
-#include <Spore\Simulator\UnknownCreatureClass.h>
-#include <Spore\Anim\AnimatedCreature.h>
-#include <Spore\Swarm\IVisualEffect.h>
-#include <Spore\ResourceID.h>
-#include <EASTL\vector.h>
-#include <EASTL\list.h>
-#include <EASTL\hash_map.h>
-#include <EASTL\fixed_hash_map.h>
-#include <EASTL\bitset.h>
-#include <EASTL\queue.h>
+#include <Spore/Audio/AudioSystem.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cGameBundleContainer.h>
+#include <Spore/Simulator/cSpeciesProfile.h>
+#include <Spore/Simulator/cBehaviorAgent.h>
+#include <Spore/Simulator/cLocomotiveObject.h>
+#include <Spore/Simulator/cBehaviorList.h>
+#include <Spore/Simulator/cCombatant.h>
+#include <Spore/Simulator/UnknownCreatureClass.h>
+#include <Spore/Anim/AnimatedCreature.h>
+#include <Spore/Swarm/IVisualEffect.h>
+#include <Spore/ResourceID.h>
+#include <EASTL/vector.h>
+#include <EASTL/list.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/fixed_hash_map.h>
+#include <EASTL/bitset.h>
+#include <EASTL/queue.h>
 
 #define cCreatureBasePtr eastl::intrusive_ptr<Simulator::cCreatureBase>
 

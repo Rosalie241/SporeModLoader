@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\Object.h>
-#include <Spore\MathUtils.h>
-#include <Spore\ResourceKey.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/Object.h>
+#include <Spore/MathUtils.h>
+#include <Spore/ResourceKey.h>
 
 #define ImagePtr eastl::intrusive_ptr<UTFWin::Image>
 

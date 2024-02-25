@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\Palettes\PaletteItem.h>
-#include <Spore\Palettes\PaletteInfo.h>
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\UTFWin\IWinProc.h>
+#include <Spore/Palettes/PaletteItem.h>
+#include <Spore/Palettes/PaletteInfo.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/UTFWin/IWinProc.h>
 
 namespace Palettes
 {

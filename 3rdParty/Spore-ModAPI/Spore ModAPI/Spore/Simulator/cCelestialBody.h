@@ -18,13 +18,13 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\Simulator\cEllipticalOrbit.h>
-#include <Spore\Simulator\cSolarHitSphere.h>
-#include <Spore\Swarm\IVisualEffect.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\string.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/Simulator/cEllipticalOrbit.h>
+#include <Spore/Simulator/cSolarHitSphere.h>
+#include <Spore/Swarm/IVisualEffect.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/string.h>
 
 #define cCelestialBodyPtr eastl::intrusive_ptr<Simulator::cCelestialBody>
 

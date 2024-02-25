@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Graphics\IModelWorld.h>
+#include <Spore/Graphics/IModelWorld.h>
 
 namespace Graphics
 {

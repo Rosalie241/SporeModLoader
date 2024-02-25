@@ -18,7 +18,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Object.h>
+#include <Spore/Object.h>
 
 #define cPlaceableStructurePtr eastl::intrusive_ptr<Simulator::cPlaceableStructure>
 

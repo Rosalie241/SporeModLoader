@@ -1,9 +1,9 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\ArgScript\FormatParser.h>
-#include <Spore\ArgScript\IBlock.h>
-#include <Spore\ArgScript\Lexer.h>
-#include <Spore\ArgScript\Line.h>
+#include <Spore/ArgScript/FormatParser.h>
+#include <Spore/ArgScript/IBlock.h>
+#include <Spore/ArgScript/Lexer.h>
+#include <Spore/ArgScript/Line.h>
 
 namespace Addresses(ArgScript)
 {
@@ -12,6 +12,37 @@ namespace Addresses(ArgScript)
 
 namespace ArgScript
 {
+#ifdef __GNUC__ // TODO: fix this properly
+	auto_METHOD_VOID(IBlock, AddParser, Args(const char* pKeyword, IParser* pParser), Args(pKeyword, pParser));
+	auto_METHOD(IBlock, IParser*, GetParser, Args(const char* pKeyword), Args(pKeyword));
+
+	IParser::IParser()
+		: mnRefCount(0)
+		, mpFormatParser(nullptr)
+		, mpData(nullptr)
+	{
+
+	}
+
+	const char* IParser::GetDescription(DescriptionMode mode) const
+	{
+		return nullptr;
+	}
+
+	int IParser::AddRef()
+	{
+		return ++mnRefCount;
+	}
+
+	int IParser::Release()
+	{
+		if (--mnRefCount == 0)
+		{
+			delete this;
+		}
+		return mnRefCount;
+	}
+#endif // __GNUC__
 	namespace Addresses(FormatParser)
 	{
 		// DefineAddress(ReplaceVariables, SelectAddress(0x843F10, , ));

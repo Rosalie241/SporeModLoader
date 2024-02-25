@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\App\IGameModeManager.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Object.h>
+#include <Spore/App/IGameModeManager.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Object.h>
 
-#include <EASTL\string.h>
-#include <EASTL\vector.h>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
 
 namespace App
 {

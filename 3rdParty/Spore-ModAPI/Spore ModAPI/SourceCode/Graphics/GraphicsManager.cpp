@@ -1,5 +1,5 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Graphics\IGraphicsManager.h>
+#include <Spore/Graphics/IGraphicsManager.h>
 
 namespace Graphics
 {

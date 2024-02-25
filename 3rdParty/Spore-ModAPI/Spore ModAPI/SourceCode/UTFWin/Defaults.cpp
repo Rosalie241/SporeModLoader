@@ -18,11 +18,11 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\IDrawable.h>
-#include <Spore\UTFWin\TreeNode.h>
-#include <Spore\UTFWin\IButton.h>
-#include <Spore\UTFWin\ITextEdit.h>
-#include <SourceCode\Utility.h>
+#include <Spore/UTFWin/IDrawable.h>
+#include <Spore/UTFWin/TreeNode.h>
+#include <Spore/UTFWin/IButton.h>
+#include <Spore/UTFWin/ITextEdit.h>
+#include <SourceCode/Utility.h>
 
 namespace UTFWin
 {

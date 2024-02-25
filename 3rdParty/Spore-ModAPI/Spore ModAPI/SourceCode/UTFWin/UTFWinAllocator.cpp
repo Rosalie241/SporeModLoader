@@ -17,21 +17,21 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\Allocator.h>
-#include <Spore\UTFWin\UTFWinObject.h>
+#include <Spore/UTFWin/Allocator.h>
+#include <Spore/UTFWin/UTFWinObject.h>
+
+/////////////////////
+//// Allocator.h ////
+/////////////////////
+
+auto_STATIC_METHOD_(UTFWin, ICoreAllocator*, GetAllocator);
+
+////////////////////////
+//// UTFWinObject.h ////
+////////////////////////
 
 namespace UTFWin
 {
-	/////////////////////
-	//// Allocator.h ////
-	/////////////////////
-
-	auto_STATIC_METHOD_(UTFWin, ICoreAllocator*, GetAllocator);
-
-	////////////////////////
-	//// UTFWinObject.h ////
-	////////////////////////
-
 	void* UTFWinObject::operator new(size_t n, size_t align, const char* pName, ICoreAllocator* pAllocator)
 	{
 		return STATIC_CALL(GetAddress(UTFWinObject, new_), void*,
@@ -47,8 +47,7 @@ namespace UTFWin
 	{
 		STATIC_CALL(GetAddress(UTFWinObject, delete_), void, Args(void* p), Args(p));
 	}
-
-
-	//////////////////////////
 }
+
+//////////////////////////
 

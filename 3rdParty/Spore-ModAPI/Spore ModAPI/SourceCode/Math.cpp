@@ -17,9 +17,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Internal.h>
-#include <Spore\MathUtils.h>
-#include <Spore\Transform.h>
+#include <Spore/Internal.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Transform.h>
 #include <cmath>
 #include <ctime>
 #include <algorithm>
@@ -48,8 +48,8 @@ namespace Math
 		// convert to [-PI, PI]
 		if (angle2 >= PI) angle2 = angle2 - PI2;
 
-		float minAngle = min(angle1, angle2);
-		float maxAngle = max(angle1, angle2);
+		float minAngle = std::min(angle1, angle2);
+		float maxAngle = std::max(angle1, angle2);
 
 		float result = PI2 - maxAngle + minAngle;
 		if ((maxAngle - minAngle) <= result)
@@ -105,7 +105,7 @@ namespace Math
 		return *this;
 	}
 
-	ColorRGB Math::HSVtoRGB(const ColorHSV& hsv)
+	ColorRGB HSVtoRGB(const ColorHSV& hsv)
 	{
 		ColorRGB dst;
 		float      hh, p, q, t, ff;
@@ -163,7 +163,7 @@ namespace Math
 		return dst;
 	}
 
-	ColorHSV Math::RGBtoHSV(const ColorRGB& rgb) {
+	ColorHSV RGBtoHSV(const ColorRGB& rgb) {
 		float fCMax = fmax(fmax(rgb.r, rgb.g), rgb.b);
 		float fCMin = fmin(fmin(rgb.r, rgb.g), rgb.b);
 		float fDelta = fCMax - fCMin;
@@ -520,16 +520,16 @@ namespace Math
 
 	bool BoundingBox::Intersect(const BoundingBox& other, BoundingBox& dst) const
 	{
-		dst.lower.x = max(lower.x, other.lower.x);
-		dst.upper.x = min(upper.x, other.upper.x);
+		dst.lower.x = std::max(lower.x, other.lower.x);
+		dst.upper.x = std::min(upper.x, other.upper.x);
 		if (dst.lower.x >= dst.upper.x) return false;
 
-		dst.lower.y = max(lower.y, other.lower.y);
-		dst.upper.y = min(upper.y, other.upper.y);
+		dst.lower.y = std::max(lower.y, other.lower.y);
+		dst.upper.y = std::min(upper.y, other.upper.y);
 		if (dst.lower.y >= dst.upper.y) return false;
 
-		dst.lower.z = max(lower.z, other.lower.z);
-		dst.upper.z = min(upper.z, other.upper.z);
+		dst.lower.z = std::max(lower.z, other.lower.z);
+		dst.upper.z = std::min(upper.z, other.upper.z);
 		if (dst.lower.z >= dst.upper.z) return false;
 
 		return true;

@@ -17,33 +17,33 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
-#include <Spore\Simulator\cSpaceToolData.h>
-#include <Spore\Simulator\cScenarioResource.h>
-#include <Spore\Simulator\cToolStrategy.h>
+#include <Spore/Simulator/cSpaceToolData.h>
+#include <Spore/Simulator/cScenarioResource.h>
+#include <Spore/Simulator/cToolStrategy.h>
 
-#include <Spore\Simulator\cRepairToolStrategy.h>
-#include <Spore\Simulator\cEnergyRepairToolStrategy.h>
-#include <Spore\Simulator\cGetOutOfUFOToolStrategy.h>
-#include <Spore\Simulator\cDefaultProjectileWeapon.h>
-#include <Spore\Simulator\cTurretDefenseMissileWeapon.h>
-#include <Spore\Simulator\cTurretFlakWeapon.h>
-#include <Spore\Simulator\cDeepSpaceProjectileToolStrategy.h>
-#include <Spore\Simulator\cPlaceObjectToolStrategy.h>
-#include <Spore\Simulator\cCropCirclesToolStrategy.h>
-#include <Spore\Simulator\cGenesisDeviceToolStrategy.h>
-#include <Spore\Simulator\cDefaultBeamTool.h>
-#include <Spore\Simulator\cDefaultAoETool.h>
-#include <Spore\Simulator\cAbductToolStrategy.h>
-#include <Spore\Simulator\cScanToolStrategy.h>
-#include <Spore\Simulator\cDropCargoToolStrategy.h>
-#include <Spore\Simulator\cDragInputProjectileToolStrategy.h>
-#include <Spore\Simulator\cArtilleryWeaponStrategy.h>
-#include <Spore\Simulator\cMindEraseToolStrategy.h>
-#include <Spore\Simulator\cGlobalMindEraseToolStrategy.h>
-#include <Spore\Simulator\cRepairAOEToolStrategy.h>
-#include <Spore\Simulator\cRallyCallToolStrategy.h>
-#include <Spore\Simulator\cToggleToolStrategy.h>
-#include <Spore\Simulator\cPlaceColonyToolStrategy.h>
+#include <Spore/Simulator/cRepairToolStrategy.h>
+#include <Spore/Simulator/cEnergyRepairToolStrategy.h>
+#include <Spore/Simulator/cGetOutOfUFOToolStrategy.h>
+#include <Spore/Simulator/cDefaultProjectileWeapon.h>
+#include <Spore/Simulator/cTurretDefenseMissileWeapon.h>
+#include <Spore/Simulator/cTurretFlakWeapon.h>
+#include <Spore/Simulator/cDeepSpaceProjectileToolStrategy.h>
+#include <Spore/Simulator/cPlaceObjectToolStrategy.h>
+#include <Spore/Simulator/cCropCirclesToolStrategy.h>
+#include <Spore/Simulator/cGenesisDeviceToolStrategy.h>
+#include <Spore/Simulator/cDefaultBeamTool.h>
+#include <Spore/Simulator/cDefaultAoETool.h>
+#include <Spore/Simulator/cAbductToolStrategy.h>
+#include <Spore/Simulator/cScanToolStrategy.h>
+#include <Spore/Simulator/cDropCargoToolStrategy.h>
+#include <Spore/Simulator/cDragInputProjectileToolStrategy.h>
+#include <Spore/Simulator/cArtilleryWeaponStrategy.h>
+#include <Spore/Simulator/cMindEraseToolStrategy.h>
+#include <Spore/Simulator/cGlobalMindEraseToolStrategy.h>
+#include <Spore/Simulator/cRepairAOEToolStrategy.h>
+#include <Spore/Simulator/cRallyCallToolStrategy.h>
+#include <Spore/Simulator/cToggleToolStrategy.h>
+#include <Spore/Simulator/cPlaceColonyToolStrategy.h>
 
 namespace Simulator
 {

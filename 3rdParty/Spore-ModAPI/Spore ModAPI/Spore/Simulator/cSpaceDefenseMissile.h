@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cProjectile.h>
-#include <Spore\Simulator\cLocomotiveObject.h>
-#include <Spore\Simulator\cCombatant.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cProjectile.h>
+#include <Spore/Simulator/cLocomotiveObject.h>
+#include <Spore/Simulator/cCombatant.h>
 
 #define cSpaceDefenseMissilePtr eastl::intrusive_ptr<Simulator::cSpaceDefenseMissile>
 

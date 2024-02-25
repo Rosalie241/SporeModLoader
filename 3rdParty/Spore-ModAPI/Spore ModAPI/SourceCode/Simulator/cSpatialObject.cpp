@@ -17,8 +17,8 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cLocomotiveObject.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cLocomotiveObject.h>
 
 namespace Simulator
 {

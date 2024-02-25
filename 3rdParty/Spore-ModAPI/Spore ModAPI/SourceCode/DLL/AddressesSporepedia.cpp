@@ -1,10 +1,10 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\Sporepedia\ShopperRequest.h>
-#include <Spore\Sporepedia\AssetBrowserQuery.h>
-#include <Spore\Sporepedia\AssetData.h>
-#include <Spore\Sporepedia\ObjectTemplateDB.h>
-#include <Spore\Sporepedia\AssetViewManager.h>
+#include <Spore/Sporepedia/ShopperRequest.h>
+#include <Spore/Sporepedia/AssetBrowserQuery.h>
+#include <Spore/Sporepedia/AssetData.h>
+#include <Spore/Sporepedia/ObjectTemplateDB.h>
+#include <Spore/Sporepedia/AssetViewManager.h>
 
 namespace Sporepedia
 {

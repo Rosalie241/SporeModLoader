@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\App\ITokenTranslator.h>
-#include <Spore\LocalizedString.h>
-#include <EASTL\vector.h>
+#include <Spore/App/ITokenTranslator.h>
+#include <Spore/LocalizedString.h>
+#include <EASTL/vector.h>
 
 namespace App
 {

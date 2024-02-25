@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\ResourceID.h>
-#include <Spore\Swarm\Components\cDescription.h>
-#include <EASTL\vector.h>
+#include <Spore/ResourceID.h>
+#include <Spore/Swarm/Components/cDescription.h>
+#include <EASTL/vector.h>
 
 namespace Swarm
 {

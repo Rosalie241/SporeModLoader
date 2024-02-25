@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\Graphics\MaterialShader.h>
-#include <Spore\Graphics\ShaderData.h>
-#include <Spore\RenderWare\Raster.h>
+#include <Spore/Internal.h>
+#include <Spore/Graphics/MaterialShader.h>
+#include <Spore/Graphics/ShaderData.h>
+#include <Spore/RenderWare/Raster.h>
 #include <d3d9.h>
 
 namespace Graphics

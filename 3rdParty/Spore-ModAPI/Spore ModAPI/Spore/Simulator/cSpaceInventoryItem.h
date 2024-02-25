@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\IMessageManager.h>
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\Simulator\ISimulatorSerializable.h>
+#include <Spore/Object.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/IMessageManager.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
 
 #define cSpaceInventoryItemPtr eastl::intrusive_ptr<Simulator::cSpaceInventoryItem>
 

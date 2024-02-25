@@ -21,8 +21,8 @@
 
 #include <cstdint>
 
-#include <Spore\Object.h>
-#include <Spore\Graphics\IModelWorld.h>
+#include <Spore/Object.h>
+#include <Spore/Graphics/IModelWorld.h>
 
 #define ModelManager (*Graphics::IModelManager::Get())
 

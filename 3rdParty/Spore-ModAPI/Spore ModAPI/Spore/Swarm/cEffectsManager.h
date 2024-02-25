@@ -19,15 +19,15 @@
 
 #pragma once
 
-#include <Spore\Swarm\IEffectsManager.h>
-#include <Spore\Swarm\EffectDirectory.h>
-#include <Spore\Object.h>
-#include <Spore\Clock.h>
-#include <Spore\MathUtils.h>
+#include <Spore/Swarm/IEffectsManager.h>
+#include <Spore/Swarm/EffectDirectory.h>
+#include <Spore/Object.h>
+#include <Spore/Clock.h>
+#include <Spore/MathUtils.h>
 
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
-#include <EASTL\hash_map.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
+#include <EASTL/hash_map.h>
 
 namespace Swarm
 {

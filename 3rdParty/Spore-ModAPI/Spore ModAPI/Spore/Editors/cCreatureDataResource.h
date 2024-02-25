@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\Editors\cEditorResourceProperties.h>
-#include <Spore\IO\IStream.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\vector.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/Editors/cEditorResourceProperties.h>
+#include <Spore/IO/IStream.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/vector.h>
 
 namespace Editors
 {

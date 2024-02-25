@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Palettes\ItemViewer.h>
+#include <Spore/Palettes/ItemViewer.h>
 
 #define SwatchManager (*Palettes::cSwatchManager::Get())
 

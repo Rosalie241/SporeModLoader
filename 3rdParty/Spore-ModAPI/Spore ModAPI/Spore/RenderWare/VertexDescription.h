@@ -21,7 +21,7 @@
 
 #include <cinttypes>
 #include <d3d9.h>
-#include <Spore\Internal.h>
+#include <Spore/Internal.h>
 
 namespace RenderWare
 {

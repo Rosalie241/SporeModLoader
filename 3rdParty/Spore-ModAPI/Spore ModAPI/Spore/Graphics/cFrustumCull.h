@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\MathUtils.h>
-#include <Spore\Internal.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Internal.h>
 
 namespace Graphics
 {

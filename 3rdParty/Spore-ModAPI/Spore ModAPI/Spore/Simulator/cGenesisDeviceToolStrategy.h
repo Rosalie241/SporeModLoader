@@ -18,7 +18,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cDefaultProjectileWeapon.h>
+#include <Spore/Simulator/cDefaultProjectileWeapon.h>
 
 #define cGenesisDeviceToolStrategyPtr eastl::intrusive_ptr<Simulator::cGenesisDeviceToolStrategy>
 

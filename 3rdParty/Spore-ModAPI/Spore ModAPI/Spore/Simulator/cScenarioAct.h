@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cScenarioString.h>
-#include <Spore\Simulator\cScenarioGoal.h>
+#include <Spore/Simulator/cScenarioString.h>
+#include <Spore/Simulator/cScenarioGoal.h>
 
 namespace Simulator
 {

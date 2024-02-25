@@ -18,10 +18,10 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cScenarioString.h>
-#include <Spore\Simulator\cScenarioDialog.h>
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <EASTL\fixed_vector.h>
+#include <Spore/Simulator/cScenarioString.h>
+#include <Spore/Simulator/cScenarioDialog.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <EASTL/fixed_vector.h>
 
 namespace Simulator
 {

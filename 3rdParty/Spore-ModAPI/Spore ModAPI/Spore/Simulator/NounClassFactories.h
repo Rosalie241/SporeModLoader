@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\App\IClassManager.h>
-#include <EASTL\hash_map.h>
+#include <Spore/Internal.h>
+#include <Spore/App/IClassManager.h>
+#include <EASTL/hash_map.h>
 
 namespace Simulator
 {

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\App\PropertyList.h>
-#include <Spore\Swarm\IEffectsWorld.h>
-#include <Spore\Graphics\Texture.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\vector.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/Swarm/IEffectsWorld.h>
+#include <Spore/Graphics/Texture.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/vector.h>
 
 namespace Terrain
 {

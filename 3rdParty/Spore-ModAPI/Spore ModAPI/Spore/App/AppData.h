@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Resource\DatabasePackedFile.h>
+#include <Spore/Resource/DatabasePackedFile.h>
 
 namespace App
 {

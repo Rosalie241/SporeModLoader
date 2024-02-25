@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Graphics\Texture.h>
-#include <Spore\Graphics\IRenderTargetManager.h>
-#include <Spore\App\cViewer.h>
-#include <Spore\Terrain\cTerrainShaderMgr.h>
+#include <Spore/Graphics/Texture.h>
+#include <Spore/Graphics/IRenderTargetManager.h>
+#include <Spore/App/cViewer.h>
+#include <Spore/Terrain/cTerrainShaderMgr.h>
 
 namespace Terrain
 {

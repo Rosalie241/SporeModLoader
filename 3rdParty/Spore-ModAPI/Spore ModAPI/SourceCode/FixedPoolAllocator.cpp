@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\FixedPoolAllocator.h>
+#include <Spore/FixedPoolAllocator.h>
 
 FixedPoolAllocator::FixedPoolAllocator(ICoreAllocator* pAllocator, int arg_4, size_t objectSize)
 	: mpAllocator(pAllocator)

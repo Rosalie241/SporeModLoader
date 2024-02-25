@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Resource\IRecord.h>
-#include <Spore\Object.h>
+#include <Spore/Resource/IRecord.h>
+#include <Spore/Object.h>
 
 namespace Simulator
 {

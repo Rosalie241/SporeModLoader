@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\UTFWin\Window.h>
-#include <Spore\App\IMessageListener.h>
+#include <Spore/UTFWin/Window.h>
+#include <Spore/App/IMessageListener.h>
 
 #define MinimapPtr eastl::intrusive_ptr<UI::Minimap>
 

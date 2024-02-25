@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\Internal.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/Internal.h>
 
 namespace Simulator
 {

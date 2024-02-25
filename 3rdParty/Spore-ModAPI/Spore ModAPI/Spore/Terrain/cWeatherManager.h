@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\ICameraManager.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\Swarm\IEffectsManager.h>
-#include <Spore\Graphics\IModelWorld.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/ICameraManager.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/Swarm/IEffectsManager.h>
+#include <Spore/Graphics/IModelWorld.h>
 
 #define cWeatherManagerPtr eastl::intrusive_ptr<Terrain::cWeatherManager>
 

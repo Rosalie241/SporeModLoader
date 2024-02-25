@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\MathUtils.h>
-#include <Spore\Object.h>
-#include <EASTL\intrusive_ptr.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Object.h>
+#include <EASTL/intrusive_ptr.h>
 
 #define IEffectMapPtr eastl::intrusive_ptr<Swarm::IEffectMap>
 

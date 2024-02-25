@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\RenderWare\Mesh.h>
-#include <Spore\RenderWare\CompiledState.h>
+#include <Spore/RenderWare/Mesh.h>
+#include <Spore/RenderWare/CompiledState.h>
 
 namespace RenderWare
 {

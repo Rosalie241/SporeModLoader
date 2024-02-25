@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\App\cStringDetokenizer.h>
-#include <Spore\Resource\ResourceObject.h>
+#include <Spore/App/cStringDetokenizer.h>
+#include <Spore/Resource/ResourceObject.h>
 
 #define LocaleManager (*App::cLocaleManager::Get())
 

@@ -17,23 +17,23 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\ComboBoxDrawable.h>
-#include <Spore\UTFWin\ImageDrawable.h>
-#include <Spore\UTFWin\ScrollbarDrawable.h>
-#include <Spore\UTFWin\SliderDrawable.h>
-#include <Spore\UTFWin\SpinnerDrawable.h>
-#include <Spore\UTFWin\DialogDrawable.h>
-#include <Spore\UTFWin\ButtonDrawableStandard.h>
-#include <Spore\UTFWin\ButtonDrawableRadio.h>
-#include <Spore\UTFWin\FrameDrawable.h>
-#include <Spore\UTFWin\VariableWidthDrawable.h>
-#include <Spore\UTFWin\StdDrawable.h>
-#include <Spore\UTFWin\SporeStdDrawableImageInfo.h>
-#include <Spore\UTFWin\SporeStdDrawable.h>
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\App\IClassManager.h>
+#include <Spore/UTFWin/ComboBoxDrawable.h>
+#include <Spore/UTFWin/ImageDrawable.h>
+#include <Spore/UTFWin/ScrollbarDrawable.h>
+#include <Spore/UTFWin/SliderDrawable.h>
+#include <Spore/UTFWin/SpinnerDrawable.h>
+#include <Spore/UTFWin/DialogDrawable.h>
+#include <Spore/UTFWin/ButtonDrawableStandard.h>
+#include <Spore/UTFWin/ButtonDrawableRadio.h>
+#include <Spore/UTFWin/FrameDrawable.h>
+#include <Spore/UTFWin/VariableWidthDrawable.h>
+#include <Spore/UTFWin/StdDrawable.h>
+#include <Spore/UTFWin/SporeStdDrawableImageInfo.h>
+#include <Spore/UTFWin/SporeStdDrawable.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/App/IClassManager.h>
 
-#include <SourceCode\Utility.h>
+#include <SourceCode/Utility.h>
 
 namespace UTFWin
 {

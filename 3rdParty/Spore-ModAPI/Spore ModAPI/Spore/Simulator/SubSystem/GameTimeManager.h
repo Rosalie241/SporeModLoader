@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <EASTL\vector.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <EASTL/vector.h>
 
 /// Accesses the current instance of Simulator::cGameTimeManager
 #define GameTimeManager (*Simulator::cGameTimeManager::Get())

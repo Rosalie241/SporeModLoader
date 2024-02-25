@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\App\cJob.h>
-#include <Spore\Internal.h>
+#include <Spore/App/cJob.h>
+#include <Spore/Internal.h>
 
 #define JobManager (*App::IJobManager::Get())
 

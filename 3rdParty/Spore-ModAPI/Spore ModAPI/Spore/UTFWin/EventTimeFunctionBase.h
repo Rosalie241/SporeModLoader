@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\UTFWin\EventPropertyObject.h>
+#include <Spore/UTFWin/EventPropertyObject.h>
 
 namespace UTFWin
 {

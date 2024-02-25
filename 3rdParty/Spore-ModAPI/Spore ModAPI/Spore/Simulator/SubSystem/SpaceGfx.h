@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\Swarm\IEffectsWorld.h>
-#include <Spore\App\PropertyList.h>
-#include <EASTL\map.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/Swarm/IEffectsWorld.h>
+#include <Spore/App/PropertyList.h>
+#include <EASTL/map.h>
 
 #define SpaceGfx (*Simulator::cSpaceGfx::Get())
 

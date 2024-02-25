@@ -1,5 +1,5 @@
-#include <Spore\Anim\IAnimManager.h>
-#include <Spore\Anim\AnimatedCreature.h>
+#include <Spore/Anim/IAnimManager.h>
+#include <Spore/Anim/AnimatedCreature.h>
 
 namespace Anim
 {

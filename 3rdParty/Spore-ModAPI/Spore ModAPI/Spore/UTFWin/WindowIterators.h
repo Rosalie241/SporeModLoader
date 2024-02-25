@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\UTFWin\IWinProc.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/UTFWin/IWinProc.h>
 
 #ifndef SDK_TO_GHIDRA
 namespace UTFWin
@@ -115,8 +115,8 @@ namespace UTFWin
 		//typedef typename IWindowList_t::iterator iterator;
 		//typedef typename IWindowList_t::const_iterator const_iterator;
 
-		typedef typename ChildrenIterator<IWindow*, IWindow&> iterator;
-		typedef typename ChildrenIterator<const IWindow*, const IWindow&> const_iterator;
+		typedef ChildrenIterator<IWindow*, IWindow&> iterator;
+		typedef ChildrenIterator<const IWindow*, const IWindow&> const_iterator;
 
 		IWindow* mpParentWindow;
 
@@ -241,8 +241,8 @@ namespace UTFWin
 	class WindowProcedures
 	{
 	public:
-		typedef typename ProcIterator<IWinProc*, IWinProc&> iterator;
-		typedef typename ProcIterator<const IWinProc*, const IWinProc&> const_iterator;
+		typedef ProcIterator<IWinProc*, IWinProc&> iterator;
+		typedef ProcIterator<const IWinProc*, const IWinProc&> const_iterator;
 
 		const IWindow* mpParentWindow;
 

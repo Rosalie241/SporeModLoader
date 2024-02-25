@@ -18,7 +18,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\ResourceKey.h>
+#include <Spore/ResourceKey.h>
 
 namespace Simulator
 {

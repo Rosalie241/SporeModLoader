@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\UTFWin\Allocator.h>
+#include <Spore/Object.h>
+#include <Spore/UTFWin/Allocator.h>
 
 namespace UTFWin
 {

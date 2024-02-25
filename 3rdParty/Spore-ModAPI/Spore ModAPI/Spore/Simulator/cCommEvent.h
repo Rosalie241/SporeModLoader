@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Simulator\ISimulatorSerializable.h>
-#include <Spore\Simulator\cCity.h>
-#include <Spore\Simulator\cCivilization.h>
-#include <Spore\Simulator\StarID.h>
-#include <Spore\Simulator\SimulatorEnums.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
+#include <Spore/Simulator/cCity.h>
+#include <Spore/Simulator/cCivilization.h>
+#include <Spore/Simulator/StarID.h>
+#include <Spore/Simulator/SimulatorEnums.h>
 
 #define cCommEventPtr eastl::intrusive_ptr<Simulator::cCommEvent>
 

@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\Graphics\ILightingWorld.h>
-#include <Spore\MathUtils.h>
+#include <Spore/Graphics/ILightingWorld.h>
+#include <Spore/MathUtils.h>
 
 /// Access the active lighting manager.
 #define LightingManager (*Graphics::ILightingManager::Get())

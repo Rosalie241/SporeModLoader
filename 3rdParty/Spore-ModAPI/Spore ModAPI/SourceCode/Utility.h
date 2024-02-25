@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <EASTL\internal\thread_support.h>
+#include <EASTL/internal/thread_support.h>
 
 #define DEFAULT_REFCOUNT(className) int className::AddRef() \
 { \

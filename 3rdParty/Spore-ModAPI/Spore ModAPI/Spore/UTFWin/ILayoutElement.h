@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\UTFWin\UTFWinObject.h>
-#include <Spore\UTFWin\Serialization.h>
+#include <Spore/UTFWin/UTFWinObject.h>
+#include <Spore/UTFWin/Serialization.h>
 
 #define ILayoutElementPtr eastl::intrusive_ptr<UTFWin::ILayoutElement>
 

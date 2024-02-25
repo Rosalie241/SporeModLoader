@@ -16,8 +16,8 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
-#include <Spore\App\cCheatManager.h>
-#include <Spore\ArgScript\LambdaParser.h>
+#include <Spore/App/cCheatManager.h>
+#include <Spore/ArgScript/LambdaParser.h>
 
 namespace App
 {

@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\ICoreAllocator.h>
-#include <Spore\CoreAllocatorAdapter.h>
-#include <Spore\Internal.h>
+#include <Spore/ICoreAllocator.h>
+#include <Spore/CoreAllocatorAdapter.h>
+#include <Spore/Internal.h>
 
-#include <EASTL\internal\fixed_pool.h>
+#include <EASTL/internal/fixed_pool.h>
 
 class FixedPoolAllocator : public ICoreAllocator
 {

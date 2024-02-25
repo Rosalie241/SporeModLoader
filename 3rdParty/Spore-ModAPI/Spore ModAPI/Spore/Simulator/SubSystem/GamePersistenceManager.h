@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\SubSystem\StarManager.h>
-#include <EASTL\string.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/SubSystem/StarManager.h>
+#include <EASTL/string.h>
 
 #define GamePersistenceManager (*Simulator::cGamePersistenceManager::Get())
 

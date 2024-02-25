@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include <Spore\App\PropertyList.h>
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\Simulator\cSpaceInventoryItem.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cDefaultAoEArea.h>
-#include <Spore\Simulator\cDefaultBeamProjectile.h>
-#include <Spore\LocalizedString.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/Simulator/cSpaceInventoryItem.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cDefaultAoEArea.h>
+#include <Spore/Simulator/cDefaultBeamProjectile.h>
+#include <Spore/LocalizedString.h>
 
 #define cSpaceToolDataPtr eastl::intrusive_ptr<Simulator::cSpaceToolData>
 

@@ -20,12 +20,12 @@
 #pragma once
 
 
-#include <Spore\ArgScript\FormatParser.h>
-#include <Spore\ArgScript\ICommand.h>
-#include <Spore\Internal.h>
-#include <Spore\Object.h>
+#include <Spore/ArgScript/FormatParser.h>
+#include <Spore/ArgScript/ICommand.h>
+#include <Spore/Internal.h>
+#include <Spore/Object.h>
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
 /// Access to the active cheat manager.
 #define CheatManager (*App::ICheatManager::Get())

@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Clock.h>
+#include <Spore/Clock.h>
 
 Clock::Clock(Clock::Mode mode, bool bStart)
 	: mStartTime()

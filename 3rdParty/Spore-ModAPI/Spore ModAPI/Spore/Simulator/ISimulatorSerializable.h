@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\Simulator\Serialization.h>
+#include <Spore/Object.h>
+#include <Spore/Simulator/Serialization.h>
 
 #define ISimulatorSerializablePtr eastl::intrusive_ptr<Simulator::ISimulatorSerializable>
 

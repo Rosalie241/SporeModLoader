@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cInteractableObject.h>
-#include <Spore\Simulator\cScenarioPowerup.h>
-#include <Spore\Simulator\cCombatant.h>
+#include <Spore/Simulator/cInteractableObject.h>
+#include <Spore/Simulator/cScenarioPowerup.h>
+#include <Spore/Simulator/cCombatant.h>
 
 #define cInteractiveOrnamentPtr eastl::intrusive_ptr<Simulator::cInteractiveOrnament>
 

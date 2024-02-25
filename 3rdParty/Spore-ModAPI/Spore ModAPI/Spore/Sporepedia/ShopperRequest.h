@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\Sporepedia\IShopperListener.h>
-#include <Spore\Editors\EditorRequest.h>
+#include <Spore/Object.h>
+#include <Spore/Sporepedia/IShopperListener.h>
+#include <Spore/Editors/EditorRequest.h>
 
 namespace Sporepedia
 {

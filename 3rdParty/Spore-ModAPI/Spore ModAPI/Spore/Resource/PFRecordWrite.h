@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\Resource\PFRecordBase.h>
-#include <Spore\Resource\DatabasePackedFile.h>
-#include <Spore\IO\FileStream.h>
-#include <Spore\IO\StreamMemory.h>
+#include <Spore/Resource/PFRecordBase.h>
+#include <Spore/Resource/DatabasePackedFile.h>
+#include <Spore/IO/FileStream.h>
+#include <Spore/IO/StreamMemory.h>
 
 #define PFRecordWritePtr eastl::intrusive_ptr<Resource::PFRecordWrite>
 

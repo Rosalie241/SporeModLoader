@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <EASTL\intrusive_ptr.h>
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
-#include <Spore\Swarm\IVisualEffect.h>
-#include <Spore\Swarm\cGlobalParams.h>
+#include <EASTL/intrusive_ptr.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
+#include <Spore/Swarm/IVisualEffect.h>
+#include <Spore/Swarm/cGlobalParams.h>
 
 #define IEffectsWorldPtr eastl::intrusive_ptr<Swarm::IEffectsWorld>
 

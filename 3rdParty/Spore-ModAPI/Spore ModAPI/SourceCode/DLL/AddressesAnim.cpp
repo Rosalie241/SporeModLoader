@@ -1,6 +1,6 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\Anim\IAnimManager.h>
+#include <Spore/Anim/IAnimManager.h>
 
 namespace Anim
 {

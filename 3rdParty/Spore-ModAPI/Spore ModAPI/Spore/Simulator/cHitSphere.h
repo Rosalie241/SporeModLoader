@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Simulator\cOrnament.h>
+#include <Spore/Simulator/cOrnament.h>
 
 #define cHitSpherePtr eastl::intrusive_ptr<Simulator::cHitSphere>
 

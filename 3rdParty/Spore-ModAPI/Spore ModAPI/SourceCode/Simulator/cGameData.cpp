@@ -1,7 +1,7 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\NounClassFactories.h>
-#include <Spore\App\ScenarioMode.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/NounClassFactories.h>
+#include <Spore/App/ScenarioMode.h>
 
 auto_STATIC_METHOD_VOID(Simulator, RegisterNounType, Args(uint32_t nounID, uint32_t typeID, const char* name), Args(nounID, typeID, name));
 //auto_STATIC_METHOD_(Simulator, Simulator::NounCreateMap&, GetNounCreateMap);

@@ -18,13 +18,13 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Graphics\IRenderer.h>
-#include <Spore\Graphics\LambdaLayer.h>
-#include <Spore\Graphics\cLayerGroup.h>
-#include <Spore\Graphics\RenderUtils.h>
-#include <Spore\Graphics\GlobalState.h>
-#include <Spore\Graphics\ActiveState.h>
-#include <Spore\Graphics\cFrustumCull.h>
+#include <Spore/Graphics/IRenderer.h>
+#include <Spore/Graphics/LambdaLayer.h>
+#include <Spore/Graphics/cLayerGroup.h>
+#include <Spore/Graphics/RenderUtils.h>
+#include <Spore/Graphics/GlobalState.h>
+#include <Spore/Graphics/ActiveState.h>
+#include <Spore/Graphics/cFrustumCull.h>
 
 namespace Graphics
 {

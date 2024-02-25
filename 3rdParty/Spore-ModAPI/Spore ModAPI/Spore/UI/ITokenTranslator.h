@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Object.h>
-#include <EASTL\string.h>
+#include <Spore/Object.h>
+#include <EASTL/string.h>
 
 #define IUITokenTranslatorPtr eastl::intrusive_ptr<UI::ITokenTranslator>
 

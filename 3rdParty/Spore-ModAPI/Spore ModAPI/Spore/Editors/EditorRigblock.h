@@ -19,17 +19,17 @@
 
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\Object.h>
-#include <Spore\MathUtils.h>
-#include <Spore\Clock.h>
-#include <Spore\Graphics\IModelWorld.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\Editors\EditorBaseHandle.h>
-#include <EASTL\bitset.h>
-#include <EASTL\map.h>
-#include <EASTL\fixed_vector.h>
-#include <EASTL\fixed_string.h>
+#include <Spore/Internal.h>
+#include <Spore/Object.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Clock.h>
+#include <Spore/Graphics/IModelWorld.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/Editors/EditorBaseHandle.h>
+#include <EASTL/bitset.h>
+#include <EASTL/map.h>
+#include <EASTL/fixed_vector.h>
+#include <EASTL/fixed_string.h>
 
 #define EditorRigblockPtr eastl::intrusive_ptr<Editors::EditorRigblock>
 

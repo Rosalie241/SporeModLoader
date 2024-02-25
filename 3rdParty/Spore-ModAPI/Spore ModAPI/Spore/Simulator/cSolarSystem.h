@@ -18,11 +18,11 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cCelestialBody.h>
-#include <Spore\Simulator\cPlanet.h>
-#include <Spore\Simulator\cStarRecord.h>
-#include <EASTL\vector.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cCelestialBody.h>
+#include <Spore/Simulator/cPlanet.h>
+#include <Spore/Simulator/cStarRecord.h>
+#include <EASTL/vector.h>
 
 #define cSolarSystemPtr eastl::intrusive_ptr<Simulator::cSolarSystem>
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Graphics\IModelWorld.h>
-#include <EASTL\intrusive_list.h>
+#include <Spore/Graphics/IModelWorld.h>
+#include <EASTL/intrusive_list.h>
 
 namespace Simulator
 {

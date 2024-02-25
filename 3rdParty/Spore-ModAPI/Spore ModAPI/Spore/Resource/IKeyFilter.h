@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\ResourceKey.h>
+#include <Spore/Internal.h>
+#include <Spore/ResourceKey.h>
 
 namespace Resource
 {

@@ -1,5 +1,5 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Graphics\GeneratedMesh.h>
+#include <Spore/Graphics/GeneratedMesh.h>
 
 namespace Graphics
 {

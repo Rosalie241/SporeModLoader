@@ -19,13 +19,13 @@
 
 #pragma once
 
-#include <Spore\Graphics\Texture.h>
-#include <Spore\Resource\Database.h>
-#include <Spore\RenderWare\CompiledState.h>
-#include <Spore\RenderWare\RenderWareFile.h>
+#include <Spore/Graphics/Texture.h>
+#include <Spore/Resource/Database.h>
+#include <Spore/RenderWare/CompiledState.h>
+#include <Spore/RenderWare/RenderWareFile.h>
 
-#include <EASTL\vector.h>
-#include <EASTL\intrusive_ptr.h>
+#include <EASTL/vector.h>
+#include <EASTL/intrusive_ptr.h>
 
 /// Access the active material manager.
 #define MaterialManager (*Graphics::IMaterialManager::Get())

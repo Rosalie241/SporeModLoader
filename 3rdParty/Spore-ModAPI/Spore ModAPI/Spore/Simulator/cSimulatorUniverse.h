@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\App\PropertyList.h>
-#include <Spore\Simulator\cGonzagoSimulator.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <EASTL\map.h>
-#include <EASTL\vector_map.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/Simulator/cGonzagoSimulator.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <EASTL/map.h>
+#include <EASTL/vector_map.h>
 
 #define SimulatorUniverse (*Simulator::cSimulatorUniverse::Get())
 

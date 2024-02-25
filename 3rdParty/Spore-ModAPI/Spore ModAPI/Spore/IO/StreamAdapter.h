@@ -40,9 +40,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-#include <Spore\IO\IStream.h>
-#include <Spore\ResourceID.h>
-#include <EASTL\string.h>
+#include <Spore/IO/IStream.h>
+#include <Spore/ResourceID.h>
+#include <EASTL/string.h>
 
 namespace IO
 {
@@ -280,13 +280,13 @@ namespace IO
 	///////////////////////////////////
 
 #ifndef SDK_TO_GHIDRA
-	inline bool IO::WriteBool8(IStream* pOS, const bool* value)
+	inline bool WriteBool8(IStream* pOS, const bool* value)
 	{
 		int8_t src = value ? 1 : 0;
 		return IO::WriteInt8(pOS, &src);
 	}
 
-	inline void IO::WriteCString(IStream* pOS, eastl::string8& str)
+	inline void WriteCString(IStream* pOS, eastl::string8& str)
 	{
 		char terminator = 0;
 		pOS->Write(str.c_str(), str.length());

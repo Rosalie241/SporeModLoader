@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Simulator\cScenarioData.h>
-#include <Spore\Simulator\cScenarioResource.h>
-#include <Spore\Simulator\cScenarioTerraformMode.h>
+#include <Spore/Simulator/cScenarioData.h>
+#include <Spore/Simulator/cScenarioResource.h>
+#include <Spore/Simulator/cScenarioTerraformMode.h>
 
 
 #define ScenarioEditHistory (*Simulator::cScenarioEditHistory::Get())

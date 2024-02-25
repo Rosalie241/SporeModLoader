@@ -18,10 +18,10 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\cCity.h>
-#include <Spore\Terrain\ITerrain.h>
-#include <Spore\MathUtils.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/cCity.h>
+#include <Spore/Terrain/ITerrain.h>
+#include <Spore/MathUtils.h>
 
 /// Access the active Simulator planet manager.
 #define PlanetModel (*Simulator::cPlanetModel::Get())

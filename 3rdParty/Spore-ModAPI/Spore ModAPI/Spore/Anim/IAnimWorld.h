@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Graphics\ILayer.h>
-#include <Spore\Graphics\IModelWorld.h>
-#include <Spore\Swarm\IEffectsWorld.h>
-#include <Spore\Anim\AnimatedCreature.h>
-#include <Spore\Object.h>
+#include <Spore/Graphics/ILayer.h>
+#include <Spore/Graphics/IModelWorld.h>
+#include <Spore/Swarm/IEffectsWorld.h>
+#include <Spore/Anim/AnimatedCreature.h>
+#include <Spore/Object.h>
 
 #define IAnimWorldPtr eastl::intrusive_ptr<Anim::IAnimWorld>
 

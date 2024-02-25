@@ -20,7 +20,7 @@
 #pragma once
 
 #include "VisualEffectBlock.h"
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
 namespace Swarm
 {

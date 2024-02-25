@@ -19,15 +19,15 @@
 
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\cSpaceToolData.h>
-#include <Spore\Simulator\cToolStrategy.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\MathUtils.h>
-#include <Spore\LocalizedString.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/cSpaceToolData.h>
+#include <Spore/Simulator/cToolStrategy.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/MathUtils.h>
+#include <Spore/LocalizedString.h>
 
-#include <EASTL\hash_map.h>
-#include <EASTL\map.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/map.h>
 
 /// Access the active Simulator tool manager.
 #define ToolManager (*Simulator::cToolManager::Get())

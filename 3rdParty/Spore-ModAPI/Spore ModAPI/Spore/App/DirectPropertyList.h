@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\App\PropertyList.h>
+#include <Spore/Internal.h>
+#include <Spore/App/PropertyList.h>
 
 #define DirectPropertyListPtr eastl::intrusive_ptr<App::DirectPropertyList>
 

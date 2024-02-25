@@ -18,10 +18,10 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\UTFWin\UTFWinObject.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/UTFWin/UTFWinObject.h>
 
-#include <EASTL\string.h>
+#include <EASTL/string.h>
 
 #define ITextEditPtr eastl::intrusive_ptr<UTFWin::ITextEdit>
 

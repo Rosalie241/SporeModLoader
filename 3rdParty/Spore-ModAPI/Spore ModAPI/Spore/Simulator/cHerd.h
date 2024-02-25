@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cCreatureAnimal.h>
-#include <Spore\Simulator\cNest.h>
-#include <Spore\Simulator\cEgg.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cCreatureAnimal.h>
+#include <Spore/Simulator/cNest.h>
+#include <Spore/Simulator/cEgg.h>
 
 #define cHerdPtr eastl::intrusive_ptr<Simulator::cHerd>
 

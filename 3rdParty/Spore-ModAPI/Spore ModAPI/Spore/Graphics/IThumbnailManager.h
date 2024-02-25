@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Graphics\IRenderTargetManager.h>
-#include <Spore\Graphics\ILayer.h>
-#include <Spore\Graphics\Texture.h>
-#include <Spore\Object.h>
-#include <EASTL\string.h>
+#include <Spore/Graphics/IRenderTargetManager.h>
+#include <Spore/Graphics/ILayer.h>
+#include <Spore/Graphics/Texture.h>
+#include <Spore/Object.h>
+#include <EASTL/string.h>
 
 #define ThumbnailManager (*Graphics::IThumbnailManager::Get())
 #define PlanetThumbnailRequestPtr eastl::intrusive_ptr<Graphics::PlanetThumbnailRequest>

@@ -18,19 +18,19 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\Simulator\ISimulatorSerializable.h>
-#include <Spore\Simulator\cIdentityColorable.h>
-#include <Spore\Simulator\cCultureSet.h>
-#include <Spore\Simulator\cStarRecord.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\SubSystem\cRelationshipManager.h>
-#include <Spore\Simulator\cSpeciesProfile.h>
-#include <Spore\Simulator\ICityMusic.h>
-#include <Spore\ResourceKey.h>
-#include <EASTL\string.h>
-#include <EASTL\vector.h>
-#include <EASTL\list.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
+#include <Spore/Simulator/cIdentityColorable.h>
+#include <Spore/Simulator/cCultureSet.h>
+#include <Spore/Simulator/cStarRecord.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/SubSystem/cRelationshipManager.h>
+#include <Spore/Simulator/cSpeciesProfile.h>
+#include <Spore/Simulator/ICityMusic.h>
+#include <Spore/ResourceKey.h>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
+#include <EASTL/list.h>
 
 #define cEmpirePtr eastl::intrusive_ptr<Simulator::cEmpire>
 

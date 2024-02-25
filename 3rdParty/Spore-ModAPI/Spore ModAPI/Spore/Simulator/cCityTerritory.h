@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cSpatialObject.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cSpatialObject.h>
 
 #define cCityTerritoryPtr eastl::intrusive_ptr<Simulator::cCityTerritory>
 

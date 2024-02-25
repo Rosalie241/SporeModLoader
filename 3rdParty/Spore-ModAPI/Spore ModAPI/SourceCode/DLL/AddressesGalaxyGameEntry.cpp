@@ -1,6 +1,6 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\GalaxyGameEntry\GlobalGGEUI.h>
+#include <Spore/GalaxyGameEntry/GlobalGGEUI.h>
 
 namespace GalaxyGameEntry
 {

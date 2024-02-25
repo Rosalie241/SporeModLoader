@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\UTFWin\UILayoutObjects.h>
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\ResourceKey.h>
+#include <Spore/UTFWin/UILayoutObjects.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/ResourceKey.h>
 
 #define UILayoutPtr eastl::intrusive_ptr<UTFWin::UILayout>
 

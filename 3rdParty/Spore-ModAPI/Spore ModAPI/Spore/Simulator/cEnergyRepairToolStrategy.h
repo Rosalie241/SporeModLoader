@@ -18,7 +18,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cRepairToolStrategy.h>
+#include <Spore/Simulator/cRepairToolStrategy.h>
 
 #define cEnergyRepairToolStrategyPtr eastl::intrusive_ptr<Simulator::cEnergyRepairToolStrategy>
 

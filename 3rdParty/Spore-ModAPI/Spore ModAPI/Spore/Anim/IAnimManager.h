@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Anim\IAnimWorld.h>
-#include <Spore\Anim\TLSA.h>
-#include <Spore\Resource\Database.h>
+#include <Spore/Anim/IAnimWorld.h>
+#include <Spore/Anim/TLSA.h>
+#include <Spore/Resource/Database.h>
 
 #define AnimManager (*Anim::IAnimManager::Get())
 

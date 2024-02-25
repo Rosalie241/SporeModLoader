@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Simulator\cCreatureAbility.h>
+#include <Spore/Simulator/cCreatureAbility.h>
 
 namespace Simulator
 {

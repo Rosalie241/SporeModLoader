@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\Graphics\Texture.h>
+#include <Spore/Internal.h>
+#include <Spore/Graphics/Texture.h>
 
 namespace Graphics
 {

@@ -19,13 +19,13 @@
 
 #pragma once
 
-#include <EASTL\hash_map.h>
-#include <EASTL\vector.h>
-#include <Spore\ResourceKey.h>
-#include <Spore\Resource\IKeyFilter.h>
-#include <Spore\FixedPoolAllocator.h>
-#include <Spore\CoreAllocatorAdapter.h>
-#include <Spore\IO\EAIOZoneObject.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/vector.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/Resource/IKeyFilter.h>
+#include <Spore/FixedPoolAllocator.h>
+#include <Spore/CoreAllocatorAdapter.h>
+#include <Spore/IO/EAIOZoneObject.h>
 
 namespace Resource
 {

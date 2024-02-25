@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\ResourceKey.h>
-#include <Spore\App\StandardMessage.h>
-#include <Spore\Simulator\cMission.h>
+#include <Spore/Object.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/App/StandardMessage.h>
+#include <Spore/Simulator/cMission.h>
 
 namespace Simulator
 {

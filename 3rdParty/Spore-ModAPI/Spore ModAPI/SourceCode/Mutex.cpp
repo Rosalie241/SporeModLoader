@@ -17,21 +17,21 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Mutex.h>
+#include <Spore/Mutex.h>
 
 
 Mutex::Mutex(MutexInfo* pInfo, bool bUseCriticalSection)
 	: mhMutex(NULL)
-	, field_04(NULL)
-	, field_08(NULL)
-	, field_0C(NULL)
-	, field_10(NULL)
-	, field_14(NULL)
-	, field_18(NULL)
-	, field_1C(NULL)
-	, mnRecursionCount(NULL)
+	, field_04(0)
+	, field_08(0)
+	, field_0C(0)
+	, field_10(0)
+	, field_14(0)
+	, field_18(0)
+	, field_1C(0)
+	, mnRecursionCount(0)
 	, mbUseCriticalSection(true)
-	, field_28(NULL)
+	, field_28(0)
 	// field_2C is not initialized
 {
 	if (pInfo != nullptr || !bUseCriticalSection)

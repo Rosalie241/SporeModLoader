@@ -18,14 +18,14 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cBehaviorList.h>
-#include <Spore\Simulator\cCombatant.h>
-#include <Spore\Simulator\cPlaceableStructure.h>
-#include <Spore\Simulator\cSpaceInventory.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cBehaviorList.h>
+#include <Spore/Simulator/cCombatant.h>
+#include <Spore/Simulator/cPlaceableStructure.h>
+#include <Spore/Simulator/cSpaceInventory.h>
 
-#include <EASTL\initializer_list.h>
+#include <EASTL/initializer_list.h>
 
 #define cBuildingPtr eastl::intrusive_ptr<Simulator::cBuilding>
 

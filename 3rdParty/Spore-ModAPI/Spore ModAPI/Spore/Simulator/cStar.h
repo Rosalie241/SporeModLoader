@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cStarRecord.h>
-#include <Spore\Simulator\cSolarSystem.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cStarRecord.h>
+#include <Spore/Simulator/cSolarSystem.h>
 
 #define cStarPtr eastl::intrusive_ptr<Simulator::cStar>
 

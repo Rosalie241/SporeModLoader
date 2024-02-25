@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Terrain\cTerrainMap.h>
-#include <Spore\MathUtils.h>
+#include <Spore/Terrain/cTerrainMap.h>
+#include <Spore/MathUtils.h>
 
 #define cTerrainMapSetPtr eastl::intrusive_ptr<Terrain::cTerrainMapSet>
 

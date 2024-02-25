@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\UTFWin\UIRenderer.h>
-#include <Spore\UTFWin\Constants.h>
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\MathUtils.h>
+#include <Spore/UTFWin/UIRenderer.h>
+#include <Spore/UTFWin/Constants.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/MathUtils.h>
 
-#include <EASTL\string.h>
+#include <EASTL/string.h>
 
 namespace UTFWin
 {

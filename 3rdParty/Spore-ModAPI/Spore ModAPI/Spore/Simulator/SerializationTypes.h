@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Spore\Simulator\Serialization.h>
-#include <Spore\IO.h>
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
-#include <EASTL\map.h>
-#include <EASTL\set.h>
-#include <EASTL\hash_map.h>
-#include <EASTL\hash_set.h>
+#include <Spore/Simulator/Serialization.h>
+#include <Spore/IO.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
+#include <EASTL/map.h>
+#include <EASTL/set.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/hash_set.h>
 
 #ifndef SDK_TO_GHIDRA
 namespace Simulator

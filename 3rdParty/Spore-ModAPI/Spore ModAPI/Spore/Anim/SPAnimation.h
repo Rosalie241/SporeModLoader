@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include <EASTL\intrusive_ptr.h>
+#include <EASTL/intrusive_ptr.h>
 
 #define SPAnimationPtr eastl::intrusive_ptr<Anim::SPAnimation>
 

@@ -18,11 +18,11 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cProjectile.h>
-#include <Spore\Simulator\cBehaviorList.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cProjectile.h>
+#include <Spore/Simulator/cBehaviorList.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
 
 #define cDefaultBeamProjectilePtr eastl::intrusive_ptr<Simulator::cDefaultBeamProjectile>
 

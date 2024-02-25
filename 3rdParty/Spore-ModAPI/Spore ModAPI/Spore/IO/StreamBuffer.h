@@ -39,8 +39,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-#include <Spore\IO\IStream.h>
-#include <EASTL\intrusive_ptr.h>
+#include <Spore/IO/IStream.h>
+#include <EASTL/intrusive_ptr.h>
 
 #define StreamBufferPtr eastl::intrusive_ptr<IO::StreamBuffer>
 

@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\ResourceID.h>
-#include <Spore\App\PropertyList.h>
+#include <Spore/ResourceID.h>
+#include <Spore/App/PropertyList.h>
 
 /// Access the active property manager.
 #define PropManager (*App::IPropManager::Get())

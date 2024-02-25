@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cLocomotiveObject.h>
-#include <Spore\Simulator\cProjectile.h>
-#include <Spore\Simulator\cCombatant.h>
-#include <Spore\Simulator\cSpaceToolData.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cLocomotiveObject.h>
+#include <Spore/Simulator/cProjectile.h>
+#include <Spore/Simulator/cCombatant.h>
+#include <Spore/Simulator/cSpaceToolData.h>
 
 #define cArtilleryProjectilePtr eastl::intrusive_ptr<Simulator::cArtilleryProjectile>
 

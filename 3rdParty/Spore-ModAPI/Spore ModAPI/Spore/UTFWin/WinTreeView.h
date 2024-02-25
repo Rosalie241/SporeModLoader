@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\UTFWin\InteractiveWindow.h>
-#include <Spore\UTFWin\IDrawable.h>
-#include <Spore\UTFWin\TreeNode.h>
-#include <Spore\UTFWin\ITreeView.h>
-#include <Spore\Clock.h>
+#include <Spore/UTFWin/InteractiveWindow.h>
+#include <Spore/UTFWin/IDrawable.h>
+#include <Spore/UTFWin/TreeNode.h>
+#include <Spore/UTFWin/ITreeView.h>
+#include <Spore/Clock.h>
 
 namespace UTFWin
 {

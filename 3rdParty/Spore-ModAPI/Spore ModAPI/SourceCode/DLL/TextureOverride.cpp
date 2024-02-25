@@ -1,15 +1,15 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
 #include "TextureOverride.h"
-#include <Spore\Cheats.h>
-#include <Spore\CommonIDs.h>
-#include <Spore\Graphics\Model.h>
-#include <Spore\Graphics\cModelInstance.h>
-#include <Spore\Graphics\cModelWorld.h>
-#include <Spore\Graphics\ITextureManager.h>
-#include <Spore\RenderWare\RenderWareFile.h>
-#include <Spore\App\PropertyList.h>
-#include <EASTL\map.h>
+#include <Spore/Cheats.h>
+#include <Spore/CommonIDs.h>
+#include <Spore/Graphics/Model.h>
+#include <Spore/Graphics/cModelInstance.h>
+#include <Spore/Graphics/cModelWorld.h>
+#include <Spore/Graphics/ITextureManager.h>
+#include <Spore/RenderWare/RenderWareFile.h>
+#include <Spore/App/PropertyList.h>
+#include <EASTL/map.h>
 
 const uint32_t kOverridePropertyIDs[] = {
 	id("modelTexturesLODHi"),

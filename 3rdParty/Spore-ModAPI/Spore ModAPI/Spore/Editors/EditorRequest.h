@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\ResourceKey.h>
-#include <Spore\Object.h>
-#include <Spore\Editors\ContentValidation.h>
-#include <EASTL\string.h>
-#include <EASTL\vector.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/Object.h>
+#include <Spore/Editors/ContentValidation.h>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
 
 #define EditorRequestPtr eastl::intrusive_ptr<Editors::EditorRequest>
 

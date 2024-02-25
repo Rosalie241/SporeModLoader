@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\MathUtils.h>
-#include <Spore\UTFWin\Constants.h>
-#include <Spore\UTFWin\UTFWinObject.h>
+#include <Spore/Object.h>
+#include <Spore/MathUtils.h>
+#include <Spore/UTFWin/Constants.h>
+#include <Spore/UTFWin/UTFWinObject.h>
 
-#include <EASTL\list.h>
-#include <EASTL\intrusive_list.h>
-#include <EASTL\vector.h>
+#include <EASTL/list.h>
+#include <EASTL/intrusive_list.h>
+#include <EASTL/vector.h>
 
 #define IWindowPtr eastl::intrusive_ptr<UTFWin::IWindow>
 

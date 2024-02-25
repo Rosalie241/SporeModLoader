@@ -18,10 +18,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\RenderWare\Skeleton.h>
-#include <Spore\RenderWare\SkinsInK.h>
-#include <Spore\RenderWare\AnimationSkin.h>
-#include <Spore\RenderWare\SkinMatrixBuffer.h>
+#include <Spore/RenderWare/Skeleton.h>
+#include <Spore/RenderWare/SkinsInK.h>
+#include <Spore/RenderWare/AnimationSkin.h>
+#include <Spore/RenderWare/SkinMatrixBuffer.h>
 
 namespace RenderWare
 {

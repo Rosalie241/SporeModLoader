@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\ResourceKey.h>
-#include <EASTL\vector.h>
+#include <Spore/ResourceKey.h>
+#include <EASTL/vector.h>
 
 namespace Sporepedia
 {

@@ -1,16 +1,16 @@
 
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\App\Thumbnail_cImportExport.h>
-#include <Spore\App\AppData.h>
-#include <Spore\App\IDGenerator.h>
-#include <Spore\App\cCreatureModeStrategy.h>
-#include <Spore\App\cSporeApp.h>
-#include <Spore\App\cArithmeticaResource.h>
-#include <Spore\App\ConfigManager.h>
-#include <Spore\App\IStateManager.h>
-#include <Spore\App\cAppSystem.h>
+#include <Spore/App/Thumbnail_cImportExport.h>
+#include <Spore/App/AppData.h>
+#include <Spore/App/IDGenerator.h>
+#include <Spore/App/cCreatureModeStrategy.h>
+#include <Spore/App/cSporeApp.h>
+#include <Spore/App/cArithmeticaResource.h>
+#include <Spore/App/ConfigManager.h>
+#include <Spore/App/IStateManager.h>
+#include <Spore/App/cAppSystem.h>
 #endif
-#include <Spore\App\CommandLine.h>
+#include <Spore/App/CommandLine.h>
 
 namespace App
 {

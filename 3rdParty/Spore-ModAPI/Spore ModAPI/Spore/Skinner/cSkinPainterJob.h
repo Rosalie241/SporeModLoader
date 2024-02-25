@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Graphics\ILayer.h>
-#include <Spore\Object.h>
+#include <Spore/Graphics/ILayer.h>
+#include <Spore/Object.h>
 
 #define cSkinPainterJobPtr eastl::intrusive_ptr<Skinner::cSkinPainterJob>
 

@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\MathUtils.h>
-#include <Spore\Transform.h>
-#include <Spore\Graphics\IRenderTargetManager.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Transform.h>
+#include <Spore/Graphics/IRenderTargetManager.h>
 #include <d3d9types.h>
 
 using namespace Math;

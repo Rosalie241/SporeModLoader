@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Simulator\cGonzagoSimulator.h>
-#include <Spore\Simulator\cMission.h>
-#include <Spore\App\IMessageListener.h>
-#include <EASTL\list.h>
-#include <EASTL\deque.h>
+#include <Spore/Simulator/cGonzagoSimulator.h>
+#include <Spore/Simulator/cMission.h>
+#include <Spore/App/IMessageListener.h>
+#include <EASTL/list.h>
+#include <EASTL/deque.h>
 
 #define MissionManager (*Simulator::cMissionManager::Get())
 

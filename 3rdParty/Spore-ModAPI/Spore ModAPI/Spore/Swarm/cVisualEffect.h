@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include <Spore\Swarm\Components\VisualEffect.h>
-#include <Spore\Swarm\IEffectsManager.h>
-#include <Spore\Swarm\IVisualEffect.h>
-#include <Spore\Swarm\IComponent.h>
-#include <Spore\ResourceID.h>
-#include <Spore\MathUtils.h>
-#include <Spore\Transform.h>
-#include <EASTL\intrusive_ptr.h>
+#include <Spore/Swarm/Components/VisualEffect.h>
+#include <Spore/Swarm/IEffectsManager.h>
+#include <Spore/Swarm/IVisualEffect.h>
+#include <Spore/Swarm/IComponent.h>
+#include <Spore/ResourceID.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Transform.h>
+#include <EASTL/intrusive_ptr.h>
 
 namespace Swarm
 {

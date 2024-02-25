@@ -17,8 +17,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\InteractiveWindow.h>
-#include <Spore\UTFWin\InteractiveWinProc.h>
+#include <Spore/UTFWin/InteractiveWindow.h>
+#include <Spore/UTFWin/InteractiveWinProc.h>
 
 namespace UTFWin
 {

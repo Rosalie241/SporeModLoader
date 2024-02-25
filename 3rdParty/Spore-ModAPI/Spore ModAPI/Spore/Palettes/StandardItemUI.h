@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\Palettes\PaletteItem.h>
-#include <Spore\Palettes\ItemViewer.h>
-#include <Spore\Object.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/Palettes/PaletteItem.h>
+#include <Spore/Palettes/ItemViewer.h>
+#include <Spore/Object.h>
 
 #define StandardItemUIPtr eastl::intrusive_ptr<Palettes::StandardItemUI>
 

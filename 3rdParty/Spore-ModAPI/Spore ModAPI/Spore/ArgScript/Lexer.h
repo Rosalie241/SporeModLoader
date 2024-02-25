@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\ArgScript\ASDeclarations.h>
-#include <Spore\Internal.h>
+#include <Spore/ArgScript/ASDeclarations.h>
+#include <Spore/Internal.h>
 
-#include <EASTL\hash_map.h>
-#include <EASTL\string.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/string.h>
 
 namespace ArgScript
 {

@@ -18,20 +18,20 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cCommunity.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\cBehaviorList.h>
-#include <Spore\Simulator\cBuilding.h>
-#include <Spore\Simulator\cOrnament.h>
-#include <Spore\Simulator\cCityTerritory.h>
-#include <Spore\Simulator\cCityWalls.h>
-#include <Spore\Simulator\cCommunityLayout.h>
-#include <Spore\Simulator\cInterCityRoad.h>
-#include <Spore\Simulator\cCulturalTarget.h>
-#include <Spore\Simulator\cTurret.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\CommonIDs.h>
+#include <Spore/Simulator/cCommunity.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/cBehaviorList.h>
+#include <Spore/Simulator/cBuilding.h>
+#include <Spore/Simulator/cOrnament.h>
+#include <Spore/Simulator/cCityTerritory.h>
+#include <Spore/Simulator/cCityWalls.h>
+#include <Spore/Simulator/cCommunityLayout.h>
+#include <Spore/Simulator/cInterCityRoad.h>
+#include <Spore/Simulator/cCulturalTarget.h>
+#include <Spore/Simulator/cTurret.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/CommonIDs.h>
 
 #define cCityPtr eastl::intrusive_ptr<Simulator::cCity>
 

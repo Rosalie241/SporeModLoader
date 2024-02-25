@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\UTFWin\UTFWinObject.h>
-#include <Spore\UTFWin\OutlineFormat.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/UTFWin/UTFWinObject.h>
+#include <Spore/UTFWin/OutlineFormat.h>
 
 #define ITextPtr eastl::intrusive_ptr<UTFWin::IText>
 

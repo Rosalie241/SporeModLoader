@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\cSpaceInventoryItem.h>
-#include <Spore\Simulator\cPlanetRecord.h>
-#include <Spore\App\IMessageListener.h>
-#include <EASTL\map.h>
-#include <EASTL\vector.h>
-#include <EASTL\fixed_vector.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/cSpaceInventoryItem.h>
+#include <Spore/Simulator/cPlanetRecord.h>
+#include <Spore/App/IMessageListener.h>
+#include <EASTL/map.h>
+#include <EASTL/vector.h>
+#include <EASTL/fixed_vector.h>
 
 // Check Simulator::cSpaceTrading
 #define SpaceTrading (*Simulator::cSpaceTrading::Get())

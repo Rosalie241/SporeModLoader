@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\IO\XmlWriter.h>
-#include <Spore\Internal.h>
+#include <Spore/IO/XmlWriter.h>
+#include <Spore/Internal.h>
 
 namespace IO
 {

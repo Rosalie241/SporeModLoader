@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\SporeTooltipWinProc.h>
-#include <SourceCode\Utility.h>
+#include <Spore/UTFWin/SporeTooltipWinProc.h>
+#include <SourceCode/Utility.h>
 
 namespace UTFWin
 {

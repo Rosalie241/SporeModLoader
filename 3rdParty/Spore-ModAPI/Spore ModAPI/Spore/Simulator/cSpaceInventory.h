@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cSpaceInventoryItem.h>
-#include <EASTL\vector.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cSpaceInventoryItem.h>
+#include <EASTL/vector.h>
 
 #define cSpaceInventoryPtr eastl::intrusive_ptr<Simulator::cSpaceInventory>
 

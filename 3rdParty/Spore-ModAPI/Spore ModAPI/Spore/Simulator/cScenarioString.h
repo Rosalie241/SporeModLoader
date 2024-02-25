@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\LocalizedString.h>
-#include <EASTL\string.h>
+#include <Spore/LocalizedString.h>
+#include <EASTL/string.h>
 
 namespace Simulator
 {

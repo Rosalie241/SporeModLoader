@@ -1,7 +1,7 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Graphics\RenderUtils.h>
-#include <Spore\RenderWare\Raster.h>
-#include <Spore\RenderWare\CompiledState.h> 
+#include <Spore/Graphics/RenderUtils.h>
+#include <Spore/RenderWare/Raster.h>
+#include <Spore/RenderWare/CompiledState.h> 
 
 namespace RenderWare
 {

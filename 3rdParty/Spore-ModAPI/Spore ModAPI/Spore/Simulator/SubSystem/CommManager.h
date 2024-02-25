@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\cCommEvent.h>
-#include <Spore\Simulator\ConversationResource.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/cCommEvent.h>
+#include <Spore/Simulator/ConversationResource.h>
 
 #define CommManager (*Simulator::cCommManager::Get())
 

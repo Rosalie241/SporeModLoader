@@ -1,5 +1,5 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Skinner\cPaintSystem.h>
+#include <Spore/Skinner/cPaintSystem.h>
 
 namespace Skinner
 {

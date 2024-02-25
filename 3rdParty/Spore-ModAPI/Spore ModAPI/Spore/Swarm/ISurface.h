@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\Swarm\IVisualEffect.h>
-#include <Spore\Swarm\cSurfaceInfo.h>
+#include <Spore/Swarm/IVisualEffect.h>
+#include <Spore/Swarm/cSurfaceInfo.h>
 
 #define ISurfacePtr eastl::intrusive_ptr<Swarm::ISurface>
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <EASTL\string.h>
+#include <Spore/Internal.h>
+#include <EASTL/string.h>
 
 namespace IO
 {

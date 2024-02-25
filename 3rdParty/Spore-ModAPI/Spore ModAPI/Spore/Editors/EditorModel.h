@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include <Spore\ResourceKey.h>
-#include <Spore\MathUtils.h>
-#include <Spore\Editors\EditorRigblock.h>
-#include <Spore\Editors\INameableEntity.h>
-#include <Spore\Editors\cEditorResource.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Editors/EditorRigblock.h>
+#include <Spore/Editors/INameableEntity.h>
+#include <Spore/Editors/cEditorResource.h>
 
-#include <EASTL\string.h>
-#include <EASTL\vector.h>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
 
 namespace Editors 
 {

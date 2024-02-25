@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\Simulator\cGonzagoSimulator.h>
-#include <Spore\Simulator\cCreatureCitizen.h>
-#include <Spore\Simulator\AI\cBehaviorTreeData.h>
-#include <EASTL\fixed_vector.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/Simulator/cGonzagoSimulator.h>
+#include <Spore/Simulator/cCreatureCitizen.h>
+#include <Spore/Simulator/AI/cBehaviorTreeData.h>
+#include <EASTL/fixed_vector.h>
 
 #define cTribePlannerPtr eastl::intrusive_ptr<Simulator::cTribePlanner>
 

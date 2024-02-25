@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <EASTL\string.h>
-#include <Spore\Internal.h>
-#include <Spore\MathUtils.h>
-#include <Spore\ResourceKey.h>
-#include <Spore\Transform.h>
-#include <Spore\LocalizedString.h>
+#include <EASTL/string.h>
+#include <Spore/Internal.h>
+#include <Spore/MathUtils.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/Transform.h>
+#include <Spore/LocalizedString.h>
 
 namespace App
 {
@@ -849,6 +849,16 @@ namespace App
 			//uint64_t		mValue;
 			//double			mValue;
 			float		mValueFloat;
+#ifdef __GNUC__
+			ResourceKey mValueKey;
+			Vector2	mValueVector2;
+			Vector3	mValueVector3;
+			Vector4	mValueVector4;
+			ColorRGB	mValueColorRGB;
+			ColorRGBA	mValueColorRGBA;
+			eastl::string8	mValueString8;
+			eastl::string16	mValueString16;
+#else
 			struct UNNAMED(PropertyResourceKey) { ResourceKey mValueKey; };
 			struct UNNAMED(PropertyVector2) { Vector2	mValueVector2; };
 			struct UNNAMED(PropertyVector3){ Vector3	mValueVector3; };
@@ -858,7 +868,7 @@ namespace App
 
 			struct UNNAMED(PropertyString8) { eastl::string8	mValueString8; };
 			struct UNNAMED(PropertyString16) { eastl::string16	mValueString16; };
-
+#endif // __GNUC__
 			struct UNNAMED(PropertyArray)
 			{
 				void* mpData;

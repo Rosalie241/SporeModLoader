@@ -1,14 +1,15 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
 #include "Application.h"
-#include <Spore\ArgScript\FormatParser.h>
+#include <Spore/ArgScript/FormatParser.h>
 #include <Spore/App/cAppSystem.h>
 #include <Spore/App/CommandLine.h>
 #include <cuchar>
 #include <tlhelp32.h>
 #include <psapi.h>
-#include <Spore\IO.h>
+#include <Spore/IO.h>
 
+template <>
 bool ShaderFragments_detour::DETOUR(Resource::Database* pDBPF)
 {
 	pDBPF = ResourceManager.FindDatabase(
@@ -121,6 +122,7 @@ namespace ModAPI
 }
 
 void CreateLogFile() {
+#ifndef __GNUC__
 	_time64(&ModAPI::logFileStartTime);
 
 	wchar_t log_path_buf[MAX_PATH] = { 0 };
@@ -199,26 +201,33 @@ void CreateLogFile() {
 
 	ModAPI::logFile = new IO::FileStream(log_path.c_str());
 	ModAPI::logFile->Open(IO::AccessFlags::Write, IO::CD::CreateAlways);
+#endif // __GNUC__
 }
 
 void CloseLogFile() {
+#ifndef __GNUC__
 	if (ModAPI::logFile) {
 		ModAPI::logFile->Close();
 		ModAPI::logFile.reset();
 	}
+#endif // __GNUC__
 }
 
+template <>
 int ModAPI::PreInit_detour::DETOUR(int arg_0, int arg_1)
 {
 	int result = original_function(this, arg_0, arg_1);
 
+#ifndef __GNUC__
 	CreateLogFile();
 	ModAPI::Log("Spore ModAPI %d.%d.%d loaded.", ModAPI::GetMajorVersion(), ModAPI::GetMinorVersion(), ModAPI::GetBuildVersion());
 	ModAPI::Log("Platform: %s", ModAPI::GetGameType() == ModAPI::GameType::Disk ? "Disk" : "March2017");
+#endif // __GNUC__
 
 	return result;
 }
 
+template <>
 int ModAPI::sub_7E6C60_detour::DETOUR(int arg_0)
 {
 	int result = original_function(this, arg_0);
@@ -228,6 +237,7 @@ int ModAPI::sub_7E6C60_detour::DETOUR(int arg_0)
 	return result;
 }
 
+template <>
 int ModAPI::AppInit_detour::DETOUR(int arg_0)
 {
 	int result = original_function(this, arg_0);
@@ -238,6 +248,7 @@ int ModAPI::AppInit_detour::DETOUR(int arg_0)
 	return result;
 }
 
+template <>
 int ModAPI::AppShutdown_detour::DETOUR()
 {
 	for (int i = ModAPI::disposeFunctions.size() - 1; i >= 0; --i) ModAPI::disposeFunctions[i]();
@@ -339,11 +350,13 @@ namespace ModAPI
 	};
 }
 
+template <>
 bool ModAPI::PersistanceMan_Write_detour::DETOUR(Simulator::ISerializerStream* stream)
 {
 	return Simulator::ClassSerializer(this, ModAPI::ATTRIBUTES).Write(stream);
 }
 
+template <>
 bool ModAPI::PersistanceMan_Read_detour::DETOUR(Simulator::ISerializerStream* stream)
 {
 	return Simulator::ClassSerializer(this, ModAPI::ATTRIBUTES).Read(stream);

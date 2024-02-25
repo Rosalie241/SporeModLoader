@@ -17,22 +17,22 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Graphics\IModelWorld.h>
-#include <Spore\Graphics\IModelManager.h>
-#include <Spore\Graphics\cMaterialInfo.h>
-#include <EASTL\internal\thread_support.h>
+#include <Spore/Graphics/IModelWorld.h>
+#include <Spore/Graphics/IModelManager.h>
+#include <Spore/Graphics/cMaterialInfo.h>
+#include <EASTL/internal/thread_support.h>
 
 namespace Graphics
 {
 	void FilterSettings::SetRequiredGroup(uint32_t group)
 	{
 		int flags = ModelManager.GetGroupFlag(group);
-		requiredGroupFlags |= 1i64 << flags;
+		requiredGroupFlags |= 1LL << flags;
 	}
 	void FilterSettings::SetExcludedGroup(uint32_t group)
 	{
 		int flags = ModelManager.GetGroupFlag(group);
-		excludedGroupFlags &= ~(1i64 << flags);
+		excludedGroupFlags &= ~(1LL << flags);
 	}
 
 	void Model::AddGroup(uint32_t groupID)

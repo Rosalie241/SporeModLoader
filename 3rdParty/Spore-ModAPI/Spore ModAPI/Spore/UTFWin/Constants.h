@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\Input.h>
+#include <Spore/Input.h>
 
 namespace UTFWin
 {

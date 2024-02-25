@@ -1,18 +1,18 @@
 #pragma once
 
-#include <EASTL\fixed_vector.h>
-#include <EASTL\fixed_map.h>
-#include <Spore\ModAPI.h>
-#include <Spore\Graphics\cMaterialManager.h>
-#include <Spore\Resource\IResourceManager.h>
-#include <Spore\Resource\DatabasePackedFile.h>
-#include <Spore\Resource\IKeyFilter.h>
-#include <Spore\Simulator\SubSystem\SimulatorSystem.h>
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\CommonIDs.h>
-#include <Spore\Messaging.h>
-#include <Spore\Cheats.h>
-#include <Spore\IO.h>
+#include <EASTL/fixed_vector.h>
+#include <EASTL/fixed_map.h>
+#include <Spore/ModAPI.h>
+#include <Spore/Graphics/cMaterialManager.h>
+#include <Spore/Resource/IResourceManager.h>
+#include <Spore/Resource/DatabasePackedFile.h>
+#include <Spore/Resource/IKeyFilter.h>
+#include <Spore/Simulator/SubSystem/SimulatorSystem.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/CommonIDs.h>
+#include <Spore/Messaging.h>
+#include <Spore/Cheats.h>
+#include <Spore/IO.h>
 #include <ctime>
 
 virtual_detour(ShaderFragments_detour, Graphics::cMaterialManager, Graphics::IMaterialManager, bool(Resource::Database*)) {};

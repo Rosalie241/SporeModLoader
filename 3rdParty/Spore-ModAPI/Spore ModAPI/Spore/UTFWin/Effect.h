@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\InteractiveWinProc.h>
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\Clock.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/InteractiveWinProc.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/Clock.h>
 
 namespace UTFWin
 {

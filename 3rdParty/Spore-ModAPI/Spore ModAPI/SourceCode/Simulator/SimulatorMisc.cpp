@@ -1,20 +1,20 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Simulator\cHerd.h>
-#include <Spore\Simulator\cSpaceNames.h>
-#include <Spore\Simulator\cBadgeManager.h>
-#include <Spore\Simulator\cObjectPool.h>
-#include <Spore\Simulator\cSimulatorUniverse.h>
-#include <Spore\Simulator\cSpeciesProfile.h>
-#include <Spore\Simulator\cIdentityColorable.h>
-#include <Spore\Simulator\SubSystem\GamePersistenceManager.h>
-#include <Spore\Simulator\cDefaultToolProjectile.h>
-#include <Spore\Simulator\cArtilleryProjectile.h>
-#include <Spore\Simulator\cCulturalProjectile.h>
-#include <Spore\Simulator\cFlakProjectile.h>
-#include <Spore\Simulator\cResourceProjectile.h>
-#include <Spore\Simulator\cSpaceDefenseMissile.h>
-#include <Spore\Simulator\cCollectableItems.h>
-#include <Spore\Simulator\cPlanetaryArtifact.h>
+#include <Spore/Simulator/cHerd.h>
+#include <Spore/Simulator/cSpaceNames.h>
+#include <Spore/Simulator/cBadgeManager.h>
+#include <Spore/Simulator/cObjectPool.h>
+#include <Spore/Simulator/cSimulatorUniverse.h>
+#include <Spore/Simulator/cSpeciesProfile.h>
+#include <Spore/Simulator/cIdentityColorable.h>
+#include <Spore/Simulator/SubSystem/GamePersistenceManager.h>
+#include <Spore/Simulator/cDefaultToolProjectile.h>
+#include <Spore/Simulator/cArtilleryProjectile.h>
+#include <Spore/Simulator/cCulturalProjectile.h>
+#include <Spore/Simulator/cFlakProjectile.h>
+#include <Spore/Simulator/cResourceProjectile.h>
+#include <Spore/Simulator/cSpaceDefenseMissile.h>
+#include <Spore/Simulator/cCollectableItems.h>
+#include <Spore/Simulator/cPlanetaryArtifact.h>
 
 namespace Simulator
 {

@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cCommEvent.h>
-#include <Spore\Simulator\cSpeciesProfile.h>
-#include <Spore\Simulator\cPlanet.h>
-#include <Spore\Simulator\cEmpire.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\MathUtils.h>
-#include <Spore\LocalizedString.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cCommEvent.h>
+#include <Spore/Simulator/cSpeciesProfile.h>
+#include <Spore/Simulator/cPlanet.h>
+#include <Spore/Simulator/cEmpire.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/MathUtils.h>
+#include <Spore/LocalizedString.h>
 
 #define cMissionPtr eastl::intrusive_ptr<Simulator::cMission>
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Simulator\cSpaceInventoryItem.h>
-#include <Spore\Simulator\cSpeciesProfile.h>
+#include <Spore/Simulator/cSpaceInventoryItem.h>
+#include <Spore/Simulator/cSpeciesProfile.h>
 
 #define cPlantCargoInfoPtr eastl::intrusive_ptr<Simulator::cPlantCargoInfo>
 

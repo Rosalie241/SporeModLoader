@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\ResourceKey.h>
-#include <Spore\Object.h>
-#include <Spore\Internal.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/Object.h>
+#include <Spore/Internal.h>
 
 #define PaletteItemPtr eastl::intrusive_ptr<Palettes::PaletteItem>
 

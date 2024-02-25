@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\UTFWin\IWinProc.h>
+#include <Spore/UTFWin/IWinProc.h>
 
 #define ILayoutStylePtr eastl::intrusive_ptr<UTFWin::ILayoutStyle>
 

@@ -1,6 +1,6 @@
 #ifdef MODAPI_DLL_EXPORT
-#include <Spore\Pollinator\cAssetMetadata.h>
-#include <Spore\Pollinator\AchievementsManager.h>
+#include <Spore/Pollinator/cAssetMetadata.h>
+#include <Spore/Pollinator/AchievementsManager.h>
 
 namespace Pollinator
 {

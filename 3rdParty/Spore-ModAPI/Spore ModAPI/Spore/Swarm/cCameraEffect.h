@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Swarm\Components\cCameraDescription.h>
-#include <Spore\Swarm\IComponent.h>
-#include <Spore\Swarm\ICameraManager.h>
-#include <Spore\Transform.h>
+#include <Spore/Swarm/Components/cCameraDescription.h>
+#include <Spore/Swarm/IComponent.h>
+#include <Spore/Swarm/ICameraManager.h>
+#include <Spore/Transform.h>
 
 namespace Swarm
 {

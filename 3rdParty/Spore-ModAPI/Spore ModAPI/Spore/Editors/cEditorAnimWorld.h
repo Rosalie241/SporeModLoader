@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Spore\Anim\IAnimWorld.h>
-#include <Spore\Graphics\IModelWorld.h>
-#include <Spore\Editors\EditorCreatureController.h>
-#include <Spore\Editors\EditorAnimations.h>
-#include <Spore\Editors\cEditorAnimEvent.h>
-#include <Spore\Object.h>
-#include <EASTL\map.h>
-#include <EASTL\vector.h>
+#include <Spore/Anim/IAnimWorld.h>
+#include <Spore/Graphics/IModelWorld.h>
+#include <Spore/Editors/EditorCreatureController.h>
+#include <Spore/Editors/EditorAnimations.h>
+#include <Spore/Editors/cEditorAnimEvent.h>
+#include <Spore/Object.h>
+#include <EASTL/map.h>
+#include <EASTL/vector.h>
 
 #define cEditorAnimWorldPtr eastl::intrusive_ptr<Editors::cEditorAnimWorld>
 

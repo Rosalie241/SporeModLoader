@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\UTFWin\SporeStdDrawableImageInfo.h>
-#include <Spore\UTFWin\StdDrawable.h>
+#include <Spore/UTFWin/SporeStdDrawableImageInfo.h>
+#include <Spore/UTFWin/StdDrawable.h>
 
 #define SporeStdDrawablePtr eastl::intrusive_ptr<UTFWin::SporeStdDrawable>
 

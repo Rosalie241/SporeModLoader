@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
 namespace Swarm
 {

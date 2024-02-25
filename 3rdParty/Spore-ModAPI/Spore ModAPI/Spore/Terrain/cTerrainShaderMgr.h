@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\Graphics\IMaterialManager.h>
-#include <Spore\RenderWare\IndexBuffer.h>
+#include <Spore/Internal.h>
+#include <Spore/Graphics/IMaterialManager.h>
+#include <Spore/RenderWare/IndexBuffer.h>
 
 #define TerrainShaderMgr (*Terrain::cTerrainShaderMgr::Get())
 

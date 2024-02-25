@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Simulator\ISimulatorSerializable.h>
-#include <EASTL\vector.h>
-#include <EASTL\vector_map.h>
-#include <EASTL\hash_set.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
+#include <EASTL/vector.h>
+#include <EASTL/vector_map.h>
+#include <EASTL/hash_set.h>
 
 #define cSPAchievementSerializerPtr eastl::intrusive_ptr<Pollinator::cSPAchievementSerializer>
 

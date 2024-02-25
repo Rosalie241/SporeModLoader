@@ -1,8 +1,8 @@
 #ifndef MODAPI_DLL_EXPORT
 
-#include <Spore\Simulator\SubSystem\AnimalSpeciesManager.h>
-#include <Spore\Simulator\SubSystem\PlantSpeciesManager.h>
-#include <Spore\Simulator\cSpaceInventoryItem.h>
+#include <Spore/Simulator/SubSystem/AnimalSpeciesManager.h>
+#include <Spore/Simulator/SubSystem/PlantSpeciesManager.h>
+#include <Spore/Simulator/cSpaceInventoryItem.h>
 
 namespace Simulator
 {

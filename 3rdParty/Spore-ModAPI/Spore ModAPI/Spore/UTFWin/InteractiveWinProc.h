@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\Message.h>
-#include <Spore\UTFWin\Serialization.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/Message.h>
+#include <Spore/UTFWin/Serialization.h>
 
 #define InteractiveWinProcPtr eastl::intrusive_ptr<UTFWin::InteractiveWinProc>
 

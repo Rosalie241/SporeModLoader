@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Simulator\cGonzagoSimulator.h>
+#include <Spore/Simulator/cGonzagoSimulator.h>
 
 namespace Simulator
 {

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\App\CommandLine.h>
-#include <Spore\App\cAppSystem.h>
-#include <Spore\App\IClassManager.h>
-#include <Spore\UTFWin\IWindow.h>
+#include <Spore/App/CommandLine.h>
+#include <Spore/App/cAppSystem.h>
+#include <Spore/App/IClassManager.h>
+#include <Spore/UTFWin/IWindow.h>
 
 namespace App
 {

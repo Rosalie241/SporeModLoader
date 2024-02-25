@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Graphics\IRenderTargetManager.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Object.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\vector.h>
+#include <Spore/Graphics/IRenderTargetManager.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Object.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/vector.h>
 
 namespace Graphics
 {

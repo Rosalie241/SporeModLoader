@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include <Spore\Resource\IKeyFilter.h>
-#include <Spore\Resource\IRecord.h>
-#include <Spore\Resource\RecordInfo.h>
-#include <Spore\IO\EAIOZoneObject.h>
-#include <Spore\IO\IStream.h>
-#include <Spore\ICoreAllocator.h>
-#include <Spore\Object.h>
-#include <EASTL\vector.h>
+#include <Spore/Resource/IKeyFilter.h>
+#include <Spore/Resource/IRecord.h>
+#include <Spore/Resource/RecordInfo.h>
+#include <Spore/IO/EAIOZoneObject.h>
+#include <Spore/IO/IStream.h>
+#include <Spore/ICoreAllocator.h>
+#include <Spore/Object.h>
+#include <EASTL/vector.h>
 
 #define DatabasePtr eastl::intrusive_ptr<Resource::Database>
 

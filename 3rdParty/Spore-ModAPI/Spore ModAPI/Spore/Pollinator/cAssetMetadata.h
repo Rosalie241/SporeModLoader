@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\Resource\IResourceManager.h>
-#include <EASTL\string.h>
-#include <EASTL\vector.h>
+#include <Spore/Internal.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/Resource/IResourceManager.h>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
 
 #define cAssetMetadataPtr eastl::intrusive_ptr<Pollinator::cAssetMetadata>
 

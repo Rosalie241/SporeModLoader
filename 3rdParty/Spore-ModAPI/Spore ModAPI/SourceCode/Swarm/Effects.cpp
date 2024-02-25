@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Swarm\Components\VisualEffect.h>
-#include <Spore\Swarm\IEffectMap.h>
+#include <Spore/Swarm/Components/VisualEffect.h>
+#include <Spore/Swarm/IEffectMap.h>
 
 namespace Swarm
 {

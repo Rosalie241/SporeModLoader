@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\UTFWin\Effect.h>
+#include <Spore/UTFWin/Effect.h>
 
 #define IInflateEffectPtr eastl::intrusive_ptr<UTFWin::IInflateEffect>
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\IGameMode.h>
-#include <Spore\CommonIDs.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/IGameMode.h>
+#include <Spore/CommonIDs.h>
 
 #define cCellModeStrategyPtr eastl::intrusive_ptr<App::cCellModeStrategy>
 // The pointer variable is never saved, but it can be retrieved in the GameModeManager

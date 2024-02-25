@@ -22,6 +22,8 @@ using namespace SporeModLoaderHelpers;
 static int (WINAPI* SporeAppEntry_real)(void) = nullptr;
 static int SporeAppEntry_detoured(void)
 {
+    UI::ShowErrorMessage(L"ATTACH DEBUGGERRR!");
+
     if (!SporeModLoader::Initialize())
     {
         return 1;

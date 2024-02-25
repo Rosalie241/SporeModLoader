@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Spore\Simulator\Cell\cCellSerialiazibleData.h>
-#include <Spore\Simulator\Cell\cCellResource.h>
-#include <Spore\Simulator\Cell\cCellObjectData.h>
-#include <Spore\Simulator\Cell\cCellQueryLinkedPool.h>
-#include <Spore\Simulator\cObjectPool.h>
-#include <EASTL\fixed_vector.h>
-#include <EASTL\map.h>
+#include <Spore/Simulator/Cell/cCellSerialiazibleData.h>
+#include <Spore/Simulator/Cell/cCellResource.h>
+#include <Spore/Simulator/Cell/cCellObjectData.h>
+#include <Spore/Simulator/Cell/cCellQueryLinkedPool.h>
+#include <Spore/Simulator/cObjectPool.h>
+#include <EASTL/fixed_vector.h>
+#include <EASTL/map.h>
 
 #define CellGame (*Simulator::Cell::cCellGame::Get())
 

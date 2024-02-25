@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\MathUtils.h>
-#include <Spore\ResourceKey.h>
+#include <Spore/MathUtils.h>
+#include <Spore/ResourceKey.h>
 
 #define TuningSpine (*Editors::cTuningSpine::Get())
 

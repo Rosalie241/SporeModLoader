@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Object.h>
+#include <Spore/Object.h>
 
 namespace RenderWare
 {

@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include <Spore\Swarm\IVisualEffect.h>
-#include <Spore\Swarm\IEffectsWorld.h>
-#include <Spore\Swarm\IEffectMap.h>
-#include <Spore\Swarm\ISurface.h>
-#include <Spore\Swarm\cGlobalParams.h>
-#include <Spore\Object.h>
-#include <Spore\Internal.h>
-#include <EASTL\vector.h>
+#include <Spore/Swarm/IVisualEffect.h>
+#include <Spore/Swarm/IEffectsWorld.h>
+#include <Spore/Swarm/IEffectMap.h>
+#include <Spore/Swarm/ISurface.h>
+#include <Spore/Swarm/cGlobalParams.h>
+#include <Spore/Object.h>
+#include <Spore/Internal.h>
+#include <EASTL/vector.h>
 
 /// Access the active effects manager.
 #define EffectsManager (*Swarm::IEffectsManager::Get())

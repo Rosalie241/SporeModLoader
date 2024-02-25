@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\IMessageManager.h>
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\UILayout.h>
-#include <EASTL\array.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/IMessageManager.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/UILayout.h>
+#include <EASTL/array.h>
 
 namespace Editors
 {

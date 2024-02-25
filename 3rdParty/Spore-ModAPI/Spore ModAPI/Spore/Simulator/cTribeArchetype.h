@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\App\PropertyList.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\vector.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/vector.h>
 
 namespace Simulator
 {

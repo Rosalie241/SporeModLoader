@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\ResourceKey.h>
-#include <Spore\LocalizedString.h>
-#include <EASTL\vector.h>
-#include <Spore\App\PropertyList.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/LocalizedString.h>
+#include <EASTL/vector.h>
+#include <Spore/App/PropertyList.h>
 
 namespace Simulator
 {

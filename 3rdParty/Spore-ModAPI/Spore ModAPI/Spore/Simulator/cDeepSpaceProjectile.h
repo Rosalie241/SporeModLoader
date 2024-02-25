@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Simulator\cDefaultToolProjectile.h>
+#include <Spore/Simulator/cDefaultToolProjectile.h>
 
 #define cDeepSpaceProjectilePtr eastl::intrusive_ptr<Simulator::cDeepSpaceProjectile>
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Simulator\cBuilding.h>
-#include <Spore\Simulator\cHitSphere.h>
+#include <Spore/Simulator/cBuilding.h>
+#include <Spore/Simulator/cHitSphere.h>
 
 #define cBuildingCityHallPtr eastl::intrusive_ptr<Simulator::cBuildingCityHall>
 

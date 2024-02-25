@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Simulator\cMovableDestructibleOrnament.h>
+#include <Spore/Simulator/cMovableDestructibleOrnament.h>
 
 #define cToolObjectPtr eastl::intrusive_ptr<Simulator::cToolObject>
 

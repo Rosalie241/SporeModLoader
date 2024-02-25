@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\Graphics\IModelManager.h>
-#include <Spore\Object.h>
+#include <Spore/Graphics/IModelManager.h>
+#include <Spore/Object.h>
 
-#include <EASTL\vector.h>
-#include <EASTL\map.h>
+#include <EASTL/vector.h>
+#include <EASTL/map.h>
 
 namespace Graphics
 {

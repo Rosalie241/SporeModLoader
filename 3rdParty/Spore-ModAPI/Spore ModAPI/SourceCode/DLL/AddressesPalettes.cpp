@@ -1,19 +1,19 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\Palettes\ColorPickerUI.h>
-#include <Spore\Palettes\ColorSwatchUI.h>
-#include <Spore\Palettes\ItemViewer.h>
-#include <Spore\Palettes\AdvancedItemViewer.h>
-#include <Spore\Palettes\PaletteCategory.h>
-#include <Spore\Palettes\PaletteCategoryUI.h>
-#include <Spore\Palettes\PaletteItem.h>
-#include <Spore\Palettes\PaletteMain.h>
-#include <Spore\Palettes\PalettePage.h>
-#include <Spore\Palettes\PalettePageUI.h>
-#include <Spore\Palettes\PaletteUI.h>
-#include <Spore\Palettes\PaletteIterator.h>
-#include <Spore\Palettes\StandardItemUI.h>
-#include <Spore\Palettes\SwatchManager.h>
+#include <Spore/Palettes/ColorPickerUI.h>
+#include <Spore/Palettes/ColorSwatchUI.h>
+#include <Spore/Palettes/ItemViewer.h>
+#include <Spore/Palettes/AdvancedItemViewer.h>
+#include <Spore/Palettes/PaletteCategory.h>
+#include <Spore/Palettes/PaletteCategoryUI.h>
+#include <Spore/Palettes/PaletteItem.h>
+#include <Spore/Palettes/PaletteMain.h>
+#include <Spore/Palettes/PalettePage.h>
+#include <Spore/Palettes/PalettePageUI.h>
+#include <Spore/Palettes/PaletteUI.h>
+#include <Spore/Palettes/PaletteIterator.h>
+#include <Spore/Palettes/StandardItemUI.h>
+#include <Spore/Palettes/SwatchManager.h>
 
 namespace Palettes
 {

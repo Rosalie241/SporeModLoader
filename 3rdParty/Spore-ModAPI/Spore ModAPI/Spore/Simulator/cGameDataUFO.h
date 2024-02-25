@@ -18,14 +18,14 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cLocomotiveObject.h>
-#include <Spore\Simulator\cCombatant.h>
-#include <Spore\Simulator\cSpaceToolData.h>
-#include <Spore\Simulator\cBehaviorList.h>
-#include <Spore\Simulator\cPlanet.h>
-#include <Spore\App\IMessageListener.h>
-#include <EASTL\list.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cLocomotiveObject.h>
+#include <Spore/Simulator/cCombatant.h>
+#include <Spore/Simulator/cSpaceToolData.h>
+#include <Spore/Simulator/cBehaviorList.h>
+#include <Spore/Simulator/cPlanet.h>
+#include <Spore/App/IMessageListener.h>
+#include <EASTL/list.h>
 
 #define cGameDataUFOPtr eastl::intrusive_ptr<Simulator::cGameDataUFO>
 

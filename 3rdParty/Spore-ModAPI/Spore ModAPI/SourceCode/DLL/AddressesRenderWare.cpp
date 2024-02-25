@@ -1,10 +1,10 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\RenderWare\CompiledState.h>
-#include <Spore\RenderWare\Mesh.h>
-#include <Spore\RenderWare\Raster.h>
-#include <Spore\RenderWare\RWHeader.h>
-#include <Spore\RenderWare\VertexDescription.h>
+#include <Spore/RenderWare/CompiledState.h>
+#include <Spore/RenderWare/Mesh.h>
+#include <Spore/RenderWare/Raster.h>
+#include <Spore/RenderWare/RWHeader.h>
+#include <Spore/RenderWare/VertexDescription.h>
 
 namespace RenderWare
 {

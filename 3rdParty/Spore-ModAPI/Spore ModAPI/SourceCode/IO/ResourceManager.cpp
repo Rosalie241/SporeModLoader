@@ -17,8 +17,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Resource\IResourceManager.h>
-#include <Spore\Resource\cResourceManager.h>
+#include <Spore/Resource/IResourceManager.h>
+#include <Spore/Resource/cResourceManager.h>
 
 namespace Resource
 {

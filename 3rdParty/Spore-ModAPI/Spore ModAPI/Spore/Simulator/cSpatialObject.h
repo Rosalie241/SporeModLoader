@@ -19,17 +19,17 @@
 
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\MathUtils.h>
+#include <Spore/Object.h>
+#include <Spore/MathUtils.h>
 
-#include <Spore\Graphics\Model.h>
-#include <Spore\Graphics\IModelWorld.h>
+#include <Spore/Graphics/Model.h>
+#include <Spore/Graphics/IModelWorld.h>
 
-#include <Spore\Simulator\Serialization.h>
-#include <Spore\Simulator\cGameData.h>
+#include <Spore/Simulator/Serialization.h>
+#include <Spore/Simulator/cGameData.h>
 
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
 
 #define cSpatialObjectPtr eastl::intrusive_ptr<Simulator::cSpatialObject>
 

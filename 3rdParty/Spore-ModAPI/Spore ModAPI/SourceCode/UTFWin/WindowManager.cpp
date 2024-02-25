@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\IWindowManager.h>
+#include <Spore/UTFWin/IWindowManager.h>
 
 namespace UTFWin
 {

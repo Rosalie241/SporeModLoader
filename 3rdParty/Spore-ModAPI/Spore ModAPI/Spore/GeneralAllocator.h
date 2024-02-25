@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <EASTL\bitset.h>
-#include <EASTL\internal\thread_support.h>
+#include <Spore/Internal.h>
+#include <EASTL/bitset.h>
+#include <EASTL/internal/thread_support.h>
 
 struct GeneralAllocator
 {

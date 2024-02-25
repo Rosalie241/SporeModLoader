@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\ResourceID.h>
-#include <Spore\MathUtils.h>
-#include <Spore\RenderWare\Raster.h>
+#include <Spore/Internal.h>
+#include <Spore/ResourceID.h>
+#include <Spore/MathUtils.h>
+#include <Spore/RenderWare/Raster.h>
 
 /// Access the active render target manager.
 #define RenderTargetManager (*Graphics::IRenderTargetManager::Get())

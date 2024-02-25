@@ -26,10 +26,10 @@
 #include "Image.h"
 #include "../MathUtils.h"
 
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\UTFWin\IDrawable.h>
-#include <Spore\UTFWin\Image.h>
-#include <Spore\UTFWin\OutlineFormat.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/UTFWin/IDrawable.h>
+#include <Spore/UTFWin/Image.h>
+#include <Spore/UTFWin/OutlineFormat.h>
 
 #define IStdDrawablePtr eastl::intrusive_ptr<UTFWin::IStdDrawable>
 #define StdDrawablePtr eastl::intrusive_ptr<UTFWin::StdDrawable>

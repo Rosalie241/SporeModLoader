@@ -1,4 +1,4 @@
-#include <Spore\UTFWin\CursorManager.h>
+#include <Spore/UTFWin/CursorManager.h>
 
 namespace UTFWin
 {

@@ -17,17 +17,18 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Graphics\IMaterialManager.h>
-#include <Spore\Graphics\cMaterialManager.h>
-#include <Spore\Graphics\CompiledShader.h>
-#include <Spore\Graphics\StandardShader.h>
-#include <Spore\Graphics\ShaderBuilder.h>
-#include <Spore\Graphics\ITextureManager.h>
-#include <Spore\Graphics\RenderUtils.h>
-#include <Spore\RenderWare\CompiledState.h>
-#include <Spore\Resource\IResourceManager.h>
-#include <Spore\CommonIDs.h>
-#include <Spore\IO\StreamAdapter.h>
+#include <Spore/Graphics/IMaterialManager.h>
+#include <Spore/Graphics/cMaterialManager.h>
+#include <Spore/Graphics/CompiledShader.h>
+#include <Spore/Graphics/StandardShader.h>
+#include <Spore/Graphics/ShaderBuilder.h>
+#include <Spore/Graphics/ITextureManager.h>
+#include <Spore/Graphics/RenderUtils.h>
+#include <Spore/RenderWare/CompiledState.h>
+#include <Spore/Resource/IResourceManager.h>
+#include <Spore/CommonIDs.h>
+#include <Spore/IO/StreamAdapter.h>
+#include <Spore/Mutex.h>
 
 namespace Graphics
 {
@@ -178,7 +179,11 @@ namespace Graphics
 	bool cMaterialManager::ReadMaterialsImpl(IO::IStream* pStream, RenderWareFile* pRenderWare)
 	{
 
+#ifdef __GNUC__ // TODO: fix this properly
+		this->mMaterialsMutex.Lock(-1);
+#else
 		this->mMaterialsMutex.Lock(Mutex::kDefaultWait);
+#endif
 
 		bool result = false;
 

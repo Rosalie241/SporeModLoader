@@ -17,10 +17,10 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
-#include <Spore\Simulator\cHitSphere.h>
-#include <Spore\Simulator\cStarRecord.h>
-#include <Spore\Simulator\cSolarSystem.h>
-#include <Spore\Simulator\cStar.h>
+#include <Spore/Simulator/cHitSphere.h>
+#include <Spore/Simulator/cStarRecord.h>
+#include <Spore/Simulator/cSolarSystem.h>
+#include <Spore/Simulator/cStar.h>
 
 namespace Simulator
 {

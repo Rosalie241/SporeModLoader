@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Palettes\IItemFrameUI.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\UTFWin\UILayout.h>
+#include <Spore/Palettes/IItemFrameUI.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/UTFWin/UILayout.h>
 
 namespace Palettes
 {

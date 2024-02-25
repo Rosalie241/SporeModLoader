@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Simulator\SubSystem\GameTimeManager.h>
-#include <Spore\Simulator\cTimeOfDay.h>
+#include <Spore/Simulator/SubSystem/GameTimeManager.h>
+#include <Spore/Simulator/cTimeOfDay.h>
 
 
 namespace Simulator

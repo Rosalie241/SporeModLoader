@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
-#include <Spore\Internal.h>
-#include <Spore\MathUtils.h>
-#include <Spore\UTFWin\Image.h>
+#include <Spore/Internal.h>
+#include <Spore/MathUtils.h>
+#include <Spore/UTFWin/Image.h>
 
 namespace UTFWin
 {

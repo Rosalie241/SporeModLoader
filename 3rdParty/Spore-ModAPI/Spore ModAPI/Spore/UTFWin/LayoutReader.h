@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\IO\IStream.h>
+#include <Spore/Object.h>
+#include <Spore/IO/IStream.h>
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
 namespace UTFWin
 {

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Spore\Simulator\cGonzagoSimulator.h>
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\LocalizedString.h>
-#include <EASTL\map.h>
-#include <EASTL\hash_map.h>
+#include <Spore/Simulator/cGonzagoSimulator.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/LocalizedString.h>
+#include <EASTL/map.h>
+#include <EASTL/hash_map.h>
 
 //TODO #define BadgeManager ?
 

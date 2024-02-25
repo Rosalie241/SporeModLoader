@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Simulator\cGonzagoSimulator.h>
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cProjectile.h>
-#include <Spore\App\IMessageListener.h>
+#include <Spore/Simulator/cGonzagoSimulator.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cProjectile.h>
+#include <Spore/App/IMessageListener.h>
 
 namespace Simulator
 {

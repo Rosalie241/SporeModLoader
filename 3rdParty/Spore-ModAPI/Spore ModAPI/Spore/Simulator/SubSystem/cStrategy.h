@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\Simulator\Serialization.h>
-#include <Spore\Simulator\SubSystem\cSavedGameHeader.h>
+#include <Spore/Object.h>
+#include <Spore/Simulator/Serialization.h>
+#include <Spore/Simulator/SubSystem/cSavedGameHeader.h>
 
 #define ISimulatorStrategyPtr eastl::intrusive_ptr<Simulator::ISimulatorStrategy>
 #define cStrategyPtr eastl::intrusive_ptr<Simulator::cStrategy>

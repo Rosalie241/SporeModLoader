@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Audio\AudioSystem.h>
+#include <Spore/Audio/AudioSystem.h>
 
 namespace Audio
 {

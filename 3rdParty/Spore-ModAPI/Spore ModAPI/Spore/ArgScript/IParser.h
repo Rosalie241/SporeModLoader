@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\ArgScript\ASDeclarations.h>
-#include <Spore\ArgScript\Line.h>
-#include <Spore\Internal.h>
+#include <Spore/ArgScript/ASDeclarations.h>
+#include <Spore/ArgScript/Line.h>
+#include <Spore/Internal.h>
 
 #define IParserPtr eastl::intrusive_ptr<ArgScript::IParser>
 

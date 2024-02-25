@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cBehaviorList.h>
-#include <Spore\Simulator\cCombatant.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cBehaviorList.h>
+#include <Spore/Simulator/cCombatant.h>
 
 #define cTribeToolPtr eastl::intrusive_ptr<Simulator::cTribeTool>
 

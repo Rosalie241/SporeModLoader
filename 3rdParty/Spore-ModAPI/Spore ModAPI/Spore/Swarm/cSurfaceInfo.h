@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\MathUtils.h>
-#include <EASTL\vector.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/vector.h>
 
 namespace Swarm
 {

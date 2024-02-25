@@ -18,11 +18,11 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\App\MessageListenerData.h>
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\SubSystem\ISimulatorUIGraphic.h>
-#include <EASTL\list.h>
+#include <Spore/Object.h>
+#include <Spore/App/MessageListenerData.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/SubSystem/ISimulatorUIGraphic.h>
+#include <EASTL/list.h>
 
 #define SimulatorSystem (*Simulator::cSimulatorSystem::Get())
 

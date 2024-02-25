@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\Resource\IResourceFactory.h>
-#include <Spore\Resource\IKeyFilter.h>
-#include <Spore\Resource\ICache.h>
-#include <Spore\Resource\Database.h>
+#include <Spore/Resource/IResourceFactory.h>
+#include <Spore/Resource/IKeyFilter.h>
+#include <Spore/Resource/ICache.h>
+#include <Spore/Resource/Database.h>
 
-#include <EASTL\list.h>
+#include <EASTL/list.h>
 
 /// Access the active resource manager.
 #define ResourceManager (*Resource::IResourceManager::Get())

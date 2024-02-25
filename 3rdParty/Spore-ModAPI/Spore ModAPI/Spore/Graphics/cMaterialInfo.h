@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\Graphics\cMITextureSet.h>
-#include <EASTL\vector.h>
+#include <Spore/Internal.h>
+#include <Spore/Graphics/cMITextureSet.h>
+#include <EASTL/vector.h>
 
 #define cMaterialInfoPtr eastl::intrusive_ptr<Graphics::cMaterialInfo>
 

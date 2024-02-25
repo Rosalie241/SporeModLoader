@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\CommandLine.h>
-#include <Spore\App\Canvas.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\Object.h>
-#include <EASTL\string.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/CommandLine.h>
+#include <Spore/App/Canvas.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/Object.h>
+#include <EASTL/string.h>
 
 #define AppSystem (*App::IAppSystem::Get())
 #define IAppSystemPtr eastl::intrusive_ptr<App::IAppSystem>

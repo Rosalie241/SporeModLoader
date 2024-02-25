@@ -21,7 +21,7 @@
 
 
 #include <cstdint>
-#include <Windows.h>
+#include <windows.h>
 
 /*
 This file defines the main basic utilities you will need if you are doing a DLL injection.

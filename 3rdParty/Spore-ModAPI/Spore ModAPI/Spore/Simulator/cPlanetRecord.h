@@ -18,14 +18,14 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\StarID.h>
-#include <Spore\Simulator\cEllipticalOrbit.h>
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\App\IDGenerator.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\string.h>
-#include <EASTL\vector.h>
+#include <Spore/Simulator/StarID.h>
+#include <Spore/Simulator/cEllipticalOrbit.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/App/IDGenerator.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
 
 #define cPlanetRecordPtr eastl::intrusive_ptr<Simulator::cPlanetRecord>
 

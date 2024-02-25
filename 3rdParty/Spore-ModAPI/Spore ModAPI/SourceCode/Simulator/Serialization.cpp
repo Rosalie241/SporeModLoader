@@ -1,4 +1,4 @@
-#include <Spore\Simulator\Serialization.h>
+#include <Spore/Simulator/Serialization.h>
 
 namespace Simulator
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\UI\CursorAttachment.h>
-#include <Spore\LocalizedString.h>
-#include <EASTL\map.h>
+#include <Spore/UI/CursorAttachment.h>
+#include <Spore/LocalizedString.h>
+#include <EASTL/map.h>
 
 #define CivCommCursorAttachmentPtr eastl::intrusive_ptr<UI::CivCommCursorAttachment>
 

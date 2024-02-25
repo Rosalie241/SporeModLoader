@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\RenderWare\Raster.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/RenderWare/Raster.h>
 
 #define cRwRasterDirectResourcePtr eastl::intrusive_ptr<Graphics::cRwRasterDirectResource>
 

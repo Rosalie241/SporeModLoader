@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\IO\IStream.h>
+#include <Spore/IO/IStream.h>
 
-#include <EASTL\intrusive_ptr.h>
+#include <EASTL/intrusive_ptr.h>
 
 namespace IO
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\cAnimalCargoInfo.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/cAnimalCargoInfo.h>
 
 /// Accesses the current instance of Simulator::cAnimalSpeciesManager
 #define AnimalSpeciesManager (*Simulator::cAnimalSpeciesManager::Get())

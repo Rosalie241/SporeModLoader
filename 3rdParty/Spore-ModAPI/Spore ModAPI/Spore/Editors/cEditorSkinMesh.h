@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Spore\Graphics\Model.h>
-#include <Spore\Graphics\IMaterialManager.h>
-#include <Spore\Graphics\IAmbientOccluder.h>
-#include <Spore\Editors\cCreatureDataResource.h>
-#include <Spore\Editors\EditorRigblock.h>
-#include <Spore\Clock.h>
+#include <Spore/Graphics/Model.h>
+#include <Spore/Graphics/IMaterialManager.h>
+#include <Spore/Graphics/IAmbientOccluder.h>
+#include <Spore/Editors/cCreatureDataResource.h>
+#include <Spore/Editors/EditorRigblock.h>
+#include <Spore/Clock.h>
 
 namespace Editors
 {

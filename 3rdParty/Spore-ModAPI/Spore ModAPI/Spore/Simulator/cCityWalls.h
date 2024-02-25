@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cOrnament.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cOrnament.h>
 
 #define cCityWallsPtr eastl::intrusive_ptr<Simulator::cCityWalls>
 

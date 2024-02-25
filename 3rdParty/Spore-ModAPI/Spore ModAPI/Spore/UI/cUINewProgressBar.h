@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\UTFWin\UILayout.h>
-#include <Spore\App\PropertyList.h>
+#include <Spore/UTFWin/UILayout.h>
+#include <Spore/App/PropertyList.h>
 
 #define cUINewProgressBarPtr eastl::intrusive_ptr<UI::cUINewProgressBar>
 

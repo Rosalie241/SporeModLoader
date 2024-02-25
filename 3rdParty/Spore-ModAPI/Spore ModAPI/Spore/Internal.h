@@ -21,8 +21,8 @@
 
 #include <cstdint>
 #include <cctype>
-#include <Windows.h>
-#include <Spore\CppRevEng.h>
+#include <windows.h>
+#include <Spore/CppRevEng.h>
 
 #ifdef DOXYGEN
 #define UNNAMED(altName) altName
@@ -88,6 +88,42 @@ extern MODAPI uintptr_t baseAddress;
 // The VOID_ counterpart is actually not necessary, but we keep it here because old methods still use it
 // Unfortunately we used a different argument order than in CppRevEng, so we have to keep these old macros
 
+// GCC has a different macro expansion order than MSVC
+// so we need to expand the macros in order for it to work
+#ifdef __GNUC__
+
+#define auto_METHOD(thisType, returnType, name, parameters, passedArguments) returnType thisType::name(parameters) { return ((returnType(__thiscall*)(thisType*, parameters)) GetAddress(thisType, name))(this, passedArguments); }
+#define auto_METHOD_VOID(thisType, name, parameters, passedArguments) void thisType::name(parameters) { ((void(__thiscall*)(thisType*, parameters)) (GetAddress(thisType, name)))(this, passedArguments); }
+
+#define auto_METHOD_(thisType, returnType, name) returnType thisType::name() { return ((returnType(__thiscall*)(thisType*)) GetAddress(thisType, name))(this); }
+#define auto_METHOD_VOID_(thisType, name) void thisType::name() { ((void(__thiscall*)(thisType*)) (GetAddress(thisType, name)))(this); }
+
+#define auto_METHOD_const(thisType, returnType, name, parameters, passedArguments) returnType thisType::name(parameters) const { return ((returnType(__thiscall*)(const thisType*, parameters)) GetAddress(thisType, name))(this, passedArguments); }
+#define auto_METHOD_VOID_const(thisType, name, parameters, passedArguments) void thisType::name(parameters) const { ((void(__thiscall*)(const thisType*, parameters)) (GetAddress(thisType, name)))(this, passedArguments); }
+
+#define auto_METHOD_const_(thisType, returnType, name) returnType thisType::name() const { return ((returnType(__thiscall*)(const thisType*)) GetAddress(thisType, name))(this); }
+#define auto_METHOD_VOID_const_(thisType, name) void thisType::name() const { ((void(__thiscall*)(const thisType*)) (GetAddress(thisType, thisType::name)))(this); }
+
+#define auto_METHOD_VIRTUAL(className, thisType, returnType, name, parameters, passedArguments) returnType className::name(parameters) { return ((returnType(__thiscall*)(thisType*, parameters)) GetAddress(className, name))(this, passedArguments); }
+#define auto_METHOD_VIRTUAL_VOID(className, thisType, name, parameters, passedArguments) void className::name(parameters) { ((void(__thiscall*)(thisType*, parameters)) (GetAddress(className, name)))(this, passedArguments); }
+
+#define auto_METHOD_VIRTUAL_(className, thisType, returnType, name) returnType className::name() { return ((returnType(__thiscall*)(thisType*)) GetAddress(className, name))(this); }
+#define auto_METHOD_VIRTUAL_VOID_(className, thisType, name) void className::name() { ((void(__thiscall*)(thisType*)) (GetAddress(className, name)))(this); }
+
+#define auto_METHOD_VIRTUAL_const(className, thisType, returnType, name, parameters, passedArguments) returnType className::name(parameters) const { return ((returnType(__thiscall*)(const thisType*, parameters)) GetAddress(className, name))(this, passedArguments); }
+#define auto_METHOD_VIRTUAL_VOID_const(className, thisType, name, parameters, passedArguments) void className::name(parameters) const { ((void(__thiscall*)(const thisType*, parameters)) (GetAddress(className, name)))(this, passedArguments); }
+
+#define auto_METHOD_VIRTUAL_const_(className, thisType, returnType, name) returnType className::name() const { return ((returnType(__thiscall*)(const thisType*)) GetAddress(className, name))(this); }
+#define auto_METHOD_VIRTUAL_VOID_const_(className, thisType, name) void className::name() const { ((void(__thiscall*)(const thisType*)) (GetAddress(className, name)))(this); }
+
+#define auto_STATIC_METHOD(className, returnType, name, parameters, passedArguments) returnType className::name(parameters) { return ((returnType(*)(parameters)) GetAddress(className, name))(passedArguments); }
+#define auto_STATIC_METHOD_VOID(className, name, parameters, passedArguments) void className::name(parameters) { ((void(*)(parameters)) (GetAddress(className, name)))(passedArguments); }
+
+#define auto_STATIC_METHOD_(className, returnType, name) returnType className::name() { return ((returnType(*)()) GetAddress(className, name))(); }
+#define auto_STATIC_METHOD_VOID_(className, name) void className::name() { ((void(*)()) (GetAddress(className, name)))(); }
+
+#else
+
 #define auto_METHOD(thisType, returnType, name, parameters, passedArguments) RedirectMethod(thisType, name, returnType, parameters, passedArguments)
 #define auto_METHOD_VOID(thisType, name, parameters, passedArguments) METHOD_VOID(GetAddress(thisType, name), thisType, thisType::name, parameters, passedArguments)
 
@@ -117,6 +153,9 @@ extern MODAPI uintptr_t baseAddress;
 
 #define auto_STATIC_METHOD_(className, returnType, name) RedirectStaticMethod_noargs(className, name, returnType)
 #define auto_STATIC_METHOD_VOID_(className, name) STATIC_METHOD_VOID_(GetAddress(className, name), className::name)
+#endif
+
+
 
 
 #define ASSERT_SIZE(name, size) static_assert(sizeof(name) == size, "sizeof " #name " != " #size);

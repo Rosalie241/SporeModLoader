@@ -18,11 +18,11 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGonzagoSimulator.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\cGameDataUFO.h>
-#include <EASTL\vector.h>
-#include <EASTL\list.h>
+#include <Spore/Simulator/cGonzagoSimulator.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/cGameDataUFO.h>
+#include <EASTL/vector.h>
+#include <EASTL/list.h>
 
 #define SimulatorPlayerUFO (*Simulator::cSimulatorPlayerUFO::Get())
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Palettes\PaletteMain.h>
+#include <Spore/Palettes/PaletteMain.h>
 
 #define PaletteIteratorPtr eastl::intrusive_ptr<Palettes::PaletteIterator>
 

@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include <EASTL\vector.h>
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\UILayout.h>
-#include <Spore\UTFWin\SporeAnimatedIconWin.h>
-#include <Spore\Palettes\PaletteMain.h>
-#include <Spore\Palettes\PaletteCategoryUI.h>
-#include <Spore\Palettes\PaletteInfo.h>
-#include <Spore\Editors\EditorRigblock.h>
+#include <EASTL/vector.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/UILayout.h>
+#include <Spore/UTFWin/SporeAnimatedIconWin.h>
+#include <Spore/Palettes/PaletteMain.h>
+#include <Spore/Palettes/PaletteCategoryUI.h>
+#include <Spore/Palettes/PaletteInfo.h>
+#include <Spore/Editors/EditorRigblock.h>
 
 #define PaletteUIPtr eastl::intrusive_ptr<Palettes::PaletteUI>
 

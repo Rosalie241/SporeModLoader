@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
-#include <EASTL\map.h>
+#include <Spore/Internal.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
+#include <EASTL/map.h>
 
 #define SpaceNames (*Simulator::cSpaceNames::Get())
 

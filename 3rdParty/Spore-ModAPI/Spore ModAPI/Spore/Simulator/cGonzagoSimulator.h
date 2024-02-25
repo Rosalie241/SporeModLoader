@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\Simulator\ISimulatorSerializable.h>
+#include <Spore/Object.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
 
 #define cGonzagoSimulatorPtr eastl::intrusive_ptr<Simulator::cGonzagoSimulator>
 

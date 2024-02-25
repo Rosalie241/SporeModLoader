@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Simulator\cCreatureBase.h>
-#include <Spore\MathUtils.h>
+#include <Spore/Simulator/cCreatureBase.h>
+#include <Spore/MathUtils.h>
 
 #define CreatureGameData (*Simulator::cCreatureGameData::Get())
 

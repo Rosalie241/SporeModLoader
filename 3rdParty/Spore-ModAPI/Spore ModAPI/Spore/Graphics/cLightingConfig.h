@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\App\PropertyList.h>
-#include <EASTL\vector.h>
+#include <Spore/App/PropertyList.h>
+#include <EASTL/vector.h>
 
 namespace Graphics
 {

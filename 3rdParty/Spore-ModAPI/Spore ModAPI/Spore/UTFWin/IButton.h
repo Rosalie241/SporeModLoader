@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\UTFWin\IDrawable.h>
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\UTFWin\OutlineFormat.h>
+#include <Spore/UTFWin/IDrawable.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/UTFWin/OutlineFormat.h>
 
 #define IButtonPtr eastl::intrusive_ptr<UTFWin::IButton>
 

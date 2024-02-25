@@ -18,12 +18,12 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\cPlanetRecord.h>
-#include <Spore\Simulator\cCommodityNode.h>
-#include <EASTL\hash_map.h>
-#include <EASTL\map.h>
-#include <EASTL\vector.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/cPlanetRecord.h>
+#include <Spore/Simulator/cCommodityNode.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/map.h>
+#include <EASTL/vector.h>
 
 #define TerraformingManager (*Simulator::cTerraformingManager::Get())
 

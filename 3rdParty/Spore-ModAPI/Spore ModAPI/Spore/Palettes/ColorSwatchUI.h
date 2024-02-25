@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\App\PropertyList.h>
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\Object.h>
-#include <Spore\Clock.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/Object.h>
+#include <Spore/Clock.h>
 
 #define ColorSwatchUIPtr eastl::intrusive_ptr<Palettes::ColorSwatchUI>
 

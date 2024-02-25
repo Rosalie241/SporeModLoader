@@ -18,6 +18,6 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\App\ICheatManager.h>
-#include <Spore\ArgScript\FormatParser.h>  // for the printf method
-#include <Spore\ArgScript\ICommand.h>
+#include <Spore/App/ICheatManager.h>
+#include <Spore/ArgScript/FormatParser.h>  // for the printf method
+#include <Spore/ArgScript/ICommand.h>

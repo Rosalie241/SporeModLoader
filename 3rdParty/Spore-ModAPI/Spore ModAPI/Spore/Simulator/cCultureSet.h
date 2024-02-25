@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\ResourceKey.h>
-#include <Spore\CommonIDs.h>
-#include <EASTL\map.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/CommonIDs.h>
+#include <EASTL/map.h>
 
 namespace Simulator
 {

@@ -1,7 +1,7 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\Swarm\cEffectsManager.h>
-#include <Spore\Swarm\IEffectsManager.h>
+#include <Spore/Swarm/cEffectsManager.h>
+#include <Spore/Swarm/IEffectsManager.h>
 
 namespace Swarm
 {

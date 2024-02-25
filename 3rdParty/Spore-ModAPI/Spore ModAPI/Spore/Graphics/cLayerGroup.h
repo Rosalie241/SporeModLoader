@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Graphics\ILayer.h>
-#include <Spore\Object.h>
-#include <EASTL\vector.h>
+#include <Spore/Graphics/ILayer.h>
+#include <Spore/Object.h>
+#include <EASTL/vector.h>
 
 #define cLayerGroupPtr eastl::intrusive_ptr<Graphics::cLayerGroup>
 

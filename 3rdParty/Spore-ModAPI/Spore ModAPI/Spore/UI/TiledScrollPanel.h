@@ -18,10 +18,10 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\ResourceKey.h>
+#include <Spore/Object.h>
+#include <Spore/ResourceKey.h>
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
 namespace UI
 {

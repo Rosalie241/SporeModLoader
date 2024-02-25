@@ -19,17 +19,17 @@
 
 #pragma once
 
-#include <EASTL\vector.h>
-#include <EASTL\hash_map.h>
-#include <EASTL\map.h>
-#include <EASTL\string.h>
-#include <EASTL\intrusive_ptr.h>
-#include <Spore\App\IPropManager.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Resource\IResourceManager.h>
-#include <Spore\Resource\IResourceFactory.h>
-#include <Spore\ArgScript\FormatParser.h>
-#include <Spore\ArgScript\Line.h>
+#include <EASTL/vector.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/map.h>
+#include <EASTL/string.h>
+#include <EASTL/intrusive_ptr.h>
+#include <Spore/App/IPropManager.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Resource/IResourceManager.h>
+#include <Spore/Resource/IResourceFactory.h>
+#include <Spore/ArgScript/FormatParser.h>
+#include <Spore/ArgScript/Line.h>
 
 namespace App
 {

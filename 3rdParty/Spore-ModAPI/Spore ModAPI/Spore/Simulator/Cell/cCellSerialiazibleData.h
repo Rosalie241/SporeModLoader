@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Simulator\ISimulatorSerializable.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
 
 #define cCellSerializableDataPtr eastl::intrusive_ptr<Simulator::Cell::cCellSerializableData>
 #define CellSerializableData (*Simulator::Cell::cCellSerializableData::Get())

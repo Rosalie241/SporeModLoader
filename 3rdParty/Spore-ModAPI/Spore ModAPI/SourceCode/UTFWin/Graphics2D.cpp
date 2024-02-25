@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\Graphics2D.h>
-#include <Spore\UTFWin\UIRenderer.h>
+#include <Spore/UTFWin/Graphics2D.h>
+#include <Spore/UTFWin/UIRenderer.h>
 
 namespace UTFWin
 {

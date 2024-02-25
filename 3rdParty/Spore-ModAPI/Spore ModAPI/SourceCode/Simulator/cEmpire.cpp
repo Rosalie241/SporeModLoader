@@ -17,8 +17,8 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
-#include <Spore\Simulator\cEmpire.h>
-#include <Spore\Simulator\SubSystem\StarManager.h>
+#include <Spore/Simulator/cEmpire.h>
+#include <Spore/Simulator/SubSystem/StarManager.h>
 
 namespace Simulator
 {

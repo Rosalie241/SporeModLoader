@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\InteractiveWinProc.h>
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\UTFWin\ILayoutStyle.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/InteractiveWinProc.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/UTFWin/ILayoutStyle.h>
 
 #define SimpleLayoutPtr eastl::intrusive_ptr<UTFWin::SimpleLayout>
 

@@ -17,13 +17,13 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
-#include <Spore\Simulator\SubSystem\SimulatorSystem.h>
+#include <Spore/Simulator/SubSystem/SimulatorSystem.h>
 
-#include <Spore\Simulator\SubSystem\StarManager.h>
-#include <Spore\Simulator\SubSystem\SpacePlayerData.h>
-#include <Spore\Simulator\SubSystem\GameViewManager.h>
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\ModAPI.h>
+#include <Spore/Simulator/SubSystem/StarManager.h>
+#include <Spore/Simulator/SubSystem/SpacePlayerData.h>
+#include <Spore/Simulator/SubSystem/GameViewManager.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/ModAPI.h>
 
 namespace Simulator
 {

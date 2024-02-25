@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\Graphics\cMaterialInfo.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/Graphics/cMaterialInfo.h>
 
 namespace Graphics
 {

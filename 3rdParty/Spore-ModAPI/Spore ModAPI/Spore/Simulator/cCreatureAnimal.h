@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cCreatureBase.h>
-#include <Spore\Simulator\cSpeciesProfile.h>
+#include <Spore/Simulator/cCreatureBase.h>
+#include <Spore/Simulator/cSpeciesProfile.h>
 
 #define cCreatureAnimalPtr eastl::intrusive_ptr<Simulator::cCreatureAnimal>
 

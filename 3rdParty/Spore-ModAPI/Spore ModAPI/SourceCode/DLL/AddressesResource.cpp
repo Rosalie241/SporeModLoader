@@ -1,14 +1,14 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\Resource\cResourceManager.h>
-#include <Spore\Resource\DatabasePackedFile.h>
-#include <Spore\Resource\DatabaseDirectoryFiles.h>
-#include <Spore\Resource\IKeyFilter.h>
-#include <Spore\Resource\IResourceManager.h>
-#include <Spore\Resource\PFIndexModifiable.h>
-#include <Spore\Resource\PFRecordRead.h>
-#include <Spore\Resource\PFRecordWrite.h>
-#include <Spore\Resource\Paths.h>
+#include <Spore/Resource/cResourceManager.h>
+#include <Spore/Resource/DatabasePackedFile.h>
+#include <Spore/Resource/DatabaseDirectoryFiles.h>
+#include <Spore/Resource/IKeyFilter.h>
+#include <Spore/Resource/IResourceManager.h>
+#include <Spore/Resource/PFIndexModifiable.h>
+#include <Spore/Resource/PFRecordRead.h>
+#include <Spore/Resource/PFRecordWrite.h>
+#include <Spore/Resource/Paths.h>
 
 namespace Resource
 {

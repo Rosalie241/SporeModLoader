@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Resource\IResourceFactory.h>
-#include <Spore\UTFWin\Cursors.h>
+#include <Spore/Resource/IResourceFactory.h>
+#include <Spore/UTFWin/Cursors.h>
 
 #define CursorManager (*UTFWin::cCursorManager::Get())
 

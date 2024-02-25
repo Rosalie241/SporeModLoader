@@ -1,5 +1,5 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Simulator\cCreatureGameData.h>
+#include <Spore/Simulator/cCreatureGameData.h>
 
 namespace Simulator
 {

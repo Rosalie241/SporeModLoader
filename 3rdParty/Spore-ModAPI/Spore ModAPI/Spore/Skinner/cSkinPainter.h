@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Skinner\cSkinnerTexturePainter.h>
-#include <Spore\RenderWare\VertexDescription.h>
-#include <Spore\RenderWare\VertexBuffer.h>
-#include <Spore\Object.h>
+#include <Spore/Skinner/cSkinnerTexturePainter.h>
+#include <Spore/RenderWare/VertexDescription.h>
+#include <Spore/RenderWare/VertexBuffer.h>
+#include <Spore/Object.h>
 
 namespace Skinner
 {

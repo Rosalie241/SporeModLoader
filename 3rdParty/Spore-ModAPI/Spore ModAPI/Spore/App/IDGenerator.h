@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\ResourceKey.h>
-#include <EASTL\map.h>
+#include <Spore/ResourceKey.h>
+#include <EASTL/map.h>
 
 #define IDGenerator (*App::cIDGenerator::Get())
 

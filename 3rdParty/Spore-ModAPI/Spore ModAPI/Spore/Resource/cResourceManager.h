@@ -19,28 +19,28 @@
 
 #pragma once
 
-#include <EASTL\vector.h>
-#include <EASTL\intrusive_ptr.h>
-#include <EASTL\map.h>
-#include <EASTL\hash_map.h>
-#include <EASTL\vector.h>
-#include <EASTL\list.h>
-#include <EASTL\string.h>
+#include <EASTL/vector.h>
+#include <EASTL/intrusive_ptr.h>
+#include <EASTL/map.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/vector.h>
+#include <EASTL/list.h>
+#include <EASTL/string.h>
 
-#include <Spore\ICoreAllocator.h>
-#include <Spore\CoreAllocatorAdapter.h>
+#include <Spore/ICoreAllocator.h>
+#include <Spore/CoreAllocatorAdapter.h>
 
-#include <Spore\Internal.h>
-#include <Spore\ResourceKey.h>
-#include <Spore\Mutex.h>
+#include <Spore/Internal.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/Mutex.h>
 
-#include <Spore\IO\IStream.h>
-#include <Spore\Resource\IResourceFactory.h>
-#include <Spore\Resource\IKeyFilter.h>
-#include <Spore\Resource\ICache.h>
-#include <Spore\Resource\IResourceManager.h>
-#include <Spore\Resource\Database.h>
-#include <Spore\FixedPoolAllocator.h>
+#include <Spore/IO/IStream.h>
+#include <Spore/Resource/IResourceFactory.h>
+#include <Spore/Resource/IKeyFilter.h>
+#include <Spore/Resource/ICache.h>
+#include <Spore/Resource/IResourceManager.h>
+#include <Spore/Resource/Database.h>
+#include <Spore/FixedPoolAllocator.h>
 
 namespace Resource
 {

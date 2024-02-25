@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\Resource\Database.h>
-#include <Spore\Resource\DatabaseDirectoryFiles.h>
-#include <Spore\Resource\ResourceObject.h>
-#include <EASTL\string.h>
+#include <Spore/Internal.h>
+#include <Spore/Resource/Database.h>
+#include <Spore/Resource/DatabaseDirectoryFiles.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <EASTL/string.h>
 
 namespace Resource
 {

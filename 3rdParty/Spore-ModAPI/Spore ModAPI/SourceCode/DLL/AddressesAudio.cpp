@@ -1,6 +1,6 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\Audio\AudioSystem.h>
+#include <Spore/Audio/AudioSystem.h>
 
 namespace Audio
 {

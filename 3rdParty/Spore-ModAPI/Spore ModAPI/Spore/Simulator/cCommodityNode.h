@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cCombatant.h>
-#include <Spore\Simulator\cVehicle.h>
-#include <Spore\Simulator\cHitSphere.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cCombatant.h>
+#include <Spore/Simulator/cVehicle.h>
+#include <Spore/Simulator/cHitSphere.h>
 
 #define cCommodityNodePtr eastl::intrusive_ptr<Simulator::cCommodityNode>
 

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Spore\Swarm\cGlobalParams.h>
-#include <Spore\Swarm\Components\cDistributeDescription.h>
-#include <Spore\Swarm\IComponent.h>
-#include <Spore\Swarm\IEffectMap.h>
-#include <Spore\Swarm\ISurface.h>
-#include <Spore\Swarm\ParticleStreamers.h>
+#include <Spore/Swarm/cGlobalParams.h>
+#include <Spore/Swarm/Components/cDistributeDescription.h>
+#include <Spore/Swarm/IComponent.h>
+#include <Spore/Swarm/IEffectMap.h>
+#include <Spore/Swarm/ISurface.h>
+#include <Spore/Swarm/ParticleStreamers.h>
 
 namespace Swarm
 {

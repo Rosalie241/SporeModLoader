@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\Mutex.h>
+#include <Spore/Mutex.h>
 
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\UTFWin\Message.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/UTFWin/Message.h>
 
 /// Access the active window manager.
 #define WindowManager (*UTFWin::IWindowManager::Get())

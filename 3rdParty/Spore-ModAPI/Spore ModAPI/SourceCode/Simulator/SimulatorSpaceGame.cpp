@@ -17,8 +17,8 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
-#include <Spore\Simulator\cSimulatorSpaceGame.h>
-#include <Spore\Simulator\SubSystem\SpaceTrading.h>
+#include <Spore/Simulator/cSimulatorSpaceGame.h>
+#include <Spore/Simulator/SubSystem/SpaceTrading.h>
 
 namespace Simulator
 {

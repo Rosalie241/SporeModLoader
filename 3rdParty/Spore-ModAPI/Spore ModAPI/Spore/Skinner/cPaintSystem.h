@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Spore\Skinner\cSkinPainter.h>
-#include <Spore\Editors\cEditorSkinMesh.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\cJob.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\fixed_vector.h>
+#include <Spore/Skinner/cSkinPainter.h>
+#include <Spore/Editors/cEditorSkinMesh.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/cJob.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/fixed_vector.h>
 
 #define PaintSystem (*Skinner::cPaintSystem::Get())
 

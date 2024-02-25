@@ -2,8 +2,8 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
 
-#include <Spore\Internal.h>
-#include <Spore\ModAPI.h>
+#include <Spore/Internal.h>
+#include <Spore/ModAPI.h>
 #include "Application.h"
 #include "TextureOverride.h"
 #include "SpaceToolIconOverride.h"
@@ -16,7 +16,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	LPVOID lpReserved
 )
 {
+#ifndef __GNUC__
 	__try {
+#endif
 		switch (ul_reason_for_call)
 		{
 		case DLL_PROCESS_ATTACH:
@@ -38,11 +40,13 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 			CommitDetours();
 			break;
 		}
+#ifndef __GNUC__
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER) {
 		MessageBoxA(NULL, "Encountered an issue when injecting mods.", "Critical ModAPI Error", MB_OK | MB_ICONERROR);
 		// Terminate SporeApp?
 	}
+#endif
 	return TRUE;
 }
 

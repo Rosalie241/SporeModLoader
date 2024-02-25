@@ -11,9 +11,9 @@
 /// The main terrain class for a planet is Terrain::cTerrainSphere, which is composed of 6 Terrain::cTerrainSphereQuad faces.
 ///
 
-#include <Spore\Terrain\cTerrainSphere.h>
-#include <Spore\Terrain\cTerrainSphereQuad.h>
-#include <Spore\Terrain\TerrainRendering.h>
-#include <Spore\Terrain\ITerrainResourceManager.h>
-#include <Spore\Terrain\cTerrainMapSet.h>
-#include <Spore\Terrain\cTerrainShaderMgr.h>
+#include <Spore/Terrain/cTerrainSphere.h>
+#include <Spore/Terrain/cTerrainSphereQuad.h>
+#include <Spore/Terrain/TerrainRendering.h>
+#include <Spore/Terrain/ITerrainResourceManager.h>
+#include <Spore/Terrain/cTerrainMapSet.h>
+#include <Spore/Terrain/cTerrainShaderMgr.h>

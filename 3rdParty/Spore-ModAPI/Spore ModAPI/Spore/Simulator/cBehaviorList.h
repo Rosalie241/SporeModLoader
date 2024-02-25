@@ -18,7 +18,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cBehaviorBase.h>
+#include <Spore/Simulator/cBehaviorBase.h>
 
 #define cBehaviorListPtr eastl::intrusive_ptr<Simulator::cBehaviorList>
 

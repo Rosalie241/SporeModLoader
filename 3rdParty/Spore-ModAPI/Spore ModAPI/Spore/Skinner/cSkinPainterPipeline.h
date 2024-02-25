@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Skinner\cSkinPainterJob.h>
-#include <Spore\Graphics\Texture.h>
-#include <EASTL\fixed_vector.h>
+#include <Spore/Skinner/cSkinPainterJob.h>
+#include <Spore/Graphics/Texture.h>
+#include <EASTL/fixed_vector.h>
 
 namespace Skinner
 {

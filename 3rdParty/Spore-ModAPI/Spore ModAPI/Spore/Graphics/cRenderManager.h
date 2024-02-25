@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Spore\Graphics\IRenderer.h>
-#include <Spore\App\IMessageManager.h>
-#include <Spore\Object.h>
-#include <Spore\Mutex.h>
-#include <Spore\Clock.h>
-#include <EASTL\vector.h>
-#include <EASTL\intrusive_ptr.h>
+#include <Spore/Graphics/IRenderer.h>
+#include <Spore/App/IMessageManager.h>
+#include <Spore/Object.h>
+#include <Spore/Mutex.h>
+#include <Spore/Clock.h>
+#include <EASTL/vector.h>
+#include <EASTL/intrusive_ptr.h>
 
 namespace Graphics
 {

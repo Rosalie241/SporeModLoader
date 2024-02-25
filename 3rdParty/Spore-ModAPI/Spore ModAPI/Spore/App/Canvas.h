@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\App\IMessageManager.h>
-#include <Spore\Internal.h>
-#include <EASTL\string.h>
+#include <Spore/App/IMessageManager.h>
+#include <Spore/Internal.h>
+#include <EASTL/string.h>
 
 namespace App
 {

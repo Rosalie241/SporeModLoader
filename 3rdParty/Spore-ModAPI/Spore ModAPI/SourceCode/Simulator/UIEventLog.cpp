@@ -1,5 +1,5 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Simulator\SubSystem\UIEventLog.h>
+#include <Spore/Simulator/SubSystem/UIEventLog.h>
 
 namespace Simulator
 {

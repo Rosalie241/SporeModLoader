@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\App\Property.h>
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\Palettes\ColorSwatchUI.h>
+#include <Spore/Object.h>
+#include <Spore/App/Property.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/Palettes/ColorSwatchUI.h>
 
 #define ColorPickerUIPtr eastl::intrusive_ptr<Palettes::ColorPickerUI>
 

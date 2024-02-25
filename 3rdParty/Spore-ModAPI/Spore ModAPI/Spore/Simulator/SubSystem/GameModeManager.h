@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Swarm\IEffectsWorld.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\CommonIDs.h>
-#include <Spore\Editors\EditorRequest.h>
+#include <Spore/Object.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Swarm/IEffectsWorld.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/CommonIDs.h>
+#include <Spore/Editors/EditorRequest.h>
 
 /// Access the active Simulator game mode manager. 
 #define SimGameModeManager (*Simulator::cGameModeManager::Get())

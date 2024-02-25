@@ -1,10 +1,10 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Simulator\cScenarioData.h>
-#include <Spore\Simulator\cScenarioPlayMode.h>
-#include <Spore\Simulator\cScenarioTerraformMode.h>
-#include <Spore\Simulator\cScenarioEditHistory.h>
-#include <Spore\Simulator\cScenarioSimulator.h>
-#include <Spore\Simulator\cScenarioPowerup.h>
+#include <Spore/Simulator/cScenarioData.h>
+#include <Spore/Simulator/cScenarioPlayMode.h>
+#include <Spore/Simulator/cScenarioTerraformMode.h>
+#include <Spore/Simulator/cScenarioEditHistory.h>
+#include <Spore/Simulator/cScenarioSimulator.h>
+#include <Spore/Simulator/cScenarioPowerup.h>
 
 namespace Simulator
 {

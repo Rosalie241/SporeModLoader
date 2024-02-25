@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <EASTL\vector.h>
+#include <Spore/Internal.h>
+#include <EASTL/vector.h>
 
 #define HintManager (*UI::cHintManager::Get())
 

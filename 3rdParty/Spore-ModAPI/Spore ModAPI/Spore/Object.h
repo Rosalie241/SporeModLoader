@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\ResourceKey.h>
-#include <EASTL\intrusive_ptr.h>
-#include <EASTL\internal\thread_support.h>
+#include <Spore/Internal.h>
+#include <Spore/ResourceKey.h>
+#include <EASTL/intrusive_ptr.h>
+#include <EASTL/internal/thread_support.h>
 
 #include <cstddef>
 

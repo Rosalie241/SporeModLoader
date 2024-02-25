@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\Resource\Database.h>
-#include <Spore\Terrain\ITerrain.h>
+#include <Spore/Internal.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/Resource/Database.h>
+#include <Spore/Terrain/ITerrain.h>
 
 #define TerrainResourceManager (*Terrain::ITerrainResourceManager::Get())
 

@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\Internal.h>
+#include <Spore/Internal.h>
 #include <stdint.h>
-#include <EASTL\string.h>
+#include <EASTL/string.h>
 
 ///
 /// This class is used to store a eastl::string16 that is localized; that is, it depends on the current language of the game.

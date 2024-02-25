@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\UTFWin\IText.h>
+#include <Spore/UTFWin/IText.h>
 
 #define cSPUITextZoomPtr eastl::intrusive_ptr<UI::cSPUITextZoom>
 

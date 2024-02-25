@@ -18,14 +18,14 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Editors\IPlayModeModule.h>
-#include <Spore\Editors\PlayModeUI.h>
-#include <Spore\Editors\PlayModeAnimations.h>
-#include <Spore\Editors\PlayModeActor.h>
-#include <Spore\Editors\PlayModeBackgrounds.h>
-#include <EASTL\vector.h>
+#include <Spore/Object.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Editors/IPlayModeModule.h>
+#include <Spore/Editors/PlayModeUI.h>
+#include <Spore/Editors/PlayModeAnimations.h>
+#include <Spore/Editors/PlayModeActor.h>
+#include <Spore/Editors/PlayModeBackgrounds.h>
+#include <EASTL/vector.h>
 
 //TODO vftable 10h OnMouseClick sub_62A810
 

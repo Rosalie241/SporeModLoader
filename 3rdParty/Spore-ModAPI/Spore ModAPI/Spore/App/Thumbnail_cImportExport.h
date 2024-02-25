@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\Resource\Database.h>
-#include <Spore\RenderWare\Raster.h>
-#include <EASTL\hash_map.h>
-#include <EASTL\string.h>
+#include <Spore/Internal.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/Resource/Database.h>
+#include <Spore/RenderWare/Raster.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/string.h>
 
 #define ThumbnailImportExport (*App::Thumbnail_cImportExport::Get())
 

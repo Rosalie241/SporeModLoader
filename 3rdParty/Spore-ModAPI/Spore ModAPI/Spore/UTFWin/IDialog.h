@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\UTFWin\UTFWinObject.h>
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\UTFWin\IButton.h>
+#include <Spore/UTFWin/UTFWinObject.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/UTFWin/IButton.h>
 
 #define IDialogPtr eastl::intrusive_ptr<UTFWin::IDialog>
 

@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\Object.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/Object.h>
 
 namespace UTFWin
 {

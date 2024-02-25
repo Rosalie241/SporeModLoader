@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\UTFWin\IWinProc.h>
+#include <Spore/UTFWin/IWinProc.h>
 
 #define SpaceToolPanelUIPtr eastl::intrusive_ptr<UI::SpaceToolPanelUI>
 

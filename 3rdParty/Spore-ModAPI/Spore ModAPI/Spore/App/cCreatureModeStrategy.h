@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\IGameMode.h>
-#include <Spore\Input.h>
-#include <Spore\Clock.h>
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\cCreatureDisplayStrategy.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/IGameMode.h>
+#include <Spore/Input.h>
+#include <Spore/Clock.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/cCreatureDisplayStrategy.h>
 
 #define cCreatureModeStrategyPtr eastl::intrusive_ptr<App::cCreatureModeStrategy>
 #define ICreatureModeActionHandlerPtr eastl::intrusive_ptr<App::ICreatureModeActionHandler>

@@ -1,12 +1,12 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\Clock.h>
-#include <Spore\FixedPoolAllocator.h>
-#include <Spore\Input.h>
-#include <Spore\LocalizedString.h>
-#include <Spore\MathUtils.h>
-#include <Spore\ResourceKey.h>
-#include <Spore\Transform.h>
+#include <Spore/Clock.h>
+#include <Spore/FixedPoolAllocator.h>
+#include <Spore/Input.h>
+#include <Spore/LocalizedString.h>
+#include <Spore/MathUtils.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/Transform.h>
 
 namespace Addresses(Internal)
 {

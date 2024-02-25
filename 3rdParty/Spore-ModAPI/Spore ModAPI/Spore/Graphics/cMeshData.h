@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\RenderWare\RWMath.h>
-#include <Spore\Object.h>
-#include <EASTL\vector.h>
+#include <Spore/RenderWare/RWMath.h>
+#include <Spore/Object.h>
+#include <EASTL/vector.h>
 
 #define cMeshDataPtr eastl::intrusive_ptr<Graphics::cMeshData>
 

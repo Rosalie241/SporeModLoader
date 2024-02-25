@@ -1,12 +1,12 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\UI\LayerManager.h>
-#include <Spore\UI\SpaceGameUI.h>
-#include <Spore\UI\HintManager.h>
-#include <Spore\UI\ScrollFrameVertical.h>
-#include <Spore\UI\cSPUITextZoom.h>
-#include <Spore\UI\GameSettings.h>
-#include <Spore\UI\EditorNamePanel.h>
+#include <Spore/UI/LayerManager.h>
+#include <Spore/UI/SpaceGameUI.h>
+#include <Spore/UI/HintManager.h>
+#include <Spore/UI/ScrollFrameVertical.h>
+#include <Spore/UI/cSPUITextZoom.h>
+#include <Spore/UI/GameSettings.h>
+#include <Spore/UI/EditorNamePanel.h>
 
 namespace UI
 {

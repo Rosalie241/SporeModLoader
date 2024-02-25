@@ -20,7 +20,7 @@
 #pragma once
 
 #include <cmath>
-#include <Spore\Internal.h>
+#include <Spore/Internal.h>
 
 namespace Addresses(Math)
 {
@@ -533,7 +533,7 @@ namespace Math
 		/// @param other The other bounding box to intersect with.
 		/// @param[out] dst [Optional] Where the intersection will be written. Points inside this bbox are contained in both bbox.
 		/// @return `true` if the bounding boxes intersect, `false` otherwise.
-#ifdef SDK_TO_GHIDRA
+#if defined(SDK_TO_GHIDRA) || defined(__GNUC__)
 		bool Intersect(const BoundingBox& other, BoundingBox& dst/* = BoundingBox()*/) const;  // commented the default parameter as it doesn't work in GCC
 #else
 		bool Intersect(const BoundingBox& other, BoundingBox& dst = BoundingBox()) const;

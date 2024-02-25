@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Simulator\cGonzagoSimulator.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\cCity.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\fixed_list.h>
+#include <Spore/Simulator/cGonzagoSimulator.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/cCity.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/fixed_list.h>
 
 #define cSimPlanetHighLODPtr eastl::intrusive_ptr<Simulator::cSimPlanetHighLOD>
 

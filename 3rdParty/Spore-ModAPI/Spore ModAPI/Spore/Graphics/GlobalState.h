@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\bitset.h>
+#include <Spore/Internal.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/bitset.h>
 
 namespace Graphics
 {

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\UILayout.h>
-#include <Spore\App\Property.h>
-#include <EASTL\vector_map.h>
-#include <Spore\Clock.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/UILayout.h>
+#include <Spore/App/Property.h>
+#include <EASTL/vector_map.h>
+#include <Spore/Clock.h>
 
 #define CursorAttachmentPtr eastl::intrusive_ptr<UI::CursorAttachment>
 

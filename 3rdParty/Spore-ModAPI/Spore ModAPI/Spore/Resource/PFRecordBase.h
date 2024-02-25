@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\Resource\IRecord.h>
-#include <Spore\IO\IStream.h>
-#include <Spore\ResourceKey.h>
+#include <Spore/Resource/IRecord.h>
+#include <Spore/IO/IStream.h>
+#include <Spore/ResourceKey.h>
 
 #define PFRecordBasePtr eastl::intrusive_ptr<Resource::PFRecordBase>
 

@@ -18,15 +18,15 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\UnknownCreatureClass.h>
-#include <Spore\Simulator\cCombatant.h>
-#include <Spore\Simulator\cLocomotiveObject.h>
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cBehaviorAgent.h>
-#include <Spore\Simulator\cBehaviorList.h>
-#include <Spore\Simulator\cSpaceToolData.h>
-#include <Spore\Simulator\cHitSphere.h>
-#include <Spore\CommonIDs.h>
+#include <Spore/Simulator/UnknownCreatureClass.h>
+#include <Spore/Simulator/cCombatant.h>
+#include <Spore/Simulator/cLocomotiveObject.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cBehaviorAgent.h>
+#include <Spore/Simulator/cBehaviorList.h>
+#include <Spore/Simulator/cSpaceToolData.h>
+#include <Spore/Simulator/cHitSphere.h>
+#include <Spore/CommonIDs.h>
 
 #define cVehiclePtr eastl::intrusive_ptr<Simulator::cVehicle>
 

@@ -19,20 +19,20 @@
 
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\MathUtils.h>
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Graphics\ILayer.h>
-#include <Spore\Graphics\Texture.h>
-#include <Spore\Graphics\IAmbientOccluder.h>
-#include <Spore\ResourceID.h>
-#include <EASTL\vector.h>
-#include <Spore\Graphics\cFrustumCull.h>
-#include <Spore\Terrain\ITerrain.h>
-#include <Spore\Terrain\cTerrainStateMgr.h>
-#include <Spore\Terrain\TerrainShaderData.h>
-#include <Spore\Terrain\cTerrainSphereQuad.h>
+#include <Spore/Internal.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Graphics/ILayer.h>
+#include <Spore/Graphics/Texture.h>
+#include <Spore/Graphics/IAmbientOccluder.h>
+#include <Spore/ResourceID.h>
+#include <EASTL/vector.h>
+#include <Spore/Graphics/cFrustumCull.h>
+#include <Spore/Terrain/ITerrain.h>
+#include <Spore/Terrain/cTerrainStateMgr.h>
+#include <Spore/Terrain/TerrainShaderData.h>
+#include <Spore/Terrain/cTerrainSphereQuad.h>
 
 namespace Terrain
 {

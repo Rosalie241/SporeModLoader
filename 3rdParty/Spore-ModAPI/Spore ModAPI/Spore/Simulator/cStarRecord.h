@@ -18,14 +18,14 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\Simulator\ISimulatorSerializable.h>
-#include <Spore\Simulator\cPlanet.h>
-#include <Spore\Simulator\cSpeciesProfile.h>
-#include <Spore\MathUtils.h>
-#include <Spore\ResourceKey.h>
-#include <EASTL\string.h>
-#include <EASTL\vector.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
+#include <Spore/Simulator/cPlanet.h>
+#include <Spore/Simulator/cSpeciesProfile.h>
+#include <Spore/MathUtils.h>
+#include <Spore/ResourceKey.h>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
 
 #define cStarRecordPtr eastl::intrusive_ptr<Simulator::cStarRecord>
 

@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\App\IGameMode.h>
-#include <Spore\App\ICameraManager.h>
-#include <Spore\App\StandardMessage.h>
+#include <Spore/App/IGameMode.h>
+#include <Spore/App/ICameraManager.h>
+#include <Spore/App/StandardMessage.h>
 
-#include <Spore\App\cViewer.h>
+#include <Spore/App/cViewer.h>
 
 /// Access the active game mode manager.
 #define GameModeManager (*App::IGameModeManager::Get())

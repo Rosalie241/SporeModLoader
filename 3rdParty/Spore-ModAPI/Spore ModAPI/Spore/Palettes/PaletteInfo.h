@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\Editors\EditorLimits.h>
+#include <Spore/Object.h>
+#include <Spore/Editors/EditorLimits.h>
 
 #define PaletteInfoPtr eastl::intrusive_ptr<Palettes::PaletteInfo>
 

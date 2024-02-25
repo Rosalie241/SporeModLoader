@@ -1,16 +1,16 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\IO\Allocator.h>
-#include <Spore\IO\EAIOZoneObject.h>
-#include <Spore\IO\FileStream.h>
-#include <Spore\IO\Constants.h>
-#include <Spore\IO\StreamAdapter.h>
-#include <Spore\IO\StreamBuffer.h>
-#include <Spore\IO\StreamChild.h>
-#include <Spore\IO\StreamFixedMemory.h>
-#include <Spore\IO\StreamMemory.h>
-#include <Spore\IO\StreamNull.h>
-#include <Spore\IO\XmlWriter.h>
+#include <Spore/IO/Allocator.h>
+#include <Spore/IO/EAIOZoneObject.h>
+#include <Spore/IO/FileStream.h>
+#include <Spore/IO/Constants.h>
+#include <Spore/IO/StreamAdapter.h>
+#include <Spore/IO/StreamBuffer.h>
+#include <Spore/IO/StreamChild.h>
+#include <Spore/IO/StreamFixedMemory.h>
+#include <Spore/IO/StreamMemory.h>
+#include <Spore/IO/StreamNull.h>
+#include <Spore/IO/XmlWriter.h>
 
 namespace Addresses(IO)
 {

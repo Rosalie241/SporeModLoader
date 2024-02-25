@@ -18,10 +18,10 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\MathUtils.h>
-#include <Spore\ResourceKey.h>
-#include <Spore\Simulator\cSpaceToolData.h>
+#include <Spore/Object.h>
+#include <Spore/MathUtils.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/Simulator/cSpaceToolData.h>
 
 #define cToolStrategyPtr eastl::intrusive_ptr<Simulator::cToolStrategy>
 

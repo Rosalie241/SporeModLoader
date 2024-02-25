@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\MessageListenerData.h>
-#include <Spore\Terrain\ITerrain.h>
-#include <Spore\Simulator\cScenarioEconomy.h>
-#include <Spore\Simulator\cScenarioData.h>
-#include <EASTL\vector.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/MessageListenerData.h>
+#include <Spore/Terrain/ITerrain.h>
+#include <Spore/Simulator/cScenarioEconomy.h>
+#include <Spore/Simulator/cScenarioData.h>
+#include <EASTL/vector.h>
 
 #define cScenarioTerraformModePtr eastl::intrusive_ptr<Simulator::cScenarioTerraformMode>
 

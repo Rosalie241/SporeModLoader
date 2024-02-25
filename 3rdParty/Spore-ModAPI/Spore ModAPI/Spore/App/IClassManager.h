@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\ICoreAllocator.h>
+#include <Spore/Object.h>
+#include <Spore/ICoreAllocator.h>
 
 /// Access the active class manager
 #define ClassManager (*App::IClassManager::Get())

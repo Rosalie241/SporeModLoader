@@ -20,8 +20,8 @@
 #pragma once
 
 #include <stdint.h>
-#include <Spore\Internal.h>
-#include <EASTL\functional.h>
+#include <Spore/Internal.h>
+#include <EASTL/functional.h>
 
 ///
 /// Class similar to ResourceKey, but this one is only formed up by an instanceID and a groupID.
@@ -38,7 +38,7 @@ public:
 	uint32_t instanceID;
 	
 #ifndef SDK_TO_GHIDRA
-	bool ResourceID::operator ==(const ResourceID &b) const;
+	bool operator ==(const ResourceID &b) const;
 #endif
 };
 ASSERT_SIZE(ResourceID, 0x8);

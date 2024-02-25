@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\RenderWare\AnimationSkin.h>
-#include <Spore\RenderWare\SkinMatrixBuffer.h>
-#include <Spore\RenderWare\Skeleton.h>
+#include <Spore/RenderWare/AnimationSkin.h>
+#include <Spore/RenderWare/SkinMatrixBuffer.h>
+#include <Spore/RenderWare/Skeleton.h>
 
 namespace RenderWare
 {

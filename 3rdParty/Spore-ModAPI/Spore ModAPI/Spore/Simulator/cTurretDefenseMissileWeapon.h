@@ -18,7 +18,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cToolStrategy.h>
+#include <Spore/Simulator/cToolStrategy.h>
 
 #define cTurretDefenseMissileWeaponPtr eastl::intrusive_ptr<Simulator::cTurretDefenseMissileWeapon>
 

@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\ResourceKey.h>
+#include <Spore/ResourceKey.h>
 
 /// Access the active bake manager.
 #define BakeManager (*Editors::IBakeManager::Get())

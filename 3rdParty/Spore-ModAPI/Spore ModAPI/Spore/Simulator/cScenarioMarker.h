@@ -18,10 +18,10 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cScenarioMarkerAct.h>
-#include <Spore\Simulator\cScenarioClassAct.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\fixed_vector.h>
+#include <Spore/Simulator/cScenarioMarkerAct.h>
+#include <Spore/Simulator/cScenarioClassAct.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/fixed_vector.h>
 
 using namespace Math;
 

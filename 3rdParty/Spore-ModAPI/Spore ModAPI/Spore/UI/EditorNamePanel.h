@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Editors\INameableEntity.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\UILayout.h>
+#include <Spore/Editors/INameableEntity.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/UILayout.h>
 
 #define EditorNamePanelPtr eastl::intrusive_ptr<UI::EditorNamePanel>
 

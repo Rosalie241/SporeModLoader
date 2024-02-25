@@ -23,5 +23,5 @@
 /// This file includes all the headers necessary for the messaging system in Spore.
 /// For more information, check the App::IMessageListener and App::IMessageManager classes.
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\IMessageManager.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/IMessageManager.h>

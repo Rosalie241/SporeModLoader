@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Object.h>
-#include <EASTL\string.h>
+#include <Spore/Object.h>
+#include <EASTL/string.h>
 
 #define ITokenTranslatorPtr eastl::intrusive_ptr<App::ITokenTranslator>
 

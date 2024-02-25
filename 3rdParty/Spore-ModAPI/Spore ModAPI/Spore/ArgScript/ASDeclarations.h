@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <EASTL\string.h>
+#include <EASTL/string.h>
 
 namespace ArgScript
 {

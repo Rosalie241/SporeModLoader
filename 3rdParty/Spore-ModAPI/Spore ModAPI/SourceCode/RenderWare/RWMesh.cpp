@@ -1,5 +1,5 @@
-#include <Spore\RenderWare\Mesh.h>
-#include <Spore\RenderWare\MeshCompiledStateLink.h>
+#include <Spore/RenderWare/Mesh.h>
+#include <Spore/RenderWare/MeshCompiledStateLink.h>
 
 namespace RenderWare
 {

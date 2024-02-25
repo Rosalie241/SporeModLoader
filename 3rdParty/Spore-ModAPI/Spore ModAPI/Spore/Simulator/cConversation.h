@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Resource\ResourceObject.h>
-#include <EASTL\map.h>
-#include <EASTL\vector.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <EASTL/map.h>
+#include <EASTL/vector.h>
 
 #define cConversationPtr eastl::intrusive_ptr<Simulator::cConversation>
 

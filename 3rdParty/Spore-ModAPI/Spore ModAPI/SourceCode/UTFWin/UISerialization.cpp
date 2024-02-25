@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\Serialization.h>
+#include <Spore/UTFWin/Serialization.h>
 
 namespace UTFWin
 {

@@ -1,9 +1,9 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Simulator\Cell\cCellResource.h>
-#include <Spore\Simulator\Cell\cCellGFX.h>
-#include <Spore\Simulator\Cell\cCellGame.h>
-#include <Spore\Simulator\Cell\cCellUI.h>
-#include <Spore\Simulator\Cell\CellFunctions.h>
+#include <Spore/Simulator/Cell/cCellResource.h>
+#include <Spore/Simulator/Cell/cCellGFX.h>
+#include <Spore/Simulator/Cell/cCellGame.h>
+#include <Spore/Simulator/Cell/cCellUI.h>
+#include <Spore/Simulator/Cell/CellFunctions.h>
 
 namespace Simulator
 {

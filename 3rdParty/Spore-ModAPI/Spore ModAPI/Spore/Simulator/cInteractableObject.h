@@ -18,10 +18,10 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\LocalizedString.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/LocalizedString.h>
 
 #define cInteractableObjectPtr eastl::intrusive_ptr<Simulator::cInteractableObject>
 

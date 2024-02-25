@@ -20,7 +20,7 @@
 #pragma once
 
 // it contains useful enums for handling events
-#include <Spore\UTFWin\Message.h>
+#include <Spore/UTFWin/Message.h>
 
 #define IGameModePtr eastl::intrusive_ptr<App::IGameMode>
 

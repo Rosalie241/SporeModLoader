@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Simulator\cObjectPool.h>
-#include <Spore\MathUtils.h>
+#include <Spore/Simulator/cObjectPool.h>
+#include <Spore/MathUtils.h>
 
 namespace Simulator
 {

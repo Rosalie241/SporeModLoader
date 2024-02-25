@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\UTFWin\UILayout.h>
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\Clock.h>
+#include <Spore/UTFWin/UILayout.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/Clock.h>
 
 #define PlayModeUIPtr eastl::intrusive_ptr<Editors::PlayModeUI>
 

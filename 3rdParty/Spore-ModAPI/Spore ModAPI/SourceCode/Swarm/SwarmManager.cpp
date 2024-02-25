@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Swarm\IEffectsManager.h>
-#include <Spore\Swarm\cEffectsManager.h>
+#include <Spore/Swarm/IEffectsManager.h>
+#include <Spore/Swarm/cEffectsManager.h>
 
 namespace Swarm
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Anim\CreatureBlock.h>
-#include <EASTL\vector.h>
+#include <Spore/Anim/CreatureBlock.h>
+#include <EASTL/vector.h>
 
 namespace Anim
 {

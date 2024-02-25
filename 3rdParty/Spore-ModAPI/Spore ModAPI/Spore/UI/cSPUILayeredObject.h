@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\Transform.h>
-#include <Spore\App\cViewer.h>
-#include <Spore\UTFWin\IWinProc.h>
+#include <Spore/Object.h>
+#include <Spore/Transform.h>
+#include <Spore/App/cViewer.h>
+#include <Spore/UTFWin/IWinProc.h>
 
 #define cSPUILayeredObjectPtr eastl::intrusive_ptr<UI::cSPUILayeredObject>
 

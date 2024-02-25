@@ -21,8 +21,8 @@
 #include <EASTL/fixed_vector.h>
 #include <EASTL/vector.h>
 #include <EASTL/string.h>
-#include <Spore\ResourceKey.h>
-#include <Spore\Simulator\cCreatureAbility.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/Simulator/cCreatureAbility.h>
 
 namespace Simulator
 {

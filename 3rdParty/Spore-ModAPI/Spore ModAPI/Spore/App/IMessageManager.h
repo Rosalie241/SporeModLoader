@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\App\IMessageRC.h>
-#include <Spore\App\IMessageListener.h>
-#include <EASTL\vector.h>
-#include <EASTL\initializer_list.h>
-#include <EASTL\intrusive_ptr.h>
+#include <Spore/Internal.h>
+#include <Spore/App/IMessageRC.h>
+#include <Spore/App/IMessageListener.h>
+#include <EASTL/vector.h>
+#include <EASTL/initializer_list.h>
+#include <EASTL/intrusive_ptr.h>
 
 /// Access the active message manager.
 #define MessageManager (*App::IMessageManager::Get())

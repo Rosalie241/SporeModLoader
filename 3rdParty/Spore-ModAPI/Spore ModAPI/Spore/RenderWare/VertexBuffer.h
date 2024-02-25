@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\RenderWare\VertexDescription.h>
+#include <Spore/RenderWare/VertexDescription.h>
 #include <d3d9.h>
 
 namespace RenderWare

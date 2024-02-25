@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\UTFWin\IDrawable.h>
-#include <Spore\UTFWin\Image.h>
+#include <Spore/UTFWin/IDrawable.h>
+#include <Spore/UTFWin/Image.h>
 
 #define IScrollbarDrawablePtr eastl::intrusive_ptr<UTFWin::IScrollbarDrawable>
 

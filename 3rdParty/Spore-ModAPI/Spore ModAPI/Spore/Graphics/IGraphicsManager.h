@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Graphics\IRenderTargetManager.h>
-#include <Spore\Graphics\Texture.h>
-#include <Spore\Internal.h>
+#include <Spore/Graphics/IRenderTargetManager.h>
+#include <Spore/Graphics/Texture.h>
+#include <Spore/Internal.h>
 
 namespace Graphics
 {

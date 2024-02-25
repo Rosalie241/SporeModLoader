@@ -19,19 +19,19 @@
 
 #pragma once
 
-#include <Spore\UTFWin\UIRenderer.h>
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\UTFWin\IDrawable.h>
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\UTFWin\Message.h>
-#include <Spore\UTFWin\IWinProc.h>
+#include <Spore/UTFWin/UIRenderer.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/UTFWin/IDrawable.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/UTFWin/Message.h>
+#include <Spore/UTFWin/IWinProc.h>
 
-#include <Spore\FixedPoolAllocator.h>
-#include <Spore\MathUtils.h>
+#include <Spore/FixedPoolAllocator.h>
+#include <Spore/MathUtils.h>
 
-#include <EASTL\string.h>
-#include <EASTL\list.h>
-#include <EASTL\hash_map.h>
+#include <EASTL/string.h>
+#include <EASTL/list.h>
+#include <EASTL/hash_map.h>
 
 #define WindowPtr eastl::intrusive_ptr<UTFWin::Window>
 

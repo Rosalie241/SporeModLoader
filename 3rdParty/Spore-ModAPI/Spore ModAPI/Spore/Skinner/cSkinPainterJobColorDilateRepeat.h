@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Skinner\cSkinPainterJob.h>
+#include <Spore/Skinner/cSkinPainterJob.h>
 
 namespace Skinner
 {

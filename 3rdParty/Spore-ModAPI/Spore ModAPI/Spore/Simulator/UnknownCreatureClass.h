@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cLocomotiveObject.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cLocomotiveObject.h>
 
 namespace Simulator
 {

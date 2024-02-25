@@ -1,5 +1,5 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\UI\HintManager.h>
+#include <Spore/UI/HintManager.h>
 
 namespace UI
 {

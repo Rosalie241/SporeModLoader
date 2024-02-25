@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include <Spore\Internal.h>
+#include <Spore/Internal.h>
 
 namespace Simulator
 {

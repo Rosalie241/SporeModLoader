@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\MathUtils.h>
-#include <Spore\Anim\AnimatedCreature.h>
-#include <Spore\Graphics\IModelWorld.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Anim/AnimatedCreature.h>
+#include <Spore/Graphics/IModelWorld.h>
 
 #define EditorCreatureControllerPtr eastl::intrusive_ptr<Editors::EditorCreatureController>
 

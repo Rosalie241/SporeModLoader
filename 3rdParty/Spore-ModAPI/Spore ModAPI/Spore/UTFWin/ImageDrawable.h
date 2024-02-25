@@ -20,10 +20,10 @@
 #pragma once
 
 
-#include <Spore\UTFWin\OutlineFormat.h>
-#include <Spore\UTFWin\IDrawable.h>
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\UTFWin\Image.h>
+#include <Spore/UTFWin/OutlineFormat.h>
+#include <Spore/UTFWin/IDrawable.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/UTFWin/Image.h>
 
 #define IImageDrawablePtr eastl::intrusive_ptr<UTFWin::IImageDrawable>
 #define ImageDrawablePtr eastl::intrusive_ptr<UTFWin::ImageDrawable>

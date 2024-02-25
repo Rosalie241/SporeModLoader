@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <EASTL\vector.h>
-#include <EASTL\intrusive_ptr.h>
-#include <Spore\Object.h>
+#include <EASTL/vector.h>
+#include <EASTL/intrusive_ptr.h>
+#include <Spore/Object.h>
 
 namespace Simulator
 {

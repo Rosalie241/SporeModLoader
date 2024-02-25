@@ -1,42 +1,42 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\UTFWin\Allocator.h>
-#include <Spore\UTFWin\ButtonDrawableRadio.h>
-#include <Spore\UTFWin\ButtonDrawableStandard.h>
-#include <Spore\UTFWin\CascadeEffect.h>
-#include <Spore\UTFWin\ComboBoxDrawable.h>
-#include <Spore\UTFWin\cSPUIMessageBox.h>
-#include <Spore\UTFWin\DialogDrawable.h>
-#include <Spore\UTFWin\Effect.h>
-#include <Spore\UTFWin\FadeEffect.h>
-#include <Spore\UTFWin\FrameDrawable.h>
-#include <Spore\UTFWin\GlideEffect.h>
-#include <Spore\UTFWin\Graphics2D.h>
-#include <Spore\UTFWin\IButton.h>
-#include <Spore\UTFWin\Image.h>
-#include <Spore\UTFWin\ImageDrawable.h>
-#include <Spore\UTFWin\InflateEffect.h>
-#include <Spore\UTFWin\InteractiveWinProc.h>
-#include <Spore\UTFWin\ITextEdit.h>
-#include <Spore\UTFWin\IWindowManager.h>
-#include <Spore\UTFWin\ModulateEffect.h>
-#include <Spore\UTFWin\PerspectiveEffect.h>
-#include <Spore\UTFWin\ProportionalLayout.h>
-#include <Spore\UTFWin\RotateEffect.h>
-#include <Spore\UTFWin\ScrollbarDrawable.h>
-#include <Spore\UTFWin\SimpleLayout.h>
-#include <Spore\UTFWin\SliderDrawable.h>
-#include <Spore\UTFWin\SpinnerDrawable.h>
-#include <Spore\UTFWin\SporeStdDrawable.h>
-#include <Spore\UTFWin\SporeStdDrawableImageInfo.h>
-#include <Spore\UTFWin\SporeTooltipWinProc.h>
-#include <Spore\UTFWin\StdDrawable.h>
-#include <Spore\UTFWin\TreeNode.h>
-#include <Spore\UTFWin\UILayout.h>
-#include <Spore\UTFWin\UIRenderer.h>
-#include <Spore\UTFWin\VariableWidthDrawable.h>
-#include <Spore\UTFWin\Window.h>
-#include <Spore\UTFWin\CursorManager.h>
+#include <Spore/UTFWin/Allocator.h>
+#include <Spore/UTFWin/ButtonDrawableRadio.h>
+#include <Spore/UTFWin/ButtonDrawableStandard.h>
+#include <Spore/UTFWin/CascadeEffect.h>
+#include <Spore/UTFWin/ComboBoxDrawable.h>
+#include <Spore/UTFWin/cSPUIMessageBox.h>
+#include <Spore/UTFWin/DialogDrawable.h>
+#include <Spore/UTFWin/Effect.h>
+#include <Spore/UTFWin/FadeEffect.h>
+#include <Spore/UTFWin/FrameDrawable.h>
+#include <Spore/UTFWin/GlideEffect.h>
+#include <Spore/UTFWin/Graphics2D.h>
+#include <Spore/UTFWin/IButton.h>
+#include <Spore/UTFWin/Image.h>
+#include <Spore/UTFWin/ImageDrawable.h>
+#include <Spore/UTFWin/InflateEffect.h>
+#include <Spore/UTFWin/InteractiveWinProc.h>
+#include <Spore/UTFWin/ITextEdit.h>
+#include <Spore/UTFWin/IWindowManager.h>
+#include <Spore/UTFWin/ModulateEffect.h>
+#include <Spore/UTFWin/PerspectiveEffect.h>
+#include <Spore/UTFWin/ProportionalLayout.h>
+#include <Spore/UTFWin/RotateEffect.h>
+#include <Spore/UTFWin/ScrollbarDrawable.h>
+#include <Spore/UTFWin/SimpleLayout.h>
+#include <Spore/UTFWin/SliderDrawable.h>
+#include <Spore/UTFWin/SpinnerDrawable.h>
+#include <Spore/UTFWin/SporeStdDrawable.h>
+#include <Spore/UTFWin/SporeStdDrawableImageInfo.h>
+#include <Spore/UTFWin/SporeTooltipWinProc.h>
+#include <Spore/UTFWin/StdDrawable.h>
+#include <Spore/UTFWin/TreeNode.h>
+#include <Spore/UTFWin/UILayout.h>
+#include <Spore/UTFWin/UIRenderer.h>
+#include <Spore/UTFWin/VariableWidthDrawable.h>
+#include <Spore/UTFWin/Window.h>
+#include <Spore/UTFWin/CursorManager.h>
 
 namespace Addresses(UTFWin)
 {
@@ -45,6 +45,53 @@ namespace Addresses(UTFWin)
 
 namespace UTFWin
 {
+#ifdef __GNUC__ // TODO: fix this properly...
+	auto_METHOD_VIRTUAL_VOID(Image, Image, SetSerializer, Args(Serializer& dst), Args(dst));
+	auto_METHOD_VIRTUAL_const_(Image, Image, uint32_t, GetProxyID);
+
+	auto_STATIC_METHOD(Image, bool, GetImage,
+		Args(const ResourceKey& name, ImagePtr& dst, bool arg_8, int arg_C, int arg_10),
+		Args(name, dst, arg_8, arg_C, arg_10));
+
+	auto_STATIC_METHOD(Image, bool, SetBackground,
+		Args(IWindow* pWindow, Image* pImage, int nImageIndex),
+		Args(pWindow, pImage, nImageIndex));
+
+	auto_STATIC_METHOD(Image, bool, SetBackgroundByKey,
+		Args(IWindow* pWindow, const ResourceKey& imageName, int nImageIndex),
+		Args(pWindow, imageName, nImageIndex));
+	int Image::AddRef()
+	{
+		return eastl::Internal::atomic_increment(&mnRefCount);
+	}
+	int Image::Release()
+	{
+		if (eastl::Internal::atomic_decrement(&mnRefCount) == 0)
+		{
+			delete this;
+		}
+		return mnRefCount;
+	}
+	void* Image::Cast(uint32_t type) const
+	{
+		if (type == Object::TYPE || type == ILayoutElement::TYPE)
+		{
+			return (ILayoutElement*) this;
+		}
+		else if (type == Image::TYPE)
+		{
+			return (Image*) this;
+		}
+		else if (type == Image::TYPE_DIMENSIONS)
+		{
+			return (Math::Dimensions*) &mDimensions;
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+#endif // __GNUC__
 	namespace Addresses(UTFWinObject)
 	{
 		DefineAddress(new_, SelectAddress(0x951760, 0x951230));

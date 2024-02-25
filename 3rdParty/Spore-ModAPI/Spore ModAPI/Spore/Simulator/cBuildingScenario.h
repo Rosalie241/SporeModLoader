@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\Simulator\cBuilding.h>
+#include <Spore/Simulator/cBuilding.h>
 
 #define cBuildingScenarioPtr eastl::intrusive_ptr<Simulator::cBuildingScenario>
 

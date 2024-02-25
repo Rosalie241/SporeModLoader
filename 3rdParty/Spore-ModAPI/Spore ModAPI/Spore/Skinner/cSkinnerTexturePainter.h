@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Graphics\IRenderTargetManager.h>
-#include <Spore\RenderWare\CompiledState.h>
-#include <Spore\App\cViewer.h>
+#include <Spore/Graphics/IRenderTargetManager.h>
+#include <Spore/RenderWare/CompiledState.h>
+#include <Spore/App/cViewer.h>
 
 namespace Skinner
 {

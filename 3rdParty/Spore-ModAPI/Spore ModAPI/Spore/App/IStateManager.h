@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\App\CommandLine.h>
-#include <EASTL\vector.h>
+#include <Spore/Object.h>
+#include <Spore/App/CommandLine.h>
+#include <EASTL/vector.h>
 
 #define StateManager (*App::IStateManager::Get())
 

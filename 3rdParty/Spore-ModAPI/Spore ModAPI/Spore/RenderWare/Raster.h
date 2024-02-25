@@ -21,7 +21,7 @@
 
 #include <cstdint>
 #include <d3d9.h>
-#include <Spore\Internal.h>
+#include <Spore/Internal.h>
 
 namespace RenderWare
 {
@@ -63,7 +63,7 @@ namespace RenderWare
 		/// Creates the corresponding Direct3D object for this raster, depending on the format and flags.
 		void Create();
 
-		HRESULT CreateTexture(DWORD usage = NULL, D3DPOOL pool = D3DPOOL_DEFAULT);
+		HRESULT CreateTexture(DWORD usage = 0, D3DPOOL pool = D3DPOOL_DEFAULT);
 
 		void D3D9AddToUnmanagedList();
 

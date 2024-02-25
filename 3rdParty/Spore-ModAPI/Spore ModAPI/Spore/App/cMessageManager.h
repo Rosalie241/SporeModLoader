@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\App\IMessageManager.h>
-#include <Spore\Mutex.h>
+#include <Spore/App/IMessageManager.h>
+#include <Spore/Mutex.h>
 
-#include <EASTL\hash_map.h>
-#include <EASTL\list.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/list.h>
 
 namespace App
 {

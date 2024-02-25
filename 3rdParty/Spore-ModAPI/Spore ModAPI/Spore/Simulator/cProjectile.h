@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Simulator\cLocomotiveObject.h>
+#include <Spore/Simulator/cLocomotiveObject.h>
 
 #define cProjectilePtr eastl::intrusive_ptr<Simulator::cProjectile>
 

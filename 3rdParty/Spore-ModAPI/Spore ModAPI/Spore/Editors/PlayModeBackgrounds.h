@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\Graphics\ILightingWorld.h>
-#include <Spore\Editors\PlayModeUI.h>
-#include <EASTL\vector.h>
+#include <Spore/Object.h>
+#include <Spore/Graphics/ILightingWorld.h>
+#include <Spore/Editors/PlayModeUI.h>
+#include <EASTL/vector.h>
 
 #define EditorPlayModeBackgroundPtr eastl::intrusive_ptr<Editors::EditorPlayModeBackground>
 

@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\InteractiveWinProc.h>
-#include <Spore\UTFWin\ILayoutStyle.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/InteractiveWinProc.h>
+#include <Spore/UTFWin/ILayoutStyle.h>
 
 #define ProportionalLayoutPtr eastl::intrusive_ptr<UTFWin::ProportionalLayout>
 

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Simulator\cBaseDisplayStrategy.h>
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\UI\GlobalUI.h>
-#include <Spore\Swarm\IVisualEffect.h>
+#include <Spore/Simulator/cBaseDisplayStrategy.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/UI/GlobalUI.h>
+#include <Spore/Swarm/IVisualEffect.h>
 
 #define cCreatureDisplayStrategyPtr eastl::intrusive_ptr<Simulator::cCreatureDisplayStrategy>
 

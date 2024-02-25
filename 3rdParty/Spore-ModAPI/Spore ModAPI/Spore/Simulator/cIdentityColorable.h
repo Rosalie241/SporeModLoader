@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\MathUtils.h>
-#include <EASTL\map.h>
-#include <EASTL\string.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/map.h>
+#include <EASTL/string.h>
 
 #define cIdentityColorablePtr eastl::intrusive_ptr<Simulator::cIdentityColorable>
 

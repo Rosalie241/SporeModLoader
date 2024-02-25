@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\MathUtils.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\ISimulatorSerializable.h>
+#include <Spore/Internal.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
 
 namespace Simulator
 {

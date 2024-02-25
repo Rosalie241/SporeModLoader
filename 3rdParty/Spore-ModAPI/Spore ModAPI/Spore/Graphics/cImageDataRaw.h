@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Resource\ResourceObject.h>
+#include <Spore/Resource/ResourceObject.h>
 
 #define cImageDataPtr eastl::intrusive_ptr<Graphics::cImageData>
 #define cImageDataRawPtr eastl::intrusive_ptr<Graphics::cImageDataRaw>

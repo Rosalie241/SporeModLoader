@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Resource\ResourceObject.h>
-#include <EASTL\vector.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <EASTL/vector.h>
 
 namespace Sporepedia
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\cPlantCargoInfo.h>
-#include <Spore\Resource\IRecord.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/cPlantCargoInfo.h>
+#include <Spore/Resource/IRecord.h>
 
 /// Accesses the current instance of Simulator::cPlantSpeciesManager
 #define PlantSpeciesManager (*Simulator::cPlantSpeciesManager::Get())

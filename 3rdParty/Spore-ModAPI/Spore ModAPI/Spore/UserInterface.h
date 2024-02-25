@@ -22,22 +22,22 @@
 /// @file UserInterface.h
 /// This file has all the include necessaries to use the user interface system, UTFWin, in Spore.
 
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\UTFWin\Window.h>
-#include <Spore\UTFWin\IWindowManager.h>
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\IButton.h>
-#include <Spore\UTFWin\ITextEdit.h>
-#include <Spore\UTFWin\IDrawable.h>
-#include <Spore\UTFWin\ImageDrawable.h>
-#include <Spore\UTFWin\UILayout.h>
-#include <Spore\UTFWin\SimpleLayout.h>
-#include <Spore\UTFWin\ProportionalLayout.h>
-#include <Spore\UTFWin\Constants.h>
-#include <Spore\UTFWin\Message.h>
-#include <Spore\UTFWin\WindowIterators.h>
-#include <Spore\UTFWin\CursorManager.h>
-#include <Spore\UTFWin\SporeTooltipWinProc.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/UTFWin/Window.h>
+#include <Spore/UTFWin/IWindowManager.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/IButton.h>
+#include <Spore/UTFWin/ITextEdit.h>
+#include <Spore/UTFWin/IDrawable.h>
+#include <Spore/UTFWin/ImageDrawable.h>
+#include <Spore/UTFWin/UILayout.h>
+#include <Spore/UTFWin/SimpleLayout.h>
+#include <Spore/UTFWin/ProportionalLayout.h>
+#include <Spore/UTFWin/Constants.h>
+#include <Spore/UTFWin/Message.h>
+#include <Spore/UTFWin/WindowIterators.h>
+#include <Spore/UTFWin/CursorManager.h>
+#include <Spore/UTFWin/SporeTooltipWinProc.h>
 
 ///
 /// @namespace UTFWin

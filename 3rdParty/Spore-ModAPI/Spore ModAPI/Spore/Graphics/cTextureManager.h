@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\Graphics\ITextureManager.h>
-#include <Spore\Object.h>
-#include <Spore\Mutex.h>
+#include <Spore/Graphics/ITextureManager.h>
+#include <Spore/Object.h>
+#include <Spore/Mutex.h>
 
-#include <EASTL\intrusive_list.h>
-#include <EASTL\hash_map.h>
+#include <EASTL/intrusive_list.h>
+#include <EASTL/hash_map.h>
 
 namespace Graphics
 {

@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\Graphics\Texture.h>
-#include <Spore\Graphics\cImageDataRaw.h>
-#include <Spore\RenderWare\RenderWareFile.h>
-#include <Spore\Resource\Database.h>
-#include <Spore\App\cJob.h>
-#include <Spore\Internal.h>
+#include <Spore/Graphics/Texture.h>
+#include <Spore/Graphics/cImageDataRaw.h>
+#include <Spore/RenderWare/RenderWareFile.h>
+#include <Spore/Resource/Database.h>
+#include <Spore/App/cJob.h>
+#include <Spore/Internal.h>
 
 /// Easy access to Graphics::ITextureManager
 #define TextureManager (*Graphics::ITextureManager::Get())

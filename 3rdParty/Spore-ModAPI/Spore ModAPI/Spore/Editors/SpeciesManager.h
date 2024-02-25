@@ -18,11 +18,11 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cSpeciesProfile.h>
-#include <Spore\ResourceKey.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Internal.h>
-#include <EASTL\hash_map.h>
+#include <Spore/Simulator/cSpeciesProfile.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Internal.h>
+#include <EASTL/hash_map.h>
 
 /// Access the active species manager.
 #define SpeciesManager (*Editors::cSpeciesManager::Get())

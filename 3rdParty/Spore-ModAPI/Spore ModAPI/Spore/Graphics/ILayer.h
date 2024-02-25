@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\App\cViewer.h>
-#include <Spore\Graphics\RenderStatistics.h>
+#include <Spore/App/cViewer.h>
+#include <Spore/Graphics/RenderStatistics.h>
 
 #define ILayerPtr eastl::intrusive_ptr<Graphics::ILayer>
 

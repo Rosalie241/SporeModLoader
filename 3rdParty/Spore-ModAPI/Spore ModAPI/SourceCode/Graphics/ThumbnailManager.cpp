@@ -1,5 +1,5 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Graphics\IThumbnailManager.h>
+#include <Spore/Graphics/IThumbnailManager.h>
 
 namespace Graphics
 {

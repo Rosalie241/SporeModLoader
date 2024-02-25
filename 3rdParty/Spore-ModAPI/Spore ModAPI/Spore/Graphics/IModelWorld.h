@@ -21,14 +21,14 @@
 
 #include <cstdint>
 
-#include <Spore\Swarm\IEffectsWorld.h>
-#include <Spore\Graphics\Model.h>
-#include <Spore\Graphics\cMeshData.h>
-#include <Spore\Graphics\ILayer.h>
-#include <Spore\Graphics\ILightingWorld.h>
-#include <Spore\Graphics\cFrustumCull.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\RenderWare\RWMath.h>
+#include <Spore/Swarm/IEffectsWorld.h>
+#include <Spore/Graphics/Model.h>
+#include <Spore/Graphics/cMeshData.h>
+#include <Spore/Graphics/ILayer.h>
+#include <Spore/Graphics/ILightingWorld.h>
+#include <Spore/Graphics/cFrustumCull.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/RenderWare/RWMath.h>
 
 #define IModelWorldPtr eastl::intrusive_ptr<Graphics::IModelWorld>
 
@@ -170,7 +170,7 @@ namespace Graphics
 		/* 20h */	virtual void* CreateGroup(int, void*&) = 0;
 
 
-#ifdef SDK_TO_GHIDRA
+#if defined(SDK_TO_GHIDRA) || defined(__GNUC__)
 		/* 24h */	virtual Model* FindFirstModelAlongLine(const Vector3& point1, const Vector3& point2, float* factorDst, Vector3* dstIntersectionPoint, Vector3*, FilterSettings& settings, int*, int*) = 0;
 		/* 28h */	virtual Model* FindFirstModelAlongLine2(const Vector3& point1, const Vector3& point2, float* factorDst, FilterSettings& settings) = 0;
 		/* 2Ch */	virtual bool FindModels(eastl::vector<Model*>& dst, FilterSettings& settings) = 0;

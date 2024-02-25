@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\UTFWin\IDrawable.h>
-#include <Spore\UTFWin\IButton.h>
-#include <Spore\UTFWin\Image.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/UTFWin/IDrawable.h>
+#include <Spore/UTFWin/IButton.h>
+#include <Spore/UTFWin/Image.h>
 
 #define ButtonDrawableRadioPtr eastl::intrusive_ptr<UTFWin::ButtonDrawableRadio>
 

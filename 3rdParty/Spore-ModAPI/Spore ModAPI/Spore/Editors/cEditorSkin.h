@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Editors\EditorModel.h>
-#include <Spore\Editors\cEditorSkinMesh.h>
-#include <Spore\Graphics\IModelWorld.h>
+#include <Spore/Editors/EditorModel.h>
+#include <Spore/Editors/cEditorSkinMesh.h>
+#include <Spore/Graphics/IModelWorld.h>
 
 #define cEditorSkinPtr eastl::intrusive_ptr<Editors::cEditorSkin>
 

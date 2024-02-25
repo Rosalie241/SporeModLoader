@@ -1,5 +1,5 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\UI\cSPUITextZoom.h>
+#include <Spore/UI/cSPUITextZoom.h>
 
 namespace UI
 {

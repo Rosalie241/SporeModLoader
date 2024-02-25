@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cIdentityColorable.h>
-#include <Spore\Simulator\cCultureSet.h>
-#include <Spore\Simulator\cCity.h>
-#include <Spore\Simulator\cVehicle.h>
-#include <Spore\Simulator\ICityMusic.h>
-#include <Spore\Simulator\cCommodityNode.h>
-#include <Spore\Editors\INameableEntity.h>
-#include <Spore\App\IMessageListener.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cIdentityColorable.h>
+#include <Spore/Simulator/cCultureSet.h>
+#include <Spore/Simulator/cCity.h>
+#include <Spore/Simulator/cVehicle.h>
+#include <Spore/Simulator/ICityMusic.h>
+#include <Spore/Simulator/cCommodityNode.h>
+#include <Spore/Editors/INameableEntity.h>
+#include <Spore/App/IMessageListener.h>
 
 #define cCivilizationPtr eastl::intrusive_ptr<Simulator::cCivilization>
 

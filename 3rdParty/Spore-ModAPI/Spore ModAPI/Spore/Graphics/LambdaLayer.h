@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\Graphics\ILayer.h>
-#include <EASTL\functional.h>
+#include <Spore/Graphics/ILayer.h>
+#include <EASTL/functional.h>
 
 namespace Graphics
 {

@@ -18,7 +18,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Object.h>
+#include <Spore/Object.h>
 
 #define cGonzagoTimerPtr eastl::intrusive_ptr<Simulator::cGonzagoTimer>
 

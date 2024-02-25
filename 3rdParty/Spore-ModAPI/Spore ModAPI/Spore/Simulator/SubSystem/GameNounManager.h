@@ -19,26 +19,26 @@
 
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\Simulator\tGameDataVectorT.h>
-#include <Spore\Simulator\cCreatureAnimal.h>
-#include <Spore\Simulator\cTribe.h>
-#include <Spore\Simulator\cHerd.h>
-#include <Spore\Simulator\cPlayer.h>
-#include <Spore\App\IMessageListener.h>
-#include <EASTL\hash_map.h>
-#include <EASTL\map.h>
-#include <EASTL\list.h>
+#include <Spore/Object.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/Simulator/tGameDataVectorT.h>
+#include <Spore/Simulator/cCreatureAnimal.h>
+#include <Spore/Simulator/cTribe.h>
+#include <Spore/Simulator/cHerd.h>
+#include <Spore/Simulator/cPlayer.h>
+#include <Spore/App/IMessageListener.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/map.h>
+#include <EASTL/list.h>
 
 /// Access the active Simulator game noun manager.
 #define GameNounManager (*Simulator::cGameNounManager::Get())
 
 namespace Simulator
 {
-#ifndef SDK_TO_GHIDRA
+#if !defined(SDK_TO_GHIDRA) && !defined(__GNUC__)
 	/// Creates the vector game data container.
 	template <class T>
 	using ContainerCreateCallback_t = tGameDataVectorT<T>*(*)();
@@ -93,7 +93,7 @@ namespace Simulator
 		void EnsurePlayer();
 
 
-#ifndef SDK_TO_GHIDRA
+#if !defined(SDK_TO_GHIDRA) && !defined(__GNUC__)
 		/// Gets all the game data objects that use the given game noun ID. To be more specific, first a container is created
 		/// with the pCreate callback; then 
 		template <class T>
@@ -171,7 +171,7 @@ namespace Simulator
 		DeclareAddress(EnsurePlayer);  // 0xB20DE0 0xB20F40	
 	}
 
-#ifndef SDK_TO_GHIDRA
+#if !defined(SDK_TO_GHIDRA) && !defined(__GNUC__)
 	/// Gets all the game data objects that use the given game noun ID.
 	/// All the found objects will be casted to the specified type.
 	template <class T>
@@ -185,7 +185,7 @@ namespace Simulator
 			pVector->data.clear();
 		},
 			[](tGameDataVectorT<T>* pVector, cGameData* pObject) {
-			pVector->data.push_back(intrusive_ptr<T>(object_cast<T>(pObject)));
+			pVector->data.push_back(eastl::intrusive_ptr<T>(object_cast<T>(pObject)));
 		},
 			[](cGameData* pObject, uint32_t gameNounID) {
 			return pObject->GetNounID() == gameNounID;
@@ -216,7 +216,7 @@ namespace Simulator
 			pVector->data.clear();
 		},
 			[](tGameDataVectorT<T>* pVector, cGameData* pObject) {
-			pVector->data.push_back(intrusive_ptr<T>(object_cast<T>(pObject)));
+			pVector->data.push_back(eastl::intrusive_ptr<T>(object_cast<T>(pObject)));
 		},
 			[](cGameData* pObject, uint32_t gameNounID) {
 			return pObject->Cast(T::TYPE) != nullptr;

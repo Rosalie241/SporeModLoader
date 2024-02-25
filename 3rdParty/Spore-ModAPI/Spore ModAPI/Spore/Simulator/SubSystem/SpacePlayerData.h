@@ -18,11 +18,11 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cEmpire.h>
-#include <Spore\Simulator\cStar.h>
-#include <Spore\Simulator\cPlanet.h>
-#include <Spore\Simulator\SubSystem\cRelationshipManager.h>
-#include <Spore\Simulator\SimulatorEnums.h>
+#include <Spore/Simulator/cEmpire.h>
+#include <Spore/Simulator/cStar.h>
+#include <Spore/Simulator/cPlanet.h>
+#include <Spore/Simulator/SubSystem/cRelationshipManager.h>
+#include <Spore/Simulator/SimulatorEnums.h>
 
 namespace Simulator
 {

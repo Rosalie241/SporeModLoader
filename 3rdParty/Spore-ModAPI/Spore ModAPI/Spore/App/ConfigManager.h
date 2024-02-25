@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Spore\App\CommandLine.h>
-#include <Spore\App\PropertyList.h>
-#include <EASTL\fixed_vector.h>
-#include <EASTL\string.h>
-#include <EASTL\vector.h>
-#include <EASTL\vector_map.h>
+#include <Spore/App/CommandLine.h>
+#include <Spore/App/PropertyList.h>
+#include <EASTL/fixed_vector.h>
+#include <EASTL/string.h>
+#include <EASTL/vector.h>
+#include <EASTL/vector_map.h>
 
 #define IConfigManagerPtr eastl::intrusive_ptr<App::IConfigManager>
 #define ConfigManager (*App::IConfigManager::Get())

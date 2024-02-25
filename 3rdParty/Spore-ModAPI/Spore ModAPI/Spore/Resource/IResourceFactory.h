@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\Resource\ThreadedObject.h>
-#include <Spore\Resource\IRecord.h>
-#include <Spore\Resource\ResourceObject.h>
+#include <Spore/Resource/ThreadedObject.h>
+#include <Spore/Resource/IRecord.h>
+#include <Spore/Resource/ResourceObject.h>
 
-#include <EASTL\intrusive_ptr.h>
+#include <EASTL/intrusive_ptr.h>
 
 #define IResourceFactoryPtr eastl::intrusive_ptr<Resource::IResourceFactory>
 

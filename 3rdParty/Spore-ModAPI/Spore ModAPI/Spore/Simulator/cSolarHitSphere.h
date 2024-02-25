@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Simulator\cHitSphere.h>
+#include <Spore/Simulator/cHitSphere.h>
 
 #define cSolarHitSpherePtr eastl::intrusive_ptr<Simulator::cSolarHitSphere>
 

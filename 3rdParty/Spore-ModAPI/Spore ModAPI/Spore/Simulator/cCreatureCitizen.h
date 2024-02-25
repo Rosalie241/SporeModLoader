@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Simulator\cCreatureBase.h>
-#include <Spore\Simulator\cHitSphere.h>
+#include <Spore/Simulator/cCreatureBase.h>
+#include <Spore/Simulator/cHitSphere.h>
 
 #define cCreatureCitizenPtr eastl::intrusive_ptr<Simulator::cCreatureCitizen>
 

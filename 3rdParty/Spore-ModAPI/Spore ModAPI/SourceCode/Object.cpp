@@ -17,9 +17,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Object.h>
-#include <Spore\Resource\ResourceObject.h>
-#include <EASTL\internal\thread_support.h>
+#include <Spore/Object.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <EASTL/internal/thread_support.h>
 
 using namespace Resource;
 

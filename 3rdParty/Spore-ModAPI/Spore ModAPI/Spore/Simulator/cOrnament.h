@@ -18,11 +18,11 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cCombatant.h>
-#include <Spore\Simulator\cBehaviorList.h>
-#include <Spore\Simulator\cScenarioPowerup.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cCombatant.h>
+#include <Spore/Simulator/cBehaviorList.h>
+#include <Spore/Simulator/cScenarioPowerup.h>
 
 #define cOrnamentPtr eastl::intrusive_ptr<Simulator::cOrnament>
 

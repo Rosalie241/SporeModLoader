@@ -19,13 +19,13 @@
 
 #pragma once
 
-#include <Spore\UTFWin\Message.h>
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\UTFWin\Constants.h>
-#include <Spore\Object.h>
+#include <Spore/UTFWin/Message.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/UTFWin/Constants.h>
+#include <Spore/Object.h>
 
-#include <EASTL\initializer_list.h>
-#include <EASTL\functional.h>
+#include <EASTL/initializer_list.h>
+#include <EASTL/functional.h>
 
 #define IWinProcPtr eastl::intrusive_ptr<UTFWin::IWinProc>
 

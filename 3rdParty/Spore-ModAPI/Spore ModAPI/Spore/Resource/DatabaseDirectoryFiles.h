@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Spore\Resource\Database.h>
-#include <Spore\FixedPoolAllocator.h>
-#include <Spore\IO\IStream.h>
-#include <Spore\Mutex.h>
-#include <EASTL\string.h>
-#include <EASTL\list.h>
-#include <EASTL\map.h>
+#include <Spore/Resource/Database.h>
+#include <Spore/FixedPoolAllocator.h>
+#include <Spore/IO/IStream.h>
+#include <Spore/Mutex.h>
+#include <EASTL/string.h>
+#include <EASTL/list.h>
+#include <EASTL/map.h>
 
 #define DatabaseDirectoryFilesPtr eastl::intrusive_ptr<Resource::DatabaseDirectoryFiles>
 

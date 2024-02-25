@@ -39,10 +39,10 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #pragma once
 
-#include <Spore\ICoreAllocator.h>
-#include <Spore\Object.h>
-#include <Spore\IO\EAIOZoneObject.h>
-#include <Spore\IO\IStream.h>
+#include <Spore/ICoreAllocator.h>
+#include <Spore/Object.h>
+#include <Spore/IO/EAIOZoneObject.h>
+#include <Spore/IO/IStream.h>
 
 #define MemoryStreamPtr eastl::intrusive_ptr<IO::MemoryStream>
 

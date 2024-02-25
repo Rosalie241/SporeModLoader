@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\Object.h>
+#include <Spore/Object.h>
 #include <cinttypes>
-#include <EASTL\string.h>
+#include <EASTL/string.h>
 
 #define RefCountedStringPtr eastl::intrusive_ptr<App::RefCountedString>
 

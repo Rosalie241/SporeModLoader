@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\Internal.h>
+#include <Spore/Internal.h>
 
 namespace Simulator
 {

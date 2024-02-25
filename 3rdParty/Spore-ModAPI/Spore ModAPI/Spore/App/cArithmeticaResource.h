@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\MathUtils.h>
-#include <Spore\Resource\ResourceObject.h>
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
 
 #define cArithmeticaResourcePtr eastl::intrusive_ptr<App::cArithmeticaResource>
 

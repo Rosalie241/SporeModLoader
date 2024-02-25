@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Skinner\cSkinPainterJob.h>
-#include <Spore\App\IMessageRC.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\MessageListenerData.h>
+#include <Spore/Skinner/cSkinPainterJob.h>
+#include <Spore/App/IMessageRC.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/MessageListenerData.h>
 
 namespace Skinner
 {

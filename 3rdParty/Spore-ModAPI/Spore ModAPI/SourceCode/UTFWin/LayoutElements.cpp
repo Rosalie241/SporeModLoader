@@ -17,10 +17,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\UTFWin\SimpleLayout.h>
-#include <Spore\UTFWin\ProportionalLayout.h>
-#include <EASTL\internal\thread_support.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/UTFWin/SimpleLayout.h>
+#include <Spore/UTFWin/ProportionalLayout.h>
+#include <EASTL/internal/thread_support.h>
 
 namespace UTFWin
 {

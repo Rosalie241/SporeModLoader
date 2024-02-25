@@ -17,14 +17,14 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\Window.h>
-#include <Spore\UTFWin\IWindowManager.h>
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\Constants.h>
-#include <Spore\UTFWin\WindowIterators.h>
-#include <EASTL\internal\thread_support.h>
+#include <Spore/UTFWin/Window.h>
+#include <Spore/UTFWin/IWindowManager.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/Constants.h>
+#include <Spore/UTFWin/WindowIterators.h>
+#include <EASTL/internal/thread_support.h>
 
-#include <Spore\UTFWin\cSPUIMessageBox.h>
+#include <Spore/UTFWin/cSPUIMessageBox.h>
 
 namespace UTFWin
 {

@@ -18,14 +18,14 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\Effect.h>
-#include <Spore\UTFWin\CascadeEffect.h>
-#include <Spore\UTFWin\GlideEffect.h>
-#include <Spore\UTFWin\InflateEffect.h>
-#include <Spore\UTFWin\ModulateEffect.h>
-#include <Spore\UTFWin\PerspectiveEffect.h>
-#include <Spore\UTFWin\RotateEffect.h>
-#include <Spore\UTFWin\FadeEffect.h>
+#include <Spore/UTFWin/Effect.h>
+#include <Spore/UTFWin/CascadeEffect.h>
+#include <Spore/UTFWin/GlideEffect.h>
+#include <Spore/UTFWin/InflateEffect.h>
+#include <Spore/UTFWin/ModulateEffect.h>
+#include <Spore/UTFWin/PerspectiveEffect.h>
+#include <Spore/UTFWin/RotateEffect.h>
+#include <Spore/UTFWin/FadeEffect.h>
 
 namespace UTFWin
 {

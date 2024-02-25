@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\App\PropertyList.h>
-#include <Spore\Pollinator\cAssetMetadata.h>
-#include <Spore\Sporepedia\OTDBParameters.h>
-#include <Spore\Object.h>
-#include <EASTL\fixed_vector.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/Pollinator/cAssetMetadata.h>
+#include <Spore/Sporepedia/OTDBParameters.h>
+#include <Spore/Object.h>
+#include <EASTL/fixed_vector.h>
 
 namespace Sporepedia
 {

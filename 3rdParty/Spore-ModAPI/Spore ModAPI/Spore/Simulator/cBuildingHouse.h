@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Simulator\cBuilding.h>
+#include <Spore/Simulator/cBuilding.h>
 
 #define cBuildingHousePtr eastl::intrusive_ptr<Simulator::cBuildingHouse>
 

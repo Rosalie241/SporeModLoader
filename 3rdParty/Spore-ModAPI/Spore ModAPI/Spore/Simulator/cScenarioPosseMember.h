@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\ResourceKey.h>
-#include <Spore\Simulator\cScenarioAsset.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/Simulator/cScenarioAsset.h>
 
 namespace Simulator
 {

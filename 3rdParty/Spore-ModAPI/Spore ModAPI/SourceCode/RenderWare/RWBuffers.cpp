@@ -18,12 +18,12 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\RenderWare\IndexBuffer.h>
-#include <Spore\RenderWare\VertexBuffer.h>
-#include <Spore\RenderWare\VertexDescription.h>
-#include <Spore\RenderWare\Mesh.h>
-#include <Spore\RenderWare\Raster.h>
-#include <Spore\Graphics\RenderUtils.h>
+#include <Spore/RenderWare/IndexBuffer.h>
+#include <Spore/RenderWare/VertexBuffer.h>
+#include <Spore/RenderWare/VertexDescription.h>
+#include <Spore/RenderWare/Mesh.h>
+#include <Spore/RenderWare/Raster.h>
+#include <Spore/Graphics/RenderUtils.h>
 
 namespace RenderWare
 {

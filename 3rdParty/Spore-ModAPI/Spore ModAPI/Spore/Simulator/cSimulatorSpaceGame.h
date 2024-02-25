@@ -18,18 +18,18 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cBadgeManager.h>
-#include <Spore\Simulator\cPlayerInventory.h>
-#include <Spore\Simulator\cGonzagoSimulator.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\cSimPlanetHighLOD.h>
-#include <Spore\Simulator\cSimulatorPlayerUFO.h>
-#include <Spore\Simulator\cMissionManager.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\MessageListenerData.h>
-#include <Spore\UI\SpaceGameUI.h>
+#include <Spore/Simulator/cBadgeManager.h>
+#include <Spore/Simulator/cPlayerInventory.h>
+#include <Spore/Simulator/cGonzagoSimulator.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/cSimPlanetHighLOD.h>
+#include <Spore/Simulator/cSimulatorPlayerUFO.h>
+#include <Spore/Simulator/cMissionManager.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/MessageListenerData.h>
+#include <Spore/UI/SpaceGameUI.h>
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
 /// Easy access to Simulator::cSimulatorSpaceGame
 #define SimulatorSpaceGame (*Simulator::cSimulatorSpaceGame::Get())

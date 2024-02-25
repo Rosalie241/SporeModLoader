@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\UILayout.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/UILayout.h>
 
 /// The system that manages event logs. For more info, check Simulator::cUIEventLog
 #define UIEventLog (*Simulator::cUIEventLog::Get())

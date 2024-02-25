@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\BehaviourTimeRamp.h>
+#include <Spore/UTFWin/BehaviourTimeRamp.h>
 
 namespace UTFWin
 {

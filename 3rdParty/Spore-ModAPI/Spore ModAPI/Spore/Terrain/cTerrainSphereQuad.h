@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\RenderWare\VertexBuffer.h>
-#include <Spore\RenderWare\IndexBuffer.h>
-#include <Spore\Graphics\ILayer.h>
-#include <Spore\Terrain\cTerrainShaderMgr.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\vector.h>
+#include <Spore/RenderWare/VertexBuffer.h>
+#include <Spore/RenderWare/IndexBuffer.h>
+#include <Spore/Graphics/ILayer.h>
+#include <Spore/Terrain/cTerrainShaderMgr.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/vector.h>
 
 namespace Terrain
 {

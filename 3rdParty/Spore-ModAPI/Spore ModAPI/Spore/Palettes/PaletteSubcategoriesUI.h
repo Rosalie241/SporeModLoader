@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\UTFWin\IWindow.h>
-#include <Spore\UTFWin\IButton.h>
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\StandardMessage.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <Spore/UTFWin/IButton.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/StandardMessage.h>
 
 #define PaletteSubcategoriesUIPtr eastl::intrusive_ptr<Palettes::PaletteSubcategoriesUI>
 

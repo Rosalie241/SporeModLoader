@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\UTFWin\IWindow.h>
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
-#include <EASTL\hash_map.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/UTFWin/IWindow.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
+#include <EASTL/hash_map.h>
 
 #define UILayoutObjectsPtr eastl::intrusive_ptr<UTFWin::UILayoutObjects>
 

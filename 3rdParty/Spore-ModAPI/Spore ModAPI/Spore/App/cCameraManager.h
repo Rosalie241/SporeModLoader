@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\App\ICameraManager.h>
-#include <Spore\Object.h>
+#include <Spore/App/ICameraManager.h>
+#include <Spore/Object.h>
 
-#include <EASTL\hash_map.h>
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
 
 namespace App
 {

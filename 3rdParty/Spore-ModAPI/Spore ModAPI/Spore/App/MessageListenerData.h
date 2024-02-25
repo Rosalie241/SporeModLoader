@@ -18,7 +18,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\App\IMessageManager.h>
+#include <Spore/App/IMessageManager.h>
 
 namespace App
 {

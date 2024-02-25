@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Resource\ThreadedObject.h>
+#include <Spore/Resource/ThreadedObject.h>
 
 
 namespace Resource

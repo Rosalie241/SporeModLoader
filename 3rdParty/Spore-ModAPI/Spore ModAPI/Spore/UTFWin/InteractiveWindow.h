@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\UTFWin\Window.h>
+#include <Spore/UTFWin/Window.h>
 
 #define InteractiveWindowPtr eastl::intrusive_ptr<UTFWin::InteractiveWindow>
 

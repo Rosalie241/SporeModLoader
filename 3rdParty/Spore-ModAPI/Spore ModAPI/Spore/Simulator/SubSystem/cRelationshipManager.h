@@ -18,12 +18,12 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\App\MessageListenerData.h>
-#include <Spore\Simulator\ISimulatorSerializable.h>
-#include <Spore\Simulator\SimulatorEnums.h>
+#include <Spore/App/MessageListenerData.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
+#include <Spore/Simulator/SimulatorEnums.h>
 
-#include <EASTL\map.h>
-#include <EASTL\vector.h>
+#include <EASTL/map.h>
+#include <EASTL/vector.h>
 
 /// Access the active relationship manager, which depends on the current game stage. Check cRelationshipManager.
 #define RelationshipManager (*Simulator::cRelationshipManager::Get())

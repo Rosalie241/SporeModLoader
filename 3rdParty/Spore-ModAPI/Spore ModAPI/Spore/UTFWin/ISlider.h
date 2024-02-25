@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\UTFWin\SliderDrawable.h>
+#include <Spore/UTFWin/SliderDrawable.h>
 
 #define ISliderPtr eastl::intrusive_ptr<UTFWin::ISlider>
 

@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\LocalizedString.h>
+#include <Spore/LocalizedString.h>
 
 
 LocalizedString::LocalizedString()

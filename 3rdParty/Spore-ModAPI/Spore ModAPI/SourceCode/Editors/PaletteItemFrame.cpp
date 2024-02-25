@@ -1,9 +1,9 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Palettes\IItemFrameUI.h>
-#include <Spore\App\IMessageManager.h>
-#include <Spore\Audio\AudioSystem.h>
-#include <Spore\UTFWin\IWindowManager.h>
-#include <Spore\Input.h>
+#include <Spore/Palettes/IItemFrameUI.h>
+#include <Spore/App/IMessageManager.h>
+#include <Spore/Audio/AudioSystem.h>
+#include <Spore/UTFWin/IWindowManager.h>
+#include <Spore/Input.h>
 
 namespace Palettes
 {

@@ -41,8 +41,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <cstddef>
 
-#include <Spore\IO\Allocator.h>
-#include <Spore\CoreAllocatorAdapter.h>
+#include <Spore/IO/Allocator.h>
+#include <Spore/CoreAllocatorAdapter.h>
 
 /// ICoreAllocator is the base level abstract
 /// interface for allocating and deallocating memory.

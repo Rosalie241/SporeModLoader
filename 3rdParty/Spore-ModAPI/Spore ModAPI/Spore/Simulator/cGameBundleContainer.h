@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <EASTL\vector.h>
+#include <Spore/Simulator/cGameData.h>
+#include <EASTL/vector.h>
 
 namespace Simulator
 {

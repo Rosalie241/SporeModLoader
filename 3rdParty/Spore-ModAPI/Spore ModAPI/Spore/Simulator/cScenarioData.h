@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Spore\Simulator\cScenarioResource.h>
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cScenarioEconomy.h>
-#include <Spore\Simulator\cOrnament.h>
-#include <Spore\Simulator\SimulatorEnums.h>
-#include <Spore\Editors\INameableEntity.h>
-#include <Spore\App\MessageListenerData.h>
-#include <Spore\Graphics\Texture.h>
-#include <EASTL\hash_map.h>
+#include <Spore/Simulator/cScenarioResource.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cScenarioEconomy.h>
+#include <Spore/Simulator/cOrnament.h>
+#include <Spore/Simulator/SimulatorEnums.h>
+#include <Spore/Editors/INameableEntity.h>
+#include <Spore/App/MessageListenerData.h>
+#include <Spore/Graphics/Texture.h>
+#include <EASTL/hash_map.h>
 
 #define cScenarioDataPtr eastl::intrusive_ptr<Simulator::cScenarioData>
 

@@ -18,13 +18,13 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Object.h>
-#include <Spore\Input.h>
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <EASTL\map.h>
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Object.h>
+#include <Spore/Input.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <EASTL/map.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
 
 #define GameInputManager (*Simulator::cGameInputManager::Get())
 

@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\Object.h>
+#include <Spore/Object.h>
 
 #define ResourceObjectPtr eastl::intrusive_ptr<Resource::ResourceObject>
 #define IAsyncRequestPtr eastl::intrusive_ptr<Resource::IAsyncRequest>

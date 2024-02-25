@@ -18,25 +18,25 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cPlayerInventory.h>
+#include <Spore/Simulator/cPlayerInventory.h>
 
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\UILayout.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/UILayout.h>
 
-#include <Spore\UI\GlobalUI.h>
-#include <Spore\UI\TiledScrollPanel.h>
-#include <Spore\UI\CivCommCursorAttachment.h>
-#include <Spore\UI\Minimap.h>
-#include <Spore\UI\SpaceToolPanelUI.h>
+#include <Spore/UI/GlobalUI.h>
+#include <Spore/UI/TiledScrollPanel.h>
+#include <Spore/UI/CivCommCursorAttachment.h>
+#include <Spore/UI/Minimap.h>
+#include <Spore/UI/SpaceToolPanelUI.h>
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\MessageListenerData.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/MessageListenerData.h>
 
-#include <Spore\LocalizedString.h>
-#include <Spore\Object.h>
+#include <Spore/LocalizedString.h>
+#include <Spore/Object.h>
 
-#include <EASTL\vector.h>
-#include <EASTL\hash_map.h>
+#include <EASTL/vector.h>
+#include <EASTL/hash_map.h>
 
 #define SpaceGameUIPtr eastl::intrusive_ptr<UI::SpaceGameUI>
 

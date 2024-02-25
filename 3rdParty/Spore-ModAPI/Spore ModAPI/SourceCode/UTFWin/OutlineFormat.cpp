@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\OutlineFormat.h>
+#include <Spore/UTFWin/OutlineFormat.h>
 
 namespace UTFWin
 {

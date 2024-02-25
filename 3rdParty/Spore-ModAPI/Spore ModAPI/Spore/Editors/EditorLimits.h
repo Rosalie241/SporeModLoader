@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\ResourceKey.h>
-#include <Spore\LocalizedString.h>
-#include <EASTL\vector.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/LocalizedString.h>
+#include <EASTL/vector.h>
 
 #define IEditorLimitsPtr eastl::intrusive_ptr<Editors::IEditorLimits>
 #define StdEditorLimitsPtr eastl::intrusive_ptr<Editors::StdEditorLimits>

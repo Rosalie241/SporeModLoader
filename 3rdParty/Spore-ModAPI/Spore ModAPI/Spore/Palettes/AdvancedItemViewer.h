@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Spore\Palettes\ItemViewer.h>
-#include <Spore\Palettes\PaletteItem.h>
-#include <Spore\Palettes\PaletteInfo.h>
-#include <Spore\Clock.h>
+#include <Spore/Palettes/ItemViewer.h>
+#include <Spore/Palettes/PaletteItem.h>
+#include <Spore/Palettes/PaletteInfo.h>
+#include <Spore/Clock.h>
 
 #define AdvancedItemViewerPtr eastl::intrusive_ptr<Palettes::AdvancedItemViewer>
 

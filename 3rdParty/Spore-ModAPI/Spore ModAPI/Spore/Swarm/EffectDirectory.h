@@ -19,16 +19,16 @@
 
 #pragma once
 
-#include <Spore\IO\IStream.h>
-#include <Spore\Swarm\IComponent.h>
-#include <Spore\Swarm\Components\VisualEffect.h>
-#include <Spore\Swarm\Components\cDescription.h>
-#include <Spore\ResourceID.h>
+#include <Spore/IO/IStream.h>
+#include <Spore/Swarm/IComponent.h>
+#include <Spore/Swarm/Components/VisualEffect.h>
+#include <Spore/Swarm/Components/cDescription.h>
+#include <Spore/ResourceID.h>
 
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
-#include <EASTL\hash_map.h>
-#include <EASTL\intrusive_ptr.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/intrusive_ptr.h>
 
 #define EffectDirectoryPtr eastl::intrusive_ptr<Swarm::EffectDirectory>
 

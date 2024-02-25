@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\ICoreAllocator.h>
+#include <Spore/ICoreAllocator.h>
 
 namespace UTFWin
 {

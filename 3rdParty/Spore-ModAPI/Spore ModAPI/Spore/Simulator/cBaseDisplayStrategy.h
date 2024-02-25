@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <EASTL\list.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <EASTL/list.h>
 
 namespace Simulator
 {

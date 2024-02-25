@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\MathUtils.h>
-#include <Spore\Graphics\Model.h>
+#include <Spore/Object.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Graphics/Model.h>
 
 #define EditorBaseHandlePtr eastl::intrusive_ptr<Editors::EditorBaseHandle>
 

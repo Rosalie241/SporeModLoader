@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cBehaviorList.h>
-#include <Spore\Simulator\cCombatant.h>
-#include <Spore\Simulator\cCreatureBase.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cBehaviorList.h>
+#include <Spore/Simulator/cCombatant.h>
+#include <Spore/Simulator/cCreatureBase.h>
 
 #define cEggPtr eastl::intrusive_ptr<Simulator::cEgg>
 

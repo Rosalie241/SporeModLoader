@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\Object.h>
+#include <Spore/Object.h>
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
 #define PlayAnimPanelPtr eastl::intrusive_ptr<Editors::PlayAnimPanel>
 

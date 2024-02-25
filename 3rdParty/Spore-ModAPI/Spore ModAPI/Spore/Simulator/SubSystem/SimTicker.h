@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\cGonzagoSimulator.h>
-#include <EASTL\list.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/cGonzagoSimulator.h>
+#include <EASTL/list.h>
 
 namespace Simulator
 {

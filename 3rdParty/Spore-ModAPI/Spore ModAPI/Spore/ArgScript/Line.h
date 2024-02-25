@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\Internal.h>
+#include <Spore/Internal.h>
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
 namespace ArgScript
 {

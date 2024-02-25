@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cSpatialObject.h>
-#include <EASTL\fixed_vector.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <EASTL/fixed_vector.h>
 
 #define cLocomotiveObjectPtr eastl::intrusive_ptr<Simulator::cLocomotiveObject>
 

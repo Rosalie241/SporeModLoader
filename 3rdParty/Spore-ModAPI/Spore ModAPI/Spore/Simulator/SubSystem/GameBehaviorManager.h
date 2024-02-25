@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\cBehaviorAgent.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Clock.h>
-#include <EASTL\vector.h>
-#include <EASTL\list.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/cBehaviorAgent.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Clock.h>
+#include <EASTL/vector.h>
+#include <EASTL/list.h>
 
 #define GameBehaviorManager (*Simulator::cGameBehaviorManager::Get())
 

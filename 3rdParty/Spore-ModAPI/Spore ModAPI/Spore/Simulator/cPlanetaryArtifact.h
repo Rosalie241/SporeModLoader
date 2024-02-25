@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Simulator\cMovableDestructibleOrnament.h>
-#include <Spore\Simulator\SimulatorEnums.h>
+#include <Spore/Simulator/cMovableDestructibleOrnament.h>
+#include <Spore/Simulator/SimulatorEnums.h>
 
 #define cPlanetaryArtifactPtr eastl::intrusive_ptr<Simulator::cPlanetaryArtifact>
 

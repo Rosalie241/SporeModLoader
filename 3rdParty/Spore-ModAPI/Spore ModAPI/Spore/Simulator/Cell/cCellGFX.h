@@ -19,18 +19,18 @@
 
 #pragma once
 
-#include <EASTL\vector.h>
-#include <EASTL\fixed_vector.h>
-#include <EASTL\map.h>
-#include <Spore\Anim\IAnimWorld.h>
-#include <Spore\Graphics\IModelWorld.h>
-#include <Spore\Graphics\ILightingWorld.h>
-#include <Spore\Graphics\Texture.h>
-#include <Spore\Swarm\IEffectsWorld.h>
-#include <Spore\Audio\AudioSystem.h>
-#include <Spore\Simulator\cObjectPool.h>
-#include <Spore\Simulator\Cell\cCellResource.h>
-#include <Spore\Simulator\Cell\cCellObjectData.h>
+#include <EASTL/vector.h>
+#include <EASTL/fixed_vector.h>
+#include <EASTL/map.h>
+#include <Spore/Anim/IAnimWorld.h>
+#include <Spore/Graphics/IModelWorld.h>
+#include <Spore/Graphics/ILightingWorld.h>
+#include <Spore/Graphics/Texture.h>
+#include <Spore/Swarm/IEffectsWorld.h>
+#include <Spore/Audio/AudioSystem.h>
+#include <Spore/Simulator/cObjectPool.h>
+#include <Spore/Simulator/Cell/cCellResource.h>
+#include <Spore/Simulator/Cell/cCellObjectData.h>
 
 #define CellGFX (*Simulator::Cell::cCellGFX::Get())
 

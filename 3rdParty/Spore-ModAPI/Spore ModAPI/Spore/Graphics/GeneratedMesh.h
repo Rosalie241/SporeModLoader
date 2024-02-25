@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Spore\RenderWare\Mesh.h>
-#include <Spore\RenderWare\VertexDescription.h>
-#include <Spore\RenderWare\VertexBuffer.h>
-#include <Spore\RenderWare\IndexBuffer.h>
-#include <Spore\Graphics\IMaterialManager.h>
-#include <Spore\Graphics\GlobalState.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\vector.h>
+#include <Spore/RenderWare/Mesh.h>
+#include <Spore/RenderWare/VertexDescription.h>
+#include <Spore/RenderWare/VertexBuffer.h>
+#include <Spore/RenderWare/IndexBuffer.h>
+#include <Spore/Graphics/IMaterialManager.h>
+#include <Spore/Graphics/GlobalState.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/vector.h>
 
 #ifndef SDK_TO_GHIDRA
 #define GeneratedMeshPtr(T) eastl::intrusive_ptr<Graphics::GeneratedMesh<T>>

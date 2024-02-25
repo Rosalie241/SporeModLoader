@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\UTFWin\UTFWinObject.h>
-#include <Spore\MathUtils.h>
-#include <Spore\UTFWin\UIRenderer.h>
+#include <Spore/UTFWin/UTFWinObject.h>
+#include <Spore/MathUtils.h>
+#include <Spore/UTFWin/UIRenderer.h>
 
 #define IDrawablePtr eastl::intrusive_ptr<UTFWin::IDrawable>
 

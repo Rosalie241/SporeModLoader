@@ -1,5 +1,5 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Simulator\SubSystem\GameBehaviorManager.h>
+#include <Spore/Simulator/SubSystem/GameBehaviorManager.h>
 
 namespace Simulator
 {

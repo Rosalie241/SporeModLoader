@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Graphics\MaterialShader.h>
-#include <EASTL\vector.h>
+#include <Spore/Graphics/MaterialShader.h>
+#include <EASTL/vector.h>
 
 namespace Graphics
 {

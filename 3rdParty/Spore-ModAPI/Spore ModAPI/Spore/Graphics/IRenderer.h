@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <EASTL\intrusive_ptr.h>
-#include <Spore\Internal.h>
-#include <Spore\Graphics\ILayer.h>
-#include <Spore\Graphics\LambdaLayer.h>
-#include <Spore\App\cJob.h>
+#include <EASTL/intrusive_ptr.h>
+#include <Spore/Internal.h>
+#include <Spore/Graphics/ILayer.h>
+#include <Spore/Graphics/LambdaLayer.h>
+#include <Spore/App/cJob.h>
 
 
 /// Access the active render manager.

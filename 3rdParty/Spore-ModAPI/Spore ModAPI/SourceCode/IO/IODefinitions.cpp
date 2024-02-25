@@ -18,15 +18,15 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\IO\Allocator.h>
-#include <Spore\IO\IStream.h>
-#include <Spore\IO\Constants.h>
-#include <Spore\Resource\DatabasePackedFile.h>
-#include <Spore\Resource\DatabaseDirectoryFiles.h>
-#include <Spore\Resource\PFRecordRead.h>
-#include <Spore\Resource\PFRecordWrite.h>
-#include <Spore\Resource\PFIndexModifiable.h>
-#include <Spore\Resource\Paths.h>
+#include <Spore/IO/Allocator.h>
+#include <Spore/IO/IStream.h>
+#include <Spore/IO/Constants.h>
+#include <Spore/Resource/DatabasePackedFile.h>
+#include <Spore/Resource/DatabaseDirectoryFiles.h>
+#include <Spore/Resource/PFRecordRead.h>
+#include <Spore/Resource/PFRecordWrite.h>
+#include <Spore/Resource/PFIndexModifiable.h>
+#include <Spore/Resource/Paths.h>
 
 namespace IO
 {

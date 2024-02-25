@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Simulator\SimulatorMessages.h>
+#include <Spore/Simulator/SimulatorMessages.h>
 
 namespace Simulator
 {

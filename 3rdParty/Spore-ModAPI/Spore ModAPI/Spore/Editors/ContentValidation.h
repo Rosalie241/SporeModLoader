@@ -1,8 +1,8 @@
 #pragma once
 
 #include <cstdint>
-#include <Spore\Internal.h>
-#include <EASTL\string.h>
+#include <Spore/Internal.h>
+#include <EASTL/string.h>
 
 namespace Editors
 {

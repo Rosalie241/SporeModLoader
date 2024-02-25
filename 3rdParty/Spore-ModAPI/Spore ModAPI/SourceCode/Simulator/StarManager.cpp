@@ -17,9 +17,9 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
-#include <Spore\Simulator\SubSystem\StarManager.h>
-#include <Spore\Simulator\SubSystem\SpaceGfx.h>
-#include <Spore\Simulator\SpaceConstants.h>
+#include <Spore/Simulator/SubSystem/StarManager.h>
+#include <Spore/Simulator/SubSystem/SpaceGfx.h>
+#include <Spore/Simulator/SpaceConstants.h>
 
 namespace Simulator
 {

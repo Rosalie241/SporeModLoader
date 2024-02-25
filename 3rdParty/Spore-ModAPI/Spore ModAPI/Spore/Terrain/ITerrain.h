@@ -18,14 +18,14 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Terrain\cTerrainMapSet.h>
-#include <Spore\Terrain\cTerrainStateMgr.h>
-#include <Spore\Terrain\cWeatherManager.h>
-#include <Spore\Terrain\TerrainShaderData.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\Graphics\IRenderer.h>
-#include <Spore\Anim\IAnimWorld.h>
-#include <Spore\Graphics\IModelWorld.h>
+#include <Spore/Terrain/cTerrainMapSet.h>
+#include <Spore/Terrain/cTerrainStateMgr.h>
+#include <Spore/Terrain/cWeatherManager.h>
+#include <Spore/Terrain/TerrainShaderData.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/Graphics/IRenderer.h>
+#include <Spore/Anim/IAnimWorld.h>
+#include <Spore/Graphics/IModelWorld.h>
 
 #define ITerrainPtr eastl::intrusive_ptr<Terrain::ITerrain>
 

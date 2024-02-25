@@ -18,7 +18,11 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Internal.h>
+#include <Spore/Internal.h>
+
+#ifdef __GNUC__
+#include <intrin.h>
+#endif // __GNUC__
 
 ///
 /// A class used for measuring time. It supports multiple precisions from the enum Clock::Mode:

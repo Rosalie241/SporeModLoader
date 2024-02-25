@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\ResourceID.h>
+#include <Spore/ResourceID.h>
 
 namespace Swarm
 {

@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\ArgScript\IParser.h>
+#include <Spore/ArgScript/IParser.h>
 
 #define ISpecialBlockPtr eastl::intrusive_ptr<ArgScript::ISpecialBlock>
 

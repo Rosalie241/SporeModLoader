@@ -18,14 +18,14 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\cCreatureCitizen.h>
-#include <Spore\Simulator\cCityWalls.h>
-#include <Spore\Editors\INameableEntity.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/cCreatureCitizen.h>
+#include <Spore/Simulator/cCityWalls.h>
+#include <Spore/Editors/INameableEntity.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
 
 #define cCommunityPtr eastl::intrusive_ptr<Simulator::cCommunity>
 

@@ -1,5 +1,5 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Simulator\cTribeArchetype.h>
+#include <Spore/Simulator/cTribeArchetype.h>
 
 namespace Simulator
 {

@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\ITokenTranslator.h>
-#include <Spore\UTFWin\UILayout.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/ITokenTranslator.h>
+#include <Spore/UTFWin/UILayout.h>
 
 namespace UI
 {

@@ -1,6 +1,6 @@
 #ifndef MODAPI_DLL_EXPORT
-#include <Spore\Editors\EditorPlayMode.h>
-#include <Spore\Editors\PlayModeActor.h>
+#include <Spore/Editors/EditorPlayMode.h>
+#include <Spore/Editors/PlayModeActor.h>
 
 namespace Editors
 {

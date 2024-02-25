@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\UTFWin\IDrawable.h>
-#include <Spore\UTFWin\TreeNode.h>
+#include <Spore/UTFWin/IDrawable.h>
+#include <Spore/UTFWin/TreeNode.h>
 
 namespace UTFWin
 {

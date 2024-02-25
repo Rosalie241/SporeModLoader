@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Object.h>
-#include <EASTL\vector.h>
-#include <EASTL\map.h>
+#include <Spore/Object.h>
+#include <EASTL/vector.h>
+#include <EASTL/map.h>
 
 #define cBehaviorBasePtr eastl::intrusive_ptr<Simulator::cBehaviorBase>
 

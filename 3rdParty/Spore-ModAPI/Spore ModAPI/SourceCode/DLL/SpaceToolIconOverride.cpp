@@ -1,10 +1,10 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
 #include "SpaceToolIconOverride.h"
-#include <Spore\CommonIDs.h>
-#include <Spore\UI\SpaceGameUI.h>
-#include <Spore\UTFWin\UILayout.h>
-#include <Spore\UTFWin\ImageDrawable.h>
+#include <Spore/CommonIDs.h>
+#include <Spore/UI/SpaceGameUI.h>
+#include <Spore/UTFWin/UILayout.h>
+#include <Spore/UTFWin/ImageDrawable.h>
 
 // Keys already found in ufotools~ folder
 const uint32_t kIllegalIconIDs[] = {
@@ -51,14 +51,15 @@ void ReadModdedPNGs()
 {
 	eastl::vector<ResourceKey> toolIconKeys;
 
-	ResourceManager.GetRecordKeyList(toolIconKeys,
-		&Resource::StandardFileFilter(
-			ResourceKey::kWildcardID,
-			0x3064CB38, // ufotools~
-			TypeIDs::png,
-			ResourceKey::kWildcardID
-		)
+	Resource::StandardFileFilter fileFilter = Resource::StandardFileFilter(
+		ResourceKey::kWildcardID,
+		0x3064CB38, // ufotools~
+		TypeIDs::png,
+		ResourceKey::kWildcardID
 	);
+
+	// TODO
+	ResourceManager.GetRecordKeyList(toolIconKeys, (Resource::IKeyFilter*)&fileFilter);
 
 	for (const ResourceKey& toolIconKey : toolIconKeys) {
 		if (!IsIllegalID(toolIconKey.instanceID)) {

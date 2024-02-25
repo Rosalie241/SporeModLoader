@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\Simulator\ISimulatorSerializable.h>
-#include <Spore\Simulator\cScenarioClass.h>
-#include <Spore\Simulator\cScenarioMarker.h>
-#include <Spore\Simulator\IGameDataView.h>
-#include <EASTL\intrusive_list.h>
+#include <Spore/Object.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
+#include <Spore/Simulator/cScenarioClass.h>
+#include <Spore/Simulator/cScenarioMarker.h>
+#include <Spore/Simulator/IGameDataView.h>
+#include <EASTL/intrusive_list.h>
 
 #define cGameDataPtr eastl::intrusive_ptr<Simulator::cGameData>
 

@@ -19,19 +19,19 @@
 
 #pragma once
 
-#include <Spore\Simulator\SubSystem\cStrategy.h>
-#include <Spore\Simulator\cEmpire.h>
-#include <Spore\Simulator\SubSystem\cRelationshipManager.h>
-#include <Spore\Simulator\cStarRecord.h>
-#include <Spore\Simulator\cPlanet.h>
-#include <Spore\Simulator\cCollectableItems.h>
-#include <Spore\Resource\Database.h>
-#include <Spore\Swarm\Components\DistributeEffect.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\MessageListenerData.h>
-#include <EASTL\map.h>
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
+#include <Spore/Simulator/cEmpire.h>
+#include <Spore/Simulator/SubSystem/cRelationshipManager.h>
+#include <Spore/Simulator/cStarRecord.h>
+#include <Spore/Simulator/cPlanet.h>
+#include <Spore/Simulator/cCollectableItems.h>
+#include <Spore/Resource/Database.h>
+#include <Spore/Swarm/Components/DistributeEffect.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/MessageListenerData.h>
+#include <EASTL/map.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
 
 /// Access the active Simulator star manager, used for most things in space stage.
 #define StarManager (*Simulator::cStarManager::Get())

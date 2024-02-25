@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\UTFWin\Effect.h>
+#include <Spore/UTFWin/Effect.h>
 
 #define IRotateEffectPtr eastl::intrusive_ptr<UTFWin::IRotateEffect>
 

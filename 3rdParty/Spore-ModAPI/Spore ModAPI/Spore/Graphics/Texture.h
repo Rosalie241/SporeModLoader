@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\RenderWare\Raster.h>
-#include <Spore\Graphics\cRwDirectResource.h>
-#include <Spore\ResourceKey.h>
+#include <Spore/RenderWare/Raster.h>
+#include <Spore/Graphics/cRwDirectResource.h>
+#include <Spore/ResourceKey.h>
 
-#include <EASTL\intrusive_ptr.h>
-#include <EASTL\vector.h>
+#include <EASTL/intrusive_ptr.h>
+#include <EASTL/vector.h>
 
 #define TexturePtr eastl::intrusive_ptr<Graphics::Texture>
 

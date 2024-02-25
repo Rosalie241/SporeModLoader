@@ -21,14 +21,14 @@
 /// @file ArgScript.h
 /// This file has all the includes necessary to work with ArgScript.
 
-#include <Spore\ArgScript\IParser.h>
-#include <Spore\ArgScript\IBlock.h>
-#include <Spore\ArgScript\ICommand.h>
-#include <Spore\ArgScript\ISpecialBlock.h>
-#include <Spore\ArgScript\IFunction.h>
-#include <Spore\ArgScript\FormatParser.h>
-#include <Spore\ArgScript\Lexer.h>
-#include <Spore\ArgScript\Line.h>
+#include <Spore/ArgScript/IParser.h>
+#include <Spore/ArgScript/IBlock.h>
+#include <Spore/ArgScript/ICommand.h>
+#include <Spore/ArgScript/ISpecialBlock.h>
+#include <Spore/ArgScript/IFunction.h>
+#include <Spore/ArgScript/FormatParser.h>
+#include <Spore/ArgScript/Lexer.h>
+#include <Spore/ArgScript/Line.h>
 
 ///
 /// @namespace ArgScript

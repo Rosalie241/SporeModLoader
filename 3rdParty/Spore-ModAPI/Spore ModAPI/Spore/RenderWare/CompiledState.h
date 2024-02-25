@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\RenderWare\Raster.h>
-#include <Spore\Graphics\MaterialShader.h>
-#include <Spore\Graphics\GlobalState.h>
+#include <Spore/RenderWare/Raster.h>
+#include <Spore/Graphics/MaterialShader.h>
+#include <Spore/Graphics/GlobalState.h>
 
 namespace RenderWare
 {

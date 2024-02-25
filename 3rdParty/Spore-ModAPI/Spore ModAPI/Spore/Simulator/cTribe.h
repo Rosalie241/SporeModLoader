@@ -1,20 +1,20 @@
 #pragma once
 
-#include <Spore\Simulator\cCommunity.h>
-#include <Spore\Simulator\cSpatialObject.h>
-#include <Spore\Simulator\cBehaviorList.h>
-#include <Spore\Simulator\cGameBundleContainer.h>
-#include <Spore\Simulator\cIdentityColorable.h>
-#include <Spore\Simulator\cCity.h>
-#include <Spore\Simulator\cTribeHut.h>
-#include <Spore\Simulator\cTribePlanner.h>
-#include <Spore\Simulator\cTribeTool.h>
-#include <Spore\Simulator\cTribeFoodMat.h>
-#include <Spore\Simulator\cTotemPole.h>
-#include <Spore\Simulator\cCommunityLayout.h>
-#include <Spore\Simulator\cOrnament.h>
-#include <EASTL\fixed_vector.h>
-#include <EASTL\deque.h>
+#include <Spore/Simulator/cCommunity.h>
+#include <Spore/Simulator/cSpatialObject.h>
+#include <Spore/Simulator/cBehaviorList.h>
+#include <Spore/Simulator/cGameBundleContainer.h>
+#include <Spore/Simulator/cIdentityColorable.h>
+#include <Spore/Simulator/cCity.h>
+#include <Spore/Simulator/cTribeHut.h>
+#include <Spore/Simulator/cTribePlanner.h>
+#include <Spore/Simulator/cTribeTool.h>
+#include <Spore/Simulator/cTribeFoodMat.h>
+#include <Spore/Simulator/cTotemPole.h>
+#include <Spore/Simulator/cCommunityLayout.h>
+#include <Spore/Simulator/cOrnament.h>
+#include <EASTL/fixed_vector.h>
+#include <EASTL/deque.h>
 
 #define cTribePtr eastl::intrusive_ptr<Simulator::cTribe>
 

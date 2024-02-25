@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\RenderWare\KeyframeAnim.h>
+#include <Spore/RenderWare/KeyframeAnim.h>
 
 namespace RenderWare
 {

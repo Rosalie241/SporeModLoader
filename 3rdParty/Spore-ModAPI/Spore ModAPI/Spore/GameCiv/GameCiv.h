@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\IGameMode.h>
-#include <Spore\Clock.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/IGameMode.h>
+#include <Spore/Clock.h>
 
 namespace GameCiv
 {

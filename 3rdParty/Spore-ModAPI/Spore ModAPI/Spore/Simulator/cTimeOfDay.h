@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Simulator\cGonzagoSimulator.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\vector.h>
+#include <Spore/Simulator/cGonzagoSimulator.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/vector.h>
 
 /// Accesses (and creates if necessary) the current instance of Simulator::cTimeOfDay
 #define TimeOfDay (*Simulator::cTimeOfDay::Get())

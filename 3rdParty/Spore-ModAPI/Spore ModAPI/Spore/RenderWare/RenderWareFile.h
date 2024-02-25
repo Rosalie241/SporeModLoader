@@ -18,8 +18,8 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\RenderWare\RWHeader.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/RenderWare/RWHeader.h>
 
 #define RenderWareFilePtr eastl::intrusive_ptr<RenderWare::RenderWareFile>
 

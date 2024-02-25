@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\ResourceKey.h>
-#include <Spore\IO\StreamMemory.h>
-#include <Spore\Resource\RecordInfo.h>
-#include <Spore\Resource\PFRecordBase.h>
-#include <Spore\Resource\PFIndexModifiable.h>
-#include <Spore\Resource\ThreadedObject.h>
+#include <Spore/ResourceKey.h>
+#include <Spore/IO/StreamMemory.h>
+#include <Spore/Resource/RecordInfo.h>
+#include <Spore/Resource/PFRecordBase.h>
+#include <Spore/Resource/PFIndexModifiable.h>
+#include <Spore/Resource/ThreadedObject.h>
 
 #define PFRecordReadPtr eastl::intrusive_ptr<Resource::PFRecordRead>
 

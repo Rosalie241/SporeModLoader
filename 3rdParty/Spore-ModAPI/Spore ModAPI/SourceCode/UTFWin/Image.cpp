@@ -18,9 +18,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\UTFWin\Image.h>
+#include <Spore/UTFWin/Image.h>
 
-#include <EASTL\internal\thread_support.h>
+#include <EASTL/internal/thread_support.h>
 
 namespace UTFWin
 {

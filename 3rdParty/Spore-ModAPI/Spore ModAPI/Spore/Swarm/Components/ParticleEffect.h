@@ -19,16 +19,16 @@
 
 #pragma once
 
-#include <Spore\MathUtils.h>
-#include <Spore\Swarm\cSurfaceInfo.h>
-#include <Spore\Swarm\Components\cDescription.h>
-#include <Spore\Swarm\Components\cTextureSlot.h>
-#include <Spore\Swarm\Components\Wiggle.h>
-#include <Spore\Swarm\Components\RandomWalk.h>
-#include <Spore\Swarm\Components\Attractor.h>
-#include <Spore\Swarm\Components\PathPoint.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Swarm/cSurfaceInfo.h>
+#include <Spore/Swarm/Components/cDescription.h>
+#include <Spore/Swarm/Components/cTextureSlot.h>
+#include <Spore/Swarm/Components/Wiggle.h>
+#include <Spore/Swarm/Components/RandomWalk.h>
+#include <Spore/Swarm/Components/Attractor.h>
+#include <Spore/Swarm/Components/PathPoint.h>
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
 namespace Swarm
 {

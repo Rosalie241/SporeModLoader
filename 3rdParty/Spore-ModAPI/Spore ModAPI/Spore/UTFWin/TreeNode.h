@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\UTFWin\IDrawable.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/UTFWin/IDrawable.h>
 
-#include <EASTL\string.h>
-#include <EASTL\intrusive_list.h>
+#include <EASTL/string.h>
+#include <EASTL/intrusive_list.h>
 
 namespace UTFWin
 {

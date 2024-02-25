@@ -18,7 +18,7 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cDefaultBeamTool.h>
+#include <Spore/Simulator/cDefaultBeamTool.h>
 
 #define cMindEraseToolStrategyPtr eastl::intrusive_ptr<Simulator::cMindEraseToolStrategy>
 

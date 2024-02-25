@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\App\cViewer.h>
-#include <Spore\ResourceID.h>
-#include <Spore\Transform.h>
+#include <Spore/App/cViewer.h>
+#include <Spore/ResourceID.h>
+#include <Spore/Transform.h>
 
 namespace Swarm
 {

@@ -23,11 +23,11 @@
 /// This file includes all the necessary headers for working with properties and .prop files.
 /// For more information, check the Property class.
 
-#include <Spore\App\Property.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\App\DirectPropertyList.h>
-#include <Spore\App\IPropManager.h>
-#include <Spore\App\SPPropertyIDs.h>
+#include <Spore/App/Property.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/App/DirectPropertyList.h>
+#include <Spore/App/IPropManager.h>
+#include <Spore/App/SPPropertyIDs.h>
 
 ///
 /// @namespace App

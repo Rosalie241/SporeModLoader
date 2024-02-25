@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\Transform.h>
-#include <Spore\ResourceID.h>
-#include <Spore\Object.h>
+#include <Spore/Transform.h>
+#include <Spore/ResourceID.h>
+#include <Spore/Object.h>
 
-#include <EASTL\intrusive_ptr.h>
-#include <EASTL\utility.h>
+#include <EASTL/intrusive_ptr.h>
+#include <EASTL/utility.h>
 
 #define IVisualEffectPtr eastl::intrusive_ptr<Swarm::IVisualEffect>
 

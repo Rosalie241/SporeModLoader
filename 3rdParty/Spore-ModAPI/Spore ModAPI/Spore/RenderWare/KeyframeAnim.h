@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\RenderWare\KeyframeData.h>
+#include <Spore/RenderWare/KeyframeData.h>
 
 namespace RenderWare
 {

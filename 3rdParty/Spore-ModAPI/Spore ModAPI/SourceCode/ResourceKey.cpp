@@ -18,7 +18,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\ResourceKey.h>
+#include <Spore/ResourceKey.h>
 
 auto_STATIC_METHOD(ResourceKey, bool, Parse,
 	Args(ResourceKey& dst, const char16_t* pString, uint32_t nDefaultTypeID, uint32_t nDefaultGroupID),

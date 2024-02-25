@@ -18,10 +18,10 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Simulator\cScenarioString.h>
-#include <Spore\Simulator\cScenarioAsset.h>
-#include <Spore\Simulator\cScenarioClassAct.h>
-#include <Spore\MathUtils.h>
+#include <Spore/Simulator/cScenarioString.h>
+#include <Spore/Simulator/cScenarioAsset.h>
+#include <Spore/Simulator/cScenarioClassAct.h>
+#include <Spore/MathUtils.h>
 
 using namespace Math;
 

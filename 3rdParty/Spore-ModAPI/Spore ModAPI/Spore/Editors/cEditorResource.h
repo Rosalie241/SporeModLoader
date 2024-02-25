@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\Editors\cEditorResourceProperties.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\vector.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/Editors/cEditorResourceProperties.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/vector.h>
 
 #define cEditorResourcePtr eastl::intrusive_ptr<Editors::cEditorResource>
 

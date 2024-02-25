@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Resource\ThreadedObject.h>
-#include <Spore\IO\IStream.h>
-#include <Spore\ResourceKey.h>
+#include <Spore/Resource/ThreadedObject.h>
+#include <Spore/IO/IStream.h>
+#include <Spore/ResourceKey.h>
 
 #define IRecordPtr eastl::intrusive_ptr<Resource::IRecord>
 

@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cLocomotiveObject.h>
-#include <Spore\Simulator\cCommodityNode.h>
-#include <Spore\Simulator\cProjectile.h>
-#include <Spore\Simulator\cGonzagoTimer.h>
-#include <Spore\Simulator\cCivilization.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cLocomotiveObject.h>
+#include <Spore/Simulator/cCommodityNode.h>
+#include <Spore/Simulator/cProjectile.h>
+#include <Spore/Simulator/cGonzagoTimer.h>
+#include <Spore/Simulator/cCivilization.h>
 
 #define cResourceProjectilePtr eastl::intrusive_ptr<Simulator::cResourceProjectile>
 

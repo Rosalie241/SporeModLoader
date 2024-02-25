@@ -17,8 +17,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Internal.h>
-#include <Spore\GeneralAllocator.h>
+#include <Spore/Internal.h>
+#include <Spore/GeneralAllocator.h>
 #include <memory>
 
 GeneralAllocator* GeneralAllocator::Get()
@@ -31,7 +31,7 @@ void* operator new[](size_t size, const char* pName,
 	int flags, unsigned debugFlags,
 	const char* file, int line) {
 
-	if (*(uint32_t*)GetAddress(Internal, Allocator_ptr) == NULL)
+	if (*(uint32_t*)GetAddress(Internal, Allocator_ptr) == 0)
 	{
 		return malloc(size);
 	}
@@ -45,7 +45,7 @@ void* operator new[](size_t size, size_t alignment,
 	int flags, unsigned debugFlags,
 	const char* file, int line) {
 
-	if (*(uint32_t*)GetAddress(Internal, Allocator_ptr) == NULL)
+	if (*(uint32_t*)GetAddress(Internal, Allocator_ptr) == 0)
 	{
 		return malloc(size);
 	}
@@ -57,7 +57,7 @@ void* operator new[](size_t size, size_t alignment,
 
 void operator delete[](void* p) {
 
-	if (*(uint32_t*)GetAddress(Internal, Allocator_ptr) == NULL)
+	if (*(uint32_t*)GetAddress(Internal, Allocator_ptr) == 0)
 	{
 		free(p);
 	}

@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\MessageListenerData.h>
-#include <Spore\Simulator\cScenarioGoal.h>
-#include <Spore\Audio\AudioSystem.h>
-#include <Spore\MathUtils.h>
-#include <EASTL\string.h>
-#include <EASTL\map.h>
-#include <EASTL\vector.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/MessageListenerData.h>
+#include <Spore/Simulator/cScenarioGoal.h>
+#include <Spore/Audio/AudioSystem.h>
+#include <Spore/MathUtils.h>
+#include <EASTL/string.h>
+#include <EASTL/map.h>
+#include <EASTL/vector.h>
 
 #define cScenarioPlayModePtr eastl::intrusive_ptr<Simulator::cScenarioPlayMode>
 

@@ -19,12 +19,12 @@
 
 #pragma once
 
-#include <Spore\App\Property.h>
-#include <Spore\IO\IStream.h>
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\Resource\Database.h>
-#include <EASTL\vector_map.h>
-#include <EASTL\vector.h>
+#include <Spore/App/Property.h>
+#include <Spore/IO/IStream.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/Resource/Database.h>
+#include <EASTL/vector_map.h>
+#include <EASTL/vector.h>
 
 #define PropertyListPtr eastl::intrusive_ptr<App::PropertyList>
 

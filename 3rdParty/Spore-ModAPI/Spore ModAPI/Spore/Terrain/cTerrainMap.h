@@ -18,9 +18,9 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\Internal.h>
-#include <EASTL\vector.h>
-#include <EASTL\intrusive_ptr.h>
+#include <Spore/Internal.h>
+#include <EASTL/vector.h>
+#include <EASTL/intrusive_ptr.h>
 
 #define cTerrainMapPtr eastl::intrusive_ptr<Terrain::cTerrainMap>
 

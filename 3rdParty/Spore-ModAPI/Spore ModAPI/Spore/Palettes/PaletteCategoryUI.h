@@ -19,17 +19,17 @@
 
 #pragma once
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
-#include <Spore\App\IMessageListener.h>
-#include <Spore\UTFWin\IWinProc.h>
-#include <Spore\UTFWin\UILayout.h>
-#include <Spore\Editors\EditorRigblock.h>
-#include <Spore\Palettes\PaletteCategory.h>
-#include <Spore\Palettes\ColorPickerUI.h>
-#include <Spore\Palettes\PalettePageUI.h>
-#include <Spore\Palettes\PaletteSubcategoriesUI.h>
-#include <Spore\Palettes\PaletteInfo.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/UTFWin/IWinProc.h>
+#include <Spore/UTFWin/UILayout.h>
+#include <Spore/Editors/EditorRigblock.h>
+#include <Spore/Palettes/PaletteCategory.h>
+#include <Spore/Palettes/ColorPickerUI.h>
+#include <Spore/Palettes/PalettePageUI.h>
+#include <Spore/Palettes/PaletteSubcategoriesUI.h>
+#include <Spore/Palettes/PaletteInfo.h>
 
 #define PaletteCategoryUIPtr eastl::intrusive_ptr<Palettes::PaletteCategoryUI>
 

@@ -18,17 +18,17 @@
 ****************************************************************************/
 #pragma once
 
-#include <Spore\MathUtils.h>
-#include <Spore\LocalizedString.h>
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\Simulator\cScenarioPosseMember.h>
-#include <Spore\Simulator\cScenarioClass.h>
-#include <Spore\Simulator\cScenarioMarker.h>
-#include <Spore\Simulator\cScenarioAct.h>
-#include <EASTL\vector.h>
-#include <EASTL\vector_map.h>
-#include <EASTL\vector_multimap.h>
+#include <Spore/MathUtils.h>
+#include <Spore/LocalizedString.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/Simulator/cScenarioPosseMember.h>
+#include <Spore/Simulator/cScenarioClass.h>
+#include <Spore/Simulator/cScenarioMarker.h>
+#include <Spore/Simulator/cScenarioAct.h>
+#include <EASTL/vector.h>
+#include <EASTL/vector_map.h>
+#include <EASTL/vector_multimap.h>
 
 #define cScenarioResourcePtr eastl::intrusive_ptr<Simulator::cScenarioResource>
 

@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <Spore\UTFWin\ILayoutElement.h>
-#include <Spore\UTFWin\IDrawable.h>
+#include <Spore/UTFWin/ILayoutElement.h>
+#include <Spore/UTFWin/IDrawable.h>
 
 #define FrameDrawablePtr eastl::intrusive_ptr<UTFWin::FrameDrawable>
 

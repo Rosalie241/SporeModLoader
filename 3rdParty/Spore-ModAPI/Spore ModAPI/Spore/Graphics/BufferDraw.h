@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Spore\RenderWare\IndexBuffer.h>
-#include <Spore\RenderWare\VertexBuffer.h>
-#include <Spore\RenderWare\VertexDescription.h>
-#include <Spore\Graphics\RenderStatistics.h>
-#include <Spore\Graphics\IMaterialManager.h>
+#include <Spore/RenderWare/IndexBuffer.h>
+#include <Spore/RenderWare/VertexBuffer.h>
+#include <Spore/RenderWare/VertexDescription.h>
+#include <Spore/Graphics/RenderStatistics.h>
+#include <Spore/Graphics/IMaterialManager.h>
 
 namespace Graphics
 {

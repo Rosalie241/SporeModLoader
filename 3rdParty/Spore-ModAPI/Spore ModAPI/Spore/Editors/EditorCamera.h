@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <Spore\App\ICamera.h>
-#include <Spore\App\cViewer.h>
-#include <Spore\App\PropertyList.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\Input.h>
+#include <Spore/App/ICamera.h>
+#include <Spore/App/cViewer.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/Input.h>
 
 #define EditorCameraPtr eastl::intrusive_ptr<Editors::EditorCamera>
 

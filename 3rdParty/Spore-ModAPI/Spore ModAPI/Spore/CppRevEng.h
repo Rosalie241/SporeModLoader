@@ -246,11 +246,11 @@ public:
 
 	static LONG attach(UINT function_address) {
 		original_function = (detour_pointer)function_address;
-		return DetourAttach(&(PVOID&)original_function, detoured_function);
+		return DetourAttach(&(PVOID&)original_function, (PVOID)detoured_function);
 	}
 
 	static LONG detach() {
-		return DetourDetach(&(PVOID&)original_function, detoured_function);
+		return DetourDetach(&(PVOID&)original_function, (PVOID)detoured_function);
 	}
 };
 

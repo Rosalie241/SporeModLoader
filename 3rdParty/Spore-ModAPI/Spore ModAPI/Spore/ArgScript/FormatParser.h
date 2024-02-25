@@ -20,16 +20,16 @@
 #pragma once
 
 
-#include <Spore\MathUtils.h>
-#include <Spore\ArgScript\ISpecialBlock.h>
-#include <Spore\ArgScript\Line.h>
-#include <Spore\ArgScript\Lexer.h>
-#include <Spore\ArgScript\ASDeclarations.h>
-#include <Spore\IO\IStream.h>
+#include <Spore/MathUtils.h>
+#include <Spore/ArgScript/ISpecialBlock.h>
+#include <Spore/ArgScript/Line.h>
+#include <Spore/ArgScript/Lexer.h>
+#include <Spore/ArgScript/ASDeclarations.h>
+#include <Spore/IO/IStream.h>
 
-#include <EASTL\hash_map.h>
-#include <EASTL\intrusive_ptr.h>
-#include <EASTL\string.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/intrusive_ptr.h>
+#include <EASTL/string.h>
 
 #define FormatParserPtr eastl::intrusive_ptr<ArgScript::FormatParser>
 

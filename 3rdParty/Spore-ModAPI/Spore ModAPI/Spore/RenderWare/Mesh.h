@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\RenderWare\IndexBuffer.h>
-#include <Spore\RenderWare\VertexBuffer.h>
+#include <Spore/Internal.h>
+#include <Spore/RenderWare/IndexBuffer.h>
+#include <Spore/RenderWare/VertexBuffer.h>
 
 namespace RenderWare
 {

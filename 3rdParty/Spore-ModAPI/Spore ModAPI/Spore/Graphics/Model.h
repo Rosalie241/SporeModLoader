@@ -19,18 +19,18 @@
 
 #pragma once
 
-#include <EASTL\vector.h>
-#include <EASTL\intrusive_ptr.h>
-#include <EASTL\intrusive_list.h>
+#include <EASTL/vector.h>
+#include <EASTL/intrusive_ptr.h>
+#include <EASTL/intrusive_list.h>
 
-#include <Spore\App\PropertyList.h>
-#include <Spore\ResourceID.h>
-#include <Spore\MathUtils.h>
-#include <Spore\Transform.h>
-#include <Spore\Swarm\IVisualEffect.h>
-#include <Spore\Graphics\cMaterialInfo.h>
-#include <Spore\Graphics\cModelInstance.h>
-#include <Spore\Graphics\cModelInstanceAnimations.h>
+#include <Spore/App/PropertyList.h>
+#include <Spore/ResourceID.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Transform.h>
+#include <Spore/Swarm/IVisualEffect.h>
+#include <Spore/Graphics/cMaterialInfo.h>
+#include <Spore/Graphics/cModelInstance.h>
+#include <Spore/Graphics/cModelInstanceAnimations.h>
 
 #define ModelPtr eastl::intrusive_ptr<Graphics::Model>
 #define cMWModelInternalPtr eastl::intrusive_ptr<Graphics::cMWModelInternal>

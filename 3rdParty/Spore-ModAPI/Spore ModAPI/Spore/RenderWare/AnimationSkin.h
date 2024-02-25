@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\RenderWare\RWMath.h>
+#include <Spore/RenderWare/RWMath.h>
 
 namespace RenderWare
 {

@@ -20,7 +20,7 @@
 
 #pragma once
 
-#include <Spore\Graphics\IShadowWorld.h>
+#include <Spore/Graphics/IShadowWorld.h>
 
 namespace Graphics
 {

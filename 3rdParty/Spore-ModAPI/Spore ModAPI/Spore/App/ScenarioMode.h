@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include <Spore\Simulator\cScenarioData.h>
-#include <Spore\Simulator\cScenarioPlayMode.h>
-#include <Spore\Simulator\cScenarioTerraformMode.h>
-#include <Spore\App\IGameMode.h>
-#include <Spore\App\IMessageListener.h>
-#include <Spore\App\MessageListenerData.h>
-#include <Spore\Object.h>
-#include <Spore\Input.h>
+#include <Spore/Simulator/cScenarioData.h>
+#include <Spore/Simulator/cScenarioPlayMode.h>
+#include <Spore/Simulator/cScenarioTerraformMode.h>
+#include <Spore/App/IGameMode.h>
+#include <Spore/App/IMessageListener.h>
+#include <Spore/App/MessageListenerData.h>
+#include <Spore/Object.h>
+#include <Spore/Input.h>
 
 #define ScenarioMode (*App::cScenarioMode::Get())
 

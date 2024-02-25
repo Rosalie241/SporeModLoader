@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Spore\Simulator\cGameData.h>
-#include <Spore\Simulator\cLocomotiveObject.h>
-#include <Spore\Simulator\cBehaviorList.h>
-#include <Spore\Simulator\cBehaviorAgent.h>
-#include <Spore\Simulator\cSpaceToolData.h>
-#include <Spore\Simulator\cHitSphere.h>
-#include <Spore\Simulator\cCombatant.h>
-#include <Spore\Simulator\cPlaceableStructure.h>
+#include <Spore/Simulator/cGameData.h>
+#include <Spore/Simulator/cLocomotiveObject.h>
+#include <Spore/Simulator/cBehaviorList.h>
+#include <Spore/Simulator/cBehaviorAgent.h>
+#include <Spore/Simulator/cSpaceToolData.h>
+#include <Spore/Simulator/cHitSphere.h>
+#include <Spore/Simulator/cCombatant.h>
+#include <Spore/Simulator/cPlaceableStructure.h>
 
 #define cTurretPtr eastl::intrusive_ptr<Simulator::cTurret>
 

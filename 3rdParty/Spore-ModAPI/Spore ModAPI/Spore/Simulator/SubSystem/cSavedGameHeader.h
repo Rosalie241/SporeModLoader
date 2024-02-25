@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Simulator\ISimulatorSerializable.h>
-#include <EASTL\map.h>
+#include <Spore/Simulator/ISimulatorSerializable.h>
+#include <EASTL/map.h>
 
 namespace Simulator
 {

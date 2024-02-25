@@ -19,19 +19,19 @@
 
 #pragma once
 
-#include <Spore\IO\FileStream.h>
-#include <Spore\Object.h>
-#include <Spore\Mutex.h>
-#include <Spore\ICoreAllocator.h>
-#include <Spore\Resource\Database.h>
-#include <Spore\Resource\IKeyFilter.h>
-#include <Spore\IO\EAIOZoneObject.h>
-#include <Spore\Resource\PFIndexModifiable.h>
+#include <Spore/IO/FileStream.h>
+#include <Spore/Object.h>
+#include <Spore/Mutex.h>
+#include <Spore/ICoreAllocator.h>
+#include <Spore/Resource/Database.h>
+#include <Spore/Resource/IKeyFilter.h>
+#include <Spore/IO/EAIOZoneObject.h>
+#include <Spore/Resource/PFIndexModifiable.h>
 
-#include <EASTL\internal\thread_support.h>
-#include <EASTL\string.h>
-#include <EASTL\map.h>
-#include <EASTL\set.h>
+#include <EASTL/internal/thread_support.h>
+#include <EASTL/string.h>
+#include <EASTL/map.h>
+#include <EASTL/set.h>
 
 #define DatabasePackedFilePtr eastl::intrusive_ptr<Resource::DatabasePackedFile>
 

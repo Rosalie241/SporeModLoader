@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include <Spore\Resource\ResourceObject.h>
-#include <Spore\Resource\IKeyFilter.h>
-#include <EASTL\intrusive_ptr.h>
-#include <EASTL\list.h>
+#include <Spore/Resource/ResourceObject.h>
+#include <Spore/Resource/IKeyFilter.h>
+#include <EASTL/intrusive_ptr.h>
+#include <EASTL/list.h>
 
 namespace Resource
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Spore\Sporepedia\OTDBParameters.h>
+#include <Spore/Sporepedia/OTDBParameters.h>
 
 #define ObjectTemplateDB (*Sporepedia::OTDB::cObjectTemplateDB::Get())
 

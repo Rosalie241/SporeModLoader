@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\Simulator\SubSystem\cStrategy.h>
+#include <Spore/Internal.h>
+#include <Spore/Simulator/SubSystem/cStrategy.h>
 
 ///
 /// @brief Interaction with the ModAPI base DLLs.

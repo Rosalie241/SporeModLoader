@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Object.h>
-#include <Spore\Editors\EditorCreatureController.h>
-#include <EASTL\vector.h>
+#include <Spore/Object.h>
+#include <Spore/Editors/EditorCreatureController.h>
+#include <EASTL/vector.h>
 
 namespace Editors
 {

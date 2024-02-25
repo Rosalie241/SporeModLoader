@@ -18,8 +18,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ****************************************************************************/
 
-#include <Spore\Palettes\ColorPickerUI.h>
-#include <Spore\Palettes\ColorSwatchUI.h>
+#include <Spore/Palettes/ColorPickerUI.h>
+#include <Spore/Palettes/ColorSwatchUI.h>
 
 namespace Palettes
 {

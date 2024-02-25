@@ -19,14 +19,14 @@
 
 #pragma once
 
-#include <Spore\UTFWin\UILayout.h>
-#include <Spore\UTFWin\IWinProc.h>
+#include <Spore/UTFWin/UILayout.h>
+#include <Spore/UTFWin/IWinProc.h>
 
-#include <Spore\App\ICamera.h>
+#include <Spore/App/ICamera.h>
 
-#include <EASTL\vector.h>
-#include <EASTL\map.h>
-#include <EASTL\string.h>
+#include <EASTL/vector.h>
+#include <EASTL/map.h>
+#include <EASTL/string.h>
 
 namespace GalaxyGameEntry
 {

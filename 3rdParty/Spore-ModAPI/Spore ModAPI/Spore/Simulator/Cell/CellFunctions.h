@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Spore\Simulator\Cell\cCellGame.h>
-#include <Spore\Simulator\Cell\CellAnimations.h>
-#include <Spore\Simulator\GoalCard.h>
+#include <Spore/Simulator/Cell/cCellGame.h>
+#include <Spore/Simulator/Cell/CellAnimations.h>
+#include <Spore/Simulator/GoalCard.h>
 
 namespace Simulator
 {

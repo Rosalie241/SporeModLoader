@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include <Spore\Editors\PlayAnimPanel.h>
+#include <Spore/Editors/PlayAnimPanel.h>
 
-#include <EASTL\vector.h>
+#include <EASTL/vector.h>
 
 namespace Editors
 {

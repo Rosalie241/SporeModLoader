@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\MathUtils.h>
+#include <Spore/MathUtils.h>
 
 namespace UTFWin
 {

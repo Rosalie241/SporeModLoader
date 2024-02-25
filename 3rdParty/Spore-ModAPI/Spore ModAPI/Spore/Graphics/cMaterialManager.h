@@ -19,18 +19,18 @@
 
 #pragma once
 
-#include <Spore\RenderWare\RenderWareFile.h>
-#include <Spore\Graphics\IMaterialManager.h>
-#include <Spore\Graphics\StandardShader.h>
-#include <Spore\Graphics\ShaderBuilder.h>
-#include <Spore\Object.h>
-#include <Spore\Clock.h>
-#include <Spore\Mutex.h>
+#include <Spore/RenderWare/RenderWareFile.h>
+#include <Spore/Graphics/IMaterialManager.h>
+#include <Spore/Graphics/StandardShader.h>
+#include <Spore/Graphics/ShaderBuilder.h>
+#include <Spore/Object.h>
+#include <Spore/Clock.h>
+#include <Spore/Mutex.h>
 
-#include <EASTL\hash_map.h>
-#include <EASTL\fixed_vector.h>
-#include <EASTL\vector.h>
-#include <EASTL\string.h>
+#include <EASTL/hash_map.h>
+#include <EASTL/fixed_vector.h>
+#include <EASTL/vector.h>
+#include <EASTL/string.h>
 
 namespace Graphics
 {

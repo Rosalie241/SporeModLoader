@@ -19,7 +19,7 @@
 
 #pragma once
 
-#include <Spore\App\DirectPropertyList.h>
+#include <Spore/App/DirectPropertyList.h>
 
 /// AppProperties is a kind of PropertyList containing globally-accessible properties that control
 /// the running of the app as a whole.

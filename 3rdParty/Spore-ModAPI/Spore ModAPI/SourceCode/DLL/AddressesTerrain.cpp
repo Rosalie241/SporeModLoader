@@ -1,9 +1,9 @@
 #ifdef MODAPI_DLL_EXPORT
 #include "stdafx.h"
-#include <Spore\Terrain\cTerrainSphere.h>
-#include <Spore\Terrain\cTerrainSphereQuad.h>
-#include <Spore\Terrain\ITerrainResourceManager.h>
-#include <Spore\Terrain\TerrainRendering.h>
+#include <Spore/Terrain/cTerrainSphere.h>
+#include <Spore/Terrain/cTerrainSphereQuad.h>
+#include <Spore/Terrain/ITerrainResourceManager.h>
+#include <Spore/Terrain/TerrainRendering.h>
 
 namespace Terrain
 {

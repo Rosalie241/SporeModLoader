@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Spore\Internal.h>
-#include <Spore\MathUtils.h>
-#include <Spore\Transform.h>
-#include <Spore\Graphics\IMaterialManager.h>
-#include <Spore\Graphics\cMaterialInfo.h>
-#include <Spore\Graphics\cModelInstanceAnimations.h>
-#include <Spore\RenderWare\RenderWareFile.h>
-#include <EASTL\vector.h>
-#include <EASTL\vector_map.h>
+#include <Spore/Internal.h>
+#include <Spore/MathUtils.h>
+#include <Spore/Transform.h>
+#include <Spore/Graphics/IMaterialManager.h>
+#include <Spore/Graphics/cMaterialInfo.h>
+#include <Spore/Graphics/cModelInstanceAnimations.h>
+#include <Spore/RenderWare/RenderWareFile.h>
+#include <EASTL/vector.h>
+#include <EASTL/vector_map.h>
 
 #define cModelInstancePtr eastl::intrusive_ptr<Graphics::cModelInstance>
 

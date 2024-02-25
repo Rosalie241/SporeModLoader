@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Spore\App\ICamera.h>
-#include <Spore\App\IMessageListener.h>
+#include <Spore/App/ICamera.h>
+#include <Spore/App/IMessageListener.h>
 
 namespace App
 {
