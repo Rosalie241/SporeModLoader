@@ -1,10 +1,21 @@
 #!/usr/bin/env bash
-gcc_symbol_list=$(i686-w64-mingw32-nm SporeModAPI.dll | awk '{ print $3 }')
-msvc_symbols=$(cat msvc_symbols | awk '{ print $4 }')
+set -e
+
+if [[ "x$2" == "x" ]] ||
+	! [[ -f "$1" ]] || ! [[ -f "$2" ]]
+then
+	echo "$0 [SporeModAPI dll compiled with mingw without def file] [text file with msvc symbols] [output def file]"
+	echo "msvc symbols file can be generated using: \"dumpbin /exports /nologo SporeModAPI.dll > msvc_symbols.txt\" on windows"
+	exit 1
+fi
+
+gcc_symbol_list=$(i686-w64-mingw32-nm "$1" | awk '{ print $3 }')
+msvc_symbols=$(cat "$2" | awk '{ print $4 }')
+output_file="$3"
 
 readarray -t gcc_symbols <<< "${gcc_symbol_list}"
 
-echo "-> preparing gcc symbol list..."
+# prepare gcc symbol list
 for ((i=0; i < ${#gcc_symbols[@]}; i++))
 do
 	if [[ "x${gcc_symbols[$i]}" == "x" ]]
@@ -13,18 +24,16 @@ do
 	fi
 done
 
+# demangle gcc symbols once
 echo "-> demangling gcc symbols..."
 gcc_demangled_symbols=()
-# demangle the symbols once
 for ((i=0; i < ${#gcc_symbols[@]}; i++))
 do
 	gcc_demangled_symbols+=("$(echo "${gcc_symbols[$i]}" | i686-w64-mingw32-c++filt)")
 done
 
-rm -rf SporeModAPI.def
-
-echo "LIBRARY \"SporeModAPI.dll\"" > SporeModAPI.def
-echo "EXPORTS" >> SporeModAPI.def
+echo "LIBRARY \"SporeModAPI.dll\"" > "$output_file"
+echo "EXPORTS" >> "$output_file"
 
 for msvc_symbol in ${msvc_symbols}
 do
@@ -72,7 +81,7 @@ do
 		if [[ "${gcc_demangled_symbols[$i]}" == *"$msvc_converted_symbol"* ]]
 		then
 			echo "-> Found: ${gcc_demangled_symbols[$i]}"
-			echo "    ${msvc_symbol}=${gcc_symbol:1}" >> SporeModAPI.def
+			echo "    ${msvc_symbol}=${gcc_symbol:1}" >> "$output_file"
 			found_symbol=true
 			break
 		fi

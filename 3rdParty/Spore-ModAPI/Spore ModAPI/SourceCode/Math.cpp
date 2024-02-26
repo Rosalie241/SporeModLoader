@@ -24,6 +24,11 @@
 #include <ctime>
 #include <algorithm>
 
+#ifdef __GNUC__
+#define min(a, b) std::min(a, b)
+#define max(a, b) std::max(a, b)
+#endif // __GNUC__
+
 namespace Math
 {
 	const Vector2 Vector2::ZERO = { 0, 0 };
@@ -48,8 +53,8 @@ namespace Math
 		// convert to [-PI, PI]
 		if (angle2 >= PI) angle2 = angle2 - PI2;
 
-		float minAngle = std::min(angle1, angle2);
-		float maxAngle = std::max(angle1, angle2);
+		float minAngle = min(angle1, angle2);
+		float maxAngle = max(angle1, angle2);
 
 		float result = PI2 - maxAngle + minAngle;
 		if ((maxAngle - minAngle) <= result)
@@ -520,16 +525,16 @@ namespace Math
 
 	bool BoundingBox::Intersect(const BoundingBox& other, BoundingBox& dst) const
 	{
-		dst.lower.x = std::max(lower.x, other.lower.x);
-		dst.upper.x = std::min(upper.x, other.upper.x);
+		dst.lower.x = max(lower.x, other.lower.x);
+		dst.upper.x = min(upper.x, other.upper.x);
 		if (dst.lower.x >= dst.upper.x) return false;
 
-		dst.lower.y = std::max(lower.y, other.lower.y);
-		dst.upper.y = std::min(upper.y, other.upper.y);
+		dst.lower.y = max(lower.y, other.lower.y);
+		dst.upper.y = min(upper.y, other.upper.y);
 		if (dst.lower.y >= dst.upper.y) return false;
 
-		dst.lower.z = std::max(lower.z, other.lower.z);
-		dst.upper.z = std::min(upper.z, other.upper.z);
+		dst.lower.z = max(lower.z, other.lower.z);
+		dst.upper.z = min(upper.z, other.upper.z);
 		if (dst.lower.z >= dst.upper.z) return false;
 
 		return true;
