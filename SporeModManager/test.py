@@ -18,13 +18,15 @@ import atexit
 sporemodmanager = ''
 verbose         = False
 
-sporemod_path   = tempfile.mkdtemp()
-config_path     = tempfile.mkdtemp()
-sporemod_file   = os.path.join(sporemod_path, 'test.sporemod')
-config_file     = os.path.join(config_path, 'configfile.xml')
-modlibs_path    = tempfile.mkdtemp()
-data_path       = tempfile.mkdtemp()
-ep1_path        = tempfile.mkdtemp()
+corelibs_path    = tempfile.mkdtemp()
+sporemod_path    = tempfile.mkdtemp()
+config_path      = tempfile.mkdtemp()
+sporemodapi_file = os.path.join(corelibs_path, 'SporeModAPI.dll')
+sporemod_file    = os.path.join(sporemod_path, 'test.sporemod')
+config_file      = os.path.join(config_path, 'configfile.xml')
+modlibs_path     = tempfile.mkdtemp()
+data_path        = tempfile.mkdtemp()
+ep1_path         = tempfile.mkdtemp()
 
 
 os_environment  = os.environ.copy()
@@ -49,7 +51,7 @@ def reset_smm():
 
 def run_smm(args):
 	os_environment["SPOREMODMANAGER_CONFIGFILE"] = str(config_file)
-	cmd = [sporemodmanager, '--verbose', '--no-input', f'--modlibs-path={modlibs_path}', f'--data-path={data_path}', f'--ep1-path={ep1_path}']
+	cmd = [sporemodmanager, '--verbose', '--no-input', f'--corelibs-path={corelibs_path}', f'--modlibs-path={modlibs_path}', f'--data-path={data_path}', f'--ep1-path={ep1_path}']
 	for arg in args:
 		cmd.append(arg)
 	if verbose:
@@ -76,6 +78,13 @@ def write_sporemod(xml, extra = None, createNew = False):
 			for list_str in extra:
 				archive.writestr(list_str[0], list_str[1])
 	return file
+
+def write_sporemodapi_dll(path):
+	file = open(path, 'wb')
+	# FileVersion 2.5.300
+	bytes = b'F\0i\0l\0e\0V\0e\0r\0s\0i\0o\0n\0\0\0\0\0002\0.\0005\0.\000300\0'
+	file.write(bytes)
+	file.close()
 
 #
 # Test Functions
@@ -610,6 +619,9 @@ if __name__ == "__main__":
 	# set global variables
 	sporemodmanager = args.executable
 	verbose 		= args.verbose
+
+	# write spore mod api dll
+	write_sporemodapi_dll(sporemodapi_file)
 
 	# call tests
 	test_help()
