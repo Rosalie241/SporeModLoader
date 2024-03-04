@@ -157,7 +157,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
     auto bufferIter = std::search(buffer.begin(), buffer.end(), searchBytes.begin(), searchBytes.end());
     if (bufferIter == buffer.end())
     {
-        std::cout << "Error: failed to find file version bytes!" << std::endl;
+        std::cerr << "Error: failed to find file version bytes!" << std::endl;
         return false;
     }
 
