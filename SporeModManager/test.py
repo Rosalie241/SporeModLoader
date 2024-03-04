@@ -15,19 +15,20 @@ import atexit
 # Global Variables
 #
 
+# argument options
 sporemodmanager = ''
 verbose         = False
+cleanup         = True
 
-corelibs_path    = tempfile.mkdtemp()
-sporemod_path    = tempfile.mkdtemp()
-config_path      = tempfile.mkdtemp()
+# paths for tests
+tests_path       = tempfile.mkdtemp()
+corelibs_path    = os.path.join(tests_path, 'CoreLibs')
 sporemodapi_file = os.path.join(corelibs_path, 'SporeModAPI.dll')
-sporemod_file    = os.path.join(sporemod_path, 'test.sporemod')
-config_file      = os.path.join(config_path, 'configfile.xml')
-modlibs_path     = tempfile.mkdtemp()
-data_path        = tempfile.mkdtemp()
-ep1_path         = tempfile.mkdtemp()
-
+sporemod_file    = os.path.join(tests_path, 'test.sporemod')
+config_file      = os.path.join(tests_path, 'configfile.xml')
+modlibs_path     = os.path.join(tests_path, 'ModLibs')
+data_path        = os.path.join(tests_path, 'Data')
+ep1_path         = os.path.join(tests_path, 'DataEP1')
 
 os_environment  = os.environ.copy()
 
@@ -39,11 +40,8 @@ write_mod_num   = 0
 #
 
 def cleanup_smm():
-	shutil.rmtree(sporemod_path)
-	shutil.rmtree(config_path)
-	shutil.rmtree(modlibs_path)
-	shutil.rmtree(data_path)
-	shutil.rmtree(ep1_path)
+	if cleanup:
+		shutil.rmtree(tests_path)
 
 def reset_smm():
 	if os.path.isfile(config_file):
@@ -69,7 +67,7 @@ def write_sporemod(xml, extra = None, createNew = False):
 	file = sporemod_file
 	if createNew:
 		global write_mod_num
-		file = os.path.join(sporemod_path, f'test_{write_mod_num}.sporemod')
+		file = os.path.join(tests_path, f'test_{write_mod_num}.sporemod')
 		write_mod_num = write_mod_num + 1
 	with zipfile.ZipFile(file, mode="w") as archive:
 		if xml is not None:
@@ -612,6 +610,7 @@ if __name__ == "__main__":
 
 	# add argument parser
 	parser = argparse.ArgumentParser(description='Runs SporeModManager tests.')
+	parser.add_argument('--nocleanup', action='store_false', help="skips cleanup of temporary directory")
 	parser.add_argument('--verbose', action='store_true', help='prints command output for each test.')
 	parser.add_argument('executable', help='executable to run tests with.')
 	args = parser.parse_args()
@@ -619,6 +618,13 @@ if __name__ == "__main__":
 	# set global variables
 	sporemodmanager = args.executable
 	verbose 		= args.verbose
+	cleanup         = args.nocleanup
+
+	# create test directories
+	os.mkdir(corelibs_path)
+	os.mkdir(modlibs_path)
+	os.mkdir(data_path)
+	os.mkdir(ep1_path)
 
 	# write spore mod api dll
 	write_sporemodapi_dll(sporemodapi_file)
