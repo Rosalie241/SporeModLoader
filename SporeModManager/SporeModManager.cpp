@@ -288,7 +288,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
 
         if (!returnValue)
         {
-            l_InstalledSporeMods.erase(l_InstalledSporeMods.begin() + installedSporeModIndex);
+            l_InstalledSporeMods.erase(l_InstalledSporeMods.begin() + installedSporeModIndex, l_InstalledSporeMods.end());
             break;
         }
     }
