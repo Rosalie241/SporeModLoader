@@ -147,28 +147,36 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
         return false;
     }
 
-    std::vector<int> searchBytes =
+    const std::vector<int> fileVersionBytes =
     { // F\0i\0l\0e\0V\0e\0r\0s\0i\0o\0n\0\0\0\0\0
         0x46, 0x00, 0x69, 0x00, 0x6C, 0x00, 0x65, 0x00, 0x56, 0x00, 0x65,
         0x00, 0x72, 0x00, 0x73, 0x00, 0x69, 0x00, 0x6F, 0x00, 0x6E, 0x00,
         0x00, 0x00, 0x00
     };
 
-    auto bufferIter = std::search(buffer.begin(), buffer.end(), searchBytes.begin(), searchBytes.end());
+    auto bufferIter = std::search(buffer.begin(), buffer.end(), fileVersionBytes.begin(), fileVersionBytes.end());
     if (bufferIter == buffer.end())
     {
         std::cerr << "Error: failed to find file version bytes!" << std::endl;
         return false;
     }
 
+    // ensure we have enough bytes available
+    const auto availableBytes = std::distance(bufferIter + fileVersionBytes.size(), buffer.end());
+    if (availableBytes <= 1)
+    {
+        std::cerr << "Error: failed to find file version bytes!" << std::endl;
+        return false;
+    }
+
     // move to after the found bytes
-    bufferIter = bufferIter + searchBytes.size() + 1;
+    bufferIter = bufferIter + fileVersionBytes.size() + 1;
 
     // construct version string
     while (bufferIter != buffer.end())
     {
         char byte     = *bufferIter;
-        char nextByte = *(bufferIter + 1);
+        char nextByte = (std::distance(bufferIter, buffer.end()) <= 1) ? 0 : *(bufferIter + 1);
 
         if (byte == '\0' && nextByte == '\0')
         {
@@ -177,7 +185,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
 
         if (byte != '\0')
         {
-            versionString += byte;
+            versionString.push_back(byte);
         }
 
         bufferIter++;
