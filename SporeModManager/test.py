@@ -401,39 +401,6 @@ def test_install():
 	assert result.stdout == b''
 	assert result.stderr != b''
 
-	# verify that installing multiple mods
-	# with a broken mod in the middle works correctly
-	install_cmd = [ 'install' ]
-	for num in range(3):
-		if num == 1: # invalid file referenced
-			xml = f"""<mod displayName="test_install_11_{num}" 
-						unique="test_install_11_{num}" 
-						description="test_install_11_{num}" 
-						installerSystemVersion="1.0.1.1" 
-						dllsBuild="2.5.20">
-						<prerequisite>test_install_11.dll</prerequisite>
-					</mod>"""
-		else:
-			xml = f"""<mod displayName="test_install_11_{num}" 
-						unique="test_install_11_{num}" 
-						description="test_install_11_{num}" 
-						installerSystemVersion="1.0.1.1" 
-						dllsBuild="2.5.20">
-					</mod>"""
-		install_cmd += [ write_sporemod(xml, None, True) ]
-	result = run_smm(install_cmd)
-	assert result.returncode != 0
-	assert result.stdout != b''
-	assert result.stderr != b''
-
-	# ensure the correct mods are listed in list-installed
-	result = run_smm([ 'list-installed' ])
-	assert result.returncode == 0
-	assert result.stdout != b''
-	assert b'test_install_11_0' in result.stdout
-	assert b'test_install_11_1' not in result.stdout
-	assert b'test_install_11_2' not in result.stdout
-
 # Tests whether uninstall works correctly
 def test_uninstall():
 	print(f'Running {test_uninstall.__name__}...')
@@ -599,13 +566,46 @@ def test_list_installed():
 	assert b'test_list_installed_1' not in result.stdout
 	assert result.stderr == b''
 
+	# attempt to install multiple mods with
+	# a broken one in the middle
+	install_cmd = [ 'install' ]
+	for num in range(3):
+		if num == 1: # invalid file referenced
+			xml = f"""<mod displayName="test_list_installed_2_{num}" 
+						unique="test_list_installed_2_{num}" 
+						description="test_list_installed_2_{num}" 
+						installerSystemVersion="1.0.1.1" 
+						dllsBuild="2.5.20">
+						<prerequisite>test_list_installed_2.dll</prerequisite>
+					</mod>"""
+		else:
+			xml = f"""<mod displayName="test_list_installed_2_{num}" 
+						unique="test_list_installed_2_{num}" 
+						description="test_list_installed_2_{num}" 
+						installerSystemVersion="1.0.1.1" 
+						dllsBuild="2.5.20">
+					</mod>"""
+		install_cmd += [ write_sporemod(xml, None, True) ]
+	result = run_smm(install_cmd)
+	assert result.returncode != 0
+	assert result.stdout != b''
+	assert result.stderr != b''
+
+	# ensure the correct mods are listed in list-installed
+	result = run_smm([ 'list-installed' ])
+	assert result.returncode == 0
+	assert result.stdout != b''
+	assert b'test_list_installed_2_0' in result.stdout
+	assert b'test_list_installed_2_1' not in result.stdout
+	assert b'test_list_installed_2_2' not in result.stdout
+
 	# attempt to install another broken mod
-	xml = """<mod displayName="test_list_installed_2" 
-				unique="test_list_installed_2" 
-				description="test_list_installed_2" 
+	xml = """<mod displayName="test_list_installed_3" 
+				unique="test_list_installed_3" 
+				description="test_list_installed_3" 
 				installerSystemVersion="1.0.1.1" 
 				dllsBuild="999.999.999">
-					<prerequisite>test_list_installed_2.dll</prerequisite>
+					<prerequisite>test_list_installed_3.dll</prerequisite>
 			</mod>"""
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
@@ -617,7 +617,7 @@ def test_list_installed():
 	result = run_smm([ 'list-installed' ])
 	assert result.returncode == 0
 	assert result.stdout != b''
-	assert b'test_list_installed_2' not in result.stdout
+	assert b'test_list_installed_3' not in result.stdout
 	assert result.stderr == b''
 
 	# attempt to uninstall a mod
@@ -629,7 +629,7 @@ def test_list_installed():
 	# ensure the uninstalled mod isn't listed
 	result = run_smm([ 'list-installed' ])
 	assert result.returncode == 0
-	assert result.stdout == b''
+	assert result.stdout != b''
 	assert b'test_list_installed_0' not in result.stdout
 	assert result.stderr == b''
 
