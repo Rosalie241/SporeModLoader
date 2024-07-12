@@ -57,6 +57,9 @@
     <ClCompile Include="SporeModManagerHelpers\String.cpp">
       <Filter>Source Files\SporeModManagerHelpers</Filter>
     </ClCompile>
+    <ClCompile Include="SporeModManagerHelpers\Download.cpp">
+      <Filter>Source Files\SporeModManagerHelpers</Filter>
+    </ClCompile>
     <ClCompile Include="SporeModManagerHelpers\FileVersion.cpp">
       <Filter>Source Files\SporeModManagerHelpers</Filter>
     </ClCompile>
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="..\version.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SporeModManagerHelpers\Download.hpp">
+      <Filter>Header Files\SporeModManagerHelpers</Filter>
     </ClInclude>
     <ClInclude Include="SporeModManagerHelpers\FileVersion.hpp">
       <Filter>Header Files\SporeModManagerHelpers</Filter>

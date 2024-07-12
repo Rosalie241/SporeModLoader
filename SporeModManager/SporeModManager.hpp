@@ -34,6 +34,11 @@ namespace SporeModManager
     ///  Uninstalls mods with ids
     /// </summary>
     bool UninstallMods(std::vector<int> ids);
+
+    /// <summary>
+    ///  Updates Spore-ModAPI DLLs
+    /// </summary>
+    bool DownloadSporeModAPI(void);
 }
 
 #endif // SPOREMODMANAGER_HPP

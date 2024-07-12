@@ -10,6 +10,7 @@
 #include <iostream>
 #include <algorithm>
 
+#include "SporeModManagerHelpers/Download.hpp"
 #include "SporeModManagerHelpers/SporeMod.hpp"
 #include "SporeModManagerHelpers/String.hpp"
 #include "SporeModManagerHelpers/Path.hpp"
@@ -474,6 +475,44 @@ bool SporeModManager::UninstallMods(std::vector<int> ids)
 
     if (!save_installedsporemodlist())
     {
+        return false;
+    }
+
+    return true;
+}
+
+bool SporeModManager::DownloadSporeModAPI(void)
+{
+    const std::string url = "https://github.com/emd4600/Spore-ModAPI/releases/latest/download/SporeModAPIdlls.zip";
+    const std::filesystem::path updatePath = Path::Combine({ Path::GetCoreLibsPath(), "update.zip" });
+    const std::filesystem::path coreLibPath = Path::Combine({ Path::GetCoreLibsPath(), "SporeModAPI.dll" });
+    std::error_code error;
+    Zip::ZipFile zipFile;
+
+    if (!Download::DownloadFile(url, updatePath))
+    {
+        return false;
+    }
+
+    if (!Zip::OpenFile(zipFile, updatePath))
+    {
+        return false;
+    }
+
+    std::cout << "-> Extracting SporeModAPI.dll" << std::endl;
+
+    if (!Zip::ExtractFile(zipFile, "SporeModAPI.combined.dll", coreLibPath))
+    {
+        Zip::CloseFile(zipFile);
+        return false;
+    }
+
+    Zip::CloseFile(zipFile);
+
+    std::filesystem::remove(updatePath, error);
+    if (error)
+    {
+        std::cerr << "Error: failed to remove " << updatePath << ": " << error.message() << std::endl;
         return false;
     }
 

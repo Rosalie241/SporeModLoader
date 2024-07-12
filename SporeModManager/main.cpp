@@ -67,6 +67,7 @@ static void show_usage()
               << "  install file(s)     installs file(s)" << std::endl
               << "  update file(s)      updates mod(s) using file(s)" << std::endl
               << "  uninstall id(s)     uninstalls mod with id(s)" << std::endl
+              << "  update-modapi       downloads latest spore modapi dll" << std::endl
               << std::endl
               << "  version             display version and exit"   << std::endl
               << "  help                display this help and exit" << std::endl
@@ -386,6 +387,18 @@ int main(int argc, char** argv)
         }
 
         if (!SporeModManager::UninstallMods(ids))
+        {
+            return 1;
+        }
+    }
+    else if (command == arg_str("update-modapi"))
+    {
+        if (!Path::CheckIfPathsExist())
+        {
+            return 1;
+        }
+        
+        if (!SporeModManager::DownloadSporeModAPI())
         {
             return 1;
         }

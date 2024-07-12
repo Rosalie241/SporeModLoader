@@ -76,7 +76,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Urlmon.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\zlib\zconf.h" (
@@ -102,7 +102,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Urlmon.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\zlib\zconf.h" (
@@ -122,6 +122,7 @@
     <ClCompile Include="..\3rdParty\zlib\zutil.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SporeModManager.cpp" />
+    <ClCompile Include="SporeModManagerHelpers\Download.cpp" />
     <ClCompile Include="SporeModManagerHelpers\FileVersion.cpp" />
     <ClCompile Include="SporeModManagerHelpers\Path.cpp" />
     <ClCompile Include="SporeModManagerHelpers\SporeMod.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="..\version.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SporeModManager.hpp" />
+    <ClInclude Include="SporeModManagerHelpers\Download.hpp" />
     <ClInclude Include="SporeModManagerHelpers\FileVersion.hpp" />
     <ClInclude Include="SporeModManagerHelpers\Path.hpp" />
     <ClInclude Include="SporeModManagerHelpers\SporeMod.hpp" />

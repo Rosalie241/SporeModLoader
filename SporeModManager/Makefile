@@ -16,6 +16,7 @@ MINGW_CXX     ?= i686-w64-mingw32-g++
 MINGW_WINDRES ?= i686-w64-mingw32-windres
 
 ifeq ($(MINGW), 0)
+LIBLDFLAGS := $(shell pkg-config --libs libcurl)
 LDFLAGS    :=
 OPTFLAGS   := -Os -flto -fno-exceptions
 WARNFLAGS  := -Wall -Wextra -Wpedantic
@@ -24,6 +25,7 @@ EXE_EXT    :=
 else
 # mingw doesn't like LTO
 # and we need to statically link
+LIBLDFLAGS := -lurlmon
 LDFLAGS    := -municode -static
 OPTFLAGS   := -Os -fno-exceptions
 WARNFLAGS  := -Wall -Wextra -Wpedantic
@@ -47,6 +49,7 @@ CXXFLAGS   := -std=c++17                     \
 				-I$(THIRDPARTY_DIR)/zlib/contrib/minizip
 
 OBJECT_FILES := \
+	$(SOURCE_DIR)/SporeModManagerHelpers/Download.$(OBJ)    \
 	$(SOURCE_DIR)/SporeModManagerHelpers/FileVersion.$(OBJ) \
 	$(SOURCE_DIR)/SporeModManagerHelpers/Path.$(OBJ)        \
 	$(SOURCE_DIR)/SporeModManagerHelpers/SporeMod.$(OBJ)    \
@@ -64,6 +67,7 @@ endif
 
 HEADER_FILES := \
 	$(SOURCE_DIR)/SporeModManager.hpp                    \
+	$(SOURCE_DIR)/SporeModManagerHelpers/Download.hpp    \
 	$(SOURCE_DIR)/SporeModManagerHelpers/FileVersion.hpp \
 	$(SOURCE_DIR)/SporeModManagerHelpers/SporeModXml.hpp \
 	$(SOURCE_DIR)/SporeModManagerHelpers/SporeMod.hpp    \
@@ -121,12 +125,12 @@ all: $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT)
 $(BINARY_DIR)/$(EXE_FILE): $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
 	@echo "LD  $@"
 	$(QUIET)mkdir -p $(BINARY_DIR)
-	$(QUIET)$(CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS)
+	$(QUIET)$(CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS) $(LIBLDFLAGS)
 
 $(BINARY_DIR)/$(EXE_FILE).exe: $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
 	@echo "MINGW_LD  $@"
 	$(QUIET)mkdir -p $(BINARY_DIR)
-	$(QUIET)$(MINGW_CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS)
+	$(QUIET)$(MINGW_CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS) $(LIBLDFLAGS)
 
 clean:
 	rm -f $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES)
