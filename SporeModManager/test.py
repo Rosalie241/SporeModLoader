@@ -19,6 +19,7 @@ import atexit
 sporemodmanager = ''
 verbose         = False
 cleanup         = True
+network         = False
 
 # paths for tests
 tests_path       = tempfile.mkdtemp()
@@ -633,6 +634,30 @@ def test_list_installed():
 	assert b'test_list_installed_0' not in result.stdout
 	assert result.stderr == b''
 
+# Tests whether update-modapi works correctly
+def test_update_modapi():
+	print(f'Running {test_update_modapi.__name__}...')
+	reset_smm()
+
+	# attempt to update modapi dll
+	result = run_smm([ 'update-modapi' ])
+	assert result.returncode == 0
+	assert result.stdout != b''
+	assert result.stderr == b''
+
+	# ensure mod with higher dll build required works
+	xml = """<mod displayName="test_list_installed_0" 
+				unique="test_list_installed_0" 
+				description="test_list_installed_0" 
+				installerSystemVersion="1.0.1.1" 
+				dllsBuild="2.5.310">
+			</mod>"""
+	write_sporemod(xml)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != b''
+	assert result.stderr == b''
+
 #
 # main
 #
@@ -644,7 +669,8 @@ if __name__ == "__main__":
 	# add argument parser
 	parser = argparse.ArgumentParser(description='Runs SporeModManager tests.')
 	parser.add_argument('--nocleanup', action='store_false', help="skips cleanup of temporary directory")
-	parser.add_argument('--verbose', action='store_true', help='prints command output for each test.')
+	parser.add_argument('--verbose', action='store_true', help='prints command output for each test')
+	parser.add_argument('--network', action='store_true', help='runs tests which require network access')
 	parser.add_argument('executable', help='executable to run tests with.')
 	args = parser.parse_args()
 
@@ -652,6 +678,7 @@ if __name__ == "__main__":
 	sporemodmanager = args.executable
 	verbose 		= args.verbose
 	cleanup         = args.nocleanup
+	network         = args.network
 
 	# create test directories
 	os.mkdir(corelibs_path)
@@ -669,3 +696,5 @@ if __name__ == "__main__":
 	test_uninstall()
 	test_update()
 	test_list_installed()
+	if network:
+		test_update_modapi()
