@@ -3,7 +3,7 @@ name: SporeModLoader
 on: [push, pull_request]
 
 jobs:
-  msvc-build:
+  build-msvc:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
@@ -47,7 +47,7 @@ jobs:
         with:
           name: msvc-build-artifacts
           path: bin/*
-  linux-build:
+  build-linux:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
@@ -67,7 +67,7 @@ jobs:
         with:
           name: linux-build-artifacts
           path: bin/*
-  mingw-build:
+  build-mingw:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
@@ -92,7 +92,7 @@ jobs:
           path: bin/*
   package-artifacts:
     runs-on: ubuntu-20.04
-    needs: [ msvc-build, linux-build, mingw-build ]
+    needs: [ build-msvc, build-linux, build-mingw ]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -139,7 +139,7 @@ jobs:
             msvc-build-artifacts
             linux-build-artifacts
             mingw-build-artifacts
-  msvc-test:
+  test-msvc:
     runs-on: windows-2022
     needs: [ package-artifacts ]
     steps:
@@ -158,7 +158,7 @@ jobs:
       - name: Test SporeModManager (msvc)
         run: |
           python3 ./SporeModManager/test.py ./artifact/SporeModLoader/SporeModManager/SporeModManager.exe
-  linux-test:
+  test-linux:
     runs-on: ubuntu-20.04
     needs: [ package-artifacts ]
     steps:
@@ -177,7 +177,7 @@ jobs:
         run: |
           chmod +x ./artifact/SporeModLoader/SporeModManager/SporeModManager
           python3 ./SporeModManager/test.py ./artifact/SporeModLoader/SporeModManager/SporeModManager
-  mingw-test:
+  test-mingw:
     runs-on: windows-2022
     needs: [ package-artifacts ]
     steps:
@@ -203,7 +203,7 @@ jobs:
   # and then add it to a draft release
   create-draft-release:
     runs-on: ubuntu-20.04
-    needs: [ msvc-test, linux-test, mingw-test ]
+    needs: [ test-msvc, test-linux, test-mingw ]
     if: github.ref_type == 'tag'
     steps:
       - uses: actions/checkout@v4
