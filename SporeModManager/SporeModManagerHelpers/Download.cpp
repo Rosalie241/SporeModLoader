@@ -16,7 +16,7 @@
 #ifdef _WIN32
 #include <urlmon.h>
 #else
-#include <curl/curl.h>
+#include <dlfcn.h>
 #endif // _WIN32
 
 using namespace SporeModManagerHelpers;
@@ -26,6 +26,26 @@ using namespace SporeModManagerHelpers;
 //
 
 #ifndef _WIN32
+
+// libcurl definitions
+#define CURLOPT_URL             10002
+#define CURLOPT_WRITEFUNCTION   20011
+#define CURLOPT_WRITEDATA       10001
+#define CURLOPT_REDIR_PROTOCOLS 182
+#define CURLOPT_FOLLOWLOCATION  52
+#define CURLPROTO_HTTPS         (1 << 1)
+#define CURLE_OK                0
+
+// libcurl function pointers
+typedef void* (*ptr_curl_easy_init)(void);
+typedef int   (*ptr_curl_easy_setopt)(void* curl, int option, ...);
+typedef int   (*ptr_curl_easy_perform)(void* curl);
+typedef void  (*ptr_curl_easy_cleanup)(void* curl);
+static ptr_curl_easy_init    curl_easy_init    = nullptr;
+static ptr_curl_easy_setopt  curl_easy_setopt  = nullptr;
+static ptr_curl_easy_perform curl_easy_perform = nullptr;
+static ptr_curl_easy_cleanup curl_easy_cleanup = nullptr;
+
 static size_t curl_write_data(char *data, size_t size, size_t nmemb, void* stream)
 {
     std::ofstream* fileStream = (std::ofstream*)(stream);
@@ -59,9 +79,29 @@ bool Download::DownloadFile(std::string url, std::filesystem::path path)
     }
 
     return true;
-    // TODO: windows support
 #else
-    CURL* curl = curl_easy_init();
+    void* libcurl = dlopen("libcurl.so.4", RTLD_LAZY);
+    if (libcurl == nullptr)
+    {
+        std::cerr << "Error: failed to load libcurl: " << dlerror() << std::endl;
+        return false;
+    }
+
+    curl_easy_init    = (ptr_curl_easy_init)dlsym(libcurl, "curl_easy_init");
+    curl_easy_setopt  = (ptr_curl_easy_setopt)dlsym(libcurl, "curl_easy_setopt");
+    curl_easy_perform = (ptr_curl_easy_perform)dlsym(libcurl, "curl_easy_perform");
+    curl_easy_cleanup = (ptr_curl_easy_cleanup)dlsym(libcurl, "curl_easy_cleanup");
+    if (curl_easy_init    == nullptr ||
+        curl_easy_setopt  == nullptr ||
+        curl_easy_perform == nullptr ||
+        curl_easy_cleanup == nullptr)
+    {
+        dlclose(libcurl);
+        std::cerr << "Error: failed to retrieve required symbols from libcurl!" << std::endl;
+        return false;
+    }
+
+    void* curl = curl_easy_init();
     if (curl == nullptr)
     {
         std::cerr << "Error: failed to initialize cURL!" << std::endl;;
@@ -72,6 +112,7 @@ bool Download::DownloadFile(std::string url, std::filesystem::path path)
     if (!fileStream.is_open())
     {
         curl_easy_cleanup(curl);
+        dlclose(libcurl);
         std::cerr << "Error: failed to open " << path << std::endl;
         return false;
     }
@@ -85,11 +126,13 @@ bool Download::DownloadFile(std::string url, std::filesystem::path path)
     if (curl_easy_perform(curl) != CURLE_OK)
     {
         curl_easy_cleanup(curl);
+        dlclose(libcurl);
         std::cerr << "Error: failed to download file!" << std::endl;
         return false;
     }
 
     curl_easy_cleanup(curl);
+    dlclose(libcurl);
     return true;
 #endif // _WIN32
 }

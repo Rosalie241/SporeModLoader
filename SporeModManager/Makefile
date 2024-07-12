@@ -16,7 +16,7 @@ MINGW_CXX     ?= i686-w64-mingw32-g++
 MINGW_WINDRES ?= i686-w64-mingw32-windres
 
 ifeq ($(MINGW), 0)
-LIBLDFLAGS := $(shell pkg-config --libs libcurl)
+LIBLDFLAGS := -ldl
 LDFLAGS    :=
 OPTFLAGS   := -Os -flto -fno-exceptions
 WARNFLAGS  := -Wall -Wextra -Wpedantic
