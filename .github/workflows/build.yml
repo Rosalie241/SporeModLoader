@@ -222,7 +222,7 @@ jobs:
           7za a -mm=Deflate -mx=9 -r "../SporeModLoader-${GIT_REVISION}.zip" *
           popd
       - name: Create Draft Release
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@v1
         with:
           draft: true
           makeLatest: true
