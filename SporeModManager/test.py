@@ -646,9 +646,9 @@ def test_update_modapi():
 	assert result.stderr == b''
 
 	# ensure mod with higher dll build required works
-	xml = """<mod displayName="test_list_installed_0" 
-				unique="test_list_installed_0" 
-				description="test_list_installed_0" 
+	xml = """<mod displayName="test_update_modapi_0" 
+				unique="test_update_modapi_0" 
+				description="test_update_modapi_0" 
 				installerSystemVersion="1.0.1.1" 
 				dllsBuild="2.5.310">
 			</mod>"""
