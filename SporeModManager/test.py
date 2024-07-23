@@ -639,13 +639,7 @@ def test_update_modapi():
 	print(f'Running {test_update_modapi.__name__}...')
 	reset_smm()
 
-	# attempt to update modapi dll
-	result = run_smm([ 'update-modapi' ])
-	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
-
-	# ensure mod with higher dll build required works
+	# ensure mod with higher dll build required doesn't work
 	xml = """<mod displayName="test_update_modapi_0" 
 				unique="test_update_modapi_0" 
 				description="test_update_modapi_0" 
@@ -653,6 +647,18 @@ def test_update_modapi():
 				dllsBuild="2.5.310">
 			</mod>"""
 	write_sporemod(xml)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode != 0
+	assert result.stdout == b''
+	assert result.stderr != b''
+
+	# attempt to update modapi dll
+	result = run_smm([ 'update-modapi' ])
+	assert result.returncode == 0
+	assert result.stdout != b''
+	assert result.stderr == b''
+
+	# ensure mod with higher dll build required works
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
 	assert result.stdout != b''
