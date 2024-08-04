@@ -173,7 +173,7 @@ jobs:
       - name: Test SporeModManager (Linux)
         run: |
           chmod +x ./artifact/SporeModLoader/SporeModManager/SporeModManager
-          python3 ./SporeModManager/test.py --network ./artifact/SporeModLoader/SporeModManager/SporeModManager
+          python3 ./SporeModManager/test.py --network --verbose ./artifact/SporeModLoader/SporeModManager/SporeModManager
   test-mingw:
     runs-on: windows-2022
     needs: [ package-artifacts ]
