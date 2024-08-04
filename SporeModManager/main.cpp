@@ -245,12 +245,10 @@ int main(int argc, char** argv)
     if (command == arg_str("help"))
     {
         show_usage();
-        return 0;
     }
     else if (command == arg_str("version"))
     {
         std::cout << "SporeModManager " << VERSION_STR << std::endl;
-        return 0;
     }
     else if (command == arg_str("list-installed"))
     {
@@ -261,7 +259,6 @@ int main(int argc, char** argv)
         }
 
         SporeModManager::ListInstalledMods();
-        return 0;
     }
     else if (command == arg_str("install"))
     {
