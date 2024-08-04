@@ -113,7 +113,7 @@ bool Download::DownloadFile(std::string url, std::filesystem::path path)
     {
         curl_easy_cleanup(curl);
         dlclose(libcurl);
-        std::wcerr << L"Error: failed to open " << path << std::endl;
+        std::cerr << "Error: failed to open " << path << std::endl;
         return false;
     }
 

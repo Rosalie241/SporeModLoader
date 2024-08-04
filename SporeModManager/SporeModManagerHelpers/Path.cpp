@@ -75,7 +75,7 @@ bool Path::CheckIfPathsExist(void)
     {
         if (!std::filesystem::is_directory(path))
         {
-            std::wcerr << L"Error: " << path << L" is not a directory or doesn't exist!" << std::endl;
+            std::cerr << "Error: " << path.string() << " is not a directory or doesn't exist!" << std::endl;
             return false;
         }
     }
