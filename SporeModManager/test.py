@@ -22,7 +22,8 @@ cleanup         = True
 network         = False
 
 # paths for tests
-tests_path       = tempfile.mkdtemp()
+tmp_path         = tempfile.mkdtemp()
+tests_path       = os.path.join(tmp_path, '胞子')
 corelibs_path    = os.path.join(tests_path, 'CoreLibs')
 sporemodapi_file = os.path.join(corelibs_path, 'SporeModAPI.dll')
 sporemod_file    = os.path.join(tests_path, 'test.sporemod')
@@ -42,7 +43,7 @@ write_mod_num   = 0
 
 def cleanup_smm():
 	if cleanup:
-		shutil.rmtree(tests_path)
+		shutil.rmtree(tmp_path)
 
 def reset_smm():
 	if os.path.isfile(config_file):
@@ -687,6 +688,7 @@ if __name__ == "__main__":
 	network         = args.network
 
 	# create test directories
+	os.mkdir(tests_path)
 	os.mkdir(corelibs_path)
 	os.mkdir(modlibs_path)
 	os.mkdir(data_path)
