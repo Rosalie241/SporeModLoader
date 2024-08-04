@@ -21,6 +21,68 @@ using namespace SporeModManagerHelpers;
 // Helper Functions
 //
 
+// tinyxml2 doesn't support unicode paths for windows,
+// it only accepts char* paths, so to support unicode
+// we have our own wrappers to open a file using wchar_t
+// and then pass that file pointer to tinyxml2
+
+#ifdef _WIN32
+#define tinyxml2_mode_str(str) L##str
+#else
+#define tinyxml2_mode_str(str) str
+#endif // _WIN32
+
+#ifdef _WIN32
+static FILE* tinyxml2_fopen(const std::filesystem::path& path, const wchar_t* mode)
+#else
+static FILE* tinyxml2_fopen(const std::filesystem::path& path, const char* mode)
+#endif // _WIN32
+{
+#ifdef _WIN32
+    FILE* file = nullptr;
+    errno_t err = _wfopen_s(&file, path.wstring().c_str(), mode);
+    if (err)
+    {
+        return nullptr;
+    }
+    return file;
+#else
+    return fopen(path.string().c_str(), mode);
+#endif
+}
+
+static tinyxml2::XMLError tinyxml2_load_file(tinyxml2::XMLDocument& xmlDocument, const std::filesystem::path& path)
+{
+    tinyxml2::XMLError error;
+    FILE* fileStream;
+
+    fileStream = tinyxml2_fopen(path, tinyxml2_mode_str("rb"));
+    if (fileStream == nullptr)
+    {
+        return tinyxml2::XML_ERROR_FILE_COULD_NOT_BE_OPENED;
+    }
+
+    error = xmlDocument.LoadFile(fileStream);
+    fclose(fileStream);
+    return error;
+}
+
+static tinyxml2::XMLError tinyxml2_write_file(tinyxml2::XMLDocument& xmlDocument, const std::filesystem::path& path)
+{
+    tinyxml2::XMLError error;
+    FILE* fileStream;
+
+    fileStream = tinyxml2_fopen(path, tinyxml2_mode_str("w"));
+    if (fileStream == nullptr)
+    {
+        return tinyxml2::XML_ERROR_FILE_COULD_NOT_BE_OPENED;
+    }
+
+    error = xmlDocument.SaveFile(fileStream);
+    fclose(fileStream);
+    return error;
+}
+
 static std::string install_location_to_string(SporeMod::InstallLocation installLocation)
 {
     switch (installLocation)
@@ -397,7 +459,7 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& coreLibsPath, std::fil
         }
     }
 
-    error = xmlDocument.LoadFile(configFilePath.string().c_str());
+    error = tinyxml2_load_file(xmlDocument, configFilePath);
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
         std::cerr << "Error: failed to load XML file: " << xmlDocument.ErrorName() << std::endl;
@@ -467,7 +529,7 @@ bool SporeMod::Xml::SaveDirectories(std::filesystem::path coreLibsPath, std::fil
 
     configFilePath = Path::GetConfigFilePath();
 
-    error = xmlDocument.LoadFile(configFilePath.string().c_str());
+    error = tinyxml2_load_file(xmlDocument, configFilePath);
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     { // config file doesn't exist
         rootXmlElement = xmlDocument.NewElement("SporeModManager");
@@ -479,7 +541,7 @@ bool SporeMod::Xml::SaveDirectories(std::filesystem::path coreLibsPath, std::fil
         xmlElement->InsertNewChildElement("GalacticAdventuresDataDirectory")->SetText(galacticAdventuresDataPath.string().c_str());
         xmlElement->InsertNewChildElement("CoreSporeDataDirectory")->SetText(coreSporeDataPath.string().c_str());
 
-        xmlDocument.SaveFile(configFilePath.string().c_str());
+        tinyxml2_write_file(xmlDocument, configFilePath);
         return true;
     }
     
@@ -524,7 +586,7 @@ bool SporeMod::Xml::SaveDirectories(std::filesystem::path coreLibsPath, std::fil
         xmlElement = xmlElement->NextSiblingElement();
     }
     
-    xmlDocument.SaveFile(configFilePath.string().c_str());
+    tinyxml2_write_file(xmlDocument, configFilePath);
     return true;
 }
 
@@ -544,7 +606,7 @@ bool SporeMod::Xml::GetInstalledModList(std::vector<InstalledSporeMod>& installe
         return true;
     }
 
-    error = xmlDocument.LoadFile(configFilePath.string().c_str());
+    error = tinyxml2_load_file(xmlDocument, configFilePath);
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
         std::cerr << "Error: failed to load XML file: " << xmlDocument.ErrorName() << std::endl;
@@ -605,7 +667,7 @@ bool SporeMod::Xml::SaveInstalledModList(const std::vector<InstalledSporeMod>& i
 
     configFilePath = Path::GetConfigFilePath();
 
-    error = xmlDocument.LoadFile(configFilePath.string().c_str());
+    error = tinyxml2_load_file(xmlDocument, configFilePath);
     if (error != tinyxml2::XMLError::XML_SUCCESS)
     {
         std::cerr << "Error: failed to load XML file: " << xmlDocument.ErrorName() << std::endl;
@@ -645,7 +707,7 @@ bool SporeMod::Xml::SaveInstalledModList(const std::vector<InstalledSporeMod>& i
         }
     }
 
-    xmlDocument.SaveFile(configFilePath.string().c_str());
+    tinyxml2_write_file(xmlDocument, configFilePath);
     return true;
 }
 

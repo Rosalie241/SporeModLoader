@@ -314,7 +314,7 @@ bool SporeMod::InstallSporeMod(Zip::ZipFile zipFile, const Xml::InstalledSporeMo
 
         if (UI::GetVerboseMode())
         {
-            std::cout << "--> Installing " << installedFile.FileName  << " to " << installPath << std::endl;
+            std::wcout << L"--> Installing " << installedFile.FileName  << L" to " << installPath << std::endl;
         }
 
         if (!Zip::ExtractFile(zipFile, sourcePath, installPath))

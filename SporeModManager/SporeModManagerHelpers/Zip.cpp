@@ -126,7 +126,7 @@ bool Zip::OpenFile(ZipFile& zipFile, std::filesystem::path path)
     zipFile = unzOpen2_64((const void*)&path, &filefuncs);
     if (zipFile == nullptr)
     {
-        std::cerr << "Error: unzOpen2_64(" << path << ") Failed!" << std::endl; 
+        std::wcerr << L"Error: unzOpen2_64(" << path << L") Failed!" << std::endl; 
     }
     return zipFile != nullptr;
 }

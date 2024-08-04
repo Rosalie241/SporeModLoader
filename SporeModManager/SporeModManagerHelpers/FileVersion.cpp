@@ -122,7 +122,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
     fileStream.open(path, std::ios_base::in | std::ios_base::binary);
     if (!fileStream.is_open())
     {
-        std::cerr << "Error: failed to open " << path << std::endl;
+        std::wcerr << L"Error: failed to open " << path << std::endl;
         return false;
     }
 
@@ -143,7 +143,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
 
     if (fileStream.fail())
     {
-        std::cerr << "Error: failed to read data from " << path << std::endl;
+        std::wcerr << L"Error: failed to read data from " << path << std::endl;
         return false;
     }
 

@@ -183,7 +183,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
 
             if (!std::filesystem::is_regular_file(path))
             {
-                std::cerr << "Error: " << path << " is not a regular file or doesn't exist!" << std::endl;
+                std::wcerr << L"Error: " << path << L" is not a regular file or doesn't exist!" << std::endl;
                 close_zipfiles();
                 return false;
             }
@@ -222,9 +222,9 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
             const bool skipInstall   = skipInstalled && hasInstalled;
             if (hasUniqueName || skipInstall)
             {
-                std::cout << "Skipping " << path << (hasUniqueName ?
-                                " as it's already being installed!" :
-                                " as it's already installed!") << std::endl;
+                std::wcout << L"Skipping " << path << (hasUniqueName ?
+                                L" as it's already being installed!" :
+                                L" as it's already installed!") << std::endl;
                 paths.erase(paths.begin() + i);
                 l_ZipFiles.erase(l_ZipFiles.begin() + i);
                 l_SporeModInfos.erase(l_SporeModInfos.begin() + i);
@@ -329,7 +329,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
 
         if (!std::filesystem::is_regular_file(path))
         {
-            std::cerr << "Error: " << path << " is not a regular file or doesn't exist!" << std::endl;
+            std::wcerr << L"Error: " << path << L" is not a regular file or doesn't exist!" << std::endl;
             return false;
         }
 
@@ -352,7 +352,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
         // ensure we only have unique mod names
         if (std::find(uniqueNames.begin(), uniqueNames.end(), sporeModInfo.UniqueName) != uniqueNames.end())
         {
-            std::cout << "Skipping " << path << " as it's already being installed!" << std::endl;
+            std::wcout << L"Skipping " << path << L" as it's already being installed!" << std::endl;
             paths.erase(paths.begin() + i);
             l_ZipFiles.erase(l_ZipFiles.begin() + i);
             l_SporeModInfos.erase(l_SporeModInfos.begin() + i);
