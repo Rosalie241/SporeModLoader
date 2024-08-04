@@ -44,9 +44,8 @@ static int SporeAppEntry_detoured(void)
 // Exported Functions
 //
 
-// The game calls this function but ignores the result,
-// so just return E_FAIL.
-extern "C" HRESULT WINAPI DirectInput8Create(HINSTANCE hinst, DWORD dwVersion, REFIID riidltf, LPVOID* ppvOut, LPUNKNOWN punkOuter)
+// The game calls this function but ignores the result, so just return E_FAIL.
+extern "C" HRESULT WINAPI DirectInput8Create(HINSTANCE, DWORD, REFIID, LPVOID*, LPUNKNOWN)
 {
     return E_FAIL;
 }
