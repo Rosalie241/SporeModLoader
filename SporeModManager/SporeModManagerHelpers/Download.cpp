@@ -26,7 +26,6 @@ using namespace SporeModManagerHelpers;
 //
 
 #ifndef _WIN32
-
 // libcurl definitions
 #define CURLOPT_URL             10002
 #define CURLOPT_WRITEFUNCTION   20011
