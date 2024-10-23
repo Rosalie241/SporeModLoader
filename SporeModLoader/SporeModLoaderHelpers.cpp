@@ -261,6 +261,7 @@ Game::GameVersion Game::GetCurrentVersion(void)
         break;
 
     case 24885248:
+    case 24895536:
         cachedGameVersion = Game::GameVersion::GogOrSteam_March2017;
         break;
 
