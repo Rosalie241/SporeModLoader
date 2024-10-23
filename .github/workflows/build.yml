@@ -31,10 +31,10 @@ jobs:
       - name: Package SporeModLoader (msvc)
         run: |
           New-Item -ItemType Directory -Force -Path bin\SporebinEP1
-          New-Item -ItemType Directory -Force -Path bin\SporeModLoader\CoreLibs\
+          New-Item -ItemType Directory -Force -Path bin\SporeModLoader\CoreLibs
           New-Item -ItemType Directory -Force -Path bin\SporeModLoader\ModLibs
           New-Item -ItemType Directory -Force -Path bin\SporeModLoader\SporeModManager
-          New-Item -ItemType File -Force -Path bin\SporeModLoader\ModLibs\.keep
+          New-Item -ItemType File -Force -Path bin\SporeModLoader\ModLibs\keep.txt
 
           Copy "3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll"          "bin\SporeModLoader\CoreLibs\SporeModAPI.dll"
           Copy "3rdParty\Spore-ModAPI-legacy\SporeModAPI-disk.dll"          "bin\SporeModLoader\CoreLibs\SporeModAPI-disk.dll"
@@ -217,7 +217,7 @@ jobs:
       - name: Prepare SporeModManager (msvc)
         run: |
           pushd artifact
-          rm SporeModLoader/ModLibs/.keep -f
+          rm SporeModLoader/ModLibs/keep.txt -f
           chmod +x SporeModLoader/SporeModManager/SporeModManager
           7za a -mm=Deflate -mx=9 -r "../SporeModLoader-${GIT_REVISION}.zip" *
           popd
