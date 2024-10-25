@@ -255,13 +255,13 @@ Game::GameVersion Game::GetCurrentVersion(void)
 
     switch (currentFileSize)
     {
-    case 24904192:
-    case 24909584:
+    case 24909584: // Disk         v1.5.1
+    case 24904192: // Cracked Disk v1.5.1
         cachedGameVersion = Game::GameVersion::Disk_1_5_1;
         break;
 
-    case 24885248:
-    case 24895536:
+    case 24885248: // GOG March   2017
+    case 24895536: // GOG October 2024
         cachedGameVersion = Game::GameVersion::GogOrSteam_March2017;
         break;
 
