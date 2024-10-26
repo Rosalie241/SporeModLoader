@@ -135,10 +135,10 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
         std::wstring filename = entry.path().filename().wstring();
         for (const auto& postfix : excludePostfixes)
         {
-            // TODO: use ends_with with mingw when we can use C++20
-#ifdef _MSC_VER
+            // we have to support C++17 for MinGW
+#ifdef __cpp_lib_starts_ends_with
             if (filename.ends_with(postfix))
-#else // mingw
+#else // C++17
             if (filename.find(postfix) != std::wstring::npos)
 #endif
             {
