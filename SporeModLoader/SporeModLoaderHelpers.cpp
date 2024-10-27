@@ -139,7 +139,8 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
 #ifdef __cpp_lib_starts_ends_with
             if (filename.ends_with(postfix))
 #else // C++17
-            if (filename.find(postfix) != std::wstring::npos)
+            if (filename.size() >= postfix.size() && 
+                filename.find(postfix, filename.size() - postfix.size()) != std::wstring::npos)
 #endif
             {
                 skipLib = true;
