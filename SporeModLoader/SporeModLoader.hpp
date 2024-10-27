@@ -25,8 +25,6 @@ namespace SporeModLoader
     /// <summary>
     ///  Loads Mod Libraryes
     /// </summary>
-    /// <param name=""></param>
-    /// <returns></returns>
     bool LoadModLibs(void);
 }
 
