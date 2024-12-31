@@ -19,25 +19,32 @@ using namespace SporeModLoaderHelpers;
 // Detoured Functions
 //
 
-static int (WINAPI* SporeAppEntry_real)(void) = nullptr;
-static int SporeAppEntry_detoured(void)
+static void (WINAPI* GetStartupInfoA_real)(LPSTARTUPINFOA) = GetStartupInfoA;
+static void GetStartupInfoA_detoured(LPSTARTUPINFOA lpStartupInfo)
 {
-    if (!SporeModLoader::Initialize())
+    static bool injected = false;
+
+    if (!injected)
     {
-        return 1;
+        if (!SporeModLoader::Initialize())
+        {
+            std::abort();
+        }
+
+        if (!SporeModLoader::LoadCoreLibs())
+        {
+            std::abort();
+        }
+
+        if (!SporeModLoader::LoadModLibs())
+        {
+            std::abort();
+        }
+
+        injected = true;
     }
 
-    if (!SporeModLoader::LoadCoreLibs())
-    {
-        return 1;
-    }
-
-    if (!SporeModLoader::LoadModLibs())
-    {
-        return 1;
-    }
-
-    return SporeAppEntry_real();
+    return GetStartupInfoA_real(lpStartupInfo);
 }
 
 //
@@ -60,24 +67,16 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID reserved)
     if (dwReason == DLL_PROCESS_ATTACH)
     {
         DetourRestoreAfterWith();
-        SporeAppEntry_real = (int (WINAPI*)(VOID))DetourGetEntryPoint(nullptr);
-        if (SporeAppEntry_real == nullptr)
-        {
-            UI::ShowErrorMessage(L"DetourGetEntryPoint() Failed!");
-        }
         DetourTransactionBegin();
         DetourUpdateThread(GetCurrentThread());
-        DetourAttach(&(PVOID&)SporeAppEntry_real, (PVOID)SporeAppEntry_detoured);
+        DetourAttach(&(PVOID&)GetStartupInfoA_real, (PVOID)GetStartupInfoA_detoured);
         DetourTransactionCommit();
     }
     else if (dwReason == DLL_PROCESS_DETACH)
     {
         DetourTransactionBegin();
         DetourUpdateThread(GetCurrentThread());
-        if (SporeAppEntry_real != nullptr)
-        {
-            DetourDetach(&(PVOID&)SporeAppEntry_real, (PVOID)SporeAppEntry_detoured);
-        }
+        DetourDetach(&(PVOID&)GetStartupInfoA_real, (PVOID)GetStartupInfoA_detoured);
         DetourTransactionCommit();
     }
 

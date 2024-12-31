@@ -261,8 +261,9 @@ Game::GameVersion Game::GetCurrentVersion(void)
         cachedGameVersion = Game::GameVersion::Disk_1_5_1;
         break;
 
-    case 24885248: // GOG March   2017
-    case 24895536: // GOG October 2024
+    case 24885248: // GOG March     2017
+    case 24895536: // GOG October   2024
+    case 25066744: // Steam October 2024
         cachedGameVersion = Game::GameVersion::GogOrSteam_March2017;
         break;
 
