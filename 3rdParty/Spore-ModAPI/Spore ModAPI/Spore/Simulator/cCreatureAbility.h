@@ -24,12 +24,15 @@
 #include <EASTL\vector.h>
 #include <Spore\App\PropertyList.h>
 
+#define cCreatureAbilityPtr eastl::intrusive_ptr<Simulator::cCreatureAbility>
+
 namespace Simulator
 {
 	class cCreatureAbility
+		: public RefCountTemplate
 	{
 	public:
-		virtual ~cCreatureAbility();
+		virtual ~cCreatureAbility() {}
 
 		static bool Parse(cCreatureAbility* pAbility, App::PropertyList* pPropList);
 
@@ -40,7 +43,6 @@ namespace Simulator
 		/// @param
 		uint32_t GetAnimationID(int index);
 
-		/* 04h */	int field_04;
 		/* 08h */	int mType;
 		/* 0Ch */	int mCategory;
 		/* 10h */	int mSocialCategory;

@@ -26,13 +26,19 @@ namespace Simulator
 		using Object::Release;
 		using Object::Cast;
 
+		/* 54h */	virtual void SetTribe(cTribe* tribe);
+		/* 58h */	virtual cTribe* GetTribe();
+		/* 5Ch */	virtual cTribe* GetTribe2();
+		/* 60h */	virtual void func60h(int);
+
 	public:
 		/* 1E8h */	ResourceKey mDestructModelLo;
 		/* 1F4h */	ResourceKey mDestructModelMd;
 		/* 200h */	ResourceKey mDestructModelHi;
 		/* 20Ch */	ResourceKey mUndamagedModel;
-		/* 218h */	bool field_218;
-		/* 21Ch */	int field_21C;
+		/* 218h */	bool mbEmitHarpMusic;
+		/// values above 0 make the hut emit a 'zzz' sleeping effect
+		/* 21Ch */	int mIsSleeping; 
 		/* 220h */	bool field_220;
 		/* 221h */	bool field_221;
 		/* 224h */	int field_224;  // not initialized

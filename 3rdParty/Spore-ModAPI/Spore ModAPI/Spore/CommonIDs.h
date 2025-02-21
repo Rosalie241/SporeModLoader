@@ -53,6 +53,32 @@ enum ModelTypes
 
 };
 
+enum EditorManipulators : uint32_t
+{
+	kEditorManipulationStackingSimple = 0x889CDBFF,
+	kEditorManipulationStacking = 0x67B68E4D,
+	kEditorManipulationPinning = 0xA9910288,
+	kEditorManipulationReplacement = 0x58891023,
+	kEditorManipulationDeformHandle = 0x9F48C094,
+	kEditorManipulationRotationHandle = 0x855DE44D,
+
+
+	kEditorManipulationSpine = 0x5FDE642E,
+	kEditorManipulationSpineScaling = 0x7AD67439,
+	kEditorManipulationSpineResize = 0xBB46D99A,
+	kEditorManipulationLimb = 0x8665F54D,
+	kEditorManipulationBoneRotation = 0xE931544D,
+
+	kEditorManipulationTranslateCreature = 0x9ED74A02,
+	kEditorManipulationCreatureTest = 0xF818C5BA,
+	kEditorManipulationCellTorso = 0x2D35AF62,
+	kEditorManipulationCellPinning = 0x1B73114C,
+
+	kEditorManipulationInterpenetration = 0x6125EE88,
+	kEditorManipulationPlanarInterpenetration = 0xF48AB41C,
+
+};
+
 enum GameModeIDs
 {
 	/// Not a game mode by itself, used to index game modes.
@@ -135,6 +161,7 @@ namespace TypeIDs
 		animation = 0xEE17C6AD,
 		/// Data of an adventure
 		adventure = 0x366A930D,
+		adv = adventure,
 		/// Type for Pollinator::cAssetMetadata files
 		pollen_metadata = 0x30BDEE3,
 
@@ -190,7 +217,7 @@ namespace GroupIDs
 
 		/// Where editor configuration .prop files are stored
 		EditorSetup = 0x40600100,
-		EditorConfig = 0x40600100,
+		EditorConfig = EditorSetup,
 
 		/// Where part models are stored
 		EditorRigblocks = 0x40606000,
@@ -199,7 +226,7 @@ namespace GroupIDs
 
 		/// Contains the palette files loaded by Palettes::PaletteMain
 		Palettes = 0x406B6A00,
-		PaletteDefinitions = 0x406B6A00,
+		PaletteDefinitions = Palettes,
 
 		/// Where adventure props are stored
 		PaletteItems = 0xD87454E6,
@@ -217,6 +244,7 @@ namespace GroupIDs
 		SpaceTrading_ = 0x034D97FA,
 
 		TribalTools = 0xF37C24E6,
+		TribeToolData = 0x04292F52,
 		TribePlans = 0x72D02C25,
 
 		Abilities = 0x01B68DB4,
@@ -237,11 +265,37 @@ namespace GroupIDs
 		VehicleModels = 0x40646200,
 		/// Where vehicle .ufo files are stored
 		UfoModels = 0x40656200,
-		UFOModels = 0x40656200,
+		UFOModels = UfoModels,
 		/// Where flora .flr files are stored
 		FloraModels = 0x40666200,
+		// Where palette assemblies are stored
+		PaletteModels = 0x406B6200,
 		/// Where city music .cmp files are stored
 		CityMusic = 0x40C0C200,
+		/// Where adventure .adv files are stored
+		Adventures = 0x408A0000,
+
+		CellImages = CellModels + 1,
+		CreatureImages = CreatureModels + 1,
+		BuildingImages = BuildingModels + 1,
+		VehicleImages = VehicleModels + 1,
+		UfoImages = UfoModels + 1,
+		UFOImages = UfoImages,
+		FloraImages = FloraModels + 1,
+		
+		AdventuresLargeCardImage1 = Adventures + 1,
+		AdventuresLargeCardImage2 = Adventures + 2,
+		AdventuresLargeCardImage3 = Adventures + 3,
+		AdventuresLargeCardImage4 = Adventures + 4,
+
+		CellModelsConfig = 0x4061E500,
+		CreatureModelsConfig = 0x4062E500,
+		BuildingModelsConfig = 0x4063E500,
+		VehicleModelsConfig = 0x4064E500,
+		UfoModelsConfig = 0x4065E500,
+		UFOModelsConfig = UfoModelsConfig,
+		FloraModelsConfig = 0x4066E500,
+		PaletteModelsConfig = 0x406BE500,
 
 		CivicObjects = 0x9430ADD7,
 
@@ -250,16 +304,16 @@ namespace GroupIDs
 
 		/// This folder contains popups used in Space stage that can be used with UIEventLog. The hash is FNV of 'Data/Events/Space'.
 		SpacePopups = 0x131A9F54,
-		SpaceEvents = 0x131A9F54,
+		SpaceEvents = SpacePopups,
 		/// This folder contains popups used in Civilization stage that can be used with UIEventLog. The hash is FNV of 'Data/Events/CityCiv'.
 		CivPopups = 0xAA9A8ED7,
-		CivEvents = 0xAA9A8ED7,
+		CivEvents = CivPopups,
 		/// This folder contains popups used in Tribe stage that can be used with UIEventLog. The hash is FNV of 'Data/Events/Tribe'.
 		TribePopups = 0x182CD6CE,
-		TribeEvents = 0x182CD6CE,
+		TribeEvents = TribePopups,
 
 		CivicThumbs = 0x65928944,
-		PlannerThumbnails = 0x65928944,
+		PlannerThumbnails = CivicThumbs,
 
 		AssetBrowserData = 0x851D4139,
 		AssetBrowserConfig = 0x9A74416B,
@@ -269,6 +323,9 @@ namespace GroupIDs
 		AssetBrowserFilter = 0xCC489C6F,
 		AssetBrowserSort = 0xC5296FA9,
 		AssetBrowserGraphics = 0xCA14DE92,
+
+		GameEntryImages = 0x199B485,
+		EditorPlannerImages = 0x355BA26,
 
 		Achievements = 0x05BEFD27,
 		AchievementImages = 0x260EB59C,
@@ -282,6 +339,8 @@ namespace GroupIDs
 		ShaderFragments = 0x40212002,
 		Shaders = 0x40212004,
 
-		Scripts1 = 0x24A4F5A
+		Scripts1 = 0x24A4F5A,
+
+		SharedDialogs = 0x490F6945
 	};
 }

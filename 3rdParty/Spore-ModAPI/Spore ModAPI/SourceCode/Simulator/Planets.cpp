@@ -71,5 +71,30 @@ namespace Simulator
 			bool useSuperpowerMultiplier, bool useStorageMultiplier, float finalFactor, int numCities, bool limitOutput),
 		Args(baseValue, maxOutput, extraFactor, isHomeWorld, useSuperpowerMultiplier, useStorageMultiplier, finalFactor, numCities, limitOutput));
 
+
+	auto_METHOD_VOID_(cEllipticalOrbit, Precalculate);
+
+	ResourceKey GetMainSpeciesImageKey(cPlanetRecord* planetRecord) {
+		ResourceKey key;
+		STATIC_CALL(GetAddress(Simulator, GetMainSpeciesImageKey), void, Args(ResourceKey&, cPlanetRecord*), Args(key, planetRecord));
+		return key;
+	}
+
+	ResourceKey cPlanetRecord::GetTerrainScriptSource() {
+		ResourceKey key;
+		CALL(GetAddress(cPlanetRecord, GetTerrainScriptSource), void, Args(cPlanetRecord*, ResourceKey&), Args(this, key));
+		return key;
+	}
+
+	auto_STATIC_METHOD(cPlanetRecord, bool, HasControlledCity,
+		Args(cPlanetRecord* planetRecord, cEmpire* empire, bool requireMoreThanOneTurret), 
+		Args(planetRecord, empire, requireMoreThanOneTurret));
+
+	auto_STATIC_METHOD(cPlanetRecord, const ResourceKey&, GetTypeIconKey, Args(cPlanetRecord* record), Args(record));
+
+	auto_METHOD_(cPlanetRecord, const ResourceKey&, GetCitizenSpeciesKey);
+
+	auto_STATIC_METHOD_VOID(cPlanetRecord, AssignTerrainT0, Args(cPlanetRecord* planetRecord), Args(planetRecord));
+	auto_STATIC_METHOD_VOID(cPlanetRecord, AssignTerrainNonT0, Args(cPlanetRecord* planetRecord), Args(planetRecord));
 }
 #endif

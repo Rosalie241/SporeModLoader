@@ -90,7 +90,7 @@ namespace Simulator
 		/// @param pageIndex
 		bool AddUnlockableItemFromProp(struct ResourceKey key, uint32_t categoryID, int row, int column, int pageIndex);
 
-
+		// called at the start of creature stage with an int of "1" and a nullptr speciesKey
 		void sub_597BC0(UnkHashMap& dst, int, const ResourceKey& speciesKey);
 
 		void sub_597390(eastl::vector<int>& dst, struct cCollectableItemID itemID, int);
@@ -112,6 +112,7 @@ namespace Simulator
 		/* 0Ch */	bool field_C;  // true
 		/// Stores a progression of unlockable items (for instance, all the mouths in the same row)
 		/* 10h */	eastl::sp_fixed_map<cCollectableItemsRowID, cCollectableItemsRowVector, 64> mUnlockableRows;
+		/// Maps the group/instance of a rigblock to its UnlockableItem data
 		/* 148Ch */	eastl::sp_fixed_hash_map<cCollectableItemID, UnlockableItem, 256> mUnlockableItems;
 		/// Some flags
 		/* 4D00h */	eastl::sp_fixed_hash_map<cCollectableItemID, uint8_t, 256> mItemStatusInfos;
@@ -155,7 +156,17 @@ namespace Simulator
 	class CreatureGamePartUnlocking
 	{
 	public:
-		struct cCollectableItemID sub_D3B460(UnkHashMap&, bool, int, int);
+		// Given an (unknown) hashmap (the creature parts one always is size 56),
+		// return a valid new part ID to unlock, or call this func again until it returns a valid part.
+		// 
+		// firstCall is always true ONLY on the first call of this function
+		// unk1 has something to do with how many times the function is called unsuccessfully; if it reaches 2 twice, unlockLevel is set to -1.
+		// unlockLevel will be either a .prop unlockLevel value or -1
+		// 
+		// the cCollectableItemID return value is formatted as such:
+		// groupID: category name (eg: ce_category_mouths)
+		// instanceID: part placement in category by page index and part row (eg: a part on page 4 and row 5 would have a hex of 0x30004)
+		struct cCollectableItemID sub_D3B460(UnkHashMap& unk0, bool firstCall, int unk1, int unlockLevel);
 	};
 
 	namespace Addresses(CreatureGamePartUnlocking)

@@ -115,6 +115,150 @@ namespace UTFWin
 
 			/// STD_Center-alpha09
 			StdCenterAlpha09 = 0x1023,
+
+
+			/// cursor-no-opt
+			NoOptions = 0x3a204b0,
+
+			/// cursor_goodie-hut
+			QuestionHut = 0x56e3a22,
+
+			// cursor-object-translate
+			Pan = 0x600cd69,
+			
+			/// cursor-grab_open
+			GrabOpen = 0x648fbf1,
+
+			/// cursor-ban-mode
+			BanMode = 0x5ecbdffd,
+
+			/// cursor_skeleton2
+			UnlockSkeleton = 0x342d221f,
+
+			/// cursor-eat-fruit
+			EatFruit = 0xb14ab7b6,
+
+			/// cursor-eat-omni
+			EatOmni = 0x3febe52,
+
+			/// cursor-eat-carcass
+			EatCarn = 0x514ab7b7,
+
+			/// cursor-mate
+			Mate = 0x314ab7b1,
+
+			/// cursor-target-creature
+			TargetCreature = 0xf36a0c84,
+
+			/// cursor_atk
+			Attack = 0xb14ab7b9,
+
+			/// cursor_social
+			Socialize = 0x525ff7d,
+
+			/// cursor_friend
+			Friend = 0x755c4eb5,
+
+			/// cursor-trg-domesticate
+			Domesticate = 0xe382f00e,
+
+			/// cursor-steal
+			Steal = 0x3febe42,
+
+			/// cursor_repair
+			Repair = 0x525ff0f,
+
+			/// cursor-crg-give-grn
+			Gift = 0x8b875bdc,
+
+			/// cursor-crg-give-grn-no
+			GiftDeny = 0xf59ce677,
+
+			/// cursor-fish
+			Fish = 0x3febe3f,
+
+			/// cursor-gather
+			Gather = 0x3febe40,
+
+			/// cursor-crg-pickup
+			Pickup = 0x3b360dc,
+
+			/// cursor-crg-putdown
+			Putdown = 0x3b360df,
+
+			/// cursor-crg-throw
+			Throw = 0x3b360e4,
+
+			/// cursor_pickup-maracas
+			PickupMaracas = 0x63fe8d4,
+
+			/// cursor_pickup-horn
+			PickupHorn = 0x63fe8d5,
+
+			/// cursor_pickup-didgeridoo
+			PickupDidgeridoo = 0x63fe8d6,
+
+			/// cursor_pickup-axe
+			PickupAxe = 0x63fe8d7,
+
+			/// cursor_pickup-spear
+			PickupSpear = 0x63fe8d8,
+
+			/// cursor_pickup-torch
+			PickupTorch = 0x63fe8d9,
+
+			/// cursor-trg-tool-pickup-fish
+			PickupFishing = 0x3febe37,
+
+			/// cursor-trg-tool-pickup-gather
+			PickupGather = 0x3febe38,
+
+			/// cursor_pickup-heal
+			PickupHealing = 0x3febe3b,
+
+			/// cursor-dance
+			Dance = 0x3febe3d,
+
+			/// cursor-claim-spicemine
+			ClaimSpice = 0x5d53800,
+
+			/// cur_ClaimNest
+			ClaimNest = 0x7542cdb5,
+
+
+			/// cursor-spg-sculpting-norm
+			SpgSculpting = 0x682102e,
+
+			/// cursor-spg-social-norm
+			SpgSocial = 0x6821016,
+
+			/// cursor-spg-sculpting-norm
+			SpgSculpt = 0x682102e,
+
+			/// cursor-spg-travel-norm
+			SpgScan = 0x6821022,
+
+			/// cursor-spg-travel-on
+			SpgScanActive = 0x6821024,
+
+			/// cursor-spg-abduct-norm
+			SpgAbduct = 0x682103e,
+			
+			/// cursor-spg-abduct-on
+			SpgAbductActive = 0x6821040,
+			
+			/// cursor-spg-color-norm
+			SpgColor = 0x6821026,
+			
+			/// cursor-spg-color-on
+			SpgColorActive = 0x6821029,
+			
+			/// cursor-spg-colonize-norm
+			SpgColonize = 0x6821032,
+
+			/// cursor-spg-atmospheric-norm
+			SpgAtmosphere = 0x6821042,
+
 		};
 	}
 }

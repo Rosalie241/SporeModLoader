@@ -172,6 +172,9 @@ namespace Editors
 	auto_METHOD(cEditorAnimWorld, Anim::AnimatedCreature*, GetAnimatedCreature,
 		Args(int creatureID), Args(creatureID));
 
+	auto_METHOD(cEditor, bool, AddCreature,
+		Args(int a, const ResourceKey* key), Args(a, key));
+
 	auto_METHOD_VOID(cEditorAnimWorld, DestroyCreature,
 		Args(int creatureID), Args(creatureID));
 
@@ -186,11 +189,14 @@ namespace Editors
 	auto_METHOD_VOID(cEditor, PostEventToActors,
 		Args(uint32_t eventID, int a, float b, float c), Args(eventID, a, b, c));
 
-	auto_METHOD(cEditor, bool, AddCreature,
-		Args(int a, const ResourceKey* key), Args(a, key));
-
 
 
 	auto_METHOD_VOID(EditorRigblock, SetShadedDisplay, Args(bool isShaded), Args(isShaded));
+
+	auto_STATIC_METHOD(cEditor, uint32_t, GetEditorForAssetType, Args(uint32_t assetTypeID), Args(assetTypeID));
+
+	auto_STATIC_METHOD(cEditor, uint32_t, GetTypeIDForAssetType, Args(uint32_t assetTypeID), Args(assetTypeID));
+
+	auto_STATIC_METHOD(cEditor, const char16_t*, GetNameForAssetType, Args(uint32_t assetTypeID), Args(assetTypeID));
 }
 #endif

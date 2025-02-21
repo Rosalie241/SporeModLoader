@@ -78,7 +78,8 @@ namespace Simulator
 		/// Returns the weapon tool used by this combatant. This is only available for vehicles.
 		/* 14h */	virtual cSpaceToolData* GetWeapon();
 
-		/* 18h */	virtual int func18h(float damage, uint32_t attackerPoliticalID, int, const Vector3&, cCombatant* pAttacker);  // used to substract health?
+		/// Called when the combatant is attacked, takes the damage
+		/* 18h */	virtual int TakeDamage(float damage, uint32_t attackerPoliticalID, int, const Vector3&, cCombatant* pAttacker);  // used to substract health?
 
 		/* 1Ch */	virtual void AddHostileUnit(cCombatant* combatant);
 		/* 20h */	virtual Math::Vector3 func20h();
@@ -86,7 +87,7 @@ namespace Simulator
 		/// Generates a random index that allows to select from the existing aim points.
 		/* 24h */	virtual int GetRandomAimIndex();
 		/* 28h */	virtual Math::Vector3 func28h(int);
-		/* 2Ch */	virtual void func2Ch(bool);  // heals buildings?
+		/* 2Ch */	virtual void Heal(bool);  // heals buildings?
 		/* 30h */	virtual Math::Vector3 func30h();
 		/* 34h */	virtual uint32_t func34h();  // returns field_70, an effect ID
 		/* 38h */	virtual void func38h();  // sets lastAttacker to -1 and field_28 to nullptr
@@ -139,7 +140,7 @@ namespace Simulator
 		/* 6Ch */	bool field_6C;  // true, needsToLoadAimPoints?
 		/* 70h */	uint32_t field_70;  // an effect ID
 		/* 74h */	Vector3 field_74;
-		/* 80h */	bool field_80;
+		/* 80h */	bool mbInvincible; // if true, combatant is invincible
 		/* 81h */	bool field_81;
 		/* 84h */	eastl::vector<cGonzagoTimer> field_84;
 		/* 98h */	cGonzagoTimer field_98;
@@ -149,5 +150,9 @@ namespace Simulator
 		/* C4h */	ObjectPtr field_C4;
 	};
 	ASSERT_SIZE(cCombatant, 0xC8);
+
+	namespace Addresses(cCombatant) {
+		DeclareAddress(TakeDamage);
+	}
 
 }

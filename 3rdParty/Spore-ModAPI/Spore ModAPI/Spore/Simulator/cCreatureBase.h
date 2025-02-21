@@ -123,6 +123,23 @@ namespace Simulator
 
 		// sub_D48710 play ability
 
+		/// Makes the creature play an ability, the index can be obtained with GetAbilityIndexByType().
+		/// If dstAnimIndex is specified, the index of the ability animation played will be written there.
+		/// Does not work with skill abilties (glide, jump, mating call, sprint and sneak)
+		/// @param abilityIndex
+		/// @param[out] dstAnimIndex [Optional]
+		void PlayAbility(int abilityIndex, Anim::AnimIndex* dstAnimIndex = nullptr);
+
+		/// If possible, causes the creature to jump, even if the creature is already in the air.
+		/// @param energyConsumed [Optional] For captains, how much energy will be consumed
+		/// @returns Whether the jump was carried out
+		bool DoJump(int energyConsumed = 0);
+
+		/// For scenario captains, consumes a certain amount of energy. 
+		/// If it's the player, it sends a kMsgScenarioEnergyConsumed message.
+		/// @param amount
+		void ConsumeEnergy(float amount);
+
 		/// Returns the index to the first ability of the craeture that has the specified ability type.
 		/// @param abilityType
 		/// @returns Index to ability, or -1 if not found
@@ -191,6 +208,9 @@ namespace Simulator
 		/// @returns
 		int PlayVoice(const char* pName, int param2, int param3);
 
+		/// Returns true if the creature's diet can eat plants, that is, for herbivores and omnivores
+		bool CanEatPlants();
+
 
 		/* 54h */	virtual void CreateLocomotionStrategy();
 
@@ -208,7 +228,8 @@ namespace Simulator
 		/* 6Ch */	virtual void func6Ch(int deltaTime);  // called by Update
 		/* 70h */	virtual void func70h(float deltaTimeSeconds);  // called by Update
 		/* 74h */	virtual void func74h(void*);  // related to babies growing up
-		/* 78h */	virtual void func78h();
+		/// Make the creature grow up and play the baby grow up effect. Will run even if the creature is already an adult.
+		/* 78h */	virtual void GrowUp();
 		/* 7Ch */	virtual float GetBaseMaxHitPoints() = 0;
 		/* 80h */	virtual float CalculateScale(bool isBaby);
 		/* 84h */	virtual void SetCreatureTarget(cCombatant* pTarget, bool, int intentionTowardsTarget);  //TODO check loc_D3242E
@@ -224,7 +245,7 @@ namespace Simulator
 		/* ACh */	virtual bool funcACh(bool);
 		/* B0h */	virtual int GetAbilitiesCount();
 		/* B4h */	virtual cCreatureAbility* GetAbility(int index);
-		/* B8h */	virtual bool funcB8h(int, int, int);
+		/* B8h */	virtual bool funcB8h(cCombatant* target, int abilityIndex, Math::Vector3* hitPosition = nullptr);
 		/* BCh */	virtual int funcBCh();
 		/* C0h */	virtual bool funcC0h(cCreatureBase* pOtherCreature, float, float);
 		/* C4h */	virtual void funcC4h();
@@ -242,7 +263,7 @@ namespace Simulator
 		/* B14h */	float mDamageBoostAmount;  // not initialized
 		/* B18h */	bool mHasArmorBoost;
 		/* B1Ch */	float mArmorBoostAmount;  // not initialized
-		/* B20h */	cSpeciesProfile* mpSpeciesProfile;  // species profile?
+		/* B20h */	cSpeciesProfile* mpSpeciesProfile;
 		/* B24h */	uint32_t mProfileSeq;
 		/* B28h */	ResourceKey mSpeciesKey;
 		/* B34h */	int mAge;  // 1
@@ -260,9 +281,10 @@ namespace Simulator
 		/* B60h */	bool mbUpdateInteractionEffect;
 		/* B61h */	bool mbUpdateMotiveEffect;
 		/* B62h */	bool mbIsDiseased;
-		/* B63h */	bool field_B63;
+		/// Setting this to true deletes the creature
+		/* B63h */	bool mbMarkedForDeletion;
 		/* B64h */	bool field_B64;  // true
-		/* B65h */	bool mbColorIsIdentity;
+		/* B65h */	bool mbColorIsIdentity; // if applied at runtime, requires age-up or other model reload to take effect
 		/* B66h */	bool field_B66;
 		/* B67h */	bool mbCasted;
 		/* B68h */	bool field_B68;  // true
@@ -271,7 +293,8 @@ namespace Simulator
 		/* B70h */	int field_B70;
 		/* B74h */	int mIntentionTowardsTarget;
 		/* B78h */	float mNoAttackTimer;  // not initialized
-		/* B7Ch */	float field_B7C;  // not initialized, alpha for animatedcreature, used in stealth?
+		/// When creature is in stealth, opacity for the creature
+		/* B7Ch */	float mStealthOpacity;  // not initialized
 		/* B80h */	float mCurrentLoudness;  // not initialized
 		/* B84h */	float mFoodValue;
 		/* B88h */	int mStrengthRating;  // 5
@@ -318,7 +341,8 @@ namespace Simulator
 		/* E62h */	bool field_E62;
 		/* E63h */	bool field_E63;
 		/* E64h */	int field_E64;
-		/* E68h */	bool field_E68;
+		/// If true, green sparkles and smiles will emanate from the creature
+		/* E68h */	bool mbMindMelded;
 		/* E6Ch */	int field_E6C;
 		/// Index to default attack ability, which is generally bite or its improvements (energy or poison blade)
 		/* E70h */	int mDefaultAttackAbilityIndex;  // -1
@@ -391,5 +415,14 @@ namespace Simulator
 		DeclareAddress(GetEffectFromPools);
 		DeclareAddress(StopEffectFromPools);
 		DeclareAddress(PlayVoice);  // C1CEC0
+		DeclareAddress(PlayAbility);  // 0xC1DCE0 0xC1E5C0
+		DeclareAddress(DoJump);  // 0xC184A0 0xC18CA0
+		DeclareAddress(ConsumeEnergy);  // 0xC15780 0xC15F20
+		DeclareAddress(OnJumpLand);  // 0xC14670 0xC14E10
+		DeclareAddress(OnStartSwimming);  // 0xC147D0 0xC14F70
+		DeclareAddress(Update);  // 0xC20C50 0xC21530
+		DeclareAddress(TakeDamage);
+		DeclareAddress(IsHervibore);  // 0xC0B040 0xC0B8E0
+		DeclareAddress(CanEatPlants);  // 0xC0B040 0xC0B8E0
 	}
 }

@@ -32,6 +32,7 @@
 namespace Simulator
 {
 	class cStarRecord;
+	class cEmpire;
 
 	struct cWallData
 	{
@@ -153,6 +154,8 @@ namespace Simulator
 		kPlanetFlagHasRings = 0x2,  // 1 << 1
 		kPlanetFlagIsMoon = 0x4,  // 1 << 2
 
+		kPlanetFlagIsDestroyed = 0x100,  // 1 << 8
+
 		kPlanetFlagRedOrbit = 0x1000,  // 1 << 12
 		kPlanetFlagBlueOrbit = 0x2000,  // 1 << 13
 	};
@@ -175,8 +178,25 @@ namespace Simulator
 		PlanetID GetID() const;
 		TechLevel GetTechLevel() const;
 
+		inline bool IsMoon() const {
+			return (mFlags & kPlanetFlagIsMoon) != 0;
+		}
+		inline bool IsDestroyed() const {
+			return (mFlags & kPlanetFlagIsDestroyed) != 0;
+		}
+
 		void SetGeneratedTerrainKey(const ResourceKey& key);
 		ResourceKey& GetGeneratedTerrainKey();
+
+		ResourceKey GetTerrainScriptSource();
+
+		/// Return the key of the sentient species that inhabits this planet.
+		/// Only for tribe or greater tech level.
+		const ResourceKey& GetCitizenSpeciesKey();
+
+		/// Returns the key to the icon that is displayed in planet tooltip.
+		/// This depends on tech level, and whether it has an adventure.
+		static const ResourceKey& GetTypeIconKey(cPlanetRecord* record);
 
 		/// Generates a `.prop` file ResourceKey that is currently unused in game packages, so that 
 		/// the planet terrain can be saved there.
@@ -223,6 +243,29 @@ namespace Simulator
 			float baseValue, float maxOutput, float extraFactor, bool isHomeWorld, 
 			bool useSuperpowerMultiplier, bool useStorageMultiplier, float finalFactor, int numCities, bool limitOutput);
 
+		/// Return true if the planet has any city controlled by the specified empire.
+		/// If 'requireMoreThanOneTurret' is true, then it will only return true if the controlled city
+		/// has more than one turret.
+		/// @param planetRecord
+		/// @param empire
+		/// @param requireMoreThanOneTurret
+		static bool HasControlledCity(cPlanetRecord* planetRecord, cEmpire* empire, bool requireMoreThanOneTurret = false);
+
+		/// Generates a terrain file for this planet, assigning it a random source terrain file for T0 planets.
+		/// The method will generate a random ID, call SetGeneratedTerrainKey(), and call ITerrainResourceManager::LoadPlanetInfo()
+		/// (which returns a random planet, based on the generated terrain key), until it finds a source terrain with temperature score
+		/// lower than 0.33 or higher than 0.66.
+		/// The planet record temperature and atmosphere scores will be set to the final terrain ones.
+		/// @param planetRecord
+		static void AssignTerrainT0(cPlanetRecord* planetRecord);
+
+		/// Generates a terrain file for this planet, assigning it a random source terrain file for non-T0 planets.
+		/// The method will generate a random ID, call SetGeneratedTerrainKey(), and call ITerrainResourceManager::LoadPlanetInfo()
+		/// (which returns a random planet, based on the generated terrain key).
+		/// The planet record temperature and atmosphere scores will be set to the final terrain ones.
+		/// @param planetRecord
+		static void AssignTerrainNonT0(cPlanetRecord* planetRecord);
+
 	public:
 		/* 18h */	eastl::string16 mName;
 		/// The type of the planet, which determines whether it is a gas giant, asteroid belt, or regular rocky planet.
@@ -267,6 +310,12 @@ namespace Simulator
 	};
 	ASSERT_SIZE(cPlanetRecord, 0x1B0);
 
+	/// Returns the key to the image file that represents this planet main species,
+	/// for planets in tribe, civilization, or space tech level.
+	/// @param planetRecord
+	ResourceKey GetMainSpeciesImageKey(cPlanetRecord* planetRecord);
+
+
 	/////////////////////////////////
 	//// INTERNAL IMPLEMENTATION ////
 	/////////////////////////////////
@@ -278,6 +327,12 @@ namespace Simulator
 		DeclareAddress(FillPlanetDataForTechLevel);  // 0xB96820 0xB97090
 		DeclareAddress(CalculateSpiceProduction);  // 0xC6F920 0xC70760
 		DeclareAddress(CalculateDeltaSpiceProduction);  // 0xC71200 0xC720A0
+		DeclareAddress(GetTerrainScriptSource);  // 0xB8D690 0xB8DEB0
+		DeclareAddress(HasControlledCity);  // 0xC6F4B0 0xC702F0
+		DeclareAddress(GetTypeIconKey);  // 0xE2EBE0 0xE2EB70
+		DeclareAddress(GetCitizenSpeciesKey);  // 0xB8D9C0 0xB8E1E0
+		DeclareAddress(AssignTerrainT0);  // 0xBA5740 0xBA6120
+		DeclareAddress(AssignTerrainNonT0);  // 0xBA5890 0xBA6270
 	}
 
 	inline ResourceKey cPlanetRecord::GenerateTerrainKey()
@@ -295,4 +350,8 @@ namespace Simulator
 	{
 		return mGeneratedTerrainKey;
 	}
+}
+
+namespace Addresses(Simulator) {
+	DeclareAddress(GetMainSpeciesImageKey);  // 0x1066AF0 0x1065F10
 }

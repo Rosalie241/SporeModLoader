@@ -36,6 +36,12 @@
 #include <Spore\Simulator\SubSystem\AnimalSpeciesManager.h>
 #include <Spore\Simulator\SubSystem\SpaceGfx.h>
 #include <Spore\Simulator\SubSystem\SpaceTrading.h>
+#include <Spore\Simulator\SubSystem\TerraformingManager.h>
+#include <Spore\Simulator\SubSystem\CinematicManager.h>
+#include <Spore\Simulator\SubSystem\UIAssetDiscoveryManager.h>
+#include <Spore\Simulator\SubSystem\BundleManager.h>
+#include <Spore\Simulator\SubSystem\GamePlantManager.h>
+#include <Spore\Simulator\SubSystem\ObstacleManager.h>
 
 #include <Spore\Simulator\cGameData.h>
 #include <Spore\Simulator\cGonzagoSimulator.h>
@@ -83,6 +89,9 @@
 #include <Spore\Simulator\cPlanetaryArtifact.h>
 #include <Spore\Simulator\cRaidEvent.h>
 #include <Spore\Simulator\cRaidPlunderEvent.h>
+#include <Spore\Simulator\cInteractableObject.h>
+#include <Spore\Simulator\cInteractiveOrnament.h>
+#include <Spore\Simulator\cNpcTribeController.h>
 
 #include <Spore\Simulator\SimulatorMessages.h>
 

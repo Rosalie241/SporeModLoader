@@ -80,6 +80,11 @@ namespace Editors
 		DefineAddress(PostEventToActors, SelectAddress(0x574000, 0x574110));
 
 		DefineAddress(HandleMessage, SelectAddress(0x591C80, 0x591FA0));
+
+
+		DefineAddress(GetEditorForAssetType, SelectAddress(0x00433010, 0x004333e0));
+		DefineAddress(GetNameForAssetType, SelectAddress(0x004badc0, 0x004bba50));
+		DefineAddress(GetTypeIDForAssetType, SelectAddress(0x004bb110, 0x004bbda0));
 	}
 
 	namespace Addresses(EditorCamera)
@@ -177,6 +182,7 @@ namespace Editors
 		DefineAddress(DisableBackground, SelectAddress(0x62F900, 0x62F950));
 		DefineAddress(Load, SelectAddress(0x62FC70, 0x62FCC0));
 		DefineAddress(LoadBackgroudFiles, SelectAddress(0x62FBA0, 0x62FBF0));
+		DefineAddress(LoadBackgroundFiles, SelectAddress(0x62FBA0, 0x62FBF0));
 		DefineAddress(HandleUIButton, SelectAddress(0x62F7D0, 0x62F820));
 		DefineAddress(ToggleBackgroundButtonHighlights, SelectAddress(0x62F320, 0x62F370));
 		DefineAddress(UpdatePageNumbers, SelectAddress(0x62F520, 0x62F570));

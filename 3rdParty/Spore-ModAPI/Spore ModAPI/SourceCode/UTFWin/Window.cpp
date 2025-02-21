@@ -20,6 +20,7 @@
 #include <Spore\UTFWin\Window.h>
 #include <Spore\UTFWin\IWindowManager.h>
 #include <Spore\UTFWin\IWinProc.h>
+#include <Spore\UTFWin\IButton.h>
 #include <Spore\UTFWin\Constants.h>
 #include <Spore\UTFWin\WindowIterators.h>
 #include <EASTL\internal\thread_support.h>
@@ -128,7 +129,7 @@ namespace UTFWin
 	auto_METHOD_VIRTUAL_const_(Window, IWindow, uint32_t, GetCursorID);
 	auto_METHOD_VIRTUAL_const_(Window, IWindow, WindowFlags, GetFlags);
 	auto_METHOD_VIRTUAL_const_(Window, IWindow, int, GetState);
-	auto_METHOD_VIRTUAL_const_(Window, IWindow, Math::Color, GetShadeColor);
+	auto_METHOD_VIRTUAL_const_(Window, IWindow, int, GetShadeColor);
 	auto_METHOD_VIRTUAL_const_(Window, IWindow, const Math::Rectangle&, GetArea);
 	auto_METHOD_VIRTUAL_const_(Window, IWindow, const Math::Rectangle&, GetRealArea);
 	auto_METHOD_VIRTUAL_const_(Window, IWindow, const char16_t*, GetCaption);
@@ -157,7 +158,7 @@ namespace UTFWin
 	auto_METHOD_VIRTUAL_(Window, IWindow, int, InvalidateTransform);
 	auto_METHOD_VIRTUAL_(Window, IWindow, int, func39);
 	auto_METHOD_VIRTUAL_(Window, IWindow, int, func40);
-	auto_METHOD_VIRTUAL_const_(Window, IWindow, Color, GetFillColor);
+	auto_METHOD_VIRTUAL_const_(Window, IWindow, int, GetFillColor);
 	auto_METHOD_VIRTUAL_const_(Window, IWindow, IDrawable*, GetDrawable);
 	auto_METHOD_VIRTUAL_VOID(Window, IWindow, SetFillColor, Args(Color color), Args(color));
 	auto_METHOD_VIRTUAL_VOID(Window, IWindow, SetDrawable, Args(IDrawable* drawable), Args(drawable));
@@ -435,5 +436,15 @@ namespace UTFWin
 			window->RemoveWinProc((UTFWin::IWinProc*)proc);
 			return true;
 		}, pWinProc);
+	}
+
+	// Button Funcs
+
+	void IButton::SetButtonPressed(bool bValue) {
+		this->SetButtonFlag(kBtnStateSelected, bValue);
+	}
+
+	bool IButton::IsButtonPressed() {
+		return this->GetButtonStateFlags() & kBtnStateSelected;
 	}
 }

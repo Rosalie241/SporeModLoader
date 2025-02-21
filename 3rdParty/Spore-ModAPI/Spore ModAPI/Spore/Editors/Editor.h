@@ -203,9 +203,16 @@ namespace Editors
 		/// its current animation and return to the neutral, motionless pose.
 		void SetCreatureToNeutralPose();
 
-		bool AddCreature(int, const ResourceKey* key = nullptr);
+		/// Adds a creature to the test drive, crashes in other modes.
+		bool AddCreature(int = 1, const ResourceKey* key = nullptr);
 
 		void PostEventToActors(uint32_t eventID, int = -1, float = 1.0f, float = 0.0f);
+
+		static uint32_t GetEditorForAssetType(uint32_t assetTypeID);
+
+		static const char16_t* GetNameForAssetType(uint32_t assetTypeID);
+
+		static uint32_t GetTypeIDForAssetType(uint32_t assetTypeID);
 
 	public:
 
@@ -299,7 +306,7 @@ namespace Editors
 		/* 143h */	bool field_143;  // not initialized
 		/* 144h */	bool field_144;  // true
 		/* 148h */	ObjectPtr field_148;
-		/* 14Ch */	int field_14C; // vertebra? only present in creature-like editor
+		/* 14Ch */	uint32_t field_14C; // vertebra? only present in creature-like editor
 		/* 150h */	cEditorSkinPtr mpEditorSkin;  // something related with painting?  uses sub_4C3E70 to return something that parts also use
 		/* 154h */	cEditorSkinPtr field_154;
 
@@ -379,7 +386,8 @@ namespace Editors
 		/* 280h */	uint32_t mSkyBoxEffectID;
 		/* 284h */	int field_284;
 		/* 288h */	float field_288;  // 1.2
-		/* 28Ch */	TexturePtr mpThumbnailTexture;
+		/// Briefly set when saving a creature, then immediately unset.
+		/* 28Ch */	TexturePtr mpThumbnailTexture; 
 		/* 290h */	int field_290;
 		/* 294h */	IShadowWorldPtr mpShadowWorld;
 		/* 298h */	Graphics::ShadowMapInfo* mpShadowMapInfo;
@@ -628,6 +636,11 @@ namespace Editors
 		DeclareAddress(PostEventToActors);  // 0x574000 0x574110
 
 		DeclareAddress(HandleMessage);  // 0x591C80 0x591FA0
+
+
+		DeclareAddress(GetEditorForAssetType);
+		DeclareAddress(GetNameForAssetType);
+		DeclareAddress(GetTypeIDForAssetType);
 	}
 
 #ifdef SDK_TO_GHIDRA
