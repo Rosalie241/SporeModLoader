@@ -199,12 +199,13 @@ void UI::ShowErrorMessage(std::wstring message)
     MessageBoxW(nullptr, message.c_str(), L"SporeModLoader", MB_OK | MB_ICONERROR);
 }
 
-bool Library::LoadAll(std::vector<std::filesystem::path> paths)
+bool Library::LoadAll(const std::vector<std::filesystem::path>& paths, std::vector<HMODULE>& modules)
 {
     for (const auto& path : paths)
     {
         // attempt to load library
-        bool ret = LoadLibraryW(path.wstring().c_str()) != nullptr;
+        HMODULE hModule = LoadLibraryW(path.wstring().c_str());
+        bool ret = hModule != nullptr;
 
         std::wstring logMessage;
         logMessage = L"LoadLibraryW(\"";
@@ -217,6 +218,41 @@ bool Library::LoadAll(std::vector<std::filesystem::path> paths)
         {
             std::wstring errorMessage;
             errorMessage = L"LoadLibraryW(\"";
+            errorMessage += path.wstring();
+            errorMessage += L"\") Failed!";
+            UI::ShowErrorMessage(errorMessage);
+            return false;
+        }
+        else
+        {
+            modules.push_back(hModule);
+        }
+    }
+
+    return true;
+}
+
+bool Library::UnloadAll(const std::vector<HMODULE>& modules, const std::vector<std::filesystem::path>& paths)
+{
+    for (size_t i = 0; i < modules.size(); i++)    
+    {
+        const auto& module = modules[i];
+        const auto& path   = paths[i];
+
+        // attempt to load library
+        bool ret = FreeLibrary(module);
+
+        std::wstring logMessage;
+        logMessage = L"FreeLibrary(\"";
+        logMessage += path.wstring();
+        logMessage += L"\") == ";
+        logMessage += std::to_wstring((ret ? 1 : GetLastError()));
+        Logger::AddMessage(logMessage);
+
+        if (!ret)
+        {
+            std::wstring errorMessage;
+            errorMessage = L"FreeLibrary(\"";
             errorMessage += path.wstring();
             errorMessage += L"\") Failed!";
             UI::ShowErrorMessage(errorMessage);

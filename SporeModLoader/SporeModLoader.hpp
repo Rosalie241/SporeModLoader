@@ -18,14 +18,24 @@ namespace SporeModLoader
     bool Initialize(void);
 
     /// <summary>
-    ///  Loads Core Library, required to call before LoadMods
+    ///  Loads Core Libraries, required to call before LoadMods
     /// </summary>
     bool LoadCoreLibs(void);
 
     /// <summary>
-    ///  Loads Mod Libraryes
+    ///  Loads Mod Libraries
     /// </summary>
     bool LoadModLibs(void);
+
+    /// <summary>
+    ///  Unloads Core Libraries
+    /// </summary>
+    bool UnloadCoreLibs(void);
+
+    /// <summary>
+    ///  Unloads Mod Libraries
+    /// </summary>
+    bool UnloadModLibs(void);
 }
 
 #endif // SPOREMODLOADER_HPP

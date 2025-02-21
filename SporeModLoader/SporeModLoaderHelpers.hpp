@@ -66,7 +66,12 @@ namespace SporeModLoaderHelpers
         /// <summary>
         ///     Loads all specified DLL files
         /// </summary>
-        bool LoadAll(std::vector<std::filesystem::path> paths);
+        bool LoadAll(const std::vector<std::filesystem::path>& paths, std::vector<HMODULE>& modules);
+
+        /// <summary>
+        ///     Unloads all specified modules
+        /// </summary>
+        bool UnloadAll(const std::vector<HMODULE>& modules, const std::vector<std::filesystem::path>& paths);
     }
 
     namespace Game

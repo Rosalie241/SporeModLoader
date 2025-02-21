@@ -8,11 +8,22 @@
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 #include <windows.h>
+#include <algorithm>
 
 #include "SporeModLoader.hpp"
 #include "SporeModLoaderHelpers.hpp"
 
 using namespace SporeModLoaderHelpers;
+
+//
+// Local Variables
+//
+
+static std::vector<std::filesystem::path> l_CoreLibsPaths;
+static std::vector<std::filesystem::path> l_ModLibsPaths;
+
+static std::vector<HMODULE> l_LoadedCoreLibs;
+static std::vector<HMODULE> l_LoadedModLibs;
 
 //
 // Exported Functions
@@ -24,7 +35,14 @@ bool SporeModLoader::Initialize()
     {
         Logger::Open();
 
-        for (const auto& path : Path::GetCoreLibsPaths())
+        l_CoreLibsPaths = Path::GetCoreLibsPaths();
+        l_ModLibsPaths  = Path::GetModLibsPaths();
+
+        // allocate early
+        l_LoadedCoreLibs.reserve(l_CoreLibsPaths.size());
+        l_LoadedModLibs.reserve(l_ModLibsPaths.size());
+
+        for (const auto& path : l_CoreLibsPaths)
         {
             if (!std::filesystem::exists(path))
             {
@@ -53,7 +71,7 @@ bool SporeModLoader::LoadCoreLibs()
     try
     {
         Logger::AddMessage(L"SporeModLoader::LoadCoreLibs()");
-        if (!Library::LoadAll(Path::GetCoreLibsPaths()))
+        if (!Library::LoadAll(l_CoreLibsPaths, l_LoadedCoreLibs))
         {
             throw std::exception();
         }
@@ -73,7 +91,7 @@ bool SporeModLoader::LoadModLibs()
     try
     {
         Logger::AddMessage(L"SporeModLoader::LoadModLibs()");
-        if (!Library::LoadAll(Path::GetModLibsPaths()))
+        if (!Library::LoadAll(l_ModLibsPaths, l_LoadedModLibs))
         {
             throw std::exception();
         }
@@ -84,6 +102,51 @@ bool SporeModLoader::LoadModLibs()
     {
         Logger::AddMessage(L"SporeModLoader::LoadModLibs() == 0");
         UI::ShowErrorMessage(L"SporeModLoader::LoadModLibs() Failed!");
+        return false;
+    }
+}
+
+bool SporeModLoader::UnloadCoreLibs(void)
+{
+    try
+    {
+        // reverse the order of the core libraries,
+        // because the legacy library depends on the new one
+        std::reverse(l_LoadedCoreLibs.begin(), l_LoadedCoreLibs.end());
+        std::reverse(l_CoreLibsPaths.begin(), l_CoreLibsPaths.end());
+
+        Logger::AddMessage(L"SporeModLoader::UnloadCoreLibs()");
+        if (!Library::UnloadAll(l_LoadedCoreLibs, l_CoreLibsPaths))
+        {
+            throw std::exception();
+        }
+        Logger::AddMessage(L"SporeModLoader::UnloadCoreLibs() == 1");
+        return true;
+    }
+    catch (...)
+    {
+        Logger::AddMessage(L"SporeModLoader::UnloadCoreLibs() == 0");
+        UI::ShowErrorMessage(L"SporeModLoader::UnloadCoreLibs() Failed!");
+        return false;
+    }
+}
+
+bool SporeModLoader::UnloadModLibs(void)
+{
+    try
+    {
+        Logger::AddMessage(L"SporeModLoader::UnloadModLibs()");
+        if (!Library::UnloadAll(l_LoadedModLibs, l_ModLibsPaths))
+        {
+            throw std::exception();
+        }
+        Logger::AddMessage(L"SporeModLoader::UnloadModLibs() == 1");
+        return true;
+    }
+    catch (...)
+    {
+        Logger::AddMessage(L"SporeModLoader::UnloadModLibs() == 0");
+        UI::ShowErrorMessage(L"SporeModLoader::UnloadModLibs() Failed!");
         return false;
     }
 }
