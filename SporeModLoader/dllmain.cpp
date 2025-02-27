@@ -84,9 +84,7 @@ static void attach_allocator_detours(void)
 
 #undef SET_DETOUR_ADDRESS
 
-    DetourRestoreAfterWith();
     DetourTransactionBegin();
-    DetourUpdateThread(GetCurrentThread());
     DetourAttach(&(PVOID&)InitializeGeneralAllocator_real, (PVOID)InitializeGeneralAllocator_detoured);
     DetourAttach(&(PVOID&)DisposeGeneralAllocator_real, (PVOID)DisposeGeneralAllocator_detoured);
     DetourTransactionCommit();
@@ -110,7 +108,8 @@ static void GetStartupInfoA_detoured(LPSTARTUPINFOA lpStartupInfo)
 
         // previously, the library loading process looked like this:
         // 
-        // SporeApp.exe -> SML detours GetStartupInfoA() -> initialize SML -> SML injects core and mod DLLs
+        // SporeApp.exe -> SML detours GetStartupInfoA() -> SporeApp.exe initializes and calls GetStartupInfoA()
+        // -> initialize SML -> SML injects core and mod DLLs
         // 
         // at that point the global allocator hasn't been set yet by Spore, 
         // then we have a problem at shutdown, because the data that mod DLLs
@@ -120,7 +119,8 @@ static void GetStartupInfoA_detoured(LPSTARTUPINFOA lpStartupInfo)
         // to solve that, we detour the allocator set/unset functions
         // and inject the core and mod DLLs there, so now it looks like:
         // 
-        // SporeApp.exe -> SML detours GetStartupInfoA() -> initialize SML -> detour allocator functions
+        // SporeApp.exe -> SML detours GetStartupInfoA() -> SporeApp.exe initializes and calls GetStartupInfoA()
+        // -> initialize SML -> detour allocator functions
         // -> SporeApp.exe sets global allocator   -> SML injects core and mod DLLs 
         // -> SporeApp.exe unsets global allocator -> SML unloads core and mod DLLs
         // 
@@ -154,16 +154,13 @@ BOOL WINAPI DllMain(HINSTANCE hinst, DWORD dwReason, LPVOID reserved)
 
     if (dwReason == DLL_PROCESS_ATTACH)
     {
-        DetourRestoreAfterWith();
         DetourTransactionBegin();
-        DetourUpdateThread(GetCurrentThread());
         DetourAttach(&(PVOID&)GetStartupInfoA_real, (PVOID)GetStartupInfoA_detoured);
         DetourTransactionCommit();
     }
     else if (dwReason == DLL_PROCESS_DETACH)
     {
         DetourTransactionBegin();
-        DetourUpdateThread(GetCurrentThread());
         DetourDetach(&(PVOID&)GetStartupInfoA_real, (PVOID)GetStartupInfoA_detoured);
         DetourTransactionCommit();
     }
