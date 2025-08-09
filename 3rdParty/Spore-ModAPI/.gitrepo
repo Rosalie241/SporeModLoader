@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@github.com:emd4600/Spore-ModAPI.git
 	branch = master
-	commit = 1661afa4358f6e647d7ec0849ab00a84d6cf7153
-	parent = 372560af44fede2c0d6a491c7bc8d257db15853a
+	commit = e7b0a8d6675c057a814de51725fd5d679f4d9d60
+	parent = caeb49a49e06c3d15526c0cc51b82f03cb734241
 	method = merge
 	cmdver = 0.4.9
