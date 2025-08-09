@@ -78,6 +78,10 @@
     <PreBuildEvent>
       <Command>if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll" (
     CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildSporeModAPI.bat"
+)
+
+if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\legacydll\Release\SporeModAPI-steam_patched.dll" (
+    CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildSporeModAPI.bat"
 )</Command>
     </PreBuildEvent>
     <PostBuildEvent>
@@ -108,6 +112,10 @@
     </Link>
     <PreBuildEvent>
       <Command>if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll" (
+    CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildSporeModAPI.bat"
+)
+
+if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\legacydll\Release\SporeModAPI-steam_patched.dll" (
     CALL "$(MSBuildProjectDirectory)\..\3rdParty\BuildSporeModAPI.bat"
 )</Command>
     </PreBuildEvent>

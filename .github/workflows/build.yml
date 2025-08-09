@@ -36,9 +36,9 @@ jobs:
           New-Item -ItemType Directory -Force -Path bin\SporeModLoader\SporeModManager
           New-Item -ItemType File -Force -Path bin\SporeModLoader\ModLibs\keep.txt
 
-          Copy "3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll"          "bin\SporeModLoader\CoreLibs\SporeModAPI.dll"
-          Copy "3rdParty\Spore-ModAPI-legacy\SporeModAPI-disk.dll"          "bin\SporeModLoader\CoreLibs\SporeModAPI-disk.dll"
-          copy "3rdParty\Spore-ModAPI-legacy\SporeModAPI-steam_patched.dll" "bin\SporeModLoader\CoreLibs\SporeModAPI-steam_patched.dll"
+          Copy "3rdParty\Spore-ModAPI\dll\Release\SporeModAPI.dll"                     "bin\SporeModLoader\CoreLibs\SporeModAPI.dll"
+          Copy "3rdParty\Spore-ModAPI\legacydll\Release\SporeModAPI-disk.dll"          "bin\SporeModLoader\CoreLibs\SporeModAPI-disk.dll"
+          copy "3rdParty\Spore-ModAPI\legacydll\Release\SporeModAPI-steam_patched.dll" "bin\SporeModLoader\CoreLibs\SporeModAPI-steam_patched.dll"
 
           Copy "SporeModLoader\Bin\Release\dinput8.dll"          "bin\SporebinEP1\dinput8.dll"
           Copy "SporeModManager\Bin\Release\SporeModManager.exe" "bin\SporeModLoader\SporeModManager\SporeModManager.exe"
