@@ -665,6 +665,14 @@ def test_update_modapi():
 	assert result.stdout != b''
 	assert result.stderr != b''
 
+	# ensure updating when already up-to-date doesn't touch the file
+	before_update_mtime = os.path.getmtime(sporemodapi_file)
+	result = run_smm([ 'update-modapi' ])
+	assert result.returncode == 0
+	assert result.stdout != b''
+	assert result.stderr == b''
+	assert before_update_mtime == os.path.getmtime(sporemodapi_file)
+
 	# ensure mod with higher dll build required works
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
