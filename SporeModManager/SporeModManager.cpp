@@ -7,8 +7,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
-#include <iostream>
 #include <algorithm>
+#include <iostream>
+#include <fstream>
 
 #include "SporeModManagerHelpers/Download.hpp"
 #include "SporeModManagerHelpers/SporeMod.hpp"
@@ -488,6 +489,15 @@ bool SporeModManager::DownloadSporeModAPI(void)
     const std::filesystem::path coreLibPath = Path::Combine({ Path::GetCoreLibsPath(), "SporeModAPI.dll" });
     std::error_code error;
     Zip::ZipFile zipFile;
+    std::vector<char> extractedFileBuffer;
+    std::ofstream outputFileStream;
+    FileVersion::FileVersionInfo currentVersionInfo;
+    FileVersion::FileVersionInfo downloadedVersionInfo;
+
+    if (!FileVersion::ParseFile(coreLibPath, currentVersionInfo))
+    {
+        std::cerr << "Warning: failed to retrieve version from " << coreLibPath << std::endl;
+    }
 
     if (!Download::DownloadFile(url, updatePath))
     {
@@ -501,13 +511,45 @@ bool SporeModManager::DownloadSporeModAPI(void)
 
     std::cout << "-> Extracting SporeModAPI.dll" << std::endl;
 
-    if (!Zip::ExtractFile(zipFile, "SporeModAPI.combined.dll", coreLibPath))
+    if (!Zip::ExtractFile(zipFile, "SporeModAPI.combined.dll", extractedFileBuffer))
     {
         Zip::CloseFile(zipFile);
         return false;
     }
 
     Zip::CloseFile(zipFile);
+
+    if (!FileVersion::ParseBuffer(extractedFileBuffer, downloadedVersionInfo))
+    {
+        std::cerr << "Error: failed to retrieve version from downloaded SporeModAPI.dll" << std::endl;
+        return false;
+    }
+
+    if (UI::GetVerboseMode())
+    {
+        std::cout << "--> Installed SporeModAPI.dll version: v" << currentVersionInfo.to_string() << std::endl
+                  << "--> Downloaded SporeModAPI.dll version: v" << downloadedVersionInfo.to_string() << std::endl; 
+    }
+
+    if (downloadedVersionInfo > currentVersionInfo)
+    {
+        outputFileStream.open(coreLibPath, std::ios::trunc | std::ios::binary);
+        if (!outputFileStream.is_open())
+        {
+            std::cerr << "Error: failed to open " << coreLibPath << std::endl;
+            return false;
+        }
+
+        outputFileStream.write(extractedFileBuffer.data(), extractedFileBuffer.size());
+        outputFileStream.flush();
+        outputFileStream.close();
+
+        std::cout << "-> Installed SporeModAPI.dll v" << downloadedVersionInfo.to_string() << std::endl;
+    }
+    else
+    {
+        std::cerr << "-> Installed SporeModAPI.dll is already up-to-date" << std::endl;
+    }
 
     std::filesystem::remove(updatePath, error);
     if (error)

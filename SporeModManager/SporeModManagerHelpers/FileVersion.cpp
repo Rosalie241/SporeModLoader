@@ -116,7 +116,6 @@ bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionIn
 bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVersionInfo)
 {
     std::ifstream  fileStream;
-    std::string    versionString;
     std::streamoff fileStreamLength;
 
     fileStream.open(path, std::ios_base::in | std::ios_base::binary);
@@ -147,6 +146,12 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
         return false;
     }
 
+    return ParseBuffer(buffer, fileVersionInfo);    
+}
+
+bool FileVersion::ParseBuffer(const std::vector<char>& buffer, FileVersionInfo& fileVersionInfo)
+{
+    std::string versionString;
     const std::array<char, 25> fileVersionBytes =
     { // F\0i\0l\0e\0V\0e\0r\0s\0i\0o\0n\0\0\0\0\0
         0x46, 0x00, 0x69, 0x00, 0x6C, 0x00, 0x65, 0x00, 0x56, 0x00, 

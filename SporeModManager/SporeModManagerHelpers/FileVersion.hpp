@@ -10,8 +10,9 @@
 #ifndef SPOREMODMANAGERHELPERS_FILEVERSION_HPP
 #define SPOREMODMANAGERHELPERS_FILEVERSION_HPP
 
-#include <string>
 #include <filesystem>
+#include <string>
+#include <vector>
 
 namespace SporeModManagerHelpers
 {
@@ -72,6 +73,11 @@ namespace SporeModManagerHelpers
         ///     Parses FileVersionInfo from a file
         /// </summary>
         bool ParseFile(std::filesystem::path path, FileVersionInfo& fileVersionInfo);
+
+        /// <summary>
+        ///     Parses FileVersionInfo from a buffer
+        /// </summary>
+        bool ParseBuffer(const std::vector<char>& buffer, FileVersionInfo& fileVersionInfo);
     }
 }
 
