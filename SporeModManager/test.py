@@ -644,7 +644,7 @@ def test_update_modapi():
 				unique="test_update_modapi_0" 
 				description="test_update_modapi_0" 
 				installerSystemVersion="1.0.1.1" 
-				dllsBuild="2.5.310">
+				dllsBuild="2.5.400">
 			</mod>"""
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
@@ -657,6 +657,13 @@ def test_update_modapi():
 	assert result.returncode == 0
 	assert result.stdout != b''
 	assert result.stderr == b''
+
+	# ensure updating when we dont have a modapi dll works
+	os.remove(sporemodapi_file)
+	result = run_smm([ 'update-modapi' ])
+	assert result.returncode == 0
+	assert result.stdout != b''
+	assert result.stderr != b''
 
 	# ensure mod with higher dll build required works
 	result = run_smm([ 'install', sporemod_file ])
