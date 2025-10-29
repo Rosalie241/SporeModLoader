@@ -107,7 +107,7 @@ bool Download::DownloadFile(std::string url, std::filesystem::path path)
         return false;
     }
 
-    std::ofstream fileStream(path, std::ios::binary);
+    std::ofstream fileStream(path, std::ios::trunc | std::ios::binary);
     if (!fileStream.is_open())
     {
         curl_easy_cleanup(curl);

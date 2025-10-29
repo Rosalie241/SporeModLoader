@@ -204,7 +204,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
         return false;
     }
 
-    outputFileStream.open(outputFile, std::ofstream::trunc | std::ofstream::binary);
+    outputFileStream.open(outputFile, std::ios::trunc | std::ios::binary);
     if (!outputFileStream.is_open())
     {
         std::cerr << "Error: failed to open " << outputFile << std::endl;
