@@ -548,7 +548,7 @@ bool SporeModManager::DownloadSporeModAPI(void)
     }
     else
     {
-        std::cerr << "-> Installed SporeModAPI.dll is already up-to-date" << std::endl;
+        std::cout << "-> Installed SporeModAPI.dll is already up-to-date" << std::endl;
     }
 
     std::filesystem::remove(updatePath, error);
