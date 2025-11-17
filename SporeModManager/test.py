@@ -20,6 +20,7 @@ sporemodmanager = ''
 verbose         = False
 cleanup         = True
 network         = False
+valgrind        = False
 
 # paths for tests
 tests_path       = tempfile.mkdtemp()
@@ -50,7 +51,12 @@ def reset_smm():
 
 def run_smm(args):
 	os_environment["SPOREMODMANAGER_CONFIGFILE"] = str(config_file)
-	cmd = [sporemodmanager, '--verbose', '--no-input', f'--corelibs-path={corelibs_path}', f'--modlibs-path={modlibs_path}', f'--data-path={data_path}', f'--ep1-path={ep1_path}']
+	valgrind_cmd = [ 'valgrind', '--quiet', '--leak-check=full', '--show-leak-kinds=all', '--track-origins=yes' ]
+	smm_cmd = [ sporemodmanager, '--verbose', '--no-input', f'--corelibs-path={corelibs_path}', f'--modlibs-path={modlibs_path}', f'--data-path={data_path}', f'--ep1-path={ep1_path}' ]
+	cmd = [ ]
+	if valgrind:
+		cmd += valgrind_cmd
+	cmd += smm_cmd
 	for arg in args:
 		cmd.append(arg)
 	if verbose:
@@ -692,6 +698,7 @@ if __name__ == "__main__":
 	parser.add_argument('--nocleanup', action='store_false', help="skips cleanup of temporary directory")
 	parser.add_argument('--verbose', action='store_true', help='prints command output for each test')
 	parser.add_argument('--network', action='store_true', help='runs tests which require network access')
+	parser.add_argument('--valgrind', action='store_true', help='runs tests with valgrind')
 	parser.add_argument('executable', help='executable to run tests with.')
 	args = parser.parse_args()
 
@@ -700,6 +707,7 @@ if __name__ == "__main__":
 	verbose 		= args.verbose
 	cleanup         = args.nocleanup
 	network         = args.network
+	valgrind        = args.valgrind
 
 	# create test directories
 	os.mkdir(corelibs_path)
