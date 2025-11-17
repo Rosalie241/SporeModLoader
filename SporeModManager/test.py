@@ -51,7 +51,7 @@ def reset_smm():
 
 def run_smm(args):
 	os_environment["SPOREMODMANAGER_CONFIGFILE"] = str(config_file)
-	valgrind_cmd = [ 'valgrind', '--quiet', '--leak-check=full', '--show-leak-kinds=all', '--track-origins=yes' ]
+	valgrind_cmd = [ 'valgrind', '--quiet', '--leak-check=full', '--show-leak-kinds=all', '--track-origins=yes', '--error-exitcode=2' ]
 	smm_cmd = [ sporemodmanager, '--verbose', '--no-input', f'--corelibs-path={corelibs_path}', f'--modlibs-path={modlibs_path}', f'--data-path={data_path}', f'--ep1-path={ep1_path}' ]
 	cmd = [ ]
 	if valgrind:
@@ -135,7 +135,7 @@ def test_install():
 
 	# installing the same mod should fail
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
@@ -357,7 +357,7 @@ def test_install():
 			</mod>"""
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
@@ -374,7 +374,7 @@ def test_install():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
@@ -388,7 +388,7 @@ def test_install():
 			</mod>"""
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout != b''
 	assert result.stderr != b''
 
@@ -396,7 +396,7 @@ def test_install():
 	xml = ''
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
@@ -404,7 +404,7 @@ def test_install():
 	xml = '<mod <prerequisite> />'
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
@@ -415,7 +415,7 @@ def test_uninstall():
 
 	# uninstall should fail when no mods have been installed
 	result = run_smm([ 'uninstall', '0'])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
@@ -436,7 +436,7 @@ def test_uninstall():
 
 	# uninstall with a too high ID shouldn't work
 	result = run_smm([ 'uninstall', '26'])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
@@ -454,31 +454,31 @@ def test_uninstall():
 
 	# uninstall with a range with numbers + letters shouldn't work
 	result = run_smm([ 'uninstall', '0x1-1x0'])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
 	# uninstall with a range with letters shouldn't work
 	result = run_smm([ 'uninstall', 'a-b'])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
 	# uninstall with an invalid range shouldn't work
 	result = run_smm([ 'uninstall', '0-30'])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
 	# uninstall with another invalid range shouldn't work
 	result = run_smm([ 'uninstall', '10-0'])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
 	# uninstall with an insanely big range shouldn't work or crash
 	result = run_smm([ 'uninstall', '0-2147483646'])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
@@ -497,7 +497,7 @@ def test_update():
 			</mod>"""
 	write_sporemod(xml)
 	result = run_smm([ 'update', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
@@ -562,7 +562,7 @@ def test_list_installed():
 			</mod>"""
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout != b''
 	assert result.stderr != b''
 
@@ -594,7 +594,7 @@ def test_list_installed():
 					</mod>"""
 		install_cmd += [ write_sporemod(xml, None, True) ]
 	result = run_smm(install_cmd)
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout != b''
 	assert result.stderr != b''
 
@@ -616,7 +616,7 @@ def test_list_installed():
 			</mod>"""
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
@@ -654,7 +654,7 @@ def test_update_modapi():
 			</mod>"""
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == b''
 	assert result.stderr != b''
 
