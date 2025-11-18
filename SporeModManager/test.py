@@ -459,6 +459,33 @@ def test_install():
 	assert result.stdout == ''
 	assert result.stderr != ''
 
+	# verify that 2 sporemods with the same unique name install correctly,
+	# the latter one of them should be skipped
+	xml1 = """<mod displayName="test_install_11" 
+				unique="test_install_11" 
+				description="test_install_11" 
+				installerSystemVersion="1.0.1.1" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_install_11_1.dll</prerequisite>
+			</mod>"""
+	xml2 = """<mod displayName="test_install_11" 
+				unique="test_install_11" 
+				description="test_install_11" 
+				installerSystemVersion="1.0.1.1" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_install_11_2.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_install_11_1.dll', 'dll' ],
+		[ 'test_install_11_2.dll', 'dll' ],
+	]
+	result = run_smm([ 'install', write_sporemod(xml1, files, True), write_sporemod(xml2, files, True) ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_11_1.dll'))
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_install_11_2.dll'))
+
 # Tests whether uninstall works correctly
 def test_uninstall():
 	print(f'Running {test_uninstall.__name__}...')
