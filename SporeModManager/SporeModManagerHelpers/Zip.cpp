@@ -36,7 +36,7 @@ static std::vector<char>                              l_ZipFileBuffer;
 
 static voidpf zlib_filefunc_open(voidpf /*opaque*/, const void* filename, int /*mode*/)
 {
-    std::filesystem::path path = *(std::filesystem::path*)filename;
+    const std::filesystem::path path = *static_cast<const std::filesystem::path*>(filename);
 
     // if the stream is cached, ensure it's closed
     auto iter = l_ZipFileStreams.find(path);
@@ -60,20 +60,20 @@ static voidpf zlib_filefunc_open(voidpf /*opaque*/, const void* filename, int /*
 
 static uLong zlib_filefunc_read(voidpf /*opaque*/, voidpf stream, void* buf, uLong size)
 {
-    std::ifstream* fileStream = (std::ifstream*)stream;
-    fileStream->read((char*)buf, size);
+    std::ifstream* fileStream = static_cast<std::ifstream*>(stream);
+    fileStream->read(static_cast<char*>(buf), size);
     return fileStream->fail() ? (uLong)fileStream->gcount() : size;
 }
 
 static ZPOS64_T zlib_filefunc_tell(voidpf /*opaque*/, voidpf stream)
 {
-    std::ifstream* fileStream = (std::ifstream*)stream;
+    std::ifstream* fileStream = static_cast<std::ifstream*>(stream);
     return fileStream->tellg();
 }
 
 static long zlib_filefunc_seek(voidpf /*opaque*/, voidpf stream, ZPOS64_T offset, int origin)
 {
-    std::ifstream* fileStream = (std::ifstream*)stream;
+    std::ifstream* fileStream = static_cast<std::ifstream*>(stream);
     std::ios_base::seekdir seekOrigin;
 
     switch (origin)
@@ -97,7 +97,7 @@ static long zlib_filefunc_seek(voidpf /*opaque*/, voidpf stream, ZPOS64_T offset
 
 static int zlib_filefunc_close(voidpf /*opaque*/, voidpf stream)
 {
-    std::ifstream* fileStream = (std::ifstream*)stream;
+    std::ifstream* fileStream = static_cast<std::ifstream*>(stream);
     fileStream->close();
     return fileStream->fail() ? -1 : 0;
 }
@@ -111,7 +111,7 @@ static int zlib_filefunc_testerror(voidpf /*opaque*/, voidpf /*stream*/)
 // Exported Functions
 //
 
-bool Zip::OpenFile(ZipFile& zipFile, std::filesystem::path path)
+bool Zip::OpenFile(ZipFile& zipFile, const std::filesystem::path& path)
 {
     zlib_filefunc64_def filefuncs;
     filefuncs.zopen64_file = zlib_filefunc_open;
@@ -123,7 +123,7 @@ bool Zip::OpenFile(ZipFile& zipFile, std::filesystem::path path)
     filefuncs.zerror_file  = zlib_filefunc_testerror;
     filefuncs.opaque       = nullptr;
 
-    zipFile = unzOpen2_64((const void*)&path, &filefuncs);
+    zipFile = unzOpen2_64(&path, &filefuncs);
     if (zipFile == nullptr)
     {
         std::cerr << "Error: failed to open zip file: " << path << std::endl; 
@@ -136,7 +136,7 @@ bool Zip::CloseFile(ZipFile zipFile)
     return unzClose(zipFile) == UNZ_OK;
 }
 
-bool Zip::LocateFile(ZipFile zipFile, std::filesystem::path file)
+bool Zip::LocateFile(ZipFile zipFile, const std::filesystem::path& file)
 {
     return unzLocateFile(zipFile, file.string().c_str(), 2) == UNZ_OK;
 }
@@ -189,7 +189,7 @@ bool Zip::GetFileList(ZipFile zipFile, std::vector<std::filesystem::path>& fileL
     return true;
 }
 
-bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesystem::path outputFile)
+bool Zip::ExtractFile(ZipFile zipFile, const std::filesystem::path& file, const std::filesystem::path& outputFile)
 {
     int bytesRead = 0;
     std::ofstream outputFileStream;
@@ -239,7 +239,7 @@ bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesyst
     return true;
 }
 
-bool Zip::ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<char>& outBuffer)
+bool Zip::ExtractFile(ZipFile zipFile, const std::filesystem::path& file, std::vector<char>& outBuffer)
 {
     int bytesRead = 0;
 

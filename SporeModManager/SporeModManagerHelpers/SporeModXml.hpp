@@ -117,12 +117,15 @@ namespace SporeModManagerHelpers
             /// <summary>
             ///     Retrieves directories 
             /// </summary>>
-            bool GetDirectories(std::filesystem::path& coreLibsPath, std::filesystem::path& modLibsPath, std::filesystem::path& galacticAdventuresDataPath, std::filesystem::path& coreSporeDataPath);
+            bool GetDirectories(std::filesystem::path& coreLibsPath, std::filesystem::path& modLibsPath, 
+                                std::filesystem::path& galacticAdventuresDataPath, std::filesystem::path& coreSporeDataPath);
 
             /// <summary>
             ///     Saves directories
             /// </summary>
-            bool SaveDirectories(std::filesystem::path coreLibsPath, std::filesystem::path modLibsPath, std::filesystem::path galacticAdventuresDataPath, std::filesystem::path coreSporeDataPath);
+            bool SaveDirectories(const std::filesystem::path& coreLibsPath, const std::filesystem::path& modLibsPath,
+                                 const std::filesystem::path& galacticAdventuresDataPath,
+                                 const std::filesystem::path& coreSporeDataPath);
 
             /// <summary>
             ///     Retrieves installed mod list

@@ -49,7 +49,8 @@ static bool check_other_mod_files(const SporeMod::Xml::InstalledSporeMod& instal
 // Exported Functions
 //
 
-bool SporeMod::FindInstalledMod(std::string uniqueName, int& installedSporeModId, const std::vector<Xml::InstalledSporeMod>& installedSporeMods)
+bool SporeMod::FindInstalledMod(const std::string& uniqueName, int& installedSporeModId, 
+                                const std::vector<Xml::InstalledSporeMod>& installedSporeMods)
 {
     Xml::InstalledSporeMod installedSporeMod;
 
@@ -66,7 +67,9 @@ bool SporeMod::FindInstalledMod(std::string uniqueName, int& installedSporeModId
     return false;
 }
 
-bool SporeMod::ConfigureSporeMod(Zip::ZipFile zipFile, const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod> &installedSporeMods)
+bool SporeMod::ConfigureSporeMod(Zip::ZipFile zipFile, const Xml::SporeModInfo& sporeModInfo, 
+                                 Xml::InstalledSporeMod& installedSporeMod,
+                                 const std::vector<Xml::InstalledSporeMod> &installedSporeMods)
 {
     Xml::SporeModInfoComponent component;
     size_t             componentsSize;
@@ -277,7 +280,8 @@ bool SporeMod::ConfigureSporeMod(Zip::ZipFile zipFile, const Xml::SporeModInfo& 
     return true;
 }
 
-bool SporeMod::ConfigurePackage(const std::filesystem::path& path, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods)
+bool SporeMod::ConfigurePackage(const std::filesystem::path& path, Xml::InstalledSporeMod& installedSporeMod,
+                                const std::vector<Xml::InstalledSporeMod>& installedSporeMods)
 {
     Xml::SporeModFile installedModFile;
 

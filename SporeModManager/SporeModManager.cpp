@@ -156,7 +156,7 @@ bool SporeModManager::ListInstalledMods(void)
     return true;
 }
 
-bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool skipValidation, bool skipInstalled, bool skipConfiguration)
+bool SporeModManager::InstallMods(std::vector<std::filesystem::path>& paths, bool skipValidation, bool skipInstalled, bool skipConfiguration)
 {
     std::vector<std::string> uniqueNames;
     std::string              extension;
@@ -305,7 +305,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path> paths, bool
     return returnValue;
 }
 
-bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool requiresInstalled)
+bool SporeModManager::UpdateMods(std::vector<std::filesystem::path>& paths, bool requiresInstalled)
 {
     SporeMod::Xml::InstalledSporeMod installedSporeMod;
     int                      installedSporeModId = 0;
@@ -421,7 +421,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
     return InstallMods(paths, true, false, true);
 }
 
-bool SporeModManager::UninstallMods(std::vector<int> ids)
+bool SporeModManager::UninstallMods(const std::vector<int>& ids)
 {
     std::vector<SporeMod::Xml::InstalledSporeMod> removedSporeMods;
     SporeMod::Xml::InstalledSporeMod installedSporeMod;

@@ -32,7 +32,8 @@ static std::filesystem::path l_CoreSporeDataPath;
 // Exported Functions
 //
 
-void Path::SetDirectories(std::filesystem::path coreLibsPath, std::filesystem::path modLibsPath, std::filesystem::path galacticAdventuresDataPath, std::filesystem::path coreSporeDataPath)
+void Path::SetDirectories(const std::filesystem::path& coreLibsPath, const std::filesystem::path& modLibsPath,
+                          const std::filesystem::path& galacticAdventuresDataPath, const std::filesystem::path& coreSporeDataPath)
 {
     l_CoreLibsPath               = coreLibsPath;
     l_ModLibsPath                = modLibsPath;
@@ -83,7 +84,7 @@ bool Path::CheckIfPathsExist(void)
     return true;
 }
 
-std::filesystem::path Path::Combine(std::vector<std::filesystem::path> paths)
+std::filesystem::path Path::Combine(const std::vector<std::filesystem::path>& paths)
 {
     std::filesystem::path combinedPath;
 
@@ -105,7 +106,7 @@ std::filesystem::path Path::Combine(std::vector<std::filesystem::path> paths)
     return combinedPath;
 }
 
-std::filesystem::path Path::GetAbsolutePath(std::filesystem::path path)
+std::filesystem::path Path::GetAbsolutePath(const std::filesystem::path& path)
 {
     std::filesystem::path sourcePath = path;
     std::filesystem::path fullPath;
@@ -183,7 +184,7 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
 #endif // _WIN32
 }
 
-std::filesystem::path Path::GetFullInstallPath(SporeMod::InstallLocation installLocation, std::filesystem::path path)
+std::filesystem::path Path::GetFullInstallPath(SporeMod::InstallLocation installLocation, const std::filesystem::path& path)
 {
     std::filesystem::path installPath;
 

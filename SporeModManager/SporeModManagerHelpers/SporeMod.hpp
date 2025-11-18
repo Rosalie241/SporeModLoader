@@ -24,17 +24,21 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Tries to find installed mod with uniqueName
         /// </summary>
-        bool FindInstalledMod(std::string uniqueName, int& installedSporeModId, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
+        bool FindInstalledMod(const std::string& uniqueName, int& installedSporeModId, 
+                              const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
 
         /// <summary>
         ///     Configures sporemod file
         /// </summary>
-        bool ConfigureSporeMod(Zip::ZipFile zipFile, const Xml::SporeModInfo& sporeModInfo, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
+        bool ConfigureSporeMod(Zip::ZipFile zipFile, const Xml::SporeModInfo& sporeModInfo, 
+                               Xml::InstalledSporeMod& installedSporeMod,
+                               const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
 
         /// <summary>
         ///     Configures package file
         /// </summary>
-        bool ConfigurePackage(const std::filesystem::path& path, Xml::InstalledSporeMod& installedSporeMod, const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
+        bool ConfigurePackage(const std::filesystem::path& path, Xml::InstalledSporeMod& installedSporeMod,
+                              const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
 
         /// <summary>
         ///     Installs sporemod file

@@ -23,17 +23,17 @@ namespace SporeModManager
     /// <summary>
     ///  Installs mod
     /// </summary>
-    bool InstallMods(std::vector<std::filesystem::path> paths, bool skipValidation = false, bool skipInstalled = false, bool skipConfiguration = false);
+    bool InstallMods(std::vector<std::filesystem::path>& paths, bool skipValidation = false, bool skipInstalled = false, bool skipConfiguration = false);
 
     /// <summary>
     ///  Updates mod
     /// </summary>
-    bool UpdateMods(std::vector<std::filesystem::path> paths, bool requiresInstalled = true);
+    bool UpdateMods(std::vector<std::filesystem::path>& paths, bool requiresInstalled = true);
 
     /// <summary>
     ///  Uninstalls mods with ids
     /// </summary>
-    bool UninstallMods(std::vector<int> ids);
+    bool UninstallMods(const std::vector<int>& ids);
 
     /// <summary>
     ///  Updates Spore-ModAPI DLLs

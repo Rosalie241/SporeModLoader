@@ -21,7 +21,8 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Sets directories for current session
         /// </summary>>
-        void SetDirectories(std::filesystem::path coreLibsPath, std::filesystem::path modLibsPath, std::filesystem::path galacticAdventuresDataPath, std::filesystem::path coreSporeDataPath);
+        void SetDirectories(const std::filesystem::path& coreLibsPath, const std::filesystem::path& modLibsPath, 
+                            const std::filesystem::path& galacticAdventuresDataPath, const std::filesystem::path& coreSporeDataPath);
 
         /// <summary>
         ///     Returns wether all required paths exist
@@ -31,17 +32,17 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Returns the combined path of paths
         /// </summary>
-        std::filesystem::path Combine(std::vector<std::filesystem::path> paths);
+        std::filesystem::path Combine(const std::vector<std::filesystem::path>& paths);
 
         /// <summary>
         ///     Returns the absolute path of path
         /// </summary>
-        std::filesystem::path GetAbsolutePath(std::filesystem::path path);
+        std::filesystem::path GetAbsolutePath(const std::filesystem::path& path);
 
         /// <summary>
         ///     Retrieves full installation path
         /// </summary>
-        std::filesystem::path GetFullInstallPath(SporeMod::InstallLocation installLocation, std::filesystem::path path);
+        std::filesystem::path GetFullInstallPath(SporeMod::InstallLocation installLocation, const std::filesystem::path& path);
 
         /// <summary>
         ///     Returns full path from the executable (without the executable filename)

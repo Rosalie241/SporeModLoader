@@ -61,7 +61,7 @@ static SporeMod::InstallLocation parse_install_location(std::string text, bool c
     return installLocation;
 }
 
-static std::string get_attribute_text(tinyxml2::XMLElement* element, std::string attributeName)
+static std::string get_attribute_text(tinyxml2::XMLElement* element, const std::string& attributeName)
 {
     const tinyxml2::XMLAttribute* xmlAttribute;
 
@@ -77,7 +77,7 @@ static std::string get_attribute_text(tinyxml2::XMLElement* element, std::string
     return "";
 }
 
-static bool get_attribute_bool(tinyxml2::XMLElement* element, std::string attributeName)
+static bool get_attribute_bool(tinyxml2::XMLElement* element, const std::string& attributeName)
 {
     std::string boolString;
 
@@ -114,7 +114,7 @@ static std::string get_element_name(tinyxml2::XMLElement* element)
     return "";
 }
 
-static tinyxml2::XMLElement* find_element(tinyxml2::XMLElement* rootElement, std::string name)
+static tinyxml2::XMLElement* find_element(tinyxml2::XMLElement* rootElement, const std::string& name)
 {
     tinyxml2::XMLElement* xmlElement;
     std::string xmlElementName;
@@ -374,7 +374,8 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     return true;
 }
 
-bool SporeMod::Xml::GetDirectories(std::filesystem::path& coreLibsPath, std::filesystem::path& modLibsPath, std::filesystem::path& galacticAdventuresDataPath, std::filesystem::path& coreSporeDataPath)
+bool SporeMod::Xml::GetDirectories(std::filesystem::path& coreLibsPath, std::filesystem::path& modLibsPath,
+                                   std::filesystem::path& galacticAdventuresDataPath, std::filesystem::path& coreSporeDataPath)
 {
     std::filesystem::path configFilePath;
     tinyxml2::XMLDocument xmlDocument;
@@ -448,7 +449,9 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& coreLibsPath, std::fil
     return true;
 }
 
-bool SporeMod::Xml::SaveDirectories(std::filesystem::path coreLibsPath, std::filesystem::path modLibsPath, std::filesystem::path galacticAdventuresDataPath, std::filesystem::path coreSporeDataPath)
+bool SporeMod::Xml::SaveDirectories(const std::filesystem::path& coreLibsPath, const std::filesystem::path& modLibsPath,
+                                    const std::filesystem::path& galacticAdventuresDataPath,
+                                    const std::filesystem::path& coreSporeDataPath)
 {
     std::filesystem::path configFilePath;
     tinyxml2::XMLDocument xmlDocument;

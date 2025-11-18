@@ -78,7 +78,7 @@ bool FileVersion::CheckIfCoreLibMatchesVersion(FileVersionInfo& modFileVersionIn
     return true;
 }
 
-bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionInfo)
+bool FileVersion::ParseString(const std::string& string, FileVersionInfo& fileVersionInfo)
 {
     std::vector<std::string> splitString;
 
@@ -113,7 +113,7 @@ bool FileVersion::ParseString(std::string string, FileVersionInfo& fileVersionIn
     return true;
 }
 
-bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVersionInfo)
+bool FileVersion::ParseFile(const std::filesystem::path& path, FileVersionInfo& fileVersionInfo)
 {
     std::ifstream  fileStream;
     std::streamoff fileStreamLength;
@@ -137,7 +137,7 @@ bool FileVersion::ParseFile(std::filesystem::path path, FileVersionInfo& fileVer
         return false;
     }
 
-    std::vector<char> buffer((size_t)fileStreamLength);
+    std::vector<char> buffer(static_cast<size_t>(fileStreamLength));
     fileStream.read(buffer.data(), fileStreamLength);
 
     if (fileStream.fail())

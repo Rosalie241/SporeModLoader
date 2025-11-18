@@ -47,7 +47,7 @@ static ptr_curl_easy_cleanup curl_easy_cleanup = nullptr;
 
 static size_t curl_write_data(char *data, size_t size, size_t nmemb, void* stream)
 {
-    std::ofstream* fileStream = (std::ofstream*)(stream);
+    std::ofstream* fileStream = static_cast<std::ofstream*>(stream);
     std::streamoff position = fileStream->tellp();
     fileStream->write(data, size * nmemb);
     return fileStream->tellp() - position;
@@ -59,7 +59,7 @@ static size_t curl_write_data(char *data, size_t size, size_t nmemb, void* strea
 // Exported Functions
 //
 
-bool Download::DownloadFile(std::string url, std::filesystem::path path)
+bool Download::DownloadFile(const std::string& url, const std::filesystem::path& path)
 {
     std::cout << "-> Downloading " << path.filename() << std::endl;
 
@@ -86,10 +86,10 @@ bool Download::DownloadFile(std::string url, std::filesystem::path path)
         return false;
     }
 
-    curl_easy_init    = (ptr_curl_easy_init)dlsym(libcurl, "curl_easy_init");
-    curl_easy_setopt  = (ptr_curl_easy_setopt)dlsym(libcurl, "curl_easy_setopt");
-    curl_easy_perform = (ptr_curl_easy_perform)dlsym(libcurl, "curl_easy_perform");
-    curl_easy_cleanup = (ptr_curl_easy_cleanup)dlsym(libcurl, "curl_easy_cleanup");
+    curl_easy_init    = reinterpret_cast<ptr_curl_easy_init>(dlsym(libcurl, "curl_easy_init"));
+    curl_easy_setopt  = reinterpret_cast<ptr_curl_easy_setopt>(dlsym(libcurl, "curl_easy_setopt"));
+    curl_easy_perform = reinterpret_cast<ptr_curl_easy_perform>(dlsym(libcurl, "curl_easy_perform"));
+    curl_easy_cleanup = reinterpret_cast<ptr_curl_easy_cleanup>(dlsym(libcurl, "curl_easy_cleanup"));
     if (curl_easy_init    == nullptr ||
         curl_easy_setopt  == nullptr ||
         curl_easy_perform == nullptr ||
@@ -118,7 +118,7 @@ bool Download::DownloadFile(std::string url, std::filesystem::path path)
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curl_write_data);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&fileStream);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &fileStream);
     curl_easy_setopt(curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 

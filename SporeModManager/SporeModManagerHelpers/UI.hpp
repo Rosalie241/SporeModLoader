@@ -41,7 +41,8 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Asks user for an integers
         /// </summary>
-        void AskUserInput(std::string text, char delimiter, std::vector<int>& numbers, std::vector<int> defaultNumbers, int min, int max);
+        void AskUserInput(std::string text, char delimiter, std::vector<int>& numbers, 
+                          const std::vector<int>& defaultNumbers, int min, int max);
 
         /// <summary>
         ///     Asks user for a boolean

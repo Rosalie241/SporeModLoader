@@ -75,7 +75,8 @@ void UI::AskUserInput(std::string text, int& number, std::optional<int> defaultN
     } while (true);
 }
 
-void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& numbers, std::vector<int> defaultNumbers, int min, int max)
+void UI::AskUserInput(std::string text, char delimiter, std::vector<int>& numbers,
+                      const std::vector<int>& defaultNumbers, int min, int max)
 {
     std::string       inputLine;
     std::stringstream stringStream;

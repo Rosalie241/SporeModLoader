@@ -67,12 +67,12 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Parses FileVersionInfo from string
         /// </summary>
-        bool ParseString(std::string string, FileVersionInfo& fileVersionInfo);
+        bool ParseString(const std::string& string, FileVersionInfo& fileVersionInfo);
 
         /// <summary>
         ///     Parses FileVersionInfo from a file
         /// </summary>
-        bool ParseFile(std::filesystem::path path, FileVersionInfo& fileVersionInfo);
+        bool ParseFile(const std::filesystem::path& path, FileVersionInfo& fileVersionInfo);
 
         /// <summary>
         ///     Parses FileVersionInfo from a buffer

@@ -20,7 +20,7 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Downloads url to path
         /// </summary>
-        bool DownloadFile(std::string url, std::filesystem::path path);
+        bool DownloadFile(const std::string& url, const std::filesystem::path& path);
     }
 }
 

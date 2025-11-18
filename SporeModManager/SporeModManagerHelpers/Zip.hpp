@@ -22,7 +22,7 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Opens the given zip file
         /// </summary>
-        bool OpenFile(ZipFile& zipFile, std::filesystem::path path);
+        bool OpenFile(ZipFile& zipFile, const std::filesystem::path& path);
 
         /// <summary>
         ///     Closes the given zip
@@ -37,17 +37,17 @@ namespace SporeModManagerHelpers
         /// <summary>
         ///     Locates file in given zip
         /// </summary>
-        bool LocateFile(ZipFile zipFile, std::filesystem::path file);
+        bool LocateFile(ZipFile zipFile, const std::filesystem::path& file);
 
         /// <summary>
         ///     Extracts file to outputFile
         /// </summary>
-        bool ExtractFile(ZipFile zipFile, std::filesystem::path file, std::filesystem::path outputFile);
+        bool ExtractFile(ZipFile zipFile, const std::filesystem::path& file, const std::filesystem::path& outputFile);
 
         /// <summary>
         ///     Extracts file to buffer
         /// </summary>
-        bool ExtractFile(ZipFile zipFile, std::filesystem::path file, std::vector<char>& buffer);
+        bool ExtractFile(ZipFile zipFile, const std::filesystem::path& file, std::vector<char>& buffer);
     }
 }
 
