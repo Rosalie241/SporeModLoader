@@ -14,4 +14,5 @@ msbuild "%SPOREMODAPI_CUR_DIR%\Spore-ModAPI\Spore ModAPI Legacy" ^
 	/p:Config=Release ^
 	/t:BuildLegacyDlls ^
 	/p:BuildVer=%VERSION% ^
+	/p:Platform=Win32 ^
 	/m
