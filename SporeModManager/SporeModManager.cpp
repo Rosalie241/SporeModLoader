@@ -355,6 +355,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path> paths, bool 
         if (std::find(uniqueNames.begin(), uniqueNames.end(), sporeModInfo.UniqueName) != uniqueNames.end())
         {
             std::cout << "Skipping " << path << " as it's already being installed!" << std::endl;
+            Zip::CloseFile(l_ZipFiles[i]);
             paths.erase(paths.begin() + i);
             l_ZipFiles.erase(l_ZipFiles.begin() + i);
             l_SporeModInfos.erase(l_SporeModInfos.begin() + i);
