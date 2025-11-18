@@ -62,13 +62,13 @@ def run_smm(args):
 	cmd += args
 	if verbose:
 		print(f'Running {" ".join(cmd)}')
-	result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=os_environment)
+	result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=os_environment, text=True)
 	if verbose:
 		print(f'return code: {result.returncode}')
-		if result.stdout != b'':
-			print(f'stdout:\n{result.stdout.decode("utf-8").rstrip()}')
-		if result.stderr != b'':
-			print(f'stderr:\n{result.stderr.decode("utf-8").rstrip()}')
+		if result.stdout != '':
+			print(f'stdout:\n{result.stdout.rstrip()}')
+		if result.stderr != '':
+			print(f'stderr:\n{result.stderr.rstrip()}')
 	return result
 
 def write_sporemod(xml, extra = None, createNew = False):
@@ -113,8 +113,8 @@ def test_help():
 
 	result = run_smm([ 'help' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 # Tests whether version works correctly
 def test_version():
@@ -123,8 +123,8 @@ def test_version():
 
 	result = run_smm([ 'version' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 # Tests whether install works correctly
 def test_install():
@@ -134,8 +134,8 @@ def test_install():
 	# installing mod with invalid extension should fail
 	result = run_smm([ 'install', invalid_file ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test.invalid'))
 	assert not os.path.isfile(os.path.join(data_path, 'test.invalid'))
 	assert not os.path.isfile(os.path.join(ep1_path, 'test.invalid'))
@@ -143,8 +143,8 @@ def test_install():
 	# install package mod
 	result = run_smm([ 'install', package_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	assert os.path.isfile(os.path.join(ep1_path, 'test_package.package'))
 
 	# install sporemod mod
@@ -157,38 +157,38 @@ def test_install():
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 	# installing the same mod should fail
 	result = run_smm([ 'install', package_file ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# but using --needed should work
 	result = run_smm([ 'install', '--needed', package_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	result = run_smm([ 'install', '--needed', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 	# --update-needed should also work
 	result = run_smm([ 'install', '--update-needed', package_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	result = run_smm([ 'install', '--update-needed', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 	# check if the <prerequisite /> element works
 	xml = """<mod displayName="test_install_1" 
@@ -214,8 +214,8 @@ def test_install():
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_1_1.dll'))
 	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_1_2.dll'))
 	assert os.path.isfile(os.path.join(data_path, 'test_install_1.package'))
@@ -249,8 +249,8 @@ def test_install():
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	assert os.path.isfile(os.path.join(data_path, 'test_install_2_1.package'))
 	assert os.path.isfile(os.path.join(ep1_path, 'test_install_2_ep1_1.package'))
 	assert not os.path.isfile(os.path.join(data_path, 'test_install_2_2.package'))
@@ -274,8 +274,8 @@ def test_install():
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_3_ep1_1.package'))
 
 	# check if the <component /> element works
@@ -306,8 +306,8 @@ def test_install():
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	assert os.path.isfile(os.path.join(ep1_path, 'test_install_4_ep1_1.package'))
 	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_4_ep1_2.package'))
 	assert os.path.isfile(os.path.join(ep1_path, 'test_install_4_ep1_3.package'))
@@ -341,8 +341,8 @@ def test_install():
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_5_ep1_1.package'))
 	assert os.path.isfile(os.path.join(ep1_path, 'test_install_5_ep1_2.package'))
 	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_5_ep1_3.package'))
@@ -366,8 +366,8 @@ def test_install():
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	assert os.path.isfile(os.path.join(ep1_path, 'test_install_6_ep1_1.package'))
 
 	# check if a pre-modinfo.xml mod works
@@ -379,8 +379,8 @@ def test_install():
 	write_sporemod(None, files)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_7.dll'))
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_install_7.txt'))
 	assert not os.path.isfile(os.path.join(data_path, 'test_install_7.txt'))
@@ -397,8 +397,8 @@ def test_install():
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# verify that file collision with other mods fails
 	xml = """<mod displayName="test_install_9" 
@@ -414,8 +414,8 @@ def test_install():
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# verify that a non-existent file fails
 	xml = """<mod displayName="test_install_10" 
@@ -428,24 +428,24 @@ def test_install():
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 1
-	assert result.stdout != b''
-	assert result.stderr != b''
+	assert result.stdout != ''
+	assert result.stderr != ''
 
 	# verify that an empty modinfo.xml fails
 	xml = ''
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# verify that an invalid modinfo.xml fails
 	xml = '<mod <prerequisite> />'
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 # Tests whether uninstall works correctly
 def test_uninstall():
@@ -455,8 +455,8 @@ def test_uninstall():
 	# uninstall should fail when no mods have been installed
 	result = run_smm([ 'uninstall', '0'])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# install multiple dummy mods
 	install_cmd = [ 'install' ]
@@ -474,66 +474,66 @@ def test_uninstall():
 		install_cmd += [ write_sporemod(xml, files, True) ]
 	result = run_smm(install_cmd)
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	for num in range(25):
 		assert os.path.isfile(os.path.join(modlibs_path, f'test_uninstall_{num:02}.dll'))
 
 	result = run_smm([ 'install', package_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 	# uninstall with a too high ID shouldn't work
 	result = run_smm([ 'uninstall', '26' ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# uninstall with a valid ID should work
 	result = run_smm([ 'uninstall', '0' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	assert not os.path.isfile(os.path.join(ep1_path, 'test_package.package'))
 
 	# uninstall with a valid range should work
 	result = run_smm([ 'uninstall', '0-20' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	for num in range(21):
 		assert not os.path.isfile(os.path.join(modlibs_path, f'test_uninstall_{num:02}.dll'))
 
 	# uninstall with a range with numbers + letters shouldn't work
 	result = run_smm([ 'uninstall', '0x1-1x0' ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# uninstall with a range with letters shouldn't work
 	result = run_smm([ 'uninstall', 'a-b' ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# uninstall with an invalid range shouldn't work
 	result = run_smm([ 'uninstall', '0-30'])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# uninstall with another invalid range shouldn't work
 	result = run_smm([ 'uninstall', '10-0'])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# uninstall with an insanely big range shouldn't work or crash
 	result = run_smm([ 'uninstall', '0-2147483646' ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 
 # Tests whether update works correctly
@@ -544,8 +544,8 @@ def test_update():
 	# updating mod with invalid extension should fail
 	result = run_smm([ 'update', invalid_file ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test.invalid'))
 	assert not os.path.isfile(os.path.join(data_path, 'test.invalid'))
 	assert not os.path.isfile(os.path.join(ep1_path, 'test.invalid'))
@@ -553,8 +553,8 @@ def test_update():
 	# updating a non-existant package mod should fail
 	result = run_smm([ 'update', package_file ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# updating a non-existant sporemod mod should fail
 	xml = """<mod displayName="test_update_0" 
@@ -566,14 +566,14 @@ def test_update():
 	write_sporemod(xml)
 	result = run_smm([ 'update', sporemod_file ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# attempt to install package mod
 	result = run_smm([ 'install', package_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 	# attempt to install sporemod mod
 	xml = """<mod displayName="test_update_1" 
@@ -585,28 +585,28 @@ def test_update():
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 	# updating an existing mod should succeed
 	result = run_smm([ 'update', package_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	result = run_smm([ 'update', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 	# updating an existing mod by giving the same path twice should work
 	result = run_smm([ 'update', package_file, package_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	result = run_smm([ 'update', sporemod_file, sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 # Tests whether list-installed works correctly
 def test_list_installed():
@@ -616,7 +616,7 @@ def test_list_installed():
 	# ensure we currently dont have any mods installed
 	result = run_smm([ 'list-installed' ])
 	assert result.returncode == 0
-	assert result.stdout == b''
+	assert result.stdout == ''
 
 	# attempt to install a mod
 	xml = """<mod displayName="test_list_installed_0" 
@@ -628,20 +628,20 @@ def test_list_installed():
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	result = run_smm([ 'install', package_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 	# ensure we have a mod installed
 	result = run_smm([ 'list-installed' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert b'test_list_installed_0' in result.stdout
-	assert b'test_package' in result.stdout
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert 'test_list_installed_0' in result.stdout
+	assert 'test_package' in result.stdout
+	assert result.stderr == ''
 
 	# attempt to install a broken mod
 	xml = """<mod displayName="test_list_installed_1" 
@@ -654,15 +654,15 @@ def test_list_installed():
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 1
-	assert result.stdout != b''
-	assert result.stderr != b''
+	assert result.stdout != ''
+	assert result.stderr != ''
 
 	# ensure the broken mod isn't listed
 	result = run_smm([ 'list-installed' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert b'test_list_installed_1' not in result.stdout
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert 'test_list_installed_1' not in result.stdout
+	assert result.stderr == ''
 
 	# attempt to install multiple mods with
 	# a broken one in the middle
@@ -686,16 +686,16 @@ def test_list_installed():
 		install_cmd += [ write_sporemod(xml, None, True) ]
 	result = run_smm(install_cmd)
 	assert result.returncode == 1
-	assert result.stdout != b''
-	assert result.stderr != b''
+	assert result.stdout != ''
+	assert result.stderr != ''
 
 	# ensure the correct mods are listed in list-installed
 	result = run_smm([ 'list-installed' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert b'test_list_installed_2_0' in result.stdout
-	assert b'test_list_installed_2_1' not in result.stdout
-	assert b'test_list_installed_2_2' not in result.stdout
+	assert result.stdout != ''
+	assert 'test_list_installed_2_0' in result.stdout
+	assert 'test_list_installed_2_1' not in result.stdout
+	assert 'test_list_installed_2_2' not in result.stdout
 
 	# attempt to install another broken mod
 	xml = """<mod displayName="test_list_installed_3" 
@@ -708,28 +708,28 @@ def test_list_installed():
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# ensure the broken mod isn't listed
 	result = run_smm([ 'list-installed' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert b'test_list_installed_3' not in result.stdout
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert 'test_list_installed_3' not in result.stdout
+	assert result.stderr == ''
 
 	# attempt to uninstall a mod
 	result = run_smm([ 'uninstall', '0' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 	# ensure the uninstalled mod isn't listed
 	result = run_smm([ 'list-installed' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert b'test_list_installed_0' not in result.stdout
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert 'test_list_installed_0' not in result.stdout
+	assert result.stderr == ''
 
 # Tests whether update-modapi works correctly
 def test_update_modapi():
@@ -746,35 +746,35 @@ def test_update_modapi():
 	write_sporemod(xml)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 1
-	assert result.stdout == b''
-	assert result.stderr != b''
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# attempt to update modapi dll
 	result = run_smm([ 'update-modapi' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 	# ensure updating when we dont have a modapi dll works
 	os.remove(sporemodapi_file)
 	result = run_smm([ 'update-modapi' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr != b''
+	assert result.stdout != ''
+	assert result.stderr != ''
 
 	# ensure updating when already up-to-date doesn't touch the file
 	before_update_mtime = os.path.getmtime(sporemodapi_file)
 	result = run_smm([ 'update-modapi' ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 	assert before_update_mtime == os.path.getmtime(sporemodapi_file)
 
 	# ensure mod with higher dll build required works
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
-	assert result.stdout != b''
-	assert result.stderr == b''
+	assert result.stdout != ''
+	assert result.stderr == ''
 
 #
 # main
