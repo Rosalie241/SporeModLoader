@@ -71,7 +71,6 @@ static bool get_sporemodinfo(const std::filesystem::path& path, const std::strin
     {
         if (!Zip::OpenFile(zipFile, path))
         {
-            std::cerr << "Error: failed to open zip file!" << std::endl;
             return false;
         }
 
