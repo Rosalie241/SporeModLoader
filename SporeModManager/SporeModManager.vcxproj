@@ -78,11 +78,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Urlmon.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PreBuildEvent>
-      <Command>if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\zlib\zconf.h" (
-    COPY  "$(MSBuildProjectDirectory)\..\3rdParty\zlib\zconf.h.in"  "$(MSBuildProjectDirectory)\..\3rdParty\zlib\zconf.h"
-)</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -107,11 +102,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Urlmon.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PreBuildEvent>
-      <Command>if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\zlib\zconf.h" (
-    COPY  "$(MSBuildProjectDirectory)\..\3rdParty\zlib\zconf.h.in"  "$(MSBuildProjectDirectory)\..\3rdParty\zlib\zconf.h"
-)</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\tinyxml2\tinyxml2.cpp" />
