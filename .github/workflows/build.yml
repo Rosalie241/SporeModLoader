@@ -154,48 +154,10 @@ jobs:
           path: artifact
       - name: Test SporeModManager (msvc)
         run: |
-          python3 ./SporeModManager/test.py --network ./artifact/SporeModLoader/SporeModManager/SporeModManager.exe
+          python3 ./SporeModManager/test.py --network --verbose ./artifact/SporeModLoader/SporeModManager/SporeModManager.exe
   test-linux:
     runs-on: ubuntu-22.04
     needs: [ package-artifacts ]
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Prepare Environment
-        run: |
-          echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
-      - name: Download SporeModManager (Linux)
-        uses: actions/download-artifact@v4
-        with:
-          name: SporeModLoader-${{ env.GIT_REVISION }}
-          path: artifact
-      - name: Test SporeModManager (Linux)
-        run: |
-          chmod +x ./artifact/SporeModLoader/SporeModManager/SporeModManager
-          python3 ./SporeModManager/test.py --network ./artifact/SporeModLoader/SporeModManager/SporeModManager
-  test-mingw:
-    runs-on: windows-2025
-    needs: [ package-artifacts ]
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Prepare Environment
-        run: |
-          $env:revision = git describe --tags --always
-          echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
-      - name: Download SporeModManager (mingw)
-        uses: actions/download-artifact@v4
-        with:
-          name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
-          path: artifact
-      - name: Test SporeModManager (mingw)
-        run: |
-          python3 ./SporeModManager/test.py --network ./artifact/SporeModLoader/SporeModManager/SporeModManager.exe
-  test-linux-valgrind:
-    runs-on: ubuntu-22.04
-    needs: [ test-msvc, test-linux, test-mingw ]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -214,9 +176,32 @@ jobs:
       - name: Test SporeModManager (Linux)
         run: |
           chmod +x ./artifact/SporeModLoader/SporeModManager/SporeModManager
+          python3 ./SporeModManager/test.py --network --verbose ./artifact/SporeModLoader/SporeModManager/SporeModManager
+      - name: Test SporeModManager (Linux) (Valgrind)
+        run: |
+          chmod +x ./artifact/SporeModLoader/SporeModManager/SporeModManager
           # we cannot test update-modapi because valgrind
           # gives false-positives when using dlopen/dlclose
           python3 ./SporeModManager/test.py --valgrind --verbose ./artifact/SporeModLoader/SporeModManager/SporeModManager
+  test-mingw:
+    runs-on: windows-2025
+    needs: [ package-artifacts ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prepare Environment
+        run: |
+          $env:revision = git describe --tags --always
+          echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
+      - name: Download SporeModManager (mingw)
+        uses: actions/download-artifact@v4
+        with:
+          name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
+          path: artifact
+      - name: Test SporeModManager (mingw)
+        run: |
+          python3 ./SporeModManager/test.py --network --verbose ./artifact/SporeModLoader/SporeModManager/SporeModManager.exe
   # actions/upload-artifact still doesn't retain
   # file permissions, so we'll need to download
   # the artifact, mark the linux executable as
@@ -224,7 +209,7 @@ jobs:
   # and then add it to a draft release
   create-draft-release:
     runs-on: ubuntu-22.04
-    needs: [ test-linux-valgrind ]
+    needs: [ test-msvc, test-linux, test-mingw ]
     if: github.ref_type == 'tag'
     steps:
       - uses: actions/checkout@v4
