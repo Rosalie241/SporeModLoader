@@ -361,6 +361,18 @@ bool SporeMod::InstallPackage(const std::filesystem::path& path, const Xml::Inst
             std::cout << "--> Installing " << installedFile.FileName << " to " << installPath << std::endl;
         }
 
+        // mingw doesn't respect copy_options::overwrite_existing in
+        // std::filesystem::copy_file(), so just delete the target file
+        // first before trying to copy the package file over
+#ifdef __MINGW32__
+        std::filesystem::remove(installPath, error);
+        if (error)
+        {
+            std::cerr << "Error: failed to remove " << installPath << ": " << error.message() << std::endl;
+            return false;
+        }
+#endif
+
         std::filesystem::copy_file(sourcePath, installPath, std::filesystem::copy_options::overwrite_existing, error);
         if (error)
         {
