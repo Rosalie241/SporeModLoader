@@ -71,18 +71,23 @@ def run_smm(args):
 			print(f'stderr:\n{result.stderr.rstrip()}')
 	return result
 
-def write_sporemod(xml, extra = None, createNew = False):
+def write_sporemod(xml = None, extra = None, createNew = False, invalidZip = False):
 	file = sporemod_file
 	if createNew:
 		global write_mod_num
 		file = os.path.join(tests_path, f'test_{write_mod_num}.sporemod')
 		write_mod_num = write_mod_num + 1
-	with zipfile.ZipFile(file, mode="w") as archive:
-		if xml is not None:
-			archive.writestr("ModInfo.xml", xml)
-		if extra is not None:
-			for list_str in extra:
-				archive.writestr(list_str[0], list_str[1])
+	if invalidZip:
+		mod_file = open(file, 'wb')
+		mod_file.write(b'invalidZip')
+		mod_file.close()
+	else:
+		with zipfile.ZipFile(file, mode="w") as archive:
+			if xml is not None:
+				archive.writestr("ModInfo.xml", xml)
+			if extra is not None:
+				for list_str in extra:
+					archive.writestr(list_str[0], list_str[1])
 	return file
 
 def write_package(path):
@@ -146,6 +151,13 @@ def test_install():
 	assert result.stdout != ''
 	assert result.stderr == ''
 	assert os.path.isfile(os.path.join(ep1_path, 'test_package.package'))
+
+	# installing sporemod that isn't a zip should fail
+	write_sporemod(invalidZip=True)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode == 1
+	assert result.stdout == ''
+	assert result.stderr != ''
 
 	# install sporemod mod
 	xml = """<mod displayName="test_install_0" 
@@ -550,6 +562,13 @@ def test_update():
 	assert not os.path.isfile(os.path.join(data_path, 'test.invalid'))
 	assert not os.path.isfile(os.path.join(ep1_path, 'test.invalid'))
 
+	# updating a sporemod that isn't a zip should fail
+	write_sporemod(invalidZip=True)
+	result = run_smm([ 'update', sporemod_file ])
+	assert result.returncode == 1
+	assert result.stdout == ''
+	assert result.stderr != ''
+
 	# updating a non-existant package mod should fail
 	result = run_smm([ 'update', package_file ])
 	assert result.returncode == 1
@@ -683,7 +702,7 @@ def test_list_installed():
 						installerSystemVersion="1.0.1.1" 
 						dllsBuild="2.5.20">
 					</mod>"""
-		install_cmd += [ write_sporemod(xml, None, True) ]
+		install_cmd += [ write_sporemod(xml, createNew=True) ]
 	result = run_smm(install_cmd)
 	assert result.returncode == 1
 	assert result.stdout != ''
