@@ -51,6 +51,9 @@ def reset_smm():
 	if os.path.isfile(config_file):
 		os.remove(config_file)
 
+	global write_mod_num
+	write_mod_num = 0
+
 def run_smm(args):
 	os_environment["SPOREMODMANAGER_CONFIGFILE"] = str(config_file)
 	valgrind_cmd = [ 'valgrind', '--quiet', '--leak-check=full', '--show-leak-kinds=all', '--track-origins=yes', '--error-exitcode=2' ]
@@ -486,6 +489,24 @@ def test_install():
 	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_11_1.dll'))
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_install_11_2.dll'))
 
+	# verify that duplicate filenames are skipped
+	xml = """<mod displayName="test_install_12" 
+				unique="test_install_12" 
+				description="test_install_12" 
+				installerSystemVersion="1.0.1.1" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_install_12.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_install_12.dll', 'dll' ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file, sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_12.dll'))
+
 # Tests whether uninstall works correctly
 def test_uninstall():
 	print(f'Running {test_uninstall.__name__}...')
@@ -627,12 +648,19 @@ def test_update():
 				description="test_update_1" 
 				installerSystemVersion="1.0.1.1" 
 				dllsBuild="2.5.20">
+				<prerequisite>test_update_1_1.dll</prerequisite>
 			</mod>"""
-	write_sporemod(xml)
+	files = [
+		[ 'test_update_1_1.dll', 'dll' ],
+		[ 'test_update_1_2.dll', 'dll' ],
+	]
+	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
 	assert result.stdout != ''
 	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_update_1_1.dll'))
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_update_1_2.dll'))
 
 	# updating an existing mod should succeed
 	result = run_smm([ 'update', package_file ])
@@ -643,6 +671,39 @@ def test_update():
 	assert result.returncode == 0
 	assert result.stdout != ''
 	assert result.stderr == ''
+
+	# ensure that updating updates the files correctly
+	xml = xml.replace('test_update_1_1.dll', 'test_update_1_2.dll')
+	write_sporemod(xml, files)
+	result = run_smm([ 'update', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_update_1_1.dll'))
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_update_1_2.dll'))
+
+	# verify that 2 sporemods with the same unique name update correctly,
+	# the latter one of them should be skipped
+	xml1 = """<mod displayName="test_update_1" 
+				unique="test_update_1" 
+				description="test_update_1" 
+				installerSystemVersion="1.0.1.1" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_update_1_1.dll</prerequisite>
+			  </mod>"""
+	xml2 = """<mod displayName="test_update_1" 
+				unique="test_update_1" 
+				description="test_update_1" 
+				installerSystemVersion="1.0.1.1" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_update_1_2.dll</prerequisite>
+			  </mod>"""
+	result = run_smm([ 'update', write_sporemod(xml1, files, True), write_sporemod(xml2, files, True) ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_update_1_1.dll'))
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_update_1_2.dll'))
 
 	# updating an existing mod by giving the same path twice should work
 	result = run_smm([ 'update', package_file, package_file ])
