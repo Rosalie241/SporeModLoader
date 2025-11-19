@@ -55,14 +55,14 @@ static voidpf zlib_filefunc_open(voidpf /*opaque*/, const void* filename, int /*
         return nullptr;
     }
 
-    return (voidpf)&l_ZipFileStreams[path];
+    return &l_ZipFileStreams[path];
 }
 
 static uLong zlib_filefunc_read(voidpf /*opaque*/, voidpf stream, void* buf, uLong size)
 {
     std::ifstream* fileStream = static_cast<std::ifstream*>(stream);
     fileStream->read(static_cast<char*>(buf), size);
-    return fileStream->fail() ? (uLong)fileStream->gcount() : size;
+    return fileStream->fail() ? static_cast<uLong>(fileStream->gcount()) : size;
 }
 
 static ZPOS64_T zlib_filefunc_tell(voidpf /*opaque*/, voidpf stream)
