@@ -129,6 +129,27 @@ static void close_zipfiles(void)
     }
 }
 
+static void remove_duplicate_paths(std::vector<std::filesystem::path>& paths)
+{
+    // we have to remove the duplicate paths because
+    // in the Zip functions, we cache filestreams using a
+    // std::map with a path as key
+    std::vector<std::filesystem::path> uniquePaths;
+    uniquePaths.reserve(paths.size());
+    for (size_t i = 0; i < paths.size(); i++)
+    {
+        if (std::find(uniquePaths.begin(), uniquePaths.end(), paths[i]) == uniquePaths.end())
+        {
+            uniquePaths.push_back(paths[i]);
+        }
+        else
+        {
+            std::cout << "Skipping " << paths[i] << " because it's a duplicate!" << std::endl;
+        }
+    }
+    paths = uniquePaths;
+}
+
 //
 // Exported Functions
 //
@@ -174,6 +195,9 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path>& paths, boo
     // to install the given mods
     if (!skipValidation)
     {
+        // remove duplicates
+        remove_duplicate_paths(paths);
+
         // reserve list items
         reserve_list_items(paths.size());
 
@@ -318,6 +342,9 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path>& paths, bool
     {
         return false;
     }
+
+    // remove duplicates
+    remove_duplicate_paths(paths);
 
     // reserve list items
     reserve_list_items(paths.size());
