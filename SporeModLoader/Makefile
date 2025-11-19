@@ -33,8 +33,7 @@ OBJECT_FILES := \
 
 HEADER_FILES := \
 	$(SOURCE_DIR)/SporeModLoaderHelpers.hpp \
-	$(SOURCE_DIR)/SporeModLoader.hpp \
-	$(SOURCE_DIR)/../version.h
+	$(SOURCE_DIR)/SporeModLoader.hpp
 
 THIRDPARTY_OBJECT_FILES := \
 	$(THIRDPARTY_DIR)/Detours/src/detours.obj  \

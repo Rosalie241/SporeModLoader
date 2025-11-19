@@ -125,7 +125,6 @@ if NOT EXIST "$(MSBuildProjectDirectory)\..\3rdParty\Spore-ModAPI\legacydll\Rele
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\version.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SporeModLoader.hpp" />
     <ClInclude Include="SporeModLoaderHelpers.hpp" />
