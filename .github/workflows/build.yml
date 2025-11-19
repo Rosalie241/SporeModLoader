@@ -202,7 +202,7 @@ jobs:
           pushd artifact
           rm SporeModLoader/ModLibs/keep.txt -f
           chmod +x SporeModLoader/SporeModManager/SporeModManager
-          7za a -mm=Deflate -mx=9 -r "../SporeModLoader.zip" *
+          7za a -mm=Deflate -mx=9 -r "../SporeModLoader-${GIT_REVISION}.zip" *
           popd
       - name: Update Git Tag
         run: |
@@ -216,4 +216,4 @@ jobs:
           removeArtifacts: true
           replacesArtifacts: false
           tag: rolling-release
-          artifacts: SporeModLoader.zip
+          artifacts: SporeModLoader-${{ env.GIT_REVISION }}.zip
