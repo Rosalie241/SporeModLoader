@@ -7,15 +7,9 @@ jobs:
     runs-on: windows-2025
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: amd64_x86
-      - name: Prepare Environment
-        run: |
-          $env:revision = git describe --tags --always
-          echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
       - name: Build SporeModLoader (msvc)
         run: |
           msbuild "SporeModLoader" `
@@ -51,11 +45,6 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Prepare Environment
-        run: |
-          echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
       - name: Build SporeModManager (Linux)
         run: |
           make SporeModManager -j$(nproc)
@@ -68,14 +57,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Install Packages
         run: |
           sudo apt-get -y install gcc-mingw-w64-i686 g++-mingw-w64-i686
-      - name: Prepare Environment
-        run: |
-          echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
       - name: Build SporeModLoader (mingw)
         run: |
           make SporeModLoader -j$(nproc)
@@ -92,11 +76,9 @@ jobs:
     needs: [ build-msvc, build-linux, build-mingw ]
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Prepare Environment
         run: |
-          echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
+          echo "GIT_REVISION=$(git describe --always)" >> $GITHUB_ENV
       - name: Download msvc-build-artifacts
         uses: actions/download-artifact@v4
         with:
@@ -141,8 +123,6 @@ jobs:
     needs: [ package-artifacts ]
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Prepare Environment
         run: |
           $env:revision = git describe --tags --always
@@ -160,14 +140,12 @@ jobs:
     needs: [ package-artifacts ]
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Install Packages
         run: |
           sudo apt-get -y install valgrind
       - name: Prepare Environment
         run: |
-          echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
+          echo "GIT_REVISION=$(git describe --always)" >> $GITHUB_ENV
       - name: Download SporeModManager (Linux)
         uses: actions/download-artifact@v4
         with:
@@ -188,8 +166,6 @@ jobs:
     needs: [ package-artifacts ]
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Prepare Environment
         run: |
           $env:revision = git describe --tags --always
@@ -206,18 +182,16 @@ jobs:
   # file permissions, so we'll need to download
   # the artifact, mark the linux executable as
   # executable, re-archive it (with better compression)
-  # and then add it to a draft release
-  create-draft-release:
+  # and then add it to a release
+  publish-github:
     runs-on: ubuntu-22.04
     needs: [ test-msvc, test-linux, test-mingw ]
-    if: github.ref_type == 'tag'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Prepare Environment
         run: |
-          echo "GIT_REVISION=$(git describe --tags --always)" >> $GITHUB_ENV
+          echo "GIT_REVISION=$(git describe --always)" >> $GITHUB_ENV
       - name: Download SporeModManager (msvc)
         uses: actions/download-artifact@v4
         with:
@@ -228,12 +202,18 @@ jobs:
           pushd artifact
           rm SporeModLoader/ModLibs/keep.txt -f
           chmod +x SporeModLoader/SporeModManager/SporeModManager
-          7za a -mm=Deflate -mx=9 -r "../SporeModLoader-${GIT_REVISION}.zip" *
+          7za a -mm=Deflate -mx=9 -r "../SporeModLoader.zip" *
           popd
-      - name: Create Draft Release
+      - name: Update Git Tag
+        run: |
+          git tag -f rolling-release
+          git push -f origin rolling-release
+      - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          draft: true
-          makeLatest: true
-          tag: ${{ env.GIT_REVISION }}
-          artifacts: SporeModLoader-${{ env.GIT_REVISION }}.zip
+          prerelease: false
+          allowUpdates: true
+          removeArtifacts: true
+          replacesArtifacts: false
+          tag: rolling-release
+          artifacts: SporeModLoader.zip
