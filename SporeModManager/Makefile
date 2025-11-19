@@ -9,6 +9,7 @@ VERBOSE        := 0
 MINGW          := 0
 DEBUG          := 0
 
+PYTHON        ?= python3
 CC            ?= gcc
 CXX           ?= g++
 MINGW_CC      ?= i686-w64-mingw32-gcc
@@ -65,6 +66,9 @@ ifneq ($(MINGW), 0)
 		$(SOURCE_DIR)/version.$(OBJ)
 endif
 
+GENERATED_HEADER_FILES := \
+	$(SOURCE_DIR)/revision.h
+
 HEADER_FILES := \
 	$(SOURCE_DIR)/SporeModManager.hpp                    \
 	$(SOURCE_DIR)/SporeModManagerHelpers/Download.hpp    \
@@ -74,7 +78,8 @@ HEADER_FILES := \
 	$(SOURCE_DIR)/SporeModManagerHelpers/String.hpp      \
 	$(SOURCE_DIR)/SporeModManagerHelpers/Path.hpp        \
 	$(SOURCE_DIR)/SporeModManagerHelpers/Zip.hpp         \
-	$(SOURCE_DIR)/SporeModManagerHelpers/UI.hpp
+	$(SOURCE_DIR)/SporeModManagerHelpers/UI.hpp          \
+	$(GENERATED_HEADER_FILES)
 
 THIRDPARTY_OBJECT_FILES := \
 	$(THIRDPARTY_DIR)/tinyxml2/tinyxml2.$(OBJ) \
@@ -130,8 +135,12 @@ $(BINARY_DIR)/$(EXE_FILE).exe: $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
 	$(QUIET)mkdir -p $(BINARY_DIR)
 	$(QUIET)$(MINGW_CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS) $(LIBLDFLAGS)
 
+$(SOURCE_DIR)/revision.h: $(SOURCE_DIR)/gen_rev_header.py
+	@echo "GEN revision.h"
+	$(QUIET)$(PYTHON) $< $@
+
 clean:
-	rm -f $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES)
+	rm -f $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) $(GENERATED_HEADER_FILES)
 
 check: $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT)
 	python3 $(SOURCE_DIR)/test.py $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT) $(TEST_ARGS)
