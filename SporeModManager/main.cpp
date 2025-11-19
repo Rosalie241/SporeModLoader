@@ -12,8 +12,6 @@
 #include "SporeModManagerHelpers/UI.hpp"
 #include "SporeModManager.hpp"
 
-#include "../version.h"
-
 #include <filesystem>
 #include <iostream>
 
@@ -248,7 +246,7 @@ int main(int argc, char** argv)
     }
     else if (command == arg_str("version"))
     {
-        std::cout << "SporeModManager " << VERSION_STR << std::endl;
+        std::cout << "SporeModManager rolling release" << std::endl;
     }
     else if (command == arg_str("list-installed"))
     {

@@ -104,9 +104,6 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\version.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SporeModManagerHelpers\Download.hpp">
       <Filter>Header Files\SporeModManagerHelpers</Filter>
     </ClInclude>

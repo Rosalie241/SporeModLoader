@@ -127,7 +127,6 @@
   <ItemGroup>
     <ClInclude Include="..\3rdParty\tinyxml2\tinyxml2.h" />
     <ClInclude Include="..\3rdParty\zlib\contrib\minizip\unzip.h" />
-    <ClInclude Include="..\version.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SporeModManager.hpp" />
     <ClInclude Include="SporeModManagerHelpers\Download.hpp" />

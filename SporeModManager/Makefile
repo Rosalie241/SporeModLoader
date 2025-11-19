@@ -74,9 +74,7 @@ HEADER_FILES := \
 	$(SOURCE_DIR)/SporeModManagerHelpers/String.hpp      \
 	$(SOURCE_DIR)/SporeModManagerHelpers/Path.hpp        \
 	$(SOURCE_DIR)/SporeModManagerHelpers/Zip.hpp         \
-	$(SOURCE_DIR)/SporeModManagerHelpers/UI.hpp          \
-	$(SOURCE_DIR)/../version.h
-
+	$(SOURCE_DIR)/SporeModManagerHelpers/UI.hpp
 
 THIRDPARTY_OBJECT_FILES := \
 	$(THIRDPARTY_DIR)/tinyxml2/tinyxml2.$(OBJ) \
