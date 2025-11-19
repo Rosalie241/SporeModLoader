@@ -129,22 +129,23 @@ static void close_zipfiles(void)
     }
 }
 
-static void remove_duplicate_paths(std::vector<std::filesystem::path>& paths)
+static void remove_duplicate_paths(std::vector<std::filesystem::path>& paths, bool update)
 {
     // we have to remove the duplicate paths because
     // in the Zip functions, we cache filestreams using a
     // std::map with a path as key
     std::vector<std::filesystem::path> uniquePaths;
     uniquePaths.reserve(paths.size());
-    for (size_t i = 0; i < paths.size(); i++)
+    for (const auto& path : paths)
     {
-        if (std::find(uniquePaths.begin(), uniquePaths.end(), paths[i]) == uniquePaths.end())
+        if (std::find(uniquePaths.begin(), uniquePaths.end(), path) == uniquePaths.end())
         {
-            uniquePaths.push_back(paths[i]);
+            uniquePaths.push_back(path);
         }
         else
         {
-            std::cout << "Skipping " << paths[i] << " because it's a duplicate!" << std::endl;
+            std::cout << "Skipping " << path << " as it's already being " 
+                      << (update ? "updated" : "installed") << "!" << std::endl;
         }
     }
     paths = uniquePaths;
@@ -196,7 +197,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path>& paths, boo
     if (!skipValidation)
     {
         // remove duplicates
-        remove_duplicate_paths(paths);
+        remove_duplicate_paths(paths, false);
 
         // reserve list items
         reserve_list_items(paths.size());
@@ -344,7 +345,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path>& paths, bool
     }
 
     // remove duplicates
-    remove_duplicate_paths(paths);
+    remove_duplicate_paths(paths, true);
 
     // reserve list items
     reserve_list_items(paths.size());
@@ -380,7 +381,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path>& paths, bool
         // ensure we only have unique mod names
         if (std::find(uniqueNames.begin(), uniqueNames.end(), sporeModInfo.UniqueName) != uniqueNames.end())
         {
-            std::cout << "Skipping " << path << " as it's already being installed!" << std::endl;
+            std::cout << "Skipping " << path << " as it's already being updated!" << std::endl;
             Zip::CloseFile(l_ZipFiles[i]);
             paths.erase(paths.begin() + i);
             l_ZipFiles.erase(l_ZipFiles.begin() + i);
