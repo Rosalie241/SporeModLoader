@@ -6,7 +6,7 @@ jobs:
   build-msvc:
     runs-on: windows-2025
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: amd64_x86
@@ -37,26 +37,26 @@ jobs:
           Copy "SporeModLoader\Bin\Release\dinput8.dll"          "bin\SporebinEP1\dinput8.dll"
           Copy "SporeModManager\Bin\Release\SporeModManager.exe" "bin\SporeModLoader\SporeModManager\SporeModManager.exe"
       - name: Upload SporeModLoader (msvc)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: msvc-build-artifacts
           path: bin/*
   build-linux:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build SporeModManager (Linux)
         run: |
           make SporeModManager -j$(nproc)
       - name: Upload SporeModLoader (Linux for msvc)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: linux-build-artifacts
           path: bin/*
   build-mingw:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install Packages
         run: |
           sudo apt-get -y install gcc-mingw-w64-i686 g++-mingw-w64-i686
@@ -67,7 +67,7 @@ jobs:
         run: |
           make SporeModManager.exe -j$(nproc)
       - name: Upload SporeModLoader (mingw)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: mingw-build-artifacts
           path: bin/*
@@ -75,22 +75,22 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [ build-msvc, build-linux, build-mingw ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Prepare Environment
         run: |
           echo "GIT_REVISION=$(git describe --always)" >> $GITHUB_ENV
       - name: Download msvc-build-artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: msvc-build-artifacts
           path: artifacts
       - name: Download linux-build-artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: linux-build-artifacts
           path: artifacts
       - name: Download mingw-build-artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: mingw-build-artifacts
           path: mingw-artifacts
@@ -100,13 +100,13 @@ jobs:
           cp -r artifacts/SporeModLoader/ModLibs/  mingw-artifacts/SporeModLoader/ModLibs
           cp artifacts/SporeModLoader/SporeModManager/SporeModManager mingw-artifacts/SporeModLoader/SporeModManager/SporeModManager
       - name: Upload SporeModLoader (msvc)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
           path: artifacts/*
           compression-level: 9
       - name: Upload SporeModLoader (mingw)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
           path: mingw-artifacts/*
@@ -122,13 +122,13 @@ jobs:
     runs-on: windows-2025
     needs: [ package-artifacts ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Prepare Environment
         run: |
           $env:revision = git describe --tags --always
           echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
       - name: Download SporeModManager (msvc)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
           path: artifact
@@ -139,7 +139,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [ package-artifacts ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install Packages
         run: |
           sudo apt-get -y install valgrind
@@ -147,7 +147,7 @@ jobs:
         run: |
           echo "GIT_REVISION=$(git describe --always)" >> $GITHUB_ENV
       - name: Download SporeModManager (Linux)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
           path: artifact
@@ -165,13 +165,13 @@ jobs:
     runs-on: windows-2025
     needs: [ package-artifacts ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Prepare Environment
         run: |
           $env:revision = git describe --tags --always
           echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
       - name: Download SporeModManager (mingw)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
           path: artifact
@@ -188,12 +188,12 @@ jobs:
     needs: [ test-msvc, test-linux, test-mingw ]
     if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Prepare Environment
         run: |
           echo "GIT_REVISION=$(git describe --always)" >> $GITHUB_ENV
       - name: Download SporeModManager (msvc)
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
           path: artifact
