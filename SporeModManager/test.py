@@ -24,11 +24,14 @@ valgrind        = False
 
 # paths for tests
 tests_path       = tempfile.mkdtemp()
+mods_path        = os.path.join(tests_path, 'mods')
+mods2_path       = os.path.join(tests_path, 'mods2')
 corelibs_path    = os.path.join(tests_path, 'CoreLibs')
 sporemodapi_file = os.path.join(corelibs_path, 'SporeModAPI.dll')
-sporemod_file    = os.path.join(tests_path, 'test.sporemod')
-package_file     = os.path.join(tests_path, 'test_package.package')
-invalid_file     = os.path.join(tests_path, 'test.invalid')
+sporemod_file    = os.path.join(mods_path, 'test.sporemod')
+package_file     = os.path.join(mods_path, 'test_package.package')
+invalid_file     = os.path.join(mods_path, 'test.invalid')
+package_file_2   = os.path.join(mods2_path, 'test_package.package')
 config_file      = os.path.join(tests_path, 'configfile.xml')
 modlibs_path     = os.path.join(tests_path, 'ModLibs')
 data_path        = os.path.join(tests_path, 'Data')
@@ -78,7 +81,7 @@ def write_sporemod(xml = None, extra = None, createNew = False, invalidZip = Fal
 	file = sporemod_file
 	if createNew:
 		global write_mod_num
-		file = os.path.join(tests_path, f'test_{write_mod_num}.sporemod')
+		file = os.path.join(mods_path, f'test_{write_mod_num}.sporemod')
 		write_mod_num = write_mod_num + 1
 	if invalidZip:
 		mod_file = open(file, 'wb')
@@ -729,6 +732,12 @@ def test_update():
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_update_1_2.dll'))
 	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
 
+	# verify that 2 package mods with the same unique name update correctly
+	result = run_smm([ 'update', package_file, package_file_2 ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+
 	# updating an existing mod by giving the same path twice should work
 	result = run_smm([ 'update', package_file, package_file ])
 	assert result.returncode == 0
@@ -932,6 +941,8 @@ if __name__ == "__main__":
 	valgrind        = args.valgrind
 
 	# create test directories
+	os.mkdir(mods_path)
+	os.mkdir(mods2_path)
 	os.mkdir(corelibs_path)
 	os.mkdir(modlibs_path)
 	os.mkdir(data_path)
@@ -940,6 +951,7 @@ if __name__ == "__main__":
 	# write spore mod api dll and package file
 	write_sporemodapi_dll(sporemodapi_file)
 	write_package(package_file)
+	write_package(package_file_2)
 	write_invalid(invalid_file)
 
 	# call tests
