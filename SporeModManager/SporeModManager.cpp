@@ -511,7 +511,7 @@ bool SporeModManager::UninstallMods(const std::vector<int>& ids)
     return true;
 }
 
-bool SporeModManager::DownloadSporeModAPI(void)
+bool SporeModManager::UpdateSporeModAPI(void)
 {
     const std::string url = "https://github.com/emd4600/Spore-ModAPI/releases/latest/download/SporeModAPIdlls.zip";
     const std::filesystem::path updatePath = Path::Combine({ Path::GetCoreLibsPath(), "update.zip" });

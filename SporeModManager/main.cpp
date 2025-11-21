@@ -395,7 +395,7 @@ int main(int argc, char** argv)
             return 1;
         }
         
-        if (!SporeModManager::DownloadSporeModAPI())
+        if (!SporeModManager::UpdateSporeModAPI())
         {
             return 1;
         }

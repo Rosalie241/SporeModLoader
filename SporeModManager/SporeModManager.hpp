@@ -38,7 +38,7 @@ namespace SporeModManager
     /// <summary>
     ///  Updates Spore-ModAPI DLLs
     /// </summary>
-    bool DownloadSporeModAPI(void);
+    bool UpdateSporeModAPI(void);
 }
 
 #endif // SPOREMODMANAGER_HPP
