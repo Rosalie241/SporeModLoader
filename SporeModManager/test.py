@@ -511,6 +511,13 @@ def test_install():
 	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_11_1.dll'))
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_install_11_2.dll'))
 	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
+	result = run_smm([ 'install', '--update-needed', write_sporemod(xml1, files, True), write_sporemod(xml2, files, True) ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_11_1.dll'))
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_install_11_2.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
 
 	# verify that duplicate filenames are skipped
 	xml = """<mod displayName="test_install_12" 
@@ -530,6 +537,56 @@ def test_install():
 	assert result.stderr == ''
 	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_12.dll'))
 	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
+	result = run_smm([ 'install', '--update-needed', sporemod_file, sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_12.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
+
+	# install sporemod mod
+	xml = """<mod displayName="test_install_13" 
+				unique="test_install_13" 
+				description="test_install_13" 
+				installerSystemVersion="1.0.1.1" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_install_13.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_install_13.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_13.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
+
+	# verify that --needed doesn't update the files
+	mtime_file = os.path.join(modlibs_path, 'test_install_13.dll')
+	before_install_mtime = os.path.getmtime(mtime_file)
+	new_files = [
+		[ 'test_install_13.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, new_files)
+	result = run_smm([ 'install', '--needed', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_13.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
+	assert before_install_mtime == os.path.getmtime(mtime_file)
+
+	# verify that --update-needed updates the files
+	result = run_smm([ 'install', '--update-needed', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_13.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, new_files[0][0]), new_files[0][1])
+	assert before_install_mtime != os.path.getmtime(mtime_file)
+
 
 # Tests whether uninstall works correctly
 def test_uninstall():
