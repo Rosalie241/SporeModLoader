@@ -345,7 +345,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path>& paths, bool
     }
 
     // remove duplicates
-    remove_duplicate_paths(paths, true);
+    remove_duplicate_paths(paths, requiresInstalled);
 
     // reserve list items
     reserve_list_items(paths.size());
@@ -381,7 +381,8 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path>& paths, bool
         // ensure we only have unique mod names
         if (std::find(uniqueNames.begin(), uniqueNames.end(), sporeModInfo.UniqueName) != uniqueNames.end())
         {
-            std::cout << "Skipping " << path << " as it's already being updated!" << std::endl;
+            std::cout << "Skipping " << path << " as it's already being " <<
+                         (requiresInstalled ? "updated" : "installed") << "!" << std::endl;
             Zip::CloseFile(l_ZipFiles[i]);
             paths.erase(paths.begin() + i);
             l_ZipFiles.erase(l_ZipFiles.begin() + i);
