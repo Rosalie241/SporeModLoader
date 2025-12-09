@@ -144,10 +144,11 @@ int main(int argc, char** argv)
                 for (const auto& optionArg : optionArgs)
                 {
                     auto pos = arg.find(optionArg.shortArgument);
-                    if (pos != arg_str_type::npos)
+                    while (pos != arg_str_type::npos)
                     {
                         optionArg.value = true;
                         arg.erase(pos, 1);
+                        pos = arg.find(optionArg.shortArgument);
                     }
                 }
                 if (!arg.empty())
