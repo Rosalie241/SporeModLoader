@@ -189,6 +189,11 @@ int main(int argc, char** argv)
                             pathArg.path = args[i + 1];
                             args.erase(args.begin() + i + 1);
                         }
+                        if (pathArg.path.empty())
+                        {
+                            show_usage();
+                            return 1;
+                        }
                         if (!std::filesystem::is_directory(pathArg.path))
                         {
                             std::arg_cerr << arg_str("Errror: ") << pathArg.path << arg_str(" isn't a valid path!") << std::endl;
