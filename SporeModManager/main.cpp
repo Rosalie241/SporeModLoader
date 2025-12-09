@@ -190,7 +190,7 @@ int main(int argc, char** argv)
                         }
                         if (!std::filesystem::is_directory(pathArg.path))
                         {
-                            show_usage();
+                            std::arg_cerr << arg_str("Errror: ") << pathArg.path << arg_str(" isn't a valid path!") << std::endl;
                             return 1;
                         }
                         arg.clear();
