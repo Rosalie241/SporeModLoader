@@ -22,6 +22,7 @@
 #include <Spore\Simulator\cPlanetaryArtifact.h>
 #include <Spore\Simulator\cNpcTribeController.h>
 #include <Spore\Simulator\cScenarioEditModeDisplayStrategy.h>
+#include <Spore\Simulator\cPlayer.h>
 
 namespace Simulator
 {
@@ -155,6 +156,24 @@ namespace Simulator
 		Args(struct ResourceKey key, uint32_t categoryID, int row, int column, int pageIndex),
 		Args(key, categoryID, row, column, pageIndex));
 
+
+	auto_METHOD_VOID_(cCollectableItems, sub_5976E0);
+
+	auto_METHOD_VOID(cCollectableItems, UnlockPart,
+		Args(uint32_t instanceID, uint32_t groupID, int unk),
+		Args(instanceID, groupID, unk));
+
+	auto_METHOD_VOID(cCollectableItems, LockPart,
+		Args(uint32_t instanceID, uint32_t groupID),
+		Args(instanceID, groupID));
+
+	auto_METHOD_VOID_(cCollectableItems, sub_594010);
+
+	auto_METHOD_VOID(cCollectableItems, sub_597BC0,
+		Args(UnkCategoryHashMap& dst, int unk, const ResourceKey& speciesKey),
+		Args(dst, unk, speciesKey));
+
+
 	auto_METHOD_VOID(cCollectableItems, sub_597390,
 		Args(eastl::vector<int>& dst, struct cCollectableItemID itemID, int unk),
 		Args(dst, itemID, unk));
@@ -243,6 +262,12 @@ namespace Simulator
 	/// cNpcTribeController ///
 
 	auto_STATIC_METHOD_(cNpcTribeController, cNpcTribeController*, Get);
+
+	/// cPlayer ///
+
+	auto_METHOD(cPlayer, bool, EmpireIsAwareOfPlayer, Args(uint32_t empireID), Args(empireID));
+	auto_METHOD(cPlayer, bool, PlayerContactedEmpire, Args(uint32_t empireID), Args(empireID));
+
 }
 
 #endif

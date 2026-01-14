@@ -32,6 +32,7 @@
 #include <Spore\Editors\EditorRigblock.h>
 #include <Spore\Editors\EditorCamera.h>
 #include <Spore\Editors\EditorModel.h>
+#include <Spore\Editors\EditorUI.h>
 #include <Spore\Editors\EditorPlayMode.h>
 #include <Spore\Editors\EditorRequest.h>
 #include <Spore\Editors\EditorLimits.h>
@@ -39,6 +40,7 @@
 #include <Spore\Editors\cEditorSkin.h>
 #include <Spore\Editors\cEditorAnimEvent.h>
 #include <Spore\Editors\cEditorAnimWorld.h>
+#include <Spore\Editors\BakeManager.h>
 
 #include <Spore\Graphics\Model.h>
 #include <Spore\Graphics\ILayer.h>
@@ -192,7 +194,7 @@ namespace Editors
 		// Editor::ScalePart(EditorRigblock *, int, int)
 
 
-		bool sub_581F70(EditorRigblock* part, void* activeHandle, int value);
+		bool sub_581F70(EditorRigblock* part, void* activeHandle, int value); // MorphPart?
 
 		// loc_573BB1 -> set part is hovered?
 
@@ -556,7 +558,7 @@ namespace Editors
 		/* 4ACh */	int mRenderingQuality;  // 1
 		/* 4B0h */	bool field_4B0;  // true
 		/* 4B1h */	bool field_4B1;  // true
-		/* 4B2h */	bool field_4B2;
+		/* 4B2h */	bool field_4B2;  // Something to do with skinpaint?
 		/* 4B3h */	bool field_4B3;  // not initialized
 		/* 4B4h */	bool field_4B4;  // not initialized
 		/* 4B5h */	bool field_4B5;

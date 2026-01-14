@@ -1,7 +1,7 @@
 @echo off
 
 set SPOREMODAPI_CUR_DIR=%~dp0
-set VERSION=402
+set VERSION=555
 
 msbuild "%SPOREMODAPI_CUR_DIR%\Spore-ModAPI\Spore ModAPI" ^
 	/p:Configuration="Release DLL" ^
