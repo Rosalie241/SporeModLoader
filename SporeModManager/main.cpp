@@ -67,7 +67,7 @@ static void show_usage()
               << "  install file(s)     installs file(s)" << std::endl
               << "  update file(s)      updates mod(s) using file(s)" << std::endl
               << "  uninstall id(s)     uninstalls mod with id(s)" << std::endl
-              << "  update-modapi       downloads latest spore modapi dll" << std::endl
+              << "  update-modapi       updates modapi dll" << std::endl
               << std::endl
               << "  version             display version and exit"   << std::endl
               << "  help                display this help and exit" << std::endl
