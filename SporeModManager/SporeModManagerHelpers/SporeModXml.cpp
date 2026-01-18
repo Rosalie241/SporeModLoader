@@ -388,10 +388,31 @@ bool SporeMod::Xml::GetDirectories(std::filesystem::path& coreLibsPath, std::fil
 
     if (!std::filesystem::is_regular_file(configFilePath))
     {
+        std::filesystem::path galacticAdventuresDataPath = Path::Combine({ "..", "..", "DataEP1"});
+        std::filesystem::path diskSporeGalacticAdventuresDataPath = Path::Combine({ "..", "..", "..", "SPORE_EP1", "Data" });
+        std::filesystem::path coreSporeDataPath = Path::Combine({ "..", "..", "Data" });
+        std::filesystem::path diskCoreSporeDataPath = Path::Combine({ "..", "..", "..", "SPORE", "Data" });
+
+        // to detect whether we're on the disk version of Spore,
+        // verify it with the following:
+        // 1) '../../DataEP1' doesn't exist
+        // 2) '../../../SPORE_EP1/Data' and '../../../SPORE/Data' exist
+        // 3) '../../Data' and '../../../SPORE_EP1/Data' are the same absolute path
+        // when we've verified we're using the disk version, we can set
+        // the defaults to '..\..\Data' for GA and '..\..\..\SPORE\Data' for Spore
+        if (!std::filesystem::is_directory(Path::GetAbsolutePath(galacticAdventuresDataPath)) &&
+            std::filesystem::is_directory(Path::GetAbsolutePath(diskCoreSporeDataPath)) &&
+            std::filesystem::is_directory(Path::GetAbsolutePath(diskSporeGalacticAdventuresDataPath)) &&
+            Path::GetAbsolutePath(diskSporeGalacticAdventuresDataPath) == Path::GetAbsolutePath(coreSporeDataPath))
+        {
+            galacticAdventuresDataPath = coreSporeDataPath;
+            coreSporeDataPath = diskCoreSporeDataPath;
+        }
+
         if (!Xml::SaveDirectories(Path::Combine({ "..", "CoreLibs" }),
                                   Path::Combine({ "..", "ModLibs" }),
-                                  Path::Combine({ "..", "..", "DataEP1" }),
-                                  Path::Combine({ "..", "..", "Data" })))
+                                  galacticAdventuresDataPath,
+                                  coreSporeDataPath))
         {
             std::cerr << "Error: failed to save configuration file!" << std::endl;
             return false;
