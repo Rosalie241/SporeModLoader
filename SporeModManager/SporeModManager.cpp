@@ -158,6 +158,7 @@ static void remove_duplicate_paths(std::vector<std::filesystem::path>& paths, bo
 bool SporeModManager::ListInstalledMods(void)
 {
     SporeMod::Xml::InstalledSporeMod installedSporeMod;
+    std::string name;
 
     if (!get_installedsporemodlist())
     {
@@ -168,7 +169,14 @@ bool SporeModManager::ListInstalledMods(void)
     {
         installedSporeMod = l_InstalledSporeMods[i];
 
-        std::cout << "[" << i << "] " << installedSporeMod.Name << std::endl;
+        name = installedSporeMod.Name;
+        if (installedSporeMod.HasVersion)
+        {
+            name += " v";
+            name += installedSporeMod.Version.to_string();
+        }
+
+        std::cout << "[" << i << "] " << name << std::endl;
         if (!installedSporeMod.Description.empty())
         {
             std::cout << "  " << String::Replace(installedSporeMod.Description, "\n", "\n  ") << std::endl;

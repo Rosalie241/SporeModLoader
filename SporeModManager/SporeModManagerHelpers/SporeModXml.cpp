@@ -86,6 +86,25 @@ static bool get_attribute_bool(tinyxml2::XMLElement* element, const std::string&
     return String::Lowercase(boolString) == "true";
 }
 
+static FileVersion::FileVersionInfo get_attribute_version(tinyxml2::XMLElement* element, 
+    const std::string& attributeName, bool& hasAttribute, bool& parseResult)
+{
+    std::string versionString;
+    FileVersion::FileVersionInfo version;
+
+    versionString = get_attribute_text(element, attributeName);
+    if (versionString.empty())
+    {
+        hasAttribute = false;
+        parseResult = true;
+        return version;
+    }
+
+    parseResult = FileVersion::ParseString(versionString, version);
+    hasAttribute = true;
+    return version;
+}
+
 static std::string get_element_text(tinyxml2::XMLElement* element)
 {
     const char* text;
@@ -102,6 +121,24 @@ static std::string get_element_text(tinyxml2::XMLElement* element)
     }
 
     return "";
+}
+
+static FileVersion::FileVersionInfo get_element_version(tinyxml2::XMLElement* element, bool& hasValue, bool& parseResult)
+{
+    std::string versionString;
+    FileVersion::FileVersionInfo version;
+
+    versionString = get_element_text(element);
+    if (versionString.empty())
+    {
+        hasValue = false;
+        parseResult = true;
+        return version;
+    }
+
+    parseResult = FileVersion::ParseString(versionString, version);
+    hasValue = true;
+    return version;
 }
 
 static std::string get_element_name(tinyxml2::XMLElement* element)
@@ -260,10 +297,12 @@ static std::vector<SporeMod::Xml::SporeModFile> parse_installedsporemodfiles_ele
 static SporeMod::Xml::InstalledSporeMod parse_installedsporemod_element(tinyxml2::XMLElement* element)
 {
     SporeMod::Xml::InstalledSporeMod installedSporeMod;
+    bool ret = false;
 
     installedSporeMod.Name           = get_element_text(find_element(element, "Name"));
     installedSporeMod.UniqueName     = get_element_text(find_element(element, "UniqueName"));
     installedSporeMod.Description    = get_element_text(find_element(element, "Description"));
+    installedSporeMod.Version        = get_element_version(find_element(element, "Version"), installedSporeMod.HasVersion, ret);
     installedSporeMod.InstalledFiles = parse_installedsporemodfiles_element(find_element(element, "Files"));
 
     return installedSporeMod;
@@ -280,6 +319,7 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     tinyxml2::XMLError    error;
     std::string xmlElementName;
     std::string xmlAttributeText;
+    bool hasAttribute = false;
     bool ret;
 
     error = xmlDocument.Parse(buffer.data(), buffer.size());
@@ -306,23 +346,19 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     sporeModInfo.HasCustomInstaller       = get_attribute_bool(xmlElement, "hasCustomInstaller");
     sporeModInfo.CompatOnly               = get_attribute_bool(xmlElement, "compatOnly");
 
-    xmlAttributeText = get_attribute_text(xmlElement, "installerSystemVersion");
-    if (!xmlAttributeText.empty())
+    sporeModInfo.InstallerVersion = get_attribute_version(xmlElement, "installerSystemVersion", hasAttribute, ret);
+    if (!hasAttribute || !ret)
     {
-        ret = FileVersion::ParseString(xmlAttributeText, sporeModInfo.InstallerVersion);
-        if (!ret)
+        std::cerr << "Error: failed to parse installerSystemVersion attribute!" << std::endl;
+        return false;
+    }
+    else
+    {
+        FileVersion::FileVersionInfo maxSupportedInstallerVersion = {1, 0, 1, 3};
+        if (sporeModInfo.InstallerVersion > maxSupportedInstallerVersion)
         {
-            std::cerr << "Error: failed to parse installerSystemVersion attribute!" << std::endl;
+            std::cerr << "Error: installerSystemVersion \"" << sporeModInfo.InstallerVersion.to_string() << "\" is unsupported!" << std::endl;
             return false;
-        }
-        else
-        {
-            FileVersion::FileVersionInfo maxSupportedInstallerVersion = {1, 0, 1, 2};
-            if (sporeModInfo.InstallerVersion > maxSupportedInstallerVersion)
-            {
-                std::cerr << "Error: installerSystemVersion \"" << sporeModInfo.InstallerVersion.to_string() << "\" is unsupported!" << std::endl;
-                return false;
-            }
         }
     }
 
@@ -334,6 +370,19 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     if (sporeModInfo.InstallerVersion == installerVersion && !sporeModInfo.HasCustomInstaller)
     {
         sporeModInfo.HasCustomInstaller = !sporeModInfo.CompatOnly;
+    }
+
+    // installer version 1.0.1.3 adds support for the version attribute
+    // https://github.com/Spore-Community/modapi-launcher-kit/pull/9
+    installerVersion = {1, 0, 1, 3};
+    if (sporeModInfo.InstallerVersion == installerVersion)
+    {
+        sporeModInfo.Version = get_attribute_version(xmlElement, "version", sporeModInfo.HasVersion, ret);
+        if (!ret)
+        {
+            std::cerr << "Error: failed to parse version attribute!" << std::endl;
+            return false;
+        }
     }
 
     xmlAttributeText = get_attribute_text(xmlElement, "dllsBuild");
@@ -655,6 +704,11 @@ bool SporeMod::Xml::SaveInstalledModList(const std::vector<InstalledSporeMod>& i
         xmlElement->InsertNewChildElement("Name")->SetText(installedSporeMod.Name.c_str());
         xmlElement->InsertNewChildElement("UniqueName")->SetText(installedSporeMod.UniqueName.c_str());
         xmlElement->InsertNewChildElement("Description")->SetText(installedSporeMod.Description.c_str());
+        
+        if (installedSporeMod.HasVersion)
+        {
+            xmlElement->InsertNewChildElement("Version")->SetText(installedSporeMod.Version.to_string().c_str());
+        }
 
         filesXmlElement = xmlElement->InsertNewChildElement("Files");
 
