@@ -111,6 +111,8 @@ bool SporeMod::ConfigureSporeMod(Zip::ZipFile zipFile, const Xml::SporeModInfo& 
     installedSporeMod.Name        = sporeModInfo.Name;
     installedSporeMod.UniqueName  = sporeModInfo.UniqueName;
     installedSporeMod.Description = sporeModInfo.Description;
+    installedSporeMod.HasVersion  = sporeModInfo.HasVersion;
+    installedSporeMod.Version     = sporeModInfo.Version;
 
     configurationRequired = sporeModInfo.IsExperimental           || 
                             sporeModInfo.RequiresGalaxyReset      ||
