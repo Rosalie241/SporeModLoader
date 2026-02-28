@@ -22,6 +22,12 @@ namespace SporeModManagerHelpers
     namespace SporeMod
     {
         /// <summary>
+        ///     Tries to resolve dependencies
+        /// </summary>
+        bool ResolveDependencies(const std::vector<Xml::SporeModInfo>& pendingSporeMods,
+                                 const std::vector<Xml::InstalledSporeMod>& installedSporeMods);
+
+        /// <summary>
         ///     Tries to find installed mod with uniqueName
         /// </summary>
         bool FindInstalledMod(const std::string& uniqueName, int& installedSporeModId, 
