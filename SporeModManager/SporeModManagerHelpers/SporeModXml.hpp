@@ -43,6 +43,18 @@ namespace SporeModManagerHelpers
                 }
             };
 
+            struct SporeModDependency
+            {
+                std::string UniqueName;
+                FileVersion::FileVersionInfo Version;
+
+                bool operator==(const SporeModDependency& other) const
+                {
+                    return UniqueName == other.UniqueName &&
+                        Version == other.Version;
+                }
+            };
+
             struct SporeModInfoComponent
             {
                 std::string Name;
@@ -76,6 +88,10 @@ namespace SporeModManagerHelpers
                 std::string UniqueName;
                 std::string Description;
 
+                bool HasVersion = false;
+                FileVersion::FileVersionInfo Version;
+                std::vector<SporeModDependency> Dependencies;
+
                 bool HasModInfoXml            = false;
                 bool IsExperimental           = false;
                 bool RequiresGalaxyReset      = false;
@@ -98,12 +114,19 @@ namespace SporeModManagerHelpers
                 std::string UniqueName;
                 std::string Description;
 
+                bool HasVersion = false;
+                FileVersion::FileVersionInfo Version;
+                std::vector<SporeModDependency> Dependencies;
+
                 std::vector<SporeModFile> InstalledFiles;
 
                 bool operator==(const InstalledSporeMod& other) const
                 {
                     return Name == other.Name &&
                         UniqueName == other.UniqueName &&
+                        HasVersion == other.HasVersion &&
+                        Version == other.Version &&
+                        Dependencies == other.Dependencies &&
                         Description == other.Description &&
                         InstalledFiles == other.InstalledFiles;
                 }

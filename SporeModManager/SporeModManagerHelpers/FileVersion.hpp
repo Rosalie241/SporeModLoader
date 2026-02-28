@@ -43,6 +43,12 @@ namespace SporeModManagerHelpers
                     Revision == other.Revision;
             }
 
+            bool operator>=(const FileVersionInfo& other) const
+            {
+                return *this > other ||
+                        *this == other;
+            }
+
             std::string to_string(void) const
             {
                 std::string string;

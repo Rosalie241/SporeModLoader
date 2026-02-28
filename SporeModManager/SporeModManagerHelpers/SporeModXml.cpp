@@ -86,6 +86,62 @@ static bool get_attribute_bool(tinyxml2::XMLElement* element, const std::string&
     return String::Lowercase(boolString) == "true";
 }
 
+static FileVersion::FileVersionInfo get_attribute_version(tinyxml2::XMLElement* element, 
+    const std::string& attributeName, bool& hasAttribute, bool& parseResult)
+{
+    std::string versionString;
+    FileVersion::FileVersionInfo version;
+
+    versionString = get_attribute_text(element, attributeName);
+    if (versionString.empty())
+    {
+        hasAttribute = false;
+        parseResult = true;
+        return {};
+    }
+
+    parseResult = FileVersion::ParseString(versionString, version);
+    hasAttribute = true;
+    return version;
+}
+
+static std::vector<FileVersion::FileVersionInfo> get_attribute_versions(tinyxml2::XMLElement* element, 
+    const std::string& attributeName, bool& parseResult)
+{
+    std::string versionsString;
+    FileVersion::FileVersionInfo version;
+    std::vector<std::string> versionsStrings;
+    std::vector<FileVersion::FileVersionInfo> versions;
+
+    versionsString = get_attribute_text(element, attributeName);
+    if (versionsString.empty())
+    {
+        parseResult = true;
+        return {};
+    }
+
+    versionsStrings = String::Split(versionsString, '?');
+    for (size_t i = 0; i < versionsStrings.size(); i++)
+    {
+        // empty versions are supported,
+        // so add 0.0.0.0 as version in that case
+        if (versionsStrings[i].empty())
+        {
+            version = { 0, 0, 0, 0 };
+        }
+        else if (!FileVersion::ParseString(versionsStrings[i], version))
+        {
+            parseResult = false;
+            return {};
+        }
+
+        versions.push_back(version);
+    }
+
+    parseResult = true;
+    return versions;
+}
+
 static std::string get_element_text(tinyxml2::XMLElement* element)
 {
     const char* text;
@@ -102,6 +158,24 @@ static std::string get_element_text(tinyxml2::XMLElement* element)
     }
 
     return "";
+}
+
+static FileVersion::FileVersionInfo get_element_version(tinyxml2::XMLElement* element, bool& hasValue, bool& parseResult)
+{
+    std::string versionString;
+    FileVersion::FileVersionInfo version;
+
+    versionString = get_element_text(element);
+    if (versionString.empty())
+    {
+        hasValue = false;
+        parseResult = true;
+        return version;
+    }
+
+    parseResult = FileVersion::ParseString(versionString, version);
+    hasValue = true;
+    return version;
 }
 
 static std::string get_element_name(tinyxml2::XMLElement* element)
@@ -257,13 +331,53 @@ static std::vector<SporeMod::Xml::SporeModFile> parse_installedsporemodfiles_ele
     return sporeModFiles;
 }
 
+static std::vector<SporeMod::Xml::SporeModDependency> parse_installedsporemoddependencies_element(tinyxml2::XMLElement* element)
+{
+    std::vector<SporeMod::Xml::SporeModDependency> dependencies;
+    std::string name;
+    bool hasVersion = false;
+    bool hasValidVersion = false;
+    FileVersion::FileVersionInfo version;
+    tinyxml2::XMLElement* xmlElement;
+    std::string xmlElementName;
+
+    if (element == nullptr)
+    {
+        return dependencies;
+    }
+
+    xmlElement = element->FirstChildElement();
+    while (xmlElement != nullptr)
+    {
+        xmlElementName = get_element_name(xmlElement);
+
+        if (xmlElementName == "Dependency")
+        {
+            name = get_element_text(find_element(xmlElement, "UniqueName"));
+            version = get_element_version(find_element(xmlElement, "Version"), hasVersion, hasValidVersion);
+            if (!hasVersion || !hasValidVersion)
+            {
+                version = { 0, 0, 0, 0 };
+            }
+            dependencies.push_back({ name, version });
+        }
+
+        xmlElement = xmlElement->NextSiblingElement();
+    }
+
+    return dependencies;
+}
+
 static SporeMod::Xml::InstalledSporeMod parse_installedsporemod_element(tinyxml2::XMLElement* element)
 {
     SporeMod::Xml::InstalledSporeMod installedSporeMod;
+    bool ret = false;
 
     installedSporeMod.Name           = get_element_text(find_element(element, "Name"));
     installedSporeMod.UniqueName     = get_element_text(find_element(element, "UniqueName"));
     installedSporeMod.Description    = get_element_text(find_element(element, "Description"));
+    installedSporeMod.Version        = get_element_version(find_element(element, "Version"), installedSporeMod.HasVersion, ret);
+    installedSporeMod.Dependencies   = parse_installedsporemoddependencies_element(find_element(element, "Dependencies"));
     installedSporeMod.InstalledFiles = parse_installedsporemodfiles_element(find_element(element, "Files"));
 
     return installedSporeMod;
@@ -280,6 +394,10 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     tinyxml2::XMLError    error;
     std::string xmlElementName;
     std::string xmlAttributeText;
+    std::vector<std::string> dependencies;
+    std::vector<FileVersion::FileVersionInfo> dependenciesVersions;
+    FileVersion::FileVersionInfo dependencyVersion;
+    bool hasAttribute = false;
     bool ret;
 
     error = xmlDocument.Parse(buffer.data(), buffer.size());
@@ -306,23 +424,19 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     sporeModInfo.HasCustomInstaller       = get_attribute_bool(xmlElement, "hasCustomInstaller");
     sporeModInfo.CompatOnly               = get_attribute_bool(xmlElement, "compatOnly");
 
-    xmlAttributeText = get_attribute_text(xmlElement, "installerSystemVersion");
-    if (!xmlAttributeText.empty())
+    sporeModInfo.InstallerVersion = get_attribute_version(xmlElement, "installerSystemVersion", hasAttribute, ret);
+    if (!hasAttribute || !ret)
     {
-        ret = FileVersion::ParseString(xmlAttributeText, sporeModInfo.InstallerVersion);
-        if (!ret)
+        std::cerr << "Error: failed to parse installerSystemVersion attribute!" << std::endl;
+        return false;
+    }
+    else
+    {
+        FileVersion::FileVersionInfo maxSupportedInstallerVersion = {1, 0, 1, 3};
+        if (sporeModInfo.InstallerVersion > maxSupportedInstallerVersion)
         {
-            std::cerr << "Error: failed to parse installerSystemVersion attribute!" << std::endl;
+            std::cerr << "Error: installerSystemVersion \"" << sporeModInfo.InstallerVersion.to_string() << "\" is unsupported!" << std::endl;
             return false;
-        }
-        else
-        {
-            FileVersion::FileVersionInfo maxSupportedInstallerVersion = {1, 0, 1, 2};
-            if (sporeModInfo.InstallerVersion > maxSupportedInstallerVersion)
-            {
-                std::cerr << "Error: installerSystemVersion \"" << sporeModInfo.InstallerVersion.to_string() << "\" is unsupported!" << std::endl;
-                return false;
-            }
         }
     }
 
@@ -334,6 +448,44 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     if (sporeModInfo.InstallerVersion == installerVersion && !sporeModInfo.HasCustomInstaller)
     {
         sporeModInfo.HasCustomInstaller = !sporeModInfo.CompatOnly;
+    }
+
+    // installer version 1.0.1.3 adds support for the following attributes:
+    // 1) version
+    // 2) depends
+    // 3) dependsVersions
+    // https://github.com/Spore-Community/modapi-launcher-kit/pull/9
+    installerVersion = {1, 0, 1, 3};
+    if (sporeModInfo.InstallerVersion >= installerVersion)
+    {
+        sporeModInfo.Version = get_attribute_version(xmlElement, "version", sporeModInfo.HasVersion, ret);
+        if (!ret)
+        {
+            std::cerr << "Error: failed to parse version attribute!" << std::endl;
+            return false;
+        }
+
+        dependencies = String::Split(get_attribute_text(xmlElement, "depends"), '?');
+        dependenciesVersions = get_attribute_versions(xmlElement, "dependsVersions", ret);
+        if (!ret)
+        {
+            std::cerr << "Error: failed to parse dependsVersions attribute!" << std::endl;
+            return false;
+        }
+
+        for (size_t i = 0; i < dependencies.size(); i++)
+        {
+            if (i >= dependenciesVersions.size())
+            {
+                dependencyVersion = { 0, 0, 0, 0 };
+            }
+            else
+            {
+                dependencyVersion = dependenciesVersions[i];
+            }
+
+            sporeModInfo.Dependencies.push_back({ dependencies[i], dependencyVersion });
+        }
     }
 
     xmlAttributeText = get_attribute_text(xmlElement, "dllsBuild");
@@ -623,6 +775,8 @@ bool SporeMod::Xml::SaveInstalledModList(const std::vector<InstalledSporeMod>& i
     tinyxml2::XMLElement* installedSporeModsElement;
     tinyxml2::XMLElement* xmlElement;
     tinyxml2::XMLElement* filesXmlElement;
+    tinyxml2::XMLElement* dependenciesXmlElement;
+    tinyxml2::XMLElement* dependencyXmlElement;
     tinyxml2::XMLElement* installedModFileElement;
     tinyxml2::XMLError    error;
     std::string xmlElementName;
@@ -655,9 +809,21 @@ bool SporeMod::Xml::SaveInstalledModList(const std::vector<InstalledSporeMod>& i
         xmlElement->InsertNewChildElement("Name")->SetText(installedSporeMod.Name.c_str());
         xmlElement->InsertNewChildElement("UniqueName")->SetText(installedSporeMod.UniqueName.c_str());
         xmlElement->InsertNewChildElement("Description")->SetText(installedSporeMod.Description.c_str());
+        
+        if (installedSporeMod.HasVersion)
+        {
+            xmlElement->InsertNewChildElement("Version")->SetText(installedSporeMod.Version.to_string().c_str());
+        }
+
+        dependenciesXmlElement = xmlElement->InsertNewChildElement("Dependencies");
+        for (const auto& dependency : installedSporeMod.Dependencies)
+        {
+            dependencyXmlElement = dependenciesXmlElement->InsertNewChildElement("Dependency");
+            dependencyXmlElement->InsertNewChildElement("UniqueName")->SetText(dependency.UniqueName.c_str());
+            dependencyXmlElement->InsertNewChildElement("Version")->SetText(dependency.Version.to_string().c_str());
+        }
 
         filesXmlElement = xmlElement->InsertNewChildElement("Files");
-
         for (const auto& installedFile : installedSporeMod.InstalledFiles)
         {
             std::string fileName = installedFile.FileName.string();

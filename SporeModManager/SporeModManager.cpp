@@ -158,6 +158,7 @@ static void remove_duplicate_paths(std::vector<std::filesystem::path>& paths, bo
 bool SporeModManager::ListInstalledMods(void)
 {
     SporeMod::Xml::InstalledSporeMod installedSporeMod;
+    std::string name;
 
     if (!get_installedsporemodlist())
     {
@@ -168,7 +169,14 @@ bool SporeModManager::ListInstalledMods(void)
     {
         installedSporeMod = l_InstalledSporeMods[i];
 
-        std::cout << "[" << i << "] " << installedSporeMod.Name << std::endl;
+        name = installedSporeMod.Name;
+        if (installedSporeMod.HasVersion)
+        {
+            name += " v";
+            name += installedSporeMod.Version.to_string();
+        }
+
+        std::cout << "[" << i << "] " << name << std::endl;
         if (!installedSporeMod.Description.empty())
         {
             std::cout << "  " << String::Replace(installedSporeMod.Description, "\n", "\n  ") << std::endl;
@@ -259,6 +267,12 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path>& paths, boo
             }
             uniqueNames.push_back(sporeModInfo.UniqueName);
         }
+    }
+
+    // resolve dependencies
+    if (!SporeMod::ResolveDependencies(l_SporeModInfos, l_InstalledSporeMods))
+    {
+        return false;
     }
 
     // configure given mods
@@ -469,6 +483,11 @@ bool SporeModManager::UninstallMods(const std::vector<int>& ids)
             std::cerr << "Error: ID(s) must be valid!" << std::endl;
             return false;
         }
+    }
+
+    if (!SporeMod::ResolveUninstallDependencies(l_InstalledSporeMods, ids))
+    {
+        return false;
     }
 
     for (const auto& id : ids)

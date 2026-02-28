@@ -928,6 +928,230 @@ def test_list_installed():
 	assert 'test_list_installed_0' not in result.stdout
 	assert result.stderr == ''
 
+# Tests whether dependencies work correctly
+def test_depends():
+	print(f'Running {test_depends.__name__}...')
+	reset_smm()
+
+	# install dummy dependency mod
+	xml = """<mod displayName="test_depends_1" 
+				unique="test_depends_1" 
+				description="test_depends_1"
+				version="1.0.2"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_1.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_1.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_1.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
+
+	# verify that the depends attribute works with an installed mod
+	xml = """<mod displayName="test_depends_2" 
+				unique="test_depends_2" 
+				description="test_depends_2" 
+				version="1.0.3"
+				depends="test_depends_1"
+				dependsVersions="1.0.2"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_2.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_2.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_2.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
+
+	# verify that the depends attribute doesn't work when the version doesn't match
+	xml = """<mod displayName="test_depends_3" 
+				unique="test_depends_3" 
+				description="test_depends_3" 
+				depends="test_depends_1"
+				dependsVersions="1.0.4"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_3.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_3.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode != 0
+	assert result.stdout == ''
+	assert result.stderr != ''
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_3.dll'))
+
+	# verify that the depends and dependsVersions attribute works with multiple valid entries
+	xml = """<mod displayName="test_depends_4" 
+				unique="test_depends_4" 
+				description="test_depends_4" 
+				depends="test_depends_1?test_depends_2"
+				dependsVersions="1.0.2?1.0.3"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_4.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_4.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_4.dll'))
+
+	# verify that the depends and dependsVersions attribute doesn't work with an invalid version
+	# entry within multiple entries
+	xml = """<mod displayName="test_depends_5" 
+				unique="test_depends_5" 
+				description="test_depends_5" 
+				depends="test_depends_1?test_depends_2"
+				dependsVersions="1.0.2?1.0.4"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_5.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_5.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode != 0
+	assert result.stdout == ''
+	assert result.stderr != ''
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_5.dll'))
+
+	# verify that the depends attribute doesn't work with a non-existent mod
+	xml = """<mod displayName="test_depends_6" 
+				unique="test_depends_6" 
+				description="test_depends_6" 
+				depends="test_depends_none"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_6.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_6.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode != 0
+	assert result.stdout == ''
+	assert result.stderr != ''
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_6.dll'))
+
+	# verify that the depends attribute doesn't work with multiple non-existent mods
+	xml = """<mod displayName="test_depends_7" 
+				unique="test_depends_7" 
+				description="test_depends_7" 
+				depends="test_depends_none_1?test_depends_none_2"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_7.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_7.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode != 0
+	assert result.stdout == ''
+	assert result.stderr != ''
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_7.dll'))
+
+	# verify that depends attribute is only validated for installerSystemVersion >= 1.0.1.3
+	xml = """<mod displayName="test_depends_8" 
+				unique="test_depends_8" 
+				description="test_depends_8" 
+				depends="test_depends_8"
+				installerSystemVersion="1.0.1.2" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_8.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_8.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_8.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])	
+
+	# verify that we can install a dependency alongside the mod in a single install
+	xml1 = """<mod displayName="test_depends_9"
+				unique="test_depends_9"
+				description="test_depends_9"
+				depends="test_depends_10"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_9.dll</prerequisite>
+			</mod>"""
+	xml2 = """<mod displayName="test_depends_10"
+				unique="test_depends_10"
+				description="test_depends_10"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_10.dll</prerequisite>
+			</mod>"""
+	files1 = [
+		[ 'test_depends_9.dll', str(uuid.uuid4()) ],
+	]
+	files2 = [
+		[ 'test_depends_10.dll', str(uuid.uuid4()) ],
+	]
+	result = run_smm([ 'install', write_sporemod(xml1, files1, True), write_sporemod(xml2, files2, True) ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_9.dll'))
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_10.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files1[0][0]), files1[0][1])
+	assert check_file_contents(os.path.join(modlibs_path, files2[0][0]), files2[0][1])
+
+	# verify that we cannot uninstall a mod which is a dependency of another mod
+	result = run_smm([ 'uninstall', '1' ])
+	assert result.returncode == 1
+	assert result.stdout == ''
+	assert result.stderr != ''
+
+	# verify that we can uninstall a mod when all dependencies are uninstalled
+	result = run_smm([ 'uninstall', '3' ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	result = run_smm([ 'uninstall', '2' ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	result = run_smm([ 'uninstall', '0' ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+
+	# verify that we can uninstall mods alongside dependencies in one go
+	result = run_smm([ 'uninstall', '0', '2' ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+
+
 # Tests whether update-modapi works correctly
 def test_update_modapi():
 	print(f'Running {test_update_modapi.__name__}...')
@@ -1018,5 +1242,6 @@ if __name__ == "__main__":
 	test_uninstall()
 	test_update()
 	test_list_installed()
+	test_depends()
 	if network:
 		test_update_modapi()
