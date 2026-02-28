@@ -79,6 +79,9 @@ namespace SporeModManagerHelpers
                 bool HasVersion = false;
                 FileVersion::FileVersionInfo Version;
 
+                std::vector<std::string> Dependencies;
+                std::vector<FileVersion::FileVersionInfo> DependenciesVersions;
+
                 bool HasModInfoXml            = false;
                 bool IsExperimental           = false;
                 bool RequiresGalaxyReset      = false;

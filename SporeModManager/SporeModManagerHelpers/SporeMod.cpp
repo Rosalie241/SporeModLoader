@@ -49,6 +49,62 @@ static bool check_other_mod_files(const SporeMod::Xml::InstalledSporeMod& instal
 // Exported Functions
 //
 
+bool SporeMod::ResolveDependencies(const std::vector<Xml::SporeModInfo>& pendingSporeMods,
+                                   const std::vector<Xml::InstalledSporeMod>& installedSporeMods)
+{
+    std::string dependency;
+    std::vector<std::string> missingDependencies;
+
+    for (const auto& pendingSporeMod : pendingSporeMods)
+    {
+        // check if dependencies are installed
+        for (size_t i = 0; i < pendingSporeMod.Dependencies.size(); i++)
+        {
+            dependency = pendingSporeMod.Dependencies[i];
+
+            auto predicate = [dependency](const SporeMod::Xml::InstalledSporeMod& installedSporeMod)
+            {
+                return installedSporeMod.UniqueName == dependency;
+            };
+            auto dependencyIter = std::find_if(installedSporeMods.begin(), installedSporeMods.end(), predicate);
+            if (dependencyIter == installedSporeMods.end())
+            {
+                missingDependencies.push_back(dependency);
+            }
+        }
+
+        // check if dependencies will be installed
+        for (size_t i = 0; i < missingDependencies.size(); i++)
+        {
+            dependency = missingDependencies[i];
+
+            auto predicate = [dependency](const SporeMod::Xml::SporeModInfo& sporeMod)
+            {
+                return sporeMod.UniqueName == dependency;
+            };
+            auto dependencyIter = std::find_if(pendingSporeMods.begin(), pendingSporeMods.end(), predicate);
+            if (dependencyIter == pendingSporeMods.end())
+            {
+                std::cerr << "Error: required dependency for \"" 
+                            << pendingSporeMod.Name << "\" is missing: \"" 
+                            << dependency << "\"!" << std::endl;
+            }
+            else
+            {
+                missingDependencies.erase(missingDependencies.begin() + i);
+                i--;
+            }
+        }
+
+        if (!missingDependencies.empty())
+        {
+            break;
+        }
+    }
+
+    return missingDependencies.empty();
+}
+
 bool SporeMod::FindInstalledMod(const std::string& uniqueName, int& installedSporeModId, 
                                 const std::vector<Xml::InstalledSporeMod>& installedSporeMods)
 {

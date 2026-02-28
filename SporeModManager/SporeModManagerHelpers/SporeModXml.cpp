@@ -97,12 +97,49 @@ static FileVersion::FileVersionInfo get_attribute_version(tinyxml2::XMLElement* 
     {
         hasAttribute = false;
         parseResult = true;
-        return version;
+        return {};
     }
 
     parseResult = FileVersion::ParseString(versionString, version);
     hasAttribute = true;
     return version;
+}
+
+static std::vector<FileVersion::FileVersionInfo> get_attribute_versions(tinyxml2::XMLElement* element, 
+    const std::string& attributeName, bool& parseResult)
+{
+    std::string versionsString;
+    FileVersion::FileVersionInfo version;
+    std::vector<std::string> versionsStrings;
+    std::vector<FileVersion::FileVersionInfo> versions;
+
+    versionsString = get_attribute_text(element, attributeName);
+    if (versionsString.empty())
+    {
+        parseResult = true;
+        return {};
+    }
+
+    versionsStrings = String::Split(versionsString, '?');
+    for (size_t i = 0; i < versionsStrings.size(); i++)
+    {
+        // empty versions are supported,
+        // so add 0.0.0.0 as version in that case
+        if (versionsStrings[i].empty())
+        {
+            version = { 0, 0, 0, 0 };
+        }
+        else if (!FileVersion::ParseString(versionsStrings[i], version))
+        {
+            parseResult = false;
+            return {};
+        }
+
+        versions.push_back(version);
+    }
+
+    parseResult = true;
+    return versions;
 }
 
 static std::string get_element_text(tinyxml2::XMLElement* element)
@@ -372,7 +409,10 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
         sporeModInfo.HasCustomInstaller = !sporeModInfo.CompatOnly;
     }
 
-    // installer version 1.0.1.3 adds support for the version attribute
+    // installer version 1.0.1.3 adds support for the following attributes:
+    // 1) version
+    // 2) depends
+    // 3) dependsVersions
     // https://github.com/Spore-Community/modapi-launcher-kit/pull/9
     installerVersion = {1, 0, 1, 3};
     if (sporeModInfo.InstallerVersion == installerVersion)
@@ -381,6 +421,14 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
         if (!ret)
         {
             std::cerr << "Error: failed to parse version attribute!" << std::endl;
+            return false;
+        }
+
+        sporeModInfo.Dependencies = String::Split(get_attribute_text(xmlElement, "depends"), '?');
+        sporeModInfo.DependenciesVersions = get_attribute_versions(xmlElement, "dependsVersions", ret);
+        if (!ret)
+        {
+            std::cerr << "Error: failed to parse dependsVersions attribute!" << std::endl;
             return false;
         }
     }
