@@ -15,7 +15,11 @@
 
 #ifdef _WIN32
 #include <windows.h>
-#endif // _WIN32
+#endif
+#ifdef __APPLE__
+#include <sys/syslimits.h>
+#include <mach-o/dyld.h>
+#endif
 
 using namespace SporeModManagerHelpers;
 
@@ -145,7 +149,7 @@ std::filesystem::path Path::GetAbsolutePath(const std::filesystem::path& path)
 
 std::filesystem::path Path::GetCurrentExecutablePath(void)
 {
-#ifdef _WIN32
+#if defined(_WIN32)
     static std::filesystem::path currentExecutablePath;
     wchar_t currentExecutablePathBuf[MAX_PATH];
 
@@ -163,7 +167,26 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
     currentExecutablePath = currentExecutablePathBuf;
     currentExecutablePath = currentExecutablePath.parent_path();
     return currentExecutablePath;
-#else // _WIN32
+#elif defined(__APPLE__) // MacOS
+    static std::filesystem::path currentExecutablePath;
+    char currentExecutablePathBuf[PATH_MAX];
+    uint32_t currentExecutablePathBufLen = PATH_MAX;
+
+    if (!currentExecutablePath.empty())
+    {
+        return currentExecutablePath;
+    }
+
+    if (_NSGetExecutablePath(currentExecutablePathBuf, &currentExecutablePathBufLen) != 0)
+    {
+        std::cerr << "Error: failed to retrieve path of current executable!" << std::endl;
+        std::exit(1);
+    }
+
+    currentExecutablePath = currentExecutablePathBuf;
+    currentExecutablePath = currentExecutablePath.parent_path();
+    return currentExecutablePath;
+#else // Linux
     static std::filesystem::path currentExecutablePath;
     std::error_code error;
 
