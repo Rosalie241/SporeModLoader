@@ -26,6 +26,13 @@ using namespace SporeModManagerHelpers;
 //
 
 #ifndef _WIN32
+// libcurl library name
+#ifdef __APPLE__
+#define LIBCURL_FILENAME "libcurl.dylib"
+#else
+#define LIBCURL_FILENAME "libcurl.so.4"
+#endif
+
 // libcurl definitions
 #define CURLOPT_URL             10002
 #define CURLOPT_WRITEFUNCTION   20011
@@ -79,7 +86,7 @@ bool Download::DownloadFile(const std::string& url, const std::filesystem::path&
 
     return true;
 #else
-    void* libcurl = dlopen("libcurl.so.4", RTLD_LAZY);
+    void* libcurl = dlopen(LIBCURL_FILENAME, RTLD_LAZY);
     if (libcurl == nullptr)
     {
         std::cerr << "Error: failed to load libcurl: " << dlerror() << std::endl;
