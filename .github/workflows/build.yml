@@ -208,7 +208,7 @@ jobs:
       - name: Test SporeModManager (MacOS)
         run: |
           chmod +x ./artifact/SporeModLoader/SporeModManager/SporeModManager
-          python3 ./SporeModManager/test.py --verbose ./artifact/SporeModLoader/SporeModManager/SporeModManager
+          python3 ./SporeModManager/test.py --network --verbose ./artifact/SporeModLoader/SporeModManager/SporeModManager
   test-mingw:
     runs-on: windows-2025
     needs: [ package-artifacts ]
