@@ -6,8 +6,8 @@ jobs:
   build-msvc:
     runs-on: windows-2025
     steps:
-      - uses: actions/checkout@v6
-      - uses: ilammy/msvc-dev-cmd@v1
+      - uses: actions/checkout@v7
+      - uses: TheMrMilchmann/setup-msvc-dev@v4
         with:
           arch: amd64_x86
       - name: Build SporeModLoader (msvc)
@@ -37,38 +37,38 @@ jobs:
           Copy "SporeModLoader\Bin\Release\dinput8.dll"          "bin\SporebinEP1\dinput8.dll"
           Copy "SporeModManager\Bin\Release\SporeModManager.exe" "bin\SporeModLoader\SporeModManager\SporeModManager.exe"
       - name: Upload SporeModLoader (msvc)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: msvc-build-artifacts
           path: bin/*
   build-linux:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Build SporeModManager (Linux)
         run: |
           make SporeModManager -j$(nproc)
       - name: Upload SporeModLoader (Linux for msvc)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: linux-build-artifacts
           path: bin/*
   build-macos:
     runs-on: macos-26
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Build SporeModManager (MacOS)
         run: |
           make SporeModManager -j$(sysctl -n hw.logicalcpu)
       - name: Upload SporeModLoader (MacOS for msvc)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: macos-build-artifacts
           path: bin/*
   build-mingw:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install Packages
         run: |
           sudo apt-get -y install gcc-mingw-w64-i686 g++-mingw-w64-i686
@@ -79,7 +79,7 @@ jobs:
         run: |
           make SporeModManager.exe -j$(nproc)
       - name: Upload SporeModLoader (mingw)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: mingw-build-artifacts
           path: bin/*
@@ -87,27 +87,27 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [ build-msvc, build-linux, build-macos, build-mingw ]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Prepare Environment
         run: |
           echo "GIT_REVISION=$(git describe --always)" >> $GITHUB_ENV
       - name: Download msvc-build-artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: msvc-build-artifacts
           path: artifacts
       - name: Download linux-build-artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: linux-build-artifacts
           path: linux-artifacts
       - name: Download macos-build-artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: macos-build-artifacts
           path: macos-artifacts
       - name: Download mingw-build-artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: mingw-build-artifacts
           path: mingw-artifacts
@@ -122,25 +122,25 @@ jobs:
           cp -r artifacts/SporeModLoader/ModLibs/  mingw-artifacts/SporeModLoader/ModLibs
           cp artifacts/SporeModLoader/SporeModManager/SporeModManager mingw-artifacts/SporeModLoader/SporeModManager/SporeModManager
       - name: Upload SporeModLoader (msvc)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
           path: artifacts/*
           compression-level: 9
       - name: Upload SporeModLoader (MacOS)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: SporeModLoader-macos-${{ env.GIT_REVISION }}
           path: macos-artifacts/*
           compression-level: 9
       - name: Upload SporeModLoader (mingw)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
           path: mingw-artifacts/*
           compression-level: 9
       - name: Delete leftover artifacts
-        uses: geekyeggo/delete-artifact@v5
+        uses: geekyeggo/delete-artifact@v6
         with:
           name: |
             msvc-build-artifacts
@@ -151,13 +151,13 @@ jobs:
     runs-on: windows-2025
     needs: [ package-artifacts ]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Prepare Environment
         run: |
           $env:revision = git describe --tags --always
           echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
       - name: Download SporeModManager (msvc)
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
           path: artifact
@@ -168,7 +168,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [ package-artifacts ]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install Packages
         run: |
           sudo apt-get -y update
@@ -178,7 +178,7 @@ jobs:
         run: |
           echo "GIT_REVISION=$(git describe --always)" >> $GITHUB_ENV
       - name: Download SporeModManager (Linux)
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
           path: artifact
@@ -196,12 +196,12 @@ jobs:
     runs-on: macos-26
     needs: [ package-artifacts ]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Prepare Environment
         run: |
           echo "GIT_REVISION=$(git describe --always)" >> $GITHUB_ENV
       - name: Download SporeModManager (MacOS)
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: SporeModLoader-macos-${{ env.GIT_REVISION }}
           path: artifact
@@ -213,13 +213,13 @@ jobs:
     runs-on: windows-2025
     needs: [ package-artifacts ]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Prepare Environment
         run: |
           $env:revision = git describe --tags --always
           echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
       - name: Download SporeModManager (mingw)
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
           path: artifact
@@ -236,17 +236,17 @@ jobs:
     needs: [ test-msvc, test-linux, test-macos, test-mingw ]
     if: github.ref == 'refs/heads/master'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Prepare Environment
         run: |
           echo "GIT_REVISION=$(git describe --always)" >> $GITHUB_ENV
       - name: Download SporeModLoader (msvc)
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
           path: artifact
       - name: Download SporeModLoader (MacOS)
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: SporeModLoader-macos-${{ env.GIT_REVISION }}
           path: macos-artifact
