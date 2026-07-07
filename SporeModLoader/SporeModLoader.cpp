@@ -33,15 +33,24 @@ bool SporeModLoader::Initialize()
 {
     try
     {
+        try {
         Logger::Open();
+        } catch (...) { UI::ShowErrorMessage(L"Logger::Open() Failed!"); return false; }
 
+        try {
         l_CoreLibsPaths = Path::GetCoreLibsPaths();
+        } catch (...) { UI::ShowErrorMessage(L"Path::GetCoreLibsPaths(); Failed!"); return false; }
+        try {
         l_ModLibsPaths  = Path::GetModLibsPaths();
+        } catch (...) { UI::ShowErrorMessage(L"Path::GetModLibsPaths(); Failed!"); return false; }
 
         // allocate early
+        try {
         l_LoadedCoreLibs.reserve(l_CoreLibsPaths.size());
         l_LoadedModLibs.reserve(l_ModLibsPaths.size());
+        } catch (...) { UI::ShowErrorMessage(L"reserving memory Failed!"); return false; }
 
+        try {
         for (const auto& path : l_CoreLibsPaths)
         {
             if (!std::filesystem::exists(path))
@@ -54,6 +63,7 @@ bool SporeModLoader::Initialize()
                 throw std::exception();
             }
         }
+        } catch (...) { UI::ShowErrorMessage(L"loop Failed!"); return false; }
 
         Logger::AddMessage(L"SporeModLoader::Initialize() == 1");
         return true;
