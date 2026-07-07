@@ -11,7 +11,7 @@
 
 #include <fstream>
 #include <optional>
-
+#include <system_error> 
 #include "SporeModLoaderHelpers.hpp"
 
 using namespace SporeModLoaderHelpers;
@@ -124,10 +124,16 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
     }
     } catch (...) {  UI::ShowErrorMessage(L"game version failed"); throw std::exception(); }
 
-    try {
-    auto tmp = std::filesystem::directory_iterator(modLibsPath);
-    } catch (...) { UI::ShowErrorMessage(L"std::filesystem::directory_iterator() failed");
-                    UI::ShowErrorMessage(modLibsPath.wstring()); throw std::exception(); }
+    //try {
+    std::error_code error;
+    auto tmp = std::filesystem::directory_iterator(modLibsPath, error);
+    if (error) {
+        std::string errorMessage = error.message();
+        MessageBoxA(nullptr, errorMessage.c_str(), errorMessage.c_str(), MB_OK);
+        throw std::exception();
+    }
+   // } catch (...) { UI::ShowErrorMessage(L"std::filesystem::directory_iterator() failed");
+     //               UI::ShowErrorMessage(modLibsPath.wstring()); throw std::exception(); }
     
     for (const auto& entry : std::filesystem::directory_iterator(modLibsPath))
     {
