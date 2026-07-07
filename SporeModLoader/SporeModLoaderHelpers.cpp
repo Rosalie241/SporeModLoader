@@ -101,14 +101,17 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
     std::filesystem::path modLibsPath;
     std::vector<std::wstring> excludePostfixes;
 
+    try {
     modLibsPath = GetModLoaderPath();
     modLibsPath += "\\ModLibs";
+    } catch (...) {  UI::ShowErrorMessage(L"constructing path failed"); throw std::exception(); }
 
     // we have to create an exclusion list
     // for the postfixes for the mod dlls
     // due to support for the legacy ModAPI DLLs
     // where games shipped a dll with either the
     // -steam, -steam_patched or -disk postfix
+    try {
     if (Game::GetCurrentVersion() == Game::GameVersion::GogOrSteam_March2017)
     {
         excludePostfixes.push_back(L"-steam.dll");
@@ -119,9 +122,16 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
         excludePostfixes.push_back(L"-steam.dll");
         excludePostfixes.push_back(L"-steam_patched.dll");
     }
+    } catch (...) {  UI::ShowErrorMessage(L"game version failed"); throw std::exception(); }
 
+    try {
+    auto tmp = std::filesystem::directory_iterator(modLibsPath);
+    } catch (...) { UI::ShowErrorMessage(L"std::filesystem::directory_iterator() failed");
+                    UI::ShowErrorMessage(modLibsPath.wstring()); throw std::exception(); }
+    
     for (const auto& entry : std::filesystem::directory_iterator(modLibsPath))
     {
+        try {
         // skip non-files & non-dlls
         if (!entry.is_regular_file() ||
             !entry.path().has_extension() ||
@@ -129,13 +139,20 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
         {
             continue;
         }
+        } catch(...) { UI::ShowErrorMessage(L"loop if statements failed"); throw std::exception(); }
 
+
+        try {
+        std::wstring tmp5 = entry.path().filename().wstring();
+        } catch (...) { UI::ShowErrorMessage(L"filename().wstring() failed"); throw std::exception(); }
         // ensure we have an allowed postfix
         bool skipLib = false;
         std::wstring filename = entry.path().filename().wstring();
+        try {
         for (const auto& postfix : excludePostfixes)
         {
             // we have to support C++17 for MinGW
+            try {
 #ifdef __cpp_lib_starts_ends_with
             if (filename.ends_with(postfix))
 #else // C++17
@@ -146,7 +163,9 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
                 skipLib = true;
                 break;
             }
+            } catch (...) { UI::ShowErrorMessage(L"ends_with() failed"); throw std::exception(); }
         }
+        } catch (...) { UI::ShowErrorMessage(L"loop iteration failed"); throw std::exception(); }
 
 
         if (!skipLib)
