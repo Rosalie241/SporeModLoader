@@ -84,8 +84,8 @@ namespace Simulator
 		// NOTE: These 2 mode values can sometimes appear swapped when changing modes.
 		/* 0Ch */	uint32_t mLastGameMode;  // -1
 		/* 10h */	uint32_t mCurrentGameMode;  // -1
-		/* 14h */	uint32_t field_14;  // -1
-		/* 18h */	int field_18;
+		/* 14h */	uint32_t mCurrentTransition;  // -1
+		/* 18h */	int mCurrentTransitionPhase;
 	};
 	ASSERT_SIZE(cStrategy, 0x1C);
 }

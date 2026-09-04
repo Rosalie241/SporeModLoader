@@ -34,16 +34,39 @@
 #include <Spore\Terrain\TerrainShaderData.h>
 #include <Spore\Terrain\cTerrainSphereQuad.h>
 
+#define cTerrainSpherePtr eastl::intrusive_ptr<Terrain::cTerrainSphere>
+
 namespace Terrain
 {
+	enum TerrainGameMode
+	{
+		kTerrainGameModeCreature,
+		kTerrainGameModeTribe,
+		kTerrainGameModeCiv,
+		kTerrainGameModeSpace,
+		kTerrainGameModeOther,
+
+		kMaxTerrainGameModes
+	};
+
 	struct cTerrainSphereRenderingChunk
 	{
 		/* 00h */	cTerrainSphereQuad* mpQuad;
-		/* 04h */	float field_4;
-		/* 08h */	int mFlags;  // 0x40: don't render
+		/* 04h */	float mMorphValue;
+		/* 08h */	uint32_t mFlags;  // 0x40: don't render
 		/* 0Ch */	int field_C;  // always 0?
 	};
 	ASSERT_SIZE(cTerrainSphereRenderingChunk, 0x10);
+
+	struct cTerrainSphereLight
+	{
+		/* 00h */	uint32_t mID;
+		/* 04h */	Vector3 mPosition;
+		/* 10h */	Vector3 mColor;
+		/* 1Ch */	float mRadius;
+		/* 20h */	bool mDirty;
+	};
+	ASSERT_SIZE(cTerrainSphereLight, 0x24);
 
 	class cTerrainSphere
 		: public ITerrain
@@ -117,20 +140,20 @@ namespace Terrain
 
 		struct TerrainModification
 		{
-			/* 00h */	Transform transform;
-			/* 38h */	char field_38[0x60];  // floats
-			/* 98h */	ResourceKey key;
-			/* A4h */	int field_A4;
-			/* A8h */	uint32_t modid;
+			/* 00h */	Transform mTransform;
+			/* 38h */	Math::Rectangle mBounds[6];
+			/* 98h */	ResourceKey mKey;
+			/* A4h */	uint32_t mFlagsAndBits;
+			/* A8h */	uint32_t mModId;
 		};
 		ASSERT_SIZE(TerrainModification, 0xAC);
 
 		/* 24h */	int field_24;
 		/* 28h */	PropertyListPtr mpPropList;
 		/* 2Ch */	cTerrainMapSetPtr mpTerrainMapSet;
-		/* 30h */	TextureContainer field_30;
-		/* 74h */	TextureContainer field_74;
-		/* B8h */	TextureContainer field_B8;
+		/* 30h */	TextureContainer mpLoaderTerrainBackground;
+		/* 74h */	TextureContainer mpLoaderTerrainForeground;
+		/* B8h */	TextureContainer mLoaderImpostor;
 		/* FCh */	TextureContainer* mpLoader;
 		/* 100h */	ITerrain::OnLoadFinish_t mOnLoadFinish;
 		/* 104h */	void* mOnLoadFinishObject;
@@ -146,10 +169,10 @@ namespace Terrain
 		/* 178h */	TexturePtr mTerrainControlMaps[6];
 		/// The terrain land quads that have to be rendered
 		/* 190h	*/	eastl::vector<cTerrainSphereRenderingChunk> mLandRenderingChunks;
-		/* 1A4h */	eastl::vector<int> field_1A4;
-		/* 1B8h */	eastl::vector<int> field_1B8;
+		/* 1A4h */	eastl::vector<cTerrainSphereRenderingChunk> mSeabedRenderingChunks;
+		/* 1B8h */	eastl::vector<cTerrainSphereRenderingChunk> mAtmosphereRenderingChunks;
 		/* 1CCh */	uint32_t mSeed;
-		/* 1D0h */	int field_1D0;  // 4
+		/* 1D0h */	TerrainGameMode mGameMode;
 		/* 1D4h */	int mPlanetLODChunkRes;  // 16
 		/* 1D8h */	float mPlanetUnderwaterCullRadius;  // 25.0
 		/* 1DCh */	float mPlanetUnderwaterLargeCullRadius;  // 100.0
@@ -167,19 +190,13 @@ namespace Terrain
 		/* 20Ch */	cTerrainStateMgr* mpTerrainStateMgr;
 		/* 210h */	cWeatherManagerPtr mpWeatherManager;
 		/* 214h */	int field_214;
-		/* 218h */	eastl::vector<int> field_218;
-		/* 22Ch */	eastl::vector<int> field_22C;
-		/* 240h */	eastl::vector<int> field_240;
-		/* 254h */	eastl::vector<int> field_254;
-		/* 268h */	eastl::vector<int> field_268;
-		/* 27Ch */	eastl::vector<int> field_27C;
-		/* 290h */	eastl::vector<int> field_290;
-		/* 2A4h */	eastl::vector<int> field_2A4;
-		/* 2B8h */	eastl::vector<int> field_2B8;
-		/* 2CCh */	eastl::vector<int> field_2CC;
-		/* 2E0h */	eastl::vector<int> field_2E0;
-		/* 2F4h */	eastl::vector<int> field_2F4;
-		/* 308h */	TexturePtr field_308;  // PLACEHOLDER 0xE5230445
+		/* 218h */	eastl::vector<cTerrainSphereDecal*> mpDecalList[4];
+		/* 268h */	eastl::vector<int> mDecalIdFreeList[4];
+		/* 2B8h */	eastl::vector<int> mpDecalSegList;
+		/* 2CCh */	eastl::vector<int> mDecalSegListIdFreeList;
+		/* 2E0h */	eastl::vector<int> mLightingRegions;
+		/* 2F4h */	eastl::vector<cTerrainSphereLight*> mLights;
+		/* 308h */	TexturePtr mpLightTexture;  // PLACEHOLDER 0xE5230445
 		/* 30Ch */	Math::Vector4 mCameraPos;
 		/* 31Ch */	Math::Vector4 mCameraDir;
 		/* 32Ch */	Math::Vector4 mSunDir;
@@ -208,22 +225,22 @@ namespace Terrain
 		/* 6B8h */	Math::Vector4 field_6B8;
 		/* 6C8h */	Math::Vector4 field_6C8;
 		///* 6D8h */	TerrainLighting mTerrainLighting;
-		/* 6D8h */	Math::Vector4 field_6D8[8];  //PLACEHODER what is really this?
+		/* 6D8h */	Math::Vector4 field_6D8[8];  //PLACEHOLDER what is this really?
 		/* 758h */	eastl::vector<int> field_758;
 		/* 76Ch */	bool mAssetsLoaded;  // ambient effects and models
 		/* 770h */	eastl::vector<TerrainModification> mModelFootprints;
 		/* 784h */	eastl::vector<TerrainModification> mModelNeedRelevel;
 		/* 798h */	eastl::vector<TerrainModification> mPlayerEffects;
-		/* 7ACh */	int mNumModels;  // a count of something for 7B0
+		/* 7ACh */	int mNumModels;  // a count of models for 7B0
 		/* 7B0h */	eastl::vector<ResourceKey> mModelKeys;
 		/* 7C4h */	eastl::vector<Transform> mModelTransforms;
 		/* 7D8h */	eastl::vector<ModelPtr> mModels;
 		/* 7ECh */	eastl::vector<IVisualEffectPtr> mAmbientEffects;
 		/* 800h */	eastl::vector<IVisualEffectPtr> mAmbientSoundEffects;
-		/* 814h */	int mPlayerModCount;
+		/* 814h */	uint32_t mPlayerModCount;
 		/* 818h */	int field_818;
-		/* 81Ch */	int field_81C;
-		/* 820h */	char padding_820[0x60];
+		/* 81Ch */	cJobPtr mBackgroundJob;
+		/* 820h */	char mBackgroundUpdateBBox[0x60];
 		/* 880h */	bool field_880;
 		/* 884h */	int field_884;
 		/* 888h */	int field_888;
@@ -233,8 +250,8 @@ namespace Terrain
 		/* 898h */	int field_898;  // -1
 		/* 89Ch */	int field_89C;  // -1
 		/* 8A0h */  void* mpImpostorJob;  //PLACEHOLDER cTerrainSphereImpostorJob
-		/* 8A4h */	int field_8A4;  // -1
-		/* 8A8h */	int field_8A8;
+		/* 8A4h */	uint32_t mImpostorJobId;  // -1
+		/* 8A8h */	uint32_t mImpostorMessageId;
 		/* 8ACh */	bool mAllowUnderwaterObjects;
 		// int are flags for renderable
 		/* 8B0h */	eastl::vector<eastl::pair<IModelWorldPtr, int>> mUnderwaterModelWorlds;

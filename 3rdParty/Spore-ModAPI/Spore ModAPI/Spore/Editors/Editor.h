@@ -41,6 +41,7 @@
 #include <Spore\Editors\cEditorAnimEvent.h>
 #include <Spore\Editors\cEditorAnimWorld.h>
 #include <Spore\Editors\BakeManager.h>
+#include <Spore\Editors\cSPVerbTrayCollection.h>
 
 #include <Spore\Graphics\Model.h>
 #include <Spore\Graphics\ILayer.h>
@@ -108,14 +109,12 @@ namespace Editors
 	public:
 		/* 08h */	int mBudget;
 		/* 0Ch */	Mode mMode;
-		/* 10h */	int field_10;
-		/* 14h */	bool field_14;
-		/* 15h */	bool field_15;
-		/* 18h */	int field_18;
-		/* 1Ch */	int field_1C;
-		/* 20h */	int field_20;
-		/* 24h */	int field_24;
-		/* 28h */	int field_28;
+		/* 10h */	int mThemeID;
+		/* 14h */	bool mIsPainted;
+		/* 15h */	bool mIsModelDirty;
+		/* 18h */	ResourceKey mPainLikeThisKey;
+		/* 24h */	uint32_t mPaintLikeThisGroupID;
+		/* 28h */	uint32_t mPaintLikeThisItemID;
 	};
 	ASSERT_SIZE(EditorStateEditHistory, 0x2C);
 
@@ -216,6 +215,21 @@ namespace Editors
 
 		static uint32_t GetTypeIDForAssetType(uint32_t assetTypeID);
 
+		///Show creature abilities in verbtrayCollection
+		static void ComputeCreatureVerbIcons(cCreatureDataResource* creatureData, cSPVerbTrayCollection* VerbTrayCollection, int brainLevel, float param_4);
+
+		///Show vehicle abilities in verbtrayCollection
+		static void ComputeVehicleVerbIcons(cCreatureDataResource* creatureData, cSPVerbTrayCollection* VerbTrayCollection);
+
+		///get HeaderVerbTray icon by creation type
+		static void GetHeaderIcon(int unk, uint32_t modelType);
+
+		///return cCreatureDataResource*
+		static bool LoadCreatureData(ResourceKey* creation, cCreatureDataResource** dst);
+
+		///return cCreatureDataResource*
+		void CaptureThumbnail(EditorModel* editorModel, Graphics::IModelWorld* modelWorld, int textureSize, uint32_t mCameraThumbnailID, uint32_t messageID, Graphics::Texture* thumbTexture);
+
 	public:
 
 		int vftable_1C;
@@ -256,7 +270,7 @@ namespace Editors
 		/* 80h */	ILightingWorldPtr mpLightingWorld;
 		/// The model world that contains the pedestal and test environment model, and also editor rigblocks
 		/* 84h */	IModelWorldPtr mpMainModelWorld;
-		/* 88h */	IModelWorldPtr field_88;
+		/* 88h */	IModelWorldPtr mSaveModelWorld;
 		/// The model world that contains the background model.
 		/* 8Ch */	IModelWorldPtr mpBackgroundModelWorld;
 		/* 90h */	int field_90;  // related with havok world?
@@ -266,7 +280,7 @@ namespace Editors
 		// you can get it with virtual function 40h
 		/* 98h */	EditorModel* mpEditorModel;	// TODO is it intrusive_ptr?
 
-		/* 9Ch */	int field_9C;  // another editor model?
+		/* 9Ch */	EditorModel* mEditorSaveModel;  // another editor model?
 		/// The model to be used for the pedestal in the editor. It belongs to mpPedestalModelWorld.
 		/* A0h */	ModelPtr mpPedestalModel;
 		/// The model to be used for the test environment in the editor. It belongs mpPedestalModelWorld.
@@ -287,9 +301,9 @@ namespace Editors
 		/* CCh */	EditorRigblockPtr mpActivePart;
 		/* D0h */	EditorRigblockPtr mpMovingPart;  // the part that is being moved, only when mouse is being clicked
 		/* D4h */	EditorRigblockPtr mpSelectedPart;  // also valid for spines
-		/* D8h */	EditorRigblockPtr field_D8;
-		/* DCh */	EditorRigblockPtr field_DC;
-		/* E0h */	bool field_E0;
+		/* D8h */	EditorRigblockPtr mPreviousSelectedBlock;
+		/* DCh */	EditorRigblockPtr mToBeSelectedBlock;
+		/* E0h */	bool mToBeSelectedTorso;
 		/* E4h */	EditorBaseHandle* mpActiveHandle;  // morph handles
 		/// Is the mouse over the skin of the creature?
 		/* E8h */	bool mbMouseIsInSkin;
@@ -307,7 +321,7 @@ namespace Editors
 		/* 142h */	bool field_142;
 		/* 143h */	bool field_143;  // not initialized
 		/* 144h */	bool field_144;  // true
-		/* 148h */	ObjectPtr field_148;
+		/* 148h */	ObjectPtr field_148; // Unknown. NOT cCollectableItemsPtr.
 		/* 14Ch */	uint32_t field_14C; // vertebra? only present in creature-like editor
 		/* 150h */	cEditorSkinPtr mpEditorSkin;  // something related with painting?  uses sub_4C3E70 to return something that parts also use
 		/* 154h */	cEditorSkinPtr field_154;
@@ -390,21 +404,21 @@ namespace Editors
 		/* 288h */	float field_288;  // 1.2
 		/// Briefly set when saving a creature, then immediately unset.
 		/* 28Ch */	TexturePtr mpThumbnailTexture; 
-		/* 290h */	int field_290;
+		/* 290h */	TexturePtr field_290;
 		/* 294h */	IShadowWorldPtr mpShadowWorld;
 		/* 298h */	Graphics::ShadowMapInfo* mpShadowMapInfo;
-		/* 29Ch */	int field_29C;
-		/* 2A0h */	int field_2A0;
-		/* 2A4h */	int field_2A4;
+		/* 29Ch */	int mDefaultPaintTheme;
+		/* 2A0h */	int mCurrentPaintTheme;
+		/* 2A4h */	cSPVerbTrayCollectionPtr mVerbIconTray;
 		/// The save extension key which will be parsed both into a key and a three letter extension.
 		/* 2A8h */	uint32_t mSaveExtension;
 		/// The save directory key, Resource::SaveAreaID
 		/* 2ACh */	uint32_t mSaveDirectory;
 		/* 2B0h */	bool mIsActive;
-		/* 2B1h */	char field_2B1;  // not initialized
+		/* 2B1h */	bool mManipulatedBlockFromPalette;  // not initialized
 		/* 2B2h */	bool mbShowVertebrae;  // true
-		/* 2B3h */	char field_2B3;
-		/* 2B4h */	char field_2B4;
+		/* 2B3h */	bool mIgnoreMouseMove;
+		/* 2B4h */	bool mUnselectCurrentBlock;
 		/* 2B5h */	bool mbDisableCreatureAnimIK;  // not initialized
 		/// The width of the space that the model skin is constrained to.
 		/* 2B8h */	float mBoundSize;  // 2.0
@@ -525,12 +539,9 @@ namespace Editors
 		/* 42Ch */	int field_42C;
 		/* 430h */	bool field_430;
 		/* 434h */	StdEditorLimitsPtr mpEditorLimits;
-		/* 438h */	int field_438;
-		/* 43Ch */	int field_43C;
-		/* 440h */	int field_440;
-		/* 444h */	int field_444;
-		/* 448h */	int field_448;
-		/* 44Ch */	int field_44C;
+		/* 438h */	ULONG64 mnActivateTime;
+		/* 440h */	ULONG64 mnModelStartTime;
+		/* 448h */	ULONG64 mnTotalTime;
 		/* 450h */	int field_450;  // 1
 		/* 454h */	eastl::map<int, int> field_454;
 		/* 470h */	bool field_470;  // property 0x46082CA
@@ -643,6 +654,8 @@ namespace Editors
 		DeclareAddress(GetEditorForAssetType);
 		DeclareAddress(GetNameForAssetType);
 		DeclareAddress(GetTypeIDForAssetType);
+		DeclareAddress(ComputeCreatureVerbIcons);
+		DeclareAddress(LoadCreatureData);
 	}
 
 #ifdef SDK_TO_GHIDRA

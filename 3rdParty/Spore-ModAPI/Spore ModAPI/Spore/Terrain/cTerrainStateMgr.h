@@ -38,14 +38,14 @@ namespace Terrain
 			/* 94h */	Math::Vector2 kEffectTemperatureLowRange;
 			/* 9Ch */	Math::Vector2 kEffectTemperatureMedRange;
 			/* A4h */	Math::Vector2 kEffectTemperatureHighRange;
-			/* ACh */	Math::Vector4 kNightLightingTint;  // last value is kNightLumBlend
+			/* ACh */	Math::ColorRGBA kNightLightingTint;  // last value is kNightLumBlend
 			/* BCh */	int field_BC;  // not initialized
-			/* C0h */	Math::Vector3 kDayLightColor;
-			/* CCh */	Math::Vector3 kDayShadowColor;
-			/* D8h */	Math::Vector3 kDuskLightColor;
-			/* E4h */	Math::Vector3 kDuskShadowColor;
-			/* F0h */	Math::Vector3 kNightLightColor;
-			/* FCh */	Math::Vector3 kNightShadowColor;
+			/* C0h */	Math::ColorRGB kDayLightColor;
+			/* CCh */	Math::ColorRGB kDayShadowColor;
+			/* D8h */	Math::ColorRGB kDuskLightColor;
+			/* E4h */	Math::ColorRGB kDuskShadowColor;
+			/* F0h */	Math::ColorRGB kNightLightColor;
+			/* FCh */	Math::ColorRGB kNightShadowColor;
 			/* 108h */	Math::Vector4 kDuskDawnStartEnd;
 			/* 118h */	float kAboveColorRampSeaScaleBaseVal;
 			/* 11Ch */	float kAboveColorRampSeaScaleScaleVal;
@@ -110,50 +110,50 @@ namespace Terrain
 		{
 			TerrainTextures();
 
-			/// From texture `0x9D8D0398.rw4`
+			/// From texture `water_foamline.rw4`
 			/* 00h */	TexturePtr mpWaterFoamCutMap;
-			/// From texture `0x11B5EE6F.rw4`
+			/// From texture `PCAwater2_0.rw4`
 			/* 04h */	TexturePtr mpWaterPCAComponent0;
-			/// From texture `0x11B5EE6E.rw4`
+			/// From texture `PCAwater2_1.rw4`
 			/* 08h */	TexturePtr mpWaterPCAComponent1;
-			/// From texture `0x84613AC8.rw4`
+			/// From texture `packed_shannon_textures.rw4`
 			/* 0Ch */	TexturePtr mpTextureAboveDetail2;
-			/// From texture `0xC66C3FCD.rw4`
+			/// From texture `seabed_grand_shallow.rw4`
 			/* 10h */	TexturePtr mpTextureBelow;
 			/// From texture `lava_detail.rw4`
 			/* 14h */	TexturePtr mpLavaDetail;
 			/// From texture `lava_ramp.rw4`
 			/* 18h */	TexturePtr mpLavaRamp;
-			/// From texture `0xA5AB24F5.rw4`
+			/// From texture `packed_detail_texture_intertiling.rw4`
 			/* 1Ch */	TexturePtr mpIceDetailNear;
-			/// From texture `0x3CEF83D5.rw4`
+			/// From texture `ice_lowfrequency.rw4`
 			/* 20h */	TexturePtr mpIceDetailMid;
 			/// From texture `ice_ramp.rw4`
 			/* 24h */	TexturePtr mpIceRamp;
-			/// From texture `0x9D64F524.rw4`
+			/// From texture `beach_generic.rw4`
 			/* 28h */	TexturePtr mpTextureBeach;
-			/// From texture `0x3F05C913.rw4`
+			/// From texture `cliff_base.rw4`
 			/* 2Ch */	TexturePtr mpTextureCliff;
 			/// From texture `atmosphere_packed_curves.rw4`
 			/* 30h */	TexturePtr mpAtmospherePackedCurves;
 			/// Texture created in code with ID `AboveColorRamp`
 			/* 34h */	TexturePtr mpAboveColorRamp;
-			/// From bitmap `0xC5D262E4.8bitImage`
-			/* 38h */	ResourceObjectPtr field_38;
-			/// From bitmap `0x362AC39E.32bitImage`
-			/* 3Ch */	ResourceObjectPtr field_3C;
-			/// From bitmap `0x2EC45F93.32bitImage`
-			/* 40h */	ResourceObjectPtr field_40;
-			/// From bitmap `0x7C6B9FD9.32bitImage`
-			/* 44h */	ResourceObjectPtr field_44;
-			/// From bitmap `0x88566056.32bitImage`
-			/* 48h */	ResourceObjectPtr field_48;
+			/// From bitmap `biome_noise_modifier.8bitImage`
+			/* 38h */	ResourceObjectPtr mpAboveDetailNoise;
+			/// From bitmap `planet_color_ramps_dead.32bitImage`
+			/* 3Ch */	ResourceObjectPtr mpPlanetColorRampsDead;
+			/// From bitmap `planet_color_ramps_living.32bitImage`
+			/* 40h */	ResourceObjectPtr mpPlanetColorRampsLiving;
+			/// From bitmap `planet_color_ramps_ice.32bitImage`
+			/* 44h */	ResourceObjectPtr mpPlanetColorRampsIce;
+			/// From bitmap `planet_color_ramps_lava.32bitImage`
+			/* 48h */	ResourceObjectPtr mpPlanetColorRampsLava;
 			/// From bitmap `0xF30D0A76.32bitImage`
 			/* 4Ch */	ResourceObjectPtr field_4C;
-			/// From bitmap `0xC71EF96A.32bitImage`
-			/* 50h */	ResourceObjectPtr field_50;
+			/// From bitmap `JetStream.32bitImage`
+			/* 50h */	ResourceObjectPtr mpJetStream;
 			/// `pcawater.pcaw`
-			/* 54h */	ResourceObjectPtr field_54;
+			/* 54h */	ResourceObjectPtr mpPCAWater;
 			/* 58h */	Math::ColorRGBA nightLightTint;
 			/* 68h */	Math::ColorRGBA dayLightColor;
 			/* 78h */	Math::ColorRGBA duskLightColor;
@@ -163,7 +163,7 @@ namespace Terrain
 			/* B8h */	Math::ColorRGBA nightShadowColor;
 			/* C8h */	Math::Vector4 duskDawnStartEnd;
 			/* D8h */	char padding_D8[0x60];
-			/* 138h */	Math::Vector4 waterColor;
+			/* 138h */	Math::ColorRGBA waterColor;
 			/* 148h */	Math::Vector4 innerParms;
 			/* 158h */	Math::Vector4 field_158;
 			/* 168h */	Math::Vector4 field_168;
@@ -247,7 +247,7 @@ namespace Terrain
 		/* 620h */	float field_620;
 		/* 624h */	float field_624;
 		/* 628h */	char field_628[0x194];
-		/* 7BCh */	bool field_7BC;
+		/* 7BCh */	bool mbEnableAmbientEffects; // Requires weather level 2
 		/* 7C0h */	char field_7C0[0x180];
 		/* 940h */	char field_940[0x180];
 		/* AC0h */	char field_AC0[0x180];

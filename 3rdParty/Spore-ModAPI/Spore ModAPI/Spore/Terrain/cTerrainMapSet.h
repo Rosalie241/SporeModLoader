@@ -47,14 +47,11 @@ namespace Terrain
 		{
 			cHeightRanges();
 
-			/* 00h */	int field_0;  // 0x555
-			/* 04h */	int field_4;  // 1
-			/* 08h */	int field_8;  // 5
-			/* 0Ch */	int field_C;  // 0x15
-			/* 10h */	int field_10;  // 0x55
-			/* 14h */	int field_14;  // 0x155
-			/* 18h */	int* mpCell;
+			/* 00h */	int mFaceSize;  // 0x555
+			/* 04h */	int mLevelOffsets[5];  // 1, 5, 0x15, 0x55, 0x155
+			/* 18h */	int* mCellData;
 		};
+		ASSERT_SIZE(cHeightRanges, 0x1C);
 
 		cTerrainMapSet();
 		virtual ~cTerrainMapSet();
@@ -82,12 +79,11 @@ namespace Terrain
 		/* 38h */	float mAltitudeRange;  // 100.0
 		/// Between -1 and 1, gets multiplied by altitude range
 		/* 3Ch */	float mWaterLevel;
-		/* 40h */	float field_40;
-		/* 44h */	float field_44;  // 0.025
-		/* 48h */	float field_48;
+		/* 40h */	float mWaterDelta;
+		/* 44h */	float mBeachLevel;  // 0.025
+		/* 48h */	float mMinCliffGradient;
 		/* 4Ch */	float mMaxCliffGradient;
-		/* 50h */	float field_50;  // -1.0
-		/* 54h */	float field_54;  // -1.0
+		/* 50h */	Math::Vector2 mHeightRange;
 		/* 58h */	cHeightRanges* mpHeightRanges;
 	};
 	ASSERT_SIZE(cTerrainMapSet, 0x5C);

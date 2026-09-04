@@ -91,7 +91,7 @@ namespace Simulator
 		/* 184h */	float mPlanetScale;
 		/* 188h */	cSolarHitSpherePtr mpSolarHitSphere;
 		/* 18Ch */	cVisiblePlanetPtr mpVisiblePlanet;
-		/* 190h */	bool field_190;  // true
+		/* 190h */	bool mbLoadNounsFromBackground;  // true
 		/* 198h */	cGonzagoTimer mTimeSinceLastColonyPlaced;
 		/* 1B8h */	bool field_1B8;  // true
 		/* 1BCh */	int mPlanetFlags;

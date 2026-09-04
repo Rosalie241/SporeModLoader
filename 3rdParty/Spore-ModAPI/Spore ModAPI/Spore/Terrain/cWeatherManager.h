@@ -45,17 +45,17 @@ namespace Terrain
 		/* 1Ch */	IVisualEffectPtr mpHighAtmoEffect;
 		/* 20h */	IVisualEffectPtr mpLoopBoxAtmoEffect;
 		/* 24h */	IVisualEffectPtr mpLoopBoxGroundEffect;
-		/* 28h */	IVisualEffectPtr field_28;
-		/* 2Ch */	IVisualEffectPtr field_2C;
-		/* 30h */	IVisualEffectPtr field_30;
-		/* 34h */	IVisualEffectPtr field_34;
+		/* 28h */	IVisualEffectPtr mLoopBoxAmbientEffect;
+		/* 2Ch */	IVisualEffectPtr mLoopBoxStormEffect;
+		/* 30h */	IVisualEffectPtr mScreenAmbientEffect;
+		/* 34h */	IVisualEffectPtr mTransitionEffect;
 		/* 38h */	uint32_t mLowAtmoEffectID;
 		/* 3Ch */	uint32_t mMidAtmoEffectID;
 		/* 40h */	uint32_t mHighAtmoEffectID;
-		/* 44h */	int field_44;  // not initialized
+		/* 44h */	uint32_t mCurrentAmbientID;  // not initialized
 		/* 48h */	uint32_t mLoopBoxAtmoEffectID;
 		/* 4Ch */	uint32_t mLoopBoxGroundEffectID;
-		/* 50h */	int field_50;
+		/* 50h */	uint32_t mCurrentStormLoopboxID;
 		/* 54h */	uint32_t mColdStormLoopboxID;
 		/* 58h */	uint32_t mWarmStormLoopboxID;
 		/* 5Ch */	uint32_t mHotStormLoopboxID;
@@ -64,11 +64,11 @@ namespace Terrain
 		/* 68h */	uint32_t mAmbientLoopboxID;  // 0x39FAA0F in init method, depends on weatherAmbientLoopboxType
 		/* 6Ch */	uint32_t mHotAmbientEffectID;
 		/* 70h */	uint32_t mLavaAmbientEffectID;
-		/* 74h */	int field_74;
+		/* 74h */	uint32_t mCurrentStormEffectID;
 		/* 78h */	uint32_t mColdStormEffectID;
 		/* 7Ch */	uint32_t mWarmStormEffectID;
 		/* 80h */	uint32_t mHotStormEffectID;
-		/* 84h */	int field_84;
+		/* 84h */	uint32_t mCurrentLocalStormEffectID;
 		/* 88h */	uint32_t mColdLocalStormEffectID;
 		/* 8Ch */	uint32_t mWarmLocalStormEffectID;
 		/* 90h */	uint32_t mHotLocalStormEffectID;

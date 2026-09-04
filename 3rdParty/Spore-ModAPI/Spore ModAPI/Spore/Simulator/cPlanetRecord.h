@@ -82,7 +82,7 @@ namespace Simulator
 		/* 3Ch */	float mCapturePercent;
 		/* 40h */	eastl::string16 mName;
 		/* 50h */	eastl::string16 mDescription;
-		/* 60h */	int16_t field_60[14];
+		/* 60h */	uint16_t maabBuildingLinks[14];
 		/* 7Ch */	eastl::vector<cBuildingData> mBuilding;
 		/* 90h */	eastl::vector<cOrnamentData> mOrnament;
 		/* A4h */	eastl::vector<cWallData> mWall;
@@ -156,6 +156,7 @@ namespace Simulator
 
 		kPlanetFlagIsDestroyed = 0x100,  // 1 << 8
 
+		kPlanetFlagHasWildlifeSanctuary = 0x800,  // 1 << 11
 		kPlanetFlagRedOrbit = 0x1000,  // 1 << 12
 		kPlanetFlagBlueOrbit = 0x2000,  // 1 << 13
 	};

@@ -53,6 +53,7 @@
 #include <Spore\Simulator\cSpaceInventoryItem.h>
 #include <Spore\Simulator\cSpaceNames.h>
 #include <Spore\Simulator\cStarRecord.h>
+#include <Spore\Simulator\cScenarioAsset.h>
 #include <Spore\Simulator\cScenarioData.h>
 #include <Spore\Simulator\cScenarioPlayMode.h>
 #include <Spore\Simulator\cScenarioResource.h>
@@ -114,6 +115,7 @@
 #include <Spore\Simulator\SubSystem\GamePlantManager.h>
 #include <Spore\Simulator\SubSystem\UIAssetDiscoveryManager.h>
 #include <Spore\Simulator\SubSystem\ObstacleManager.h>
+#include <Spore\Simulator\SubSystem\cSpeciesRelationshipManager.h>
 #include <Spore\Simulator\NounClassFactories.h>
 
 namespace Addresses(Simulator)
@@ -671,6 +673,107 @@ namespace Simulator
 		DefineAddress(AttributesToXml, SelectAddress(0x695D40, 0x695B20));
 	}
 
+	namespace Addresses(COMSerializer)
+	{
+		DefineAddress(Open, SelectAddress(0x6902d0, 0x69dfc0));
+		DefineAddress(Close, SelectAddress(0x691910, 0x69f940));
+		DefineAddress(LoadClassObjects, SelectAddress(0x691240, 0x69f1d0));
+		DefineAddress(SaveClassObjects, SelectAddress(0x691af0, 0x69fb90));
+		DefineAddress(Write, SelectAddress(0x692440, 0x6a05f0));
+		DefineAddress(Read, SelectAddress(0x6924f0, 0x6a06a0));
+
+		DefineAddress(GetCRC, SelectAddress(0x690d40, 0x69ec20));
+		DefineAddress(reset, SelectAddress(0x6911d0, 0x69f160));
+		DefineAddress(onSetSPSerializable, SelectAddress(0x691ff0, 0x6a0110));
+		DefineAddress(onGetSPSerializable, SelectAddress(0x690bb0, 0x69e9e0));
+		DefineAddress(loadSingleObject, SelectAddress(0x6921e0, 0x6a0360));
+	}
+
+	namespace Addresses(SerializerDatabase)
+	{
+		DefineAddress(AsDatabase, SelectAddress(0x8fac50, 0x7f3190));
+		DefineAddress(GetCOMSerializer, SelectAddress(0x5a6210, 0x985d70));
+		DefineAddress(OpenReadStream, SelectAddress(0x690640, 0x69e3a0));
+		DefineAddress(CloseReadStream, SelectAddress(0x68f6e0, 0x69d2c0));
+		DefineAddress(LoadClassObjects, SelectAddress(0x690190, 0x69de80));
+		DefineAddress(OpenWriteStream, SelectAddress(0x6906d0, 0x69e470));
+		DefineAddress(CloseWriteStream, SelectAddress(0x68f6e0, 0x69d2c0));
+		DefineAddress(SaveClassObjects, SelectAddress(0x6901b0, 0x69dea0));
+		DefineAddress(HasKey, SelectAddress(0x6907d0, 0x69e5d0));
+		DefineAddress(GetPercentageCompletion, SelectAddress(0x109ffe0, 0xc06490));
+		DefineAddress(SetPercentageCompletion, SelectAddress(0x68f710, 0x69d2f0));
+		DefineAddress(OpenAsSerializer, SelectAddress(0x690230, 0x69df20));
+
+		DefineAddress(Initialize, SelectAddress(0x6901d0, 0x69dec0));
+		DefineAddress(Dispose, SelectAddress(0x6901e0, 0x69ded0));
+		DefineAddress(GetDatabaseType, SelectAddress(0x6900a0, 0x69dd90));
+		DefineAddress(GetRefCount, SelectAddress(0x68f800, 0x69d3f0));
+		DefineAddress(Lock, SelectAddress(0x6900b0, 0x69dda0));
+		DefineAddress(Open, SelectAddress(0x6900c0, 0x69ddb0));
+		DefineAddress(Close, SelectAddress(0x6902a0, 0x69df90));
+		DefineAddress(GetAccessFlags, SelectAddress(0x6900d0, 0x69ddc0));
+		DefineAddress(Flush, SelectAddress(0x6900f0, 0x69dde0));
+		DefineAddress(GetLocation, SelectAddress(0x690100, 0x69ddf0));
+		DefineAddress(SetLocation, SelectAddress(0x690110, 0x69de00));
+		DefineAddress(GetKeyList, SelectAddress(0x690120, 0x69de10));
+		DefineAddress(OpenRecord, SelectAddress(0x690130, 0x69de20));
+		DefineAddress(GetOpenCount, SelectAddress(0x690140, 0x69de30));
+		DefineAddress(CloseRecord, SelectAddress(0x690150, 0x69de40));
+		DefineAddress(DeleteRecord, SelectAddress(0x690160, 0x69de50));
+		DefineAddress(Attach, SelectAddress(0x690170, 0x69de60));
+		DefineAddress(GetAllocator, SelectAddress(0x690180, 0x69de70));
+	}
+
+	namespace Addresses(SerializerReadStream)
+	{
+		DefineAddress(Open, SelectAddress(0x6903b0, 0x69e090));
+		DefineAddress(Close, SelectAddress(0x68f860, 0x69d480));
+		DefineAddress(IsOpen, SelectAddress(0x68f8b0, 0x69d4d0));
+		DefineAddress(IsGood, SelectAddress(0x5a2c00, 0x950190));
+		DefineAddress(GetRecord, SelectAddress(0x69f450, 0xfc7910));
+		DefineAddress(GetDatabase, SelectAddress(0xf5c360, 0x7f55c0));
+		DefineAddress(ReadObjectPointer, SelectAddress(0x690450, 0x69e170));
+		DefineAddress(ReadPointer, SelectAddress(0x68f8d0, 0x69d4f0));
+		DefineAddress(ReadProperty, SelectAddress(0x68f920, 0x69d540));
+		DefineAddress(ReadRawData, SelectAddress(0x68fbb0, 0x69d830));
+		DefineAddress(ReadPropertyByID, SelectAddress(0x68f5e0, 0x69d1d0));
+		DefineAddress(GetSerializationVersion, SelectAddress(0x95a4f0, 0x93b630));
+		DefineAddress(SetSerializationVersion, SelectAddress(0x1054390, 0xfcc100));
+
+		DefineAddress(Skip, SelectAddress(0x68f620, 0x69d210));
+	}
+
+	namespace Addresses(SerializerWriteStream)
+	{
+		DefineAddress(Open, SelectAddress(0x690540, 0x69e260));
+		DefineAddress(Close, SelectAddress(0x68fc30, 0x69d8e0));
+		DefineAddress(IsOpen, SelectAddress(0x68fc80, 0x69d930));
+		DefineAddress(IsGood, SelectAddress(0x68f690, 0xab2ff0));
+		DefineAddress(GetRecord, SelectAddress(0x959a00, 0xfcc1d0));
+		DefineAddress(GetDatabase, SelectAddress(0x95a4f0, 0x93b630));
+		DefineAddress(WriteObjectPointer, SelectAddress(0x68fca0, 0x69d950));
+		DefineAddress(WritePointer, SelectAddress(0x68fcd0, 0x69d980));
+		DefineAddress(WriteProperty, SelectAddress(0x68fd20, 0x69d9d0));
+		DefineAddress(WriteRawData, SelectAddress(0x68ffb0, 0x69dc60));
+		DefineAddress(WritePropertyWithID, SelectAddress(0x68f6a0, 0x69d280));
+	}
+
+	namespace Addresses(SerializerReadStreamPrivate)
+	{
+		DefineAddress(IsOpen, SelectAddress(0x685e30, 0x692e60));
+		DefineAddress(SetSerializationVersion, SelectAddress(0x685e10, 0x692e80));
+		DefineAddress(GetSerializationVersion, SelectAddress(0x685e20, 0x692e90));
+
+		DefineAddress(openStream, SelectAddress(0x686770, 0x6938d0));
+	}
+
+	namespace Addresses(SerializerWriteStreamPrivate)
+	{
+		DefineAddress(IsOpen, SelectAddress(0x685e30, 0x692e60));
+
+		DefineAddress(openStream, SelectAddress(0x686890, 0x693a70));
+	}
+
 	namespace Addresses(cGameData)
 	{
 		DefineAddress(Write, SelectAddress(0xB18430, 0xB184D0));
@@ -800,6 +903,11 @@ namespace Simulator
 		DefineAddress(ptr, SelectAddress(0x160A850, 0x16065D8));
 	}
 
+	namespace Addresses(cScenarioAsset)
+	{
+		DefineAddress(GetThumbnail, SelectAddress(0xEF92F0, 0xF24FE0));
+	}
+
 	namespace Addresses(cScenarioData)
 	{
 		DefineAddress(Initialize, SelectAddress(0xF44AC0, 0xF44690));
@@ -844,7 +952,7 @@ namespace Simulator
 	namespace Addresses(cScenarioPowerup)
 	{
 		DefineAddress(ReactToPowerup, SelectAddress(0xF23FD0, 0xF23BF0));
-		//TODO DefineAddress(ApplyBoost, SelectAddress(0xF20670, 0xF20290));
+		DefineAddress(ApplyBoost, SelectAddress(0xF20670, 0xF20290));
 		DefineAddress(ActivateMedKit, SelectAddress(0xF229C0, 0xF225E0));
 		DefineAddress(ActivateEnergyKit, SelectAddress(0xF22BE0, 0xF22800));
 		DefineAddress(ActivateSpeedBoost, SelectAddress(0xF232B0, 0xF22ED0));
@@ -1188,6 +1296,7 @@ namespace Simulator
 	namespace Addresses(cBundleManager) {
 		DefineAddress(Get, SelectAddress(0xB3D210, 0xB3D3B0));
 		DefineAddress(CreateBundles, SelectAddress(0xAC7810, 0xAC79F0));
+		DefineAddress(RemoveBundles, SelectAddress(0xAC7A70, 0x00ac7c50));
 	}
 
 	namespace Addresses(cTribeInputStrategy) {
@@ -1213,6 +1322,44 @@ namespace Simulator
 
 	namespace Addresses(cNpcTribeController) {
 		DefineAddress(Get, SelectAddress(0xCC8330, 0xCC8C90));
+	}
+
+	namespace Addresses(IGonzagoSubsystem) {
+		DefineAddress(AddRef, SelectAddress(0xebb180, 0x76e620));
+		DefineAddress(Release, SelectAddress(0x74f1a0, 0xb0bc60));
+		DefineAddress(InitGonzagoSubsystem, SelectAddress(0xb78fc0, 0xba3160));
+		DefineAddress(ShutdownGonzagoSubsystem, SelectAddress(0xb78640, 0xba28a0));
+		DefineAddress(GetGonzagoSubsystemName, SelectAddress(0xb78670, 0xba28e0));
+		DefineAddress(PreGameModeTransition, SelectAddress(0xb31a40, 0xb5ba40));
+		DefineAddress(PostGameModeTransition, SelectAddress(0xb31a10, 0xb5ba10));
+		DefineAddress(GetPreModeTransitionState, SelectAddress(0x69f450, 0xfc7e10));
+		DefineAddress(GetPostModeTransitionState, SelectAddress(0xf5c360, 0x7f55c0));
+		DefineAddress(CheckGonzagoSubsystemInitState, SelectAddress(0x100b4a0, 0xba28d0));
+		DefineAddress(Write, SelectAddress(0xb78560, 0xba27c0));
+		DefineAddress(Read, SelectAddress(0xb785d0, 0xba2830));
+		DefineAddress(PostLoad, SelectAddress(0x105fec0, 0x1082a20));
+		DefineAddress(DisposeAttributeToXML, SelectAddress(0xb79920, 0xba3980));
+		DefineAddress(PreUpdateTick, SelectAddress(0xb32f60, 0xb267d0));
+		DefineAddress(PostUpdateTick, SelectAddress(0xb32f60, 0xb267d0));
+		DefineAddress(BeginPreGameModeTransition, SelectAddress(0xb31990, 0xb5b990));
+		DefineAddress(BeginPostGameModeTransition, SelectAddress(0xb319b0, 0xb5b9b0));
+		DefineAddress(EndPreGameModeTransition, SelectAddress(0xb319d0, 0xb5b9d0));
+		DefineAddress(EndPostGameModeTransition, SelectAddress(0xb319f0, 0xb5b9f0));
+	}
+
+	namespace Addresses(cSpeciesRelationshipManager) {
+		DefineAddress(Get, SelectAddress(0xb141b0, 0xb3d5c0));
+
+		DefineAddress(Dispose, SelectAddress(0xb7a0d0, 0xba40c0));
+		DefineAddress(HandleMessage, SelectAddress(0xb78b00, 0xba2dc0));
+		DefineAddress(AddRef, SelectAddress(0xfee650, 0x671f20));
+		DefineAddress(Release, SelectAddress(0xf1aae0, 0xae0620));
+		DefineAddress(GetType, SelectAddress(0xb78500, 0xba2760));
+		DefineAddress(GetFieldValue, SelectAddress(0xb78520, 0xba2780));
+		DefineAddress(GetClassID, SelectAddress(0xb78680, 0xba28f0));
+	}
+	namespace Addresses(cSpeciesRelationshipManagerDispose) {
+		DefineAddress(Dispose, SelectAddress(0xb7a0d0, 0xba40c0));
 	}
 }
 

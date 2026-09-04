@@ -26,7 +26,7 @@ namespace Resource
 		/* 10h */	ResourceKey mKey;
 		/* 1Ch */	bool mCloseStreamOnClose;
 		/* 1Dh */	bool mDeleteStreamOnClose;
-		/* 20h */	int field_20;
+		/* 20h */	int mnOpenCount; // AtomicInt<int>
 	};
 	ASSERT_SIZE(FakeRecord, 0x24);
 

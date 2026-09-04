@@ -23,6 +23,7 @@
 #include <Spore\RenderWare\IndexBuffer.h>
 #include <Spore\Graphics\ILayer.h>
 #include <Spore\Terrain\cTerrainShaderMgr.h>
+#include <Spore\Terrain\cTerrainSphereDecal.h>
 #include <Spore\MathUtils.h>
 #include <EASTL\vector.h>
 
@@ -47,6 +48,15 @@ namespace Terrain
 		/* 04h */	RenderWare::IndexBuffer* indexBuffer;
 		// anything else?
 	};
+
+	struct cTerrainSphereQuadDecal
+	{
+		/* 00h */	cTerrainSphereDecal* mpDecal;
+		/* 04h */	void* mpIndexBuffer; // IndexBuffer
+		/* 08h */	int field_8;
+		/* 0Ch */	int field_C;
+	};
+	ASSERT_SIZE(cTerrainSphereQuadDecal, 0x10);
 
 	class cTerrainSphereQuad
 	{
@@ -108,26 +118,23 @@ namespace Terrain
 
 	public:
 		/* 00h */	cTerrainSphere* mpSphere;
-		/* 04h */	int field_4;
-		/* 08h */	int field_8;
-		/* 0Ch */	int field_C;
-		/* 10h */	int field_10;
-		/* 14h */	int field_14;
+		/* 04h */	cTerrainSphereQuad* mpParent;
+		/* 08h */	cTerrainSphereQuad* mpChildren[4];
 		/* 18h */	int mPlanetLODChunkRes;
 		/// Index of sphere quad, from 0 to 5
-		/* 1Ch */	int mIndex;
+		/* 1Ch */	int mFace;
 		// UV coords?
-		/* 20h */	Math::Vector2 field_20;
-		/* 28h */	Math::Vector2 field_28;
-		/* 30h */	float field_30;  // 1.0
+		/* 20h */	Math::Vector2 mFaceMin;
+		/* 28h */	Math::Vector2 mFaceMax;
+		/* 30h */	float mFaceScale;  // 1.0
 		/* 34h */	Math::Vector3 field_34;  // 0, 0, 1
 		/* 40h */	char padding_40[0x64 - 0x40];
 		/* 64h */	float field_64;
 		/* 68h */	float field_68;
 		/* 6Ch */	bool mIsLowRes;
 		/* 70h */	Math::BoundingBox mChunkBoundingBox;
-		/* 88h */	float field_88;
-		/* 8Ch */	float field_8C;
+		/* 88h */	float mMinH;
+		/* 8Ch */	float mMaxH;
 		/* 90h */	bool mMustUpdateVertexBuffer;
 		/* 91h */	bool mMustUpdateIndexBuffer;
 		/* 94h */	TerrainQuadMesh* mpMesh;
@@ -135,8 +142,7 @@ namespace Terrain
 		/* 9Ch */	int mWaterIndicesCount;
 		/* A0h */	int mWaterIndicesStart;
 		/* A4h */	TerrainTransform mTerrainTransform;
-		// 154h vector with struct of size 16 with pointer to cTerrainSphereDecal
-		/* 154h */	eastl::vector<int> field_154;
+		/* 154h */	eastl::vector<cTerrainSphereQuadDecal> mDecalList;
 		/* 168h */	int field_168;
 		/* 16Ch */	int field_16C;
 		/* 170h */	int field_170;

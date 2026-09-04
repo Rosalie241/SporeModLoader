@@ -69,6 +69,15 @@ namespace Terrain
 		DefineAddress(ApplyTerrainUserBeachColor, SelectAddress(0xFBDDD0, 0xFBD6B0));
 		DefineAddress(ApplyTerrainUserAtmosphereColor, SelectAddress(0xFB98C0, 0xFB91A0));
 	}
+
+	namespace Addresses(cTerrainSphereDecal) {
+		DefineAddress(Initialize, SelectAddress(0xF82DD0, 0xFAEC20));
+		DefineAddress(Shutdown, SelectAddress(0xF81C20, 0xFADA70));
+		DefineAddress(UpdateDecal, SelectAddress(0xF82960, 0xFAE7B0));
+		DefineAddress(DispatchStaticDecal, SelectAddress(0xF816B0, 0xFAD500));
+		DefineAddress(GetBBoxForFace, SelectAddress(0xF812A0, 0xFAD0F0));
+		DefineAddress(SetFaceInfoArray, SelectAddress(0xF81D80, 0xFADBD0));
+	}
 }
 namespace Addresses(Terrain)
 {

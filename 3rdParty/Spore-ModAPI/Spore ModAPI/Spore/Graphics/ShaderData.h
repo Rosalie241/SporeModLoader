@@ -41,4 +41,11 @@ namespace Graphics
 		Math::Vector4 mShadowDir;
 		Math::Vector4 mNestInfo;
 	};
+
+	struct ShaderDataDecalState
+	{
+		Math::Vector4 mDecalColorTint;
+		Math::Vector4 mDirScaleU;
+		Math::Vector4 mDirScaleV;
+	};
 }

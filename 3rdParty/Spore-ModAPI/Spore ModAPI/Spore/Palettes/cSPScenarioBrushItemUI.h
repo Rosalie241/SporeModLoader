@@ -18,8 +18,8 @@ namespace Palettes
 		/* 3Ch */	ResourceKey mToolPreviewEffect;
 		/* 48h */	ResourceKey mMarkerModelID;
 		/* 54h */	uint32_t mBrushCategory;
-		/* 58h */	Vector2 mBrushIntensityRange;  // 0.0, 1.0
-		/* 60h */	Vector2 mBrushSizeRange;  // 0.0, 1.0
+		/* 58h */	Math::Vector2 mBrushIntensityRange;  // 0.0, 1.0
+		/* 60h */	Math::Vector2 mBrushSizeRange;  // 0.0, 1.0
 		/* 68h */	bool mIsTerraformModel;  // uses terraformModelID instead of toolGenericEffectID
 		/* 69h */	bool mIsValidComplexity;  // true
 		/* 6Ah */	bool mIsDragging;

@@ -12,6 +12,20 @@ namespace App
 	typedef bool(*cJobCallback)(cJob*, void*);
 	typedef void(*cJobVoidCallback)(cJob*, void*);
 
+	enum JobStatus
+	{
+		kJobStatusFree,
+		kJobStatusSuspended,
+		kJobStatusWaiting,
+		kJobStatusReady,
+		kJobStatusRunning,
+		kJobStatusContinuation,
+		kJobStatusCancelled,
+		kJobStatusFinished,
+		kJobStatusFailed,
+		kJobStatusCount
+	};
+
 	class cJob
 	{
 	public:
@@ -51,8 +65,12 @@ namespace App
 		/* 00h */	cJobCallback mCallback;
 		/* 04h */	void* mpCallbackObject;
 		/* 08h */	ObjectPtr mReleasebleObject;
-		/* 0Ch */	char padding[0x18 - 0xC];
+		/* 0Ch */	char* mpDebugName;
+		/* 10h */	int mPriority;
+		/* 14h */	JobStatus mStatus;
 		/* 18h */	uint32_t mThreadAffinity;
+		/* 1Ch */	int mSlot;
+		/* 20h */	void* mpReturnValue;
 	};
 
 	namespace Addresses(cJob)

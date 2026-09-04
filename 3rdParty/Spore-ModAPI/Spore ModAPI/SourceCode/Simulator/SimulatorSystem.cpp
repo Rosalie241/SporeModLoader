@@ -66,8 +66,8 @@ namespace Simulator
 		: mnRefCount(0)
 		, mLastGameMode(0xFFFFFFFF)
 		, mCurrentGameMode(0xFFFFFFFF)
-		, field_14(0xFFFFFFFF)
-		, field_18(0)
+		, mCurrentTransition(0xFFFFFFFF)
+		, mCurrentTransitionPhase(0)
 	{}
 	cStrategy::~cStrategy() {}
 
@@ -102,7 +102,7 @@ namespace Simulator
 		return mCurrentGameMode;
 	}
 	bool cStrategy::func24h(uint32_t mode) {
-		return mode == GetCurrentGameMode() && mode == GetLastGameMode() && field_14 == 0xFFFFFFFF;
+		return mode == GetCurrentGameMode() && mode == GetLastGameMode() && mCurrentTransition == 0xFFFFFFFF;
 	}
 
 	void cStrategy::OnLoad(const cSavedGameHeader& savedGame) {}
@@ -111,22 +111,22 @@ namespace Simulator
 	void cStrategy::PostUpdate(int deltaTime, int deltaGameTime) {}
 
 	void cStrategy::func40h(uint32_t mode) {
-		field_18 = 1;
-		if (field_14 == 0xFFFFFFFF) field_14 = mode;
+		mCurrentTransitionPhase = 1;
+		if (mCurrentTransition == 0xFFFFFFFF) mCurrentTransition = mode;
 	}
 	void cStrategy::func44h(uint32_t mode) {
-		field_18 = 2;
-		if (field_14 == 0xFFFFFFFF) field_14 = mode;
+		mCurrentTransitionPhase = 2;
+		if (mCurrentTransition == 0xFFFFFFFF) mCurrentTransition = mode;
 	}
 	void cStrategy::func48h() {
-		mLastGameMode = field_14;
-		field_14 = 0xFFFFFFFF;
-		field_18 = 0;
+		mLastGameMode = mCurrentTransition;
+		mCurrentTransition = 0xFFFFFFFF;
+		mCurrentTransitionPhase = 0;
 	}
 	void cStrategy::func4Ch() {
-		mCurrentGameMode = field_14;
-		field_14 = 0xFFFFFFFF;
-		field_18 = 0;
+		mCurrentGameMode = mCurrentTransition;
+		mCurrentTransition = 0xFFFFFFFF;
+		mCurrentTransitionPhase = 0;
 	}
 }
 #endif

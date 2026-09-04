@@ -15,25 +15,31 @@ namespace App
 {
 	struct PngEncoder {
 
-		bool EncodePNG(IO::IStream* outputStream, int mode);
+		enum Format {
+			kImageFormatPNG,
+			kImageFormatTGA,
+			kImageFormatBMP
+		};
 
-		/* 00h */	eastl::vector<int> field_0;
-		/* 14h */	int field_14;
-		/* 18h */	int field_18;
-		/* 1Ch */	int field_1C;  // not initialized
-		/* 20h */	bool field_20;
-		/* 24h */	int field_24;
-		/* 28h */	int field_28;  // -1
-		/* 2Ch */	int field_2C;  // -1
-		/* 30h */	int field_30;
-		/* 34h */	int field_34;
-		/* 38h */	int field_38;
-		/* 3Ch */	int field_3C;
-		/* 40h */	int field_40;
-		/* 44h */	int field_44;
-		/* 48h */	int field_48;
-		/* 4Ch */	int field_4C;  // 8
-		/* 50h */	int field_50;
+		bool ReadImageData(IO::IStream* inputStream);
+		bool WriteImageToStream(IO::IStream* outputStream, Format format);
+
+		/* 00h */	eastl::vector<int> mPixelBuf;
+		/* 14h */	uint32_t mnImageWidth;
+		/* 18h */	uint32_t mnImageHeight;
+		/* 1Ch */	uint32_t mnImagePixelBytes;  // not initialized
+		/* 20h */	bool mbAlpha;
+		/* 24h */	int mState;
+		/* 28h */	uint64_t mnHash;  // -1
+		/* 30h */	uint32_t mnStreamHash;
+		/* 34h */	uint32_t mnTotalSize;
+		/* 38h */	uint32_t mnTotalRead;
+		/* 3Ch */	uint32_t mnCurOffset;
+		/* 40h */	uint32_t mnMaxOffset;
+		/* 44h */	uint32_t mnBitMask;
+		/* 48h */	uint32_t mnStreamMask;
+		/* 4Ch */	uint32_t mnMaxMask;  // 8
+		/* 50h */	uint32_t mnSequenceMask;
 		/* 54h */	bool field_54;  // not initialized
 		/* 55h */	bool field_55;
 		/* 56h */	bool field_56;
@@ -84,11 +90,11 @@ namespace App
 		/// @param[out] dst The eastl::string where the path will be written.
 		bool GetFolderPath(uint32_t creationType, eastl::string16& dst);
 
-		/// Used to obtain a path from a locale file, by default `0x19F76D11.locale`, similar to the one that would
+		/// Used to obtain a path from a locale file, by default `SaveDataFolders.locale`, similar to the one that would
 		/// return GetFolderPath()
 		bool FolderPathFromLocale(uint32_t instanceID, eastl::string16& dst, uint32_t tableID = 0xFFFFFFFF);
 
-		/// Encodes the given resource into a `.png` image and saves it, both in the given package and in the
+		/// Encodes the given resource into a `.png` Model-in-Picture and saves it, both in the given package and in the
 		/// "My Spore Creations" in the user Documents folder. 
 		/// 
 		/// In the package, the image will be saved using the same ResourceKey as the resource, but with a TypeIDs::png type.
@@ -111,7 +117,7 @@ namespace App
 		/// @returns 'true' on success, 'false' if something failed.
 		bool ImportPNG(const char16_t* path, ResourceKey& key);
 
-		/// Extracts information from a PNG file. It extracts both the metadata, and the data encoded within the image.
+		/// Extracts information from a Model-in-Picture PNG file. It extracts both the metadata, and the data encoded within the image.
 		/// @param[out] dstMetadata 
 		/// @param[out] dstDataStream
 		/// @returns true on success, false if something failed
@@ -142,9 +148,7 @@ namespace App
 		/* 48h */	eastl::hash_map<int, int> field_48;
 		/* 68h */	eastl::hash_map<int, int> field_68;
 		/* 88h */	PngEncoder mPngEncoder;
-		/* F8h */	int field_F8;
-		/* FCh */	int field_FC;
-		/* 100h */	int field_100;
+		/* F8h */	ResourceKey mCurImage;
 		/* 104h */	eastl::string16 mCellsPath;
 		/* 114h */	eastl::string16 mCreaturesPath;
 		/* 124h */	eastl::string16 mBuildingsPath;
@@ -171,6 +175,7 @@ namespace App
 
 	namespace Addresses(PngEncoder)
 	{
-		DeclareAddress(EncodePNG);  // 0x68E660 0x68e190
+		DeclareAddress(ReadImageData);
+		DeclareAddress(WriteImageToStream);  // 0x68E660 0x68e190
 	}
 }

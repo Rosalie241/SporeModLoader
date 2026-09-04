@@ -39,6 +39,7 @@ namespace Simulator
 	enum EmpireFlags
 	{
 		kEmpireFlagNeedsEmpireLines = 0x10,
+		kEmpireFlagFromSaveGame = 0x40
 	};
 
 	/// An empire in Space Stage.

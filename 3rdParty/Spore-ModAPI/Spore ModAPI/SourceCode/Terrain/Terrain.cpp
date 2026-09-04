@@ -4,6 +4,7 @@
 #include <Spore\Terrain\cTerrainMapSet.h>
 #include <Spore\Terrain\cTerrainStateMgr.h>
 #include <Spore\Terrain\cTerrainSphere.h>
+#include <Spore\Terrain\cTerrainSphereDecal.h>
 #include <Spore\Terrain\TerrainRendering.h>
 #include <Spore\Graphics\ITextureManager.h>
 #include <Spore\Properties.h>
@@ -57,13 +58,9 @@ namespace Terrain
 
 
 	cTerrainMapSet::cHeightRanges::cHeightRanges()
-		: field_0(0x55)
-		, field_4(1)
-		, field_8(5)
-		, field_C(0x15)
-		, field_10(0x55)
-		, field_14(0x155)
-		, mpCell(new int[8190])
+		: mFaceSize(0x55)
+		, mLevelOffsets{ 1, 5, 0x15, 0x55, 0x155 }
+		, mCellData(new int[8190])
 	{
 
 	}
@@ -74,12 +71,11 @@ namespace Terrain
 		, mPlanetRadius(500.0f)
 		, mAltitudeRange(100.0f)
 		, mWaterLevel()
-		, field_40()
-		, field_44(0.025f)
-		, field_48()
+		, mWaterDelta()
+		, mBeachLevel(0.025f)
+		, mMinCliffGradient()
 		, mMaxCliffGradient()
-		, field_50(-1.0f)
-		, field_54(-1.0f)
+		, mHeightRange(-1.0f, -1.0f)
 		, mpHeightRanges(new cHeightRanges())
 	{
 
@@ -88,7 +84,7 @@ namespace Terrain
 	cTerrainMapSet::~cTerrainMapSet()
 	{
 		if (mpHeightRanges) {
-			if (mpHeightRanges->mpCell) delete mpHeightRanges->mpCell;
+			if (mpHeightRanges->mCellData) delete mpHeightRanges->mCellData;
 			delete mpHeightRanges;
 		}
 	}
@@ -136,14 +132,14 @@ namespace Terrain
 		, mpTextureCliff()
 		, mpAtmospherePackedCurves()
 		, mpAboveColorRamp()
-		, field_38()
-		, field_3C()
-		, field_40()
-		, field_44()
-		, field_48()
+		, mpAboveDetailNoise()
+		, mpPlanetColorRampsDead()
+		, mpPlanetColorRampsLiving()
+		, mpPlanetColorRampsIce()
+		, mpPlanetColorRampsLava()
 		, field_4C()
-		, field_50()
-		, field_54()
+		, mpJetStream()
+		, mpPCAWater()
 	{
 
 	}
@@ -175,7 +171,7 @@ namespace Terrain
 		, field_61C()
 		, field_620()
 		, field_624()
-		, field_7BC()
+		, mbEnableAmbientEffects()
 	{
 		memset(field_628, 0, sizeof(field_628));
 		memset(field_7C0, 0, sizeof(field_7C0));
@@ -331,6 +327,30 @@ namespace Terrain
 	}
 
 
+	cTerrainSphereDecal::cTerrainSphereDecal()
+		: field_74(-1)
+		, mpParentSphere(nullptr)
+		, mpTerrainMapSet(nullptr)
+		, mFaceArray()
+		, mPosition()
+		, mUSize(0)
+		, mVSize(0)
+		, mUSizeInput(0)
+		, mVSizeInput(0)
+		, mDecalRadius(1.0f)
+		, mDecalTextureID(0)
+		, mFlags(0)
+		, mZeroUVLoc(0, 0, 0)
+		, mTexturePlane(0, 0, 0, 0)
+		, mDirectionU(1.0f, 0, 0)
+		, mScaleU(1.0f)
+		, mDirectionV(0, 1.0f, 0)
+		, mScaleV(1.0f)
+		, mpTexture(nullptr)
+	{
+
+	}
+
 	auto_METHOD_VOID(cTerrainStateMgr, Initialize, Args(bool a), Args(a));
 
 	auto_METHOD_VOID_(cTerrainStateMgr, InitTextures);
@@ -344,6 +364,15 @@ namespace Terrain
 	auto_METHOD_VOID(cTerrainStateMgr, ApplyTerrainUserCliffColor, Args(struct Math::Vector3 color), Args(color));
 	auto_METHOD_VOID(cTerrainStateMgr, ApplyTerrainUserBeachColor, Args(struct Math::Vector3 color), Args(color));
 	auto_METHOD_VOID(cTerrainStateMgr, ApplyTerrainUserAtmosphereColor, Args(struct Math::Vector3 color), Args(color));
+
+
+	auto_METHOD_VOID(cTerrainSphereDecal, Initialize, Args(int arg_4, Graphics::Texture* pTexture, cTerrainSphere* pParentSphere, const Transform& xform, float turns, bool isStatic), Args(arg_4, pTexture, pParentSphere, xform, turns, isStatic));
+	auto_METHOD_VOID_(cTerrainSphereDecal, Shutdown);
+	auto_METHOD_VOID_(cTerrainSphereDecal, UpdateDecal);
+	auto_METHOD_VOID(cTerrainSphereDecal, DispatchStaticDecal, Args(int face), Args(face));
+	auto_METHOD(cTerrainSphereDecal, bool, GetBBoxForFace, Args(int faceRequest, Math::Rectangle& bbox), Args(faceRequest, bbox));
+
+	auto_METHOD_VOID(cTerrainSphereDecal, SetFaceInfoArray, Args(const Transform& xform, float aspect), Args(xform, aspect));
 }
 
 

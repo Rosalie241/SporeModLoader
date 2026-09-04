@@ -121,7 +121,7 @@ namespace Swarm
 
 		/* 10h */	virtual int IsRunning() = 0;
 
-		/* 14h */	virtual void SetRigidTransform(const Transform&) = 0;
+		/* 14h */	virtual void SetRigidTransform(const Transform& transform) = 0;
 		/* 18h */	virtual void SetSourceTransform(const Transform& transform) = 0;
 		/* 1Ch */	virtual Transform GetRigidTransform() const = 0;
 		/* 20h */	virtual Transform GetSourceTransform() const = 0;
@@ -146,7 +146,7 @@ namespace Swarm
 		/* 58h */	virtual const int* GetIntParams(IntParams param, int* dstCount = nullptr) = 0;
 		/* 5Ch */	virtual Object* GetUnknownParam(ObjectParams params) = 0;
 
-		/* 60h */	virtual ResourceID GetEffectID() = 0;
+		/* 60h */	virtual uint32_t GetEffectID() = 0;
 
 		/* 64h */	virtual void SetNotifyMessage(int, int) = 0;
 	};

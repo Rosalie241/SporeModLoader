@@ -17,3 +17,4 @@
 #include <Spore\Terrain\ITerrainResourceManager.h>
 #include <Spore\Terrain\cTerrainMapSet.h>
 #include <Spore\Terrain\cTerrainShaderMgr.h>
+#include <Spore\Terrain\cTerrainSphereDecal.h>
