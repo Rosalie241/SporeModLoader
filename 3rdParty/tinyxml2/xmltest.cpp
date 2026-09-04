@@ -45,13 +45,15 @@ bool XMLTest (const char* testString, const char* expected, const char* found, b
 		printf (" %s\n", testString);
 	}
 	else {
+		const char* expectedStr = expected ? expected : "(null)";
+		const char* foundStr    = found    ? found    : "(null)";
 		if ( extraNL ) {
 			printf( " %s\n", testString );
-			printf( "%s\n", expected );
-			printf( "%s\n", found );
+			printf( "%s\n", expectedStr );
+			printf( "%s\n", foundStr );
 		}
 		else {
-			printf (" %s [%s][%s]\n", testString, expected, found);
+			printf (" %s [%s][%s]\n", testString, expectedStr, foundStr);
 		}
 	}
 
@@ -324,9 +326,9 @@ int main( int argc, const char ** argv )
 
 		printf( "Test file '%s' loaded. ErrorID=%d\n", argv[1], errorID );
 		if ( !errorID ) {
-			printf( "Load time=%u\n",   (unsigned)(loadTime - startTime) );
-			printf( "Delete time=%u\n", (unsigned)(deleteTime - loadTime) );
-			printf( "Total time=%u\n",  (unsigned)(deleteTime - startTime) );
+			printf( "Load time=%u\n",   static_cast<unsigned>(loadTime - startTime) );
+			printf( "Delete time=%u\n", static_cast<unsigned>(deleteTime - loadTime) );
+			printf( "Total time=%u\n",  static_cast<unsigned>(deleteTime - startTime) );
 		}
 		exit(0);
 	}
@@ -595,8 +597,8 @@ int main( int argc, const char ** argv )
 
 		result = ele->QueryDoubleAttribute( "attr0", &dVal );
 		XMLTest( "Query attribute: int as double", XML_SUCCESS, result);
-		XMLTest( "Query attribute: int as double", 1, (int)dVal );
-		XMLTest( "Query attribute: int as double", 1, (int)ele->DoubleAttribute("attr0"));
+		XMLTest( "Query attribute: int as double", 1, static_cast<int>(dVal) );
+		XMLTest( "Query attribute: int as double", 1, static_cast<int>(ele->DoubleAttribute("attr0")));
 
 		result = ele->QueryDoubleAttribute( "attr1", &dVal );
 		XMLTest( "Query attribute: double as double", XML_SUCCESS, result);
@@ -648,17 +650,17 @@ int main( int argc, const char ** argv )
 
 		{
 			XMLError queryResult = ele->QueryAttribute( "int", &iVal2 );
-			XMLTest( "Query int attribute generic", (int)XML_SUCCESS, queryResult);
+			XMLTest( "Query int attribute generic", static_cast<int>(XML_SUCCESS), queryResult);
 		}
 		{
 			XMLError queryResult = ele->QueryAttribute( "double", &dVal2 );
-			XMLTest( "Query double attribute generic", (int)XML_SUCCESS, queryResult);
+			XMLTest( "Query double attribute generic", static_cast<int>(XML_SUCCESS), queryResult);
 		}
 
 		XMLTest( "Attribute match test", "strValue", ele->Attribute( "str", "strValue" ) );
 		XMLTest( "Attribute round trip. c-string.", "strValue", cStr );
 		XMLTest( "Attribute round trip. int.", 1, iVal );
-		XMLTest( "Attribute round trip. double.", -1, (int)dVal );
+		XMLTest( "Attribute round trip. double.", -1, static_cast<int>(dVal) );
 		XMLTest( "Alternate query", true, iVal == iVal2 );
 		XMLTest( "Alternate query", true, dVal == dVal2 );
 		XMLTest( "Alternate query", true, iVal == ele->IntAttribute("int") );
@@ -675,7 +677,7 @@ int main( int argc, const char ** argv )
 		const unsigned char correctValue[] = {	0xd1U, 0x86U, 0xd0U, 0xb5U, 0xd0U, 0xbdU, 0xd0U, 0xbdU,
 												0xd0U, 0xbeU, 0xd1U, 0x81U, 0xd1U, 0x82U, 0xd1U, 0x8cU, 0 };
 
-		XMLTest( "UTF-8: Russian value.", (const char*)correctValue, element->Attribute( "value" ) );
+		XMLTest( "UTF-8: Russian value.", reinterpret_cast<const char*>(correctValue), element->Attribute( "value" ) );
 
 		const unsigned char russianElementName[] = {	0xd0U, 0xa0U, 0xd1U, 0x83U,
 														0xd1U, 0x81U, 0xd1U, 0x81U,
@@ -683,7 +685,7 @@ int main( int argc, const char ** argv )
 														0xd0U, 0xb9U, 0 };
 		const char russianText[] = "<\xD0\xB8\xD0\xBC\xD0\xB5\xD0\xB5\xD1\x82>";
 
-		XMLText* text = doc.FirstChildElement( "document" )->FirstChildElement( (const char*) russianElementName )->FirstChild()->ToText();
+		XMLText* text = doc.FirstChildElement( "document" )->FirstChildElement( reinterpret_cast<const char*>(russianElementName) )->FirstChild()->ToText();
 		XMLTest( "UTF-8: Browsing russian element name.",
 				 russianText,
 				 text->Value() );
@@ -824,7 +826,7 @@ int main( int argc, const char ** argv )
 			{
 				int v = 0;
 				XMLError queryResult = element->QueryAttribute("attrib", &v);
-				XMLTest("Attribute: int", (int)XML_SUCCESS, queryResult, true);
+				XMLTest("Attribute: int", static_cast<int>(XML_SUCCESS), queryResult, true);
 				XMLTest("Attribute: int", -100, v, true);
 			}
 			XMLTest("Attribute: int", -100, element->IntAttribute("attrib"), true);
@@ -840,7 +842,7 @@ int main( int argc, const char ** argv )
 			{
 				unsigned v = 0;
 				XMLError queryResult = element->QueryAttribute("attrib", &v);
-				XMLTest("Attribute: unsigned", (int)XML_SUCCESS, queryResult, true);
+				XMLTest("Attribute: unsigned", static_cast<int>(XML_SUCCESS), queryResult, true);
 				XMLTest("Attribute: unsigned", unsigned(100), v, true);
 			}
 			{
@@ -864,7 +866,7 @@ int main( int argc, const char ** argv )
 			{
 				int64_t v = 0;
 				XMLError queryResult = element->QueryAttribute("attrib", &v);
-				XMLTest("Attribute: int64_t", (int)XML_SUCCESS, queryResult, true);
+				XMLTest("Attribute: int64_t", static_cast<int>(XML_SUCCESS), queryResult, true);
 				XMLTest("Attribute: int64_t", BIG, v, true);
 			}
 			XMLTest("Attribute: int64_t", BIG, element->Int64Attribute("attrib"), true);
@@ -880,7 +882,7 @@ int main( int argc, const char ** argv )
             {
                 uint64_t v = 0;
 				XMLError queryResult = element->QueryAttribute("attrib", &v);
-                XMLTest("Attribute: uint64_t", (int)XML_SUCCESS, queryResult, true);
+                XMLTest("Attribute: uint64_t", static_cast<int>(XML_SUCCESS), queryResult, true);
                 XMLTest("Attribute: uint64_t", BIG_POS, v, true);
             }
             XMLTest("Attribute: uint64_t", BIG_POS, element->Unsigned64Attribute("attrib"), true);
@@ -896,7 +898,7 @@ int main( int argc, const char ** argv )
 			{
 				bool v = false;
 				XMLError queryResult = element->QueryAttribute("attrib", &v);
-				XMLTest("Attribute: bool", (int)XML_SUCCESS, queryResult, true);
+				XMLTest("Attribute: bool", static_cast<int>(XML_SUCCESS), queryResult, true);
 				XMLTest("Attribute: bool", true, v, true);
 			}
 			XMLTest("Attribute: bool", true, element->BoolAttribute("attrib"), true);
@@ -924,7 +926,7 @@ int main( int argc, const char ** argv )
 			{
 				double v = 0;
 				XMLError queryResult = element->QueryAttribute("attrib", &v);
-				XMLTest("Attribute: bool", (int)XML_SUCCESS, queryResult, true);
+				XMLTest("Attribute: bool", static_cast<int>(XML_SUCCESS), queryResult, true);
 				XMLTest("Attribute: double", 100.0, v, true);
 			}
 			XMLTest("Attribute: double", 100.0, element->DoubleAttribute("attrib"), true);
@@ -940,7 +942,7 @@ int main( int argc, const char ** argv )
 			{
 				float v = 0;
 				XMLError queryResult = element->QueryAttribute("attrib", &v);
-				XMLTest("Attribute: float", (int)XML_SUCCESS, queryResult, true);
+				XMLTest("Attribute: float", static_cast<int>(XML_SUCCESS), queryResult, true);
 				XMLTest("Attribute: float", 100.0f, v, true);
 			}
 			XMLTest("Attribute: float", 100.0f, element->FloatAttribute("attrib"), true);
@@ -1068,15 +1070,15 @@ int main( int argc, const char ** argv )
 
 			unsigned  unsigned_value;
 			unsigned_value = root->FirstChildElement("unsigned")->UnsignedText();
-			XMLTest("PushText( unsigned value ) test", (unsigned)12, unsigned_value);
+			XMLTest("PushText( unsigned value ) test", static_cast<unsigned>(12), unsigned_value);
 
 			int64_t  int64_t_value;
 			int64_t_value = root->FirstChildElement("int64_t")->Int64Text();
-			XMLTest("PushText( int64_t value ) test", (int64_t) 13, int64_t_value);
+			XMLTest("PushText( int64_t value ) test", static_cast<int64_t>(13), int64_t_value);
 
 			uint64_t uint64_t_value;
 			uint64_t_value = root->FirstChildElement("uint64_t")->Unsigned64Text();
-			XMLTest("PushText( uint64_t value ) test", (uint64_t) 14, uint64_t_value);
+			XMLTest("PushText( uint64_t value ) test", static_cast<uint64_t>(14), uint64_t_value);
 
 			float  float_value;
 			float_value = root->FirstChildElement("float")->FloatText();
@@ -1397,7 +1399,7 @@ int main( int argc, const char ** argv )
 		buf[61] = 0;
 
 		XMLDocument doc;
-		doc.Parse( (const char*)buf);
+		doc.Parse( reinterpret_cast<const char*>(buf) );
 		XMLTest( "Broken CDATA", true, doc.Error() );
 	}
 
@@ -1753,7 +1755,7 @@ int main( int argc, const char ** argv )
 			unsigned unsignedValue = 0;
 			XMLError queryResult = pointElement->FirstChildElement( "y" )->QueryUnsignedText( &unsignedValue );
 			XMLTest( "QueryUnsignedText result", XML_SUCCESS, queryResult, false );
-			XMLTest( "QueryUnsignedText", (unsigned)1, unsignedValue, false );
+			XMLTest( "QueryUnsignedText", static_cast<unsigned>(1), unsignedValue, false );
 		}
 
 		{
@@ -2025,7 +2027,13 @@ int main( int argc, const char ** argv )
 		XMLTest("Parse nested elements with pedantic whitespace", false, doc.Error());
 		XMLTest("Pedantic whitespace", true, 0 == doc.RootElement()->FirstChildElement()->GetText());
 	}
-
+	//Check the robustness of the DeleteNode function in handling null pointers.
+	{
+		XMLDocument doc;
+		doc.DeleteNode(nullptr);
+		XMLTest("DeleteNode with null pointer", true, doc.Error() == XML_SUCCESS);
+	}
+		
 	// Check sample xml can be parsed with pedantic mode
 	{
 		XMLDocument doc(true, PEDANTIC_WHITESPACE);
@@ -2695,6 +2703,91 @@ int main( int argc, const char ** argv )
 		XMLTest("Test attribute encode with a Hex value", value5, "!"); // hex value in unicode value
 	}
 
+	// ---------- Security: numeric character reference bounds ----------
+	{
+		// Regression: U+10FFFF is the last valid Unicode code point and must
+		// parse correctly. The in-loop overflow guard must not reject it.
+		XMLDocument doc;
+		doc.Parse( "<t v='&#x10FFFF;'/>" );
+		XMLTest( "Numeric ref U+10FFFF: no error", false, doc.Error() );
+		const char* v = doc.FirstChildElement()->Attribute( "v" );
+		// U+10FFFF encodes to the 4-byte UTF-8 sequence F4 8F BF BF.
+		const char expected[] = {
+			static_cast<char>(0xF4), static_cast<char>(0x8F),
+			static_cast<char>(0xBF), static_cast<char>(0xBF), 0
+		};
+		XMLTest( "Numeric ref U+10FFFF: correct UTF-8 output", expected, v );
+	}
+	{
+		// Boundary check: U+110000 is one above the maximum code point.
+		// The in-loop overflow guard must catch this before ucs is written,
+		// leaving the entity as a literal (starting with '&').
+		XMLDocument doc;
+		doc.Parse( "<t v='&#x110000;'/>" );
+		XMLTest( "Numeric ref U+110000: no parse error", false, doc.Error() );
+		const char* v = doc.FirstChildElement()->Attribute( "v" );
+		XMLTest( "Numeric ref U+110000: not resolved (left as literal)", true,
+		         v != nullptr && v[0] == '&' );
+	}
+	{
+		// A hex entity with enough digits to overflow uint32_t must
+		// be rejected by the in-loop guard before the accumulator wraps.
+		// Before the fix, ucs could wrap around and pass the post-loop range
+		// check, producing an attacker-chosen character in the parsed output.
+		// Build "&#x" + 300 'F' digits + ";" -- far beyond what fits in uint32_t.
+		const char prefix[] = "<t v='&#x";
+		const char suffix[] = ";'/>";
+		static const int NDIGITS = 300;
+		char xml[sizeof(prefix) + NDIGITS + sizeof(suffix)];
+		strcpy( xml, prefix );
+		memset( xml + strlen(prefix), 'F', NDIGITS );
+		strcpy( xml + strlen(prefix) + NDIGITS, suffix );
+
+		XMLDocument doc;
+		doc.Parse( xml );
+		XMLTest( "Overflow hex entity: no parse error", false, doc.Error() );
+		const char* v = doc.FirstChildElement()->Attribute( "v" );
+		// GetCharacterRef returns 0 for rejected refs; the caller then copies
+		// the literal '&', so the attribute must start with '&', not a char.
+		XMLTest( "Overflow hex entity: not resolved to a character", true,
+		         v != nullptr && v[0] == '&' );
+	}
+
+	// ---------- XMLPrinter Apos Escaping ------
+	{
+		const char* testText = "text containing a ' character";
+		XMLDocument doc;
+		XMLElement* element = doc.NewElement( "element" );
+		doc.InsertEndChild( element );
+		element->SetAttribute( "attrib", testText );
+		{
+			XMLPrinter defaultPrinter;
+			doc.Print( &defaultPrinter );
+			const char* defaultOutput = defaultPrinter.CStr();
+			const bool foundTextWithUnescapedApos = (strstr(defaultOutput, testText) != nullptr); 
+			XMLTest("Default XMLPrinter should escape ' characters", false, foundTextWithUnescapedApos);
+			{
+				XMLDocument parsingDoc;
+				parsingDoc.Parse(defaultOutput);
+				const XMLAttribute* attrib = parsingDoc.FirstChildElement("element")->FindAttribute("attrib");
+				XMLTest("Default XMLPrinter should output parsable xml", testText, attrib->Value(), true);
+			}
+		}
+		{
+			XMLPrinter customPrinter(0, false, 0, XMLPrinter::DONT_ESCAPE_APOS_CHARS_IN_ATTRIBUTES);
+			doc.Print( &customPrinter );
+			const char* customOutput = customPrinter.CStr();
+			const bool foundTextWithUnescapedApos = (strstr(customOutput, testText) != nullptr); 
+			XMLTest("Custom XMLPrinter should not escape ' characters", true, foundTextWithUnescapedApos);
+			{
+				XMLDocument parsingDoc;
+				parsingDoc.Parse(customOutput);
+				const XMLAttribute* attrib = parsingDoc.FirstChildElement("element")->FindAttribute("attrib");
+				XMLTest("Custom XMLPrinter should output parsable xml", testText, attrib->Value(), true);
+			}
+		}
+	}
+	
     // ----------- Performance tracking --------------
 	{
 #if defined( _MSC_VER )
@@ -2744,9 +2837,9 @@ int main( int argc, const char ** argv )
 #endif
 
 #if defined( _MSC_VER )
-		const double duration = 1000.0 * (double)(end - start) / ((double)freq * (double)COUNT);
+		const double duration = 1000.0 * static_cast<double>(end - start) / (static_cast<double>(freq) * static_cast<double>(COUNT));
 #else
-		const double duration = (double)(cend - cstart) / (double)COUNT;
+		const double duration = static_cast<double>(cend - cstart) / static_cast<double>(COUNT);
 #endif
 		printf("\nParsing dream.xml (%s): %.3f milli-seconds\n", note, duration);
 	}

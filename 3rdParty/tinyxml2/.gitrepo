@@ -5,8 +5,8 @@
 ;
 [subrepo]
 	remote = git@github.com:leethomason/tinyxml2.git
-	branch = 11.0.0
-	commit = 9148bdf719e997d1f474be6bcc7943881046dba1
-	parent = b433fea87c9416c9bf0f1b5f856d1f90560e89ac
+	branch = master
+	commit = 8224e427b655b83dae5e2298f1e6919523a78737
+	parent = b7c31d134fe2da73eefffed8e96f57aa90774604
 	method = merge
-	cmdver = 0.4.9
+	cmdver = 0.4.6
