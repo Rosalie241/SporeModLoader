@@ -64,6 +64,7 @@ std::vector<std::filesystem::path> Path::GetCoreLibsPaths(void)
     std::filesystem::path legacyLibPath;
     std::filesystem::path coreLibPath;
     std::filesystem::path coreLibsPath;
+    std::wstring logMessage;
 
     coreLibsPath = GetModLoaderPath();
     coreLibsPath += "\\CoreLibs\\";
@@ -92,6 +93,27 @@ std::vector<std::filesystem::path> Path::GetCoreLibsPaths(void)
     coreLibsPaths.push_back(coreLibPath);
     coreLibsPaths.push_back(legacyLibPath);
 
+    for (const auto& path : coreLibsPaths)
+    {
+        bool file_exists = std::filesystem::is_regular_file(path);
+
+        logMessage = L"std::filesystem::is_regular_file(\"";
+        logMessage += path.wstring();
+        logMessage += L"\") == ";
+        logMessage += std::to_wstring(file_exists);
+        Logger::AddMessage(logMessage);
+
+        if (!file_exists)
+        {
+            std::wstring errorMessage;
+            errorMessage = L"\"";
+            errorMessage += path.wstring();
+            errorMessage += L"\" doesn't exist or is not a regular file!";
+            UI::ShowErrorMessage(errorMessage);
+            throw std::exception();
+        }
+    }
+
     return coreLibsPaths;
 }
 
@@ -100,6 +122,7 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
     std::vector<std::filesystem::path> modLibsPaths;
     std::filesystem::path modLibsPath;
     std::vector<std::wstring> excludePostfixes;
+    std::wstring logMessage;
 
     modLibsPath = GetModLoaderPath();
     modLibsPath += "\\ModLibs";
@@ -118,6 +141,24 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
     {
         excludePostfixes.push_back(L"-steam.dll");
         excludePostfixes.push_back(L"-steam_patched.dll");
+    }
+
+    bool directory_exists = std::filesystem::is_directory(modLibsPath);
+
+    logMessage = L"std::filesystem::is_directory(\"";
+    logMessage += modLibsPath.wstring();
+    logMessage += L"\") == ";
+    logMessage += std::to_wstring(directory_exists);
+    Logger::AddMessage(logMessage);
+    
+    if (!directory_exists)
+    {
+        std::wstring errorMessage;
+        errorMessage = L"\"";
+        errorMessage += modLibsPath.wstring();
+        errorMessage += L"\" doesn't exist or is not a directory!";
+        UI::ShowErrorMessage(errorMessage);
+        throw std::exception();
     }
 
     for (const auto& entry : std::filesystem::directory_iterator(modLibsPath))

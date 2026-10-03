@@ -34,6 +34,7 @@ bool SporeModLoader::Initialize()
     try
     {
         Logger::Open();
+        Logger::AddMessage(L"SporeModLoader::Initialize()");
 
         l_CoreLibsPaths = Path::GetCoreLibsPaths();
         l_ModLibsPaths  = Path::GetModLibsPaths();
@@ -41,19 +42,6 @@ bool SporeModLoader::Initialize()
         // allocate early
         l_LoadedCoreLibs.reserve(l_CoreLibsPaths.size());
         l_LoadedModLibs.reserve(l_ModLibsPaths.size());
-
-        for (const auto& path : l_CoreLibsPaths)
-        {
-            if (!std::filesystem::exists(path))
-            {
-                std::wstring errorMessage;
-                errorMessage = L"\"";
-                errorMessage += path.wstring();
-                errorMessage += L"\" doesn't exist!";
-                UI::ShowErrorMessage(errorMessage);
-                throw std::exception();
-            }
-        }
 
         Logger::AddMessage(L"SporeModLoader::Initialize() == 1");
         return true;
