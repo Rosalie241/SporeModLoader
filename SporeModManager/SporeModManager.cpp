@@ -170,7 +170,7 @@ bool SporeModManager::ListInstalledMods(void)
         installedSporeMod = l_InstalledSporeMods[i];
 
         name = installedSporeMod.Name;
-        if (installedSporeMod.HasVersion)
+        if (installedSporeMod.Version.is_valid())
         {
             name += " v";
             name += installedSporeMod.Version.to_string();

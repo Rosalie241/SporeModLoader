@@ -55,7 +55,6 @@ bool SporeMod::ResolveDependencies(const std::vector<Xml::SporeModInfo>& pending
     Xml::SporeModDependency dependency;
     std::vector<Xml::SporeModDependency> dependencies;
     std::vector<Xml::SporeModInfo> dependants;
-    const FileVersion::FileVersionInfo emptyVersionInfo = { 0, 0, 0, 0 };
 
     // check if dependencies are installed
     for (const auto& pendingSporeMod : pendingSporeMods)
@@ -98,7 +97,7 @@ bool SporeMod::ResolveDependencies(const std::vector<Xml::SporeModInfo>& pending
         std::cerr << "Error: required dependency for \"" 
                             << dependants[i].Name << "\" is missing: \"" 
                             << dependencies[i].UniqueName << "\"" << 
-                            (dependencies[i].Version == emptyVersionInfo ? "!" 
+                            (!dependencies[i].Version.is_valid() ? "!" 
                                 : (" v" + dependencies[i].Version.to_string() + "!")) << std::endl;
     }
 
@@ -222,7 +221,6 @@ bool SporeMod::ConfigureSporeMod(Zip::ZipFile zipFile, const Xml::SporeModInfo& 
     installedSporeMod.Name        = sporeModInfo.Name;
     installedSporeMod.UniqueName  = sporeModInfo.UniqueName;
     installedSporeMod.Description = sporeModInfo.Description;
-    installedSporeMod.HasVersion  = sporeModInfo.HasVersion;
     installedSporeMod.Version     = sporeModInfo.Version;
     installedSporeMod.Dependencies = sporeModInfo.Dependencies;
 

@@ -953,13 +953,11 @@ def test_depends():
 	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_1.dll'))
 	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
 
-	# verify that the depends attribute works with an installed mod
+	# verify that the version attribute doesn't accept negative values
 	xml = """<mod displayName="test_depends_2" 
 				unique="test_depends_2" 
 				description="test_depends_2" 
-				version="1.0.3"
-				depends="test_depends_1"
-				dependsVersions="1.0.2"
+				version="1.0.-1"
 				installerSystemVersion="1.0.1.3" 
 				dllsBuild="2.5.20">
 				<prerequisite>test_depends_2.dll</prerequisite>
@@ -969,18 +967,16 @@ def test_depends():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_2.dll'))
-	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
+	assert result.returncode != 0
+	assert result.stdout == ''
+	assert result.stderr != ''
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_2.dll'))
 
-	# verify that the depends attribute doesn't work when the version doesn't match
+	# verify that the version attribute doesn't accept less than 2 numbers
 	xml = """<mod displayName="test_depends_3" 
 				unique="test_depends_3" 
 				description="test_depends_3" 
-				depends="test_depends_1"
-				dependsVersions="1.0.4"
+				version="1"
 				installerSystemVersion="1.0.1.3" 
 				dllsBuild="2.5.20">
 				<prerequisite>test_depends_3.dll</prerequisite>
@@ -995,12 +991,11 @@ def test_depends():
 	assert result.stderr != ''
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_3.dll'))
 
-	# verify that the depends and dependsVersions attribute works with multiple valid entries
+	# verify that the version attribute doesn't accept more than 4 numbers
 	xml = """<mod displayName="test_depends_4" 
 				unique="test_depends_4" 
 				description="test_depends_4" 
-				depends="test_depends_1?test_depends_2"
-				dependsVersions="1.0.2?1.0.3"
+				version="1.0.0.0.0"
 				installerSystemVersion="1.0.1.3" 
 				dllsBuild="2.5.20">
 				<prerequisite>test_depends_4.dll</prerequisite>
@@ -1010,18 +1005,18 @@ def test_depends():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_4.dll'))
+	assert result.returncode != 0
+	assert result.stdout == ''
+	assert result.stderr != ''
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_4.dll'))
 
-	# verify that the depends and dependsVersions attribute doesn't work with an invalid version
-	# entry within multiple entries
+	# verify that the depends attribute works with an installed mod
 	xml = """<mod displayName="test_depends_5" 
 				unique="test_depends_5" 
 				description="test_depends_5" 
-				depends="test_depends_1?test_depends_2"
-				dependsVersions="1.0.2?1.0.4"
+				version="1.0.3"
+				depends="test_depends_1"
+				dependsVersions="1.0.2"
 				installerSystemVersion="1.0.1.3" 
 				dllsBuild="2.5.20">
 				<prerequisite>test_depends_5.dll</prerequisite>
@@ -1031,16 +1026,18 @@ def test_depends():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
-	assert result.stdout == ''
-	assert result.stderr != ''
-	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_5.dll'))
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_5.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
 
-	# verify that the depends attribute doesn't work with a non-existent mod
+	# verify that the depends attribute doesn't work when the version doesn't match
 	xml = """<mod displayName="test_depends_6" 
 				unique="test_depends_6" 
 				description="test_depends_6" 
-				depends="test_depends_none"
+				depends="test_depends_1"
+				dependsVersions="1.0.4"
 				installerSystemVersion="1.0.1.3" 
 				dllsBuild="2.5.20">
 				<prerequisite>test_depends_6.dll</prerequisite>
@@ -1055,11 +1052,12 @@ def test_depends():
 	assert result.stderr != ''
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_6.dll'))
 
-	# verify that the depends attribute doesn't work with multiple non-existent mods
+	# verify that the depends and dependsVersions attribute works with multiple valid entries
 	xml = """<mod displayName="test_depends_7" 
 				unique="test_depends_7" 
 				description="test_depends_7" 
-				depends="test_depends_none_1?test_depends_none_2"
+				depends="test_depends_1?test_depends_5"
+				dependsVersions="1.0.2?1.0.3"
 				installerSystemVersion="1.0.1.3" 
 				dllsBuild="2.5.20">
 				<prerequisite>test_depends_7.dll</prerequisite>
@@ -1069,17 +1067,19 @@ def test_depends():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
-	assert result.stdout == ''
-	assert result.stderr != ''
-	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_7.dll'))
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_7.dll'))
 
-	# verify that depends attribute is only validated for installerSystemVersion >= 1.0.1.3
+	# verify that the depends and dependsVersions attribute doesn't work with an invalid version
+	# entry within multiple entries
 	xml = """<mod displayName="test_depends_8" 
 				unique="test_depends_8" 
 				description="test_depends_8" 
-				depends="test_depends_8"
-				installerSystemVersion="1.0.1.2" 
+				depends="test_depends_1?test_depends_5"
+				dependsVersions="1.0.2?1.0.4"
+				installerSystemVersion="1.0.1.3" 
 				dllsBuild="2.5.20">
 				<prerequisite>test_depends_8.dll</prerequisite>
 			</mod>"""
@@ -1088,55 +1088,112 @@ def test_depends():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_8.dll'))
-	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])	
+	assert result.returncode != 0
+	assert result.stdout == ''
+	assert result.stderr != ''
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_8.dll'))
 
-	# verify that we can install a dependency alongside the mod in a single install
-	xml1 = """<mod displayName="test_depends_9"
-				unique="test_depends_9"
-				description="test_depends_9"
-				depends="test_depends_10"
+	# verify that the depends attribute doesn't work with a non-existent mod
+	xml = """<mod displayName="test_depends_9" 
+				unique="test_depends_9" 
+				description="test_depends_9" 
+				depends="test_depends_none"
 				installerSystemVersion="1.0.1.3" 
 				dllsBuild="2.5.20">
 				<prerequisite>test_depends_9.dll</prerequisite>
 			</mod>"""
-	xml2 = """<mod displayName="test_depends_10"
-				unique="test_depends_10"
-				description="test_depends_10"
+	files = [
+		[ 'test_depends_9.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode != 0
+	assert result.stdout == ''
+	assert result.stderr != ''
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_9.dll'))
+
+	# verify that the depends attribute doesn't work with multiple non-existent mods
+	xml = """<mod displayName="test_depends_10" 
+				unique="test_depends_10" 
+				description="test_depends_10" 
+				depends="test_depends_none_1?test_depends_none_2"
 				installerSystemVersion="1.0.1.3" 
 				dllsBuild="2.5.20">
 				<prerequisite>test_depends_10.dll</prerequisite>
 			</mod>"""
+	files = [
+		[ 'test_depends_10.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode != 0
+	assert result.stdout == ''
+	assert result.stderr != ''
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_10.dll'))
+
+	# verify that depends attribute is only validated for installerSystemVersion >= 1.0.1.3
+	xml = """<mod displayName="test_depends_11" 
+				unique="test_depends_11" 
+				description="test_depends_11" 
+				depends="test_depends_12"
+				installerSystemVersion="1.0.1.2" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_11.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_11.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'install', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_11.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])	
+
+	# verify that we can install a dependency alongside the mod in a single install
+	xml1 = """<mod displayName="test_depends_12"
+				unique="test_depends_12"
+				description="test_depends_12"
+				depends="test_depends_13"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_12.dll</prerequisite>
+			</mod>"""
+	xml2 = """<mod displayName="test_depends_13"
+				unique="test_depends_13"
+				description="test_depends_13"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_13.dll</prerequisite>
+			</mod>"""
 	files1 = [
-		[ 'test_depends_9.dll', str(uuid.uuid4()) ],
+		[ 'test_depends_12.dll', str(uuid.uuid4()) ],
 	]
 	files2 = [
-		[ 'test_depends_10.dll', str(uuid.uuid4()) ],
+		[ 'test_depends_13.dll', str(uuid.uuid4()) ],
 	]
 	result = run_smm([ 'install', write_sporemod(xml1, files1, True), write_sporemod(xml2, files2, True) ])
 	assert result.returncode == 0
 	assert result.stdout != ''
 	assert result.stderr == ''
-	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_9.dll'))
-	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_10.dll'))
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_12.dll'))
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_13.dll'))
 	assert check_file_contents(os.path.join(modlibs_path, files1[0][0]), files1[0][1])
 	assert check_file_contents(os.path.join(modlibs_path, files2[0][0]), files2[0][1])
 
 	# verify that we cannot uninstall a mod which is a dependency of another mod
-	result = run_smm([ 'uninstall', '1' ])
+	result = run_smm([ 'uninstall', '3' ])
 	assert result.returncode == 1
 	assert result.stdout == ''
 	assert result.stderr != ''
 
 	# verify that we can uninstall a mod when all dependencies are uninstalled
-	result = run_smm([ 'uninstall', '3' ])
+	result = run_smm([ 'uninstall', '5' ])
 	assert result.returncode == 0
 	assert result.stdout != ''
 	assert result.stderr == ''
-	result = run_smm([ 'uninstall', '2' ])
+	result = run_smm([ 'uninstall', '4' ])
 	assert result.returncode == 0
 	assert result.stdout != ''
 	assert result.stderr == ''
@@ -1146,7 +1203,7 @@ def test_depends():
 	assert result.stderr == ''
 
 	# verify that we can uninstall mods alongside dependencies in one go
-	result = run_smm([ 'uninstall', '0', '2' ])
+	result = run_smm([ 'uninstall', '1', '2' ])
 	assert result.returncode == 0
 	assert result.stdout != ''
 	assert result.stderr == ''

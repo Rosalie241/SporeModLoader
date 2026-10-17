@@ -97,7 +97,7 @@ static FileVersion::FileVersionInfo get_attribute_version(tinyxml2::XMLElement* 
     {
         hasAttribute = false;
         parseResult = true;
-        return {};
+        return version;
     }
 
     parseResult = FileVersion::ParseString(versionString, version);
@@ -123,11 +123,10 @@ static std::vector<FileVersion::FileVersionInfo> get_attribute_versions(tinyxml2
     versionsStrings = String::Split(versionsString, '?');
     for (size_t i = 0; i < versionsStrings.size(); i++)
     {
-        // empty versions are supported,
-        // so add 0.0.0.0 as version in that case
+        // empty versions are supported
         if (versionsStrings[i].empty())
         {
-            version = { 0, 0, 0, 0 };
+            version.reset();
         }
         else if (!FileVersion::ParseString(versionsStrings[i], version))
         {
@@ -357,7 +356,7 @@ static std::vector<SporeMod::Xml::SporeModDependency> parse_installedsporemoddep
             version = get_element_version(find_element(xmlElement, "Version"), hasVersion, hasValidVersion);
             if (!hasVersion || !hasValidVersion)
             {
-                version = { 0, 0, 0, 0 };
+                version.reset();
             }
             dependencies.push_back({ name, version });
         }
@@ -376,7 +375,7 @@ static SporeMod::Xml::InstalledSporeMod parse_installedsporemod_element(tinyxml2
     installedSporeMod.Name           = get_element_text(find_element(element, "Name"));
     installedSporeMod.UniqueName     = get_element_text(find_element(element, "UniqueName"));
     installedSporeMod.Description    = get_element_text(find_element(element, "Description"));
-    installedSporeMod.Version        = get_element_version(find_element(element, "Version"), installedSporeMod.HasVersion, ret);
+    installedSporeMod.Version        = get_element_version(find_element(element, "Version"), ret, ret);
     installedSporeMod.Dependencies   = parse_installedsporemoddependencies_element(find_element(element, "Dependencies"));
     installedSporeMod.InstalledFiles = parse_installedsporemodfiles_element(find_element(element, "Files"));
 
@@ -458,7 +457,7 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
     installerVersion = {1, 0, 1, 3};
     if (sporeModInfo.InstallerVersion >= installerVersion)
     {
-        sporeModInfo.Version = get_attribute_version(xmlElement, "version", sporeModInfo.HasVersion, ret);
+        sporeModInfo.Version = get_attribute_version(xmlElement, "version", hasAttribute, ret);
         if (!ret)
         {
             std::cerr << "Error: failed to parse version attribute!" << std::endl;
@@ -477,7 +476,7 @@ bool SporeMod::Xml::ParseSporeModInfo(const std::vector<char>& buffer, SporeModI
         {
             if (i >= dependenciesVersions.size())
             {
-                dependencyVersion = { 0, 0, 0, 0 };
+                dependencyVersion.reset();
             }
             else
             {
@@ -810,17 +809,23 @@ bool SporeMod::Xml::SaveInstalledModList(const std::vector<InstalledSporeMod>& i
         xmlElement->InsertNewChildElement("UniqueName")->SetText(installedSporeMod.UniqueName.c_str());
         xmlElement->InsertNewChildElement("Description")->SetText(installedSporeMod.Description.c_str());
         
-        if (installedSporeMod.HasVersion)
+        if (installedSporeMod.Version.is_valid())
         {
             xmlElement->InsertNewChildElement("Version")->SetText(installedSporeMod.Version.to_string().c_str());
         }
 
-        dependenciesXmlElement = xmlElement->InsertNewChildElement("Dependencies");
-        for (const auto& dependency : installedSporeMod.Dependencies)
+        if (!installedSporeMod.Dependencies.empty())
         {
-            dependencyXmlElement = dependenciesXmlElement->InsertNewChildElement("Dependency");
-            dependencyXmlElement->InsertNewChildElement("UniqueName")->SetText(dependency.UniqueName.c_str());
-            dependencyXmlElement->InsertNewChildElement("Version")->SetText(dependency.Version.to_string().c_str());
+            dependenciesXmlElement = xmlElement->InsertNewChildElement("Dependencies");
+            for (const auto& dependency : installedSporeMod.Dependencies)
+            {
+                dependencyXmlElement = dependenciesXmlElement->InsertNewChildElement("Dependency");
+                dependencyXmlElement->InsertNewChildElement("UniqueName")->SetText(dependency.UniqueName.c_str());
+                if (dependency.Version.is_valid())
+                {
+                    dependencyXmlElement->InsertNewChildElement("Version")->SetText(dependency.Version.to_string().c_str());
+                }
+            }
         }
 
         filesXmlElement = xmlElement->InsertNewChildElement("Files");

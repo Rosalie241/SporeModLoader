@@ -20,10 +20,10 @@ namespace SporeModManagerHelpers
     {
         struct FileVersionInfo
         {
-            int Major = 0;
-            int Minor = 0;
-            int Build = 0;
-            int Revision = 0;
+            int Major = -1;
+            int Minor = -1;
+            int Build = -1;
+            int Revision = -1;
 
             bool operator>(const FileVersionInfo& other) const
             {
@@ -47,6 +47,22 @@ namespace SporeModManagerHelpers
             {
                 return *this > other ||
                         *this == other;
+            }
+
+            bool is_valid(void) const
+            {
+                return Major >= 0 &&
+                    Minor >= 0 &&
+                    Build >= 0 &&
+                    Revision >= 0;
+            }
+
+            void reset(void)
+            {
+                Major = -1;
+                Minor = -1;
+                Build = -1;
+                Revision = -1;
             }
 
             std::string to_string(void) const

@@ -88,7 +88,6 @@ namespace SporeModManagerHelpers
                 std::string UniqueName;
                 std::string Description;
 
-                bool HasVersion = false;
                 FileVersion::FileVersionInfo Version;
                 std::vector<SporeModDependency> Dependencies;
 
@@ -114,7 +113,6 @@ namespace SporeModManagerHelpers
                 std::string UniqueName;
                 std::string Description;
 
-                bool HasVersion = false;
                 FileVersion::FileVersionInfo Version;
                 std::vector<SporeModDependency> Dependencies;
 
@@ -124,7 +122,6 @@ namespace SporeModManagerHelpers
                 {
                     return Name == other.Name &&
                         UniqueName == other.UniqueName &&
-                        HasVersion == other.HasVersion &&
                         Version == other.Version &&
                         Dependencies == other.Dependencies &&
                         Description == other.Description &&

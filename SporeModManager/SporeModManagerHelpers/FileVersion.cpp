@@ -81,17 +81,17 @@ bool FileVersion::CheckIfCoreLibMatchesVersion(FileVersionInfo& modFileVersionIn
 bool FileVersion::ParseString(const std::string& string, FileVersionInfo& fileVersionInfo)
 {
     std::vector<std::string> splitString;
+    size_t parseCount;
 
     splitString = String::Split(string, '.');
 
-    if (splitString.size() > 4)
+    if (splitString.size() < 2 || splitString.size() > 4)
     {
         std::cerr << "Error: \"" << string << "\" is not a valid version string!" << std::endl;
         return false;
     }
 
-    // reset values to 0
-    fileVersionInfo = { 0, 0, 0, 0 };
+    fileVersionInfo.reset();
 
     const std::array<std::reference_wrapper<int>, 4> numbers
     {
@@ -101,11 +101,19 @@ bool FileVersion::ParseString(const std::string& string, FileVersionInfo& fileVe
         fileVersionInfo.Revision
     };
 
-    for (size_t i = 0; i < std::min(splitString.size(), numbers.size()); i++)
+    // fill in version info with 0 when there's less than 4 numbers to parse
+    parseCount = std::min(splitString.size(), numbers.size());
+    if (parseCount < 4)
     {
-        if (!String::ToInt(splitString[i], numbers[i].get()))
+        fileVersionInfo = { 0, 0, 0, 0 };
+    }
+
+    for (size_t i = 0; i < parseCount; i++)
+    {
+        if (!String::ToInt(splitString[i], numbers[i].get()) || numbers[i].get() < 0)
         {
             std::cerr << "Error: \"" << string << "\" is not a valid version string!" << std::endl;
+            fileVersionInfo.reset();
             return false;
         }
     }
