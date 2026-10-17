@@ -272,6 +272,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path>& paths, boo
     // resolve dependencies
     if (!SporeMod::ResolveDependencies(l_SporeModInfos, l_InstalledSporeMods))
     {
+        close_zipfiles();
         return false;
     }
 

@@ -967,7 +967,7 @@ def test_depends():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == ''
 	assert result.stderr != ''
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_2.dll'))
@@ -986,7 +986,7 @@ def test_depends():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == ''
 	assert result.stderr != ''
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_3.dll'))
@@ -1005,7 +1005,7 @@ def test_depends():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == ''
 	assert result.stderr != ''
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_4.dll'))
@@ -1047,7 +1047,7 @@ def test_depends():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == ''
 	assert result.stderr != ''
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_6.dll'))
@@ -1088,7 +1088,7 @@ def test_depends():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == ''
 	assert result.stderr != ''
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_8.dll'))
@@ -1107,7 +1107,7 @@ def test_depends():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == ''
 	assert result.stderr != ''
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_9.dll'))
@@ -1126,7 +1126,7 @@ def test_depends():
 	]
 	write_sporemod(xml, files)
 	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode != 0
+	assert result.returncode == 1
 	assert result.stdout == ''
 	assert result.stderr != ''
 	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_10.dll'))
