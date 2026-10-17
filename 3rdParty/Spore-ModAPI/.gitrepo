@@ -4,7 +4,7 @@
 ; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
 ;
 [subrepo]
-	remote = git@github.com:emd4600/Spore-ModAPI.git
+	remote = git@github.com:Spore-Community/Spore-ModAPI.git
 	branch = master
 	commit = f4265c7a4177e48ccc9d2e38ce0b56ccffa4c3b4
 	parent = 32572958765aae4d9b115a9f04b93567384cc0d8
