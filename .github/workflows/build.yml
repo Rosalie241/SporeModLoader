@@ -261,7 +261,6 @@ jobs:
         run: |
           pushd macos-artifact
           rm SporeModLoader/ModLibs/keep.txt -f
-          chmod +x SporeModLoader/SporeModManager/SporeModManager
           7za a -mm=Deflate -mx=9 -r "../SporeModLoader-macos-${GIT_REVISION}.zip" *
           popd
       - name: Update Git Tag
