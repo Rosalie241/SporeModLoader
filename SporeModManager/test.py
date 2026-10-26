@@ -1149,36 +1149,36 @@ def test_depends():
 	assert result.stdout != ''
 	assert result.stderr == ''
 	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_11.dll'))
-	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])	
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
 
 	# verify that we can install a dependency alongside the mod in a single install
-	xml1 = """<mod displayName="test_depends_12"
-				unique="test_depends_12"
-				description="test_depends_12"
-				depends="test_depends_13"
+	xml1 = """<mod displayName="test_depends_12_1"
+				unique="test_depends_12_1"
+				description="test_depends_12_1"
+				depends="test_depends_12_2"
 				installerSystemVersion="1.0.1.3" 
 				dllsBuild="2.5.20">
-				<prerequisite>test_depends_12.dll</prerequisite>
+				<prerequisite>test_depends_12_1.dll</prerequisite>
 			</mod>"""
-	xml2 = """<mod displayName="test_depends_13"
-				unique="test_depends_13"
-				description="test_depends_13"
+	xml2 = """<mod displayName="test_depends_12_2"
+				unique="test_depends_12_2"
+				description="test_depends_12_2"
 				installerSystemVersion="1.0.1.3" 
 				dllsBuild="2.5.20">
-				<prerequisite>test_depends_13.dll</prerequisite>
+				<prerequisite>test_depends_12_2.dll</prerequisite>
 			</mod>"""
 	files1 = [
-		[ 'test_depends_12.dll', str(uuid.uuid4()) ],
+		[ 'test_depends_12_1.dll', str(uuid.uuid4()) ],
 	]
 	files2 = [
-		[ 'test_depends_13.dll', str(uuid.uuid4()) ],
+		[ 'test_depends_12_2.dll', str(uuid.uuid4()) ],
 	]
 	result = run_smm([ 'install', write_sporemod(xml1, files1, True), write_sporemod(xml2, files2, True) ])
 	assert result.returncode == 0
 	assert result.stdout != ''
 	assert result.stderr == ''
-	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_12.dll'))
-	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_13.dll'))
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_12_1.dll'))
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_12_2.dll'))
 	assert check_file_contents(os.path.join(modlibs_path, files1[0][0]), files1[0][1])
 	assert check_file_contents(os.path.join(modlibs_path, files2[0][0]), files2[0][1])
 
@@ -1208,6 +1208,174 @@ def test_depends():
 	assert result.stdout != ''
 	assert result.stderr == ''
 
+	#
+	# verify that updating a dependency behaves like expected
+	#
+
+	# first we install the dependency and dependant
+	xml1 = """<mod displayName="test_depends_13_1"
+				unique="test_depends_13_1"
+				description="test_depends_13_1"
+				version="1.0.0"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_13_1.dll</prerequisite>
+			</mod>"""
+	xml2 = """<mod displayName="test_depends_13_2"
+				unique="test_depends_13_2"
+				description="test_depends_13_2"
+				depends="test_depends_13_1"
+				dependsVersions="1.0.0"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_13_2.dll</prerequisite>
+			</mod>"""
+	files1 = [
+		[ 'test_depends_13_1.dll', str(uuid.uuid4()) ],
+	]
+	files2 = [
+		[ 'test_depends_13_2.dll', str(uuid.uuid4()) ],
+	]
+	result = run_smm([ 'install', write_sporemod(xml1, files1, True), write_sporemod(xml2, files2, True) ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_13_1.dll'))
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_13_2.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files1[0][0]), files1[0][1])
+	assert check_file_contents(os.path.join(modlibs_path, files2[0][0]), files2[0][1])
+
+	# now check if updating the dependency works with a valid version
+	xml = """<mod displayName="test_depends_13_1"
+				unique="test_depends_13_1"
+				description="test_depends_13_1"
+				version="1.0.1"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_13_3.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_13_3.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'update', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_13_3.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
+
+	# check if updating the dependency doesn't work with a too low version
+	xml = """<mod displayName="test_depends_13_1"
+				unique="test_depends_13_1"
+				description="test_depends_13_1"
+				version="0.0.9"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_13_4.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_13_4.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'update', sporemod_file ])
+	assert result.returncode == 1
+	assert result.stdout == ''
+	assert result.stderr != ''
+	assert not os.path.isfile(os.path.join(modlibs_path, 'test_depends_13_4.dll'))
+
+	# check if updating the dependency alongside dependant works
+	xml1 = """<mod displayName="test_depends_13_1"
+				unique="test_depends_13_1"
+				description="test_depends_13_1"
+				version="0.0.9"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_13_5.dll</prerequisite>
+			</mod>"""
+	xml2 = """<mod displayName="test_depends_13_2"
+				unique="test_depends_13_2"
+				description="test_depends_13_2"
+				depends="test_depends_13_1"
+				dependsVersions="0.0.9"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_13_6.dll</prerequisite>
+			</mod>"""
+	files1 = [
+		[ 'test_depends_13_5.dll', str(uuid.uuid4()) ],
+	]
+	files2 = [
+		[ 'test_depends_13_6.dll', str(uuid.uuid4()) ],
+	]
+	result = run_smm([ 'update', write_sporemod(xml1, files1, True), write_sporemod(xml2, files2, True) ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_13_5.dll'))
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_13_6.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files1[0][0]), files1[0][1])
+	assert check_file_contents(os.path.join(modlibs_path, files2[0][0]), files2[0][1])
+
+	# check if removing the version requirement from the dependant when updating works
+	xml = """<mod displayName="test_depends_13_2"
+				unique="test_depends_13_2"
+				description="test_depends_13_2"
+				depends="test_depends_13_1"
+				installerSystemVersion="1.0.1.3"
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_13_7.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_13_7.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'update', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_13_7.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
+
+	# verify that changing the dependency version from the dependant makes using a dependency
+	# without version work with the update command
+	xml = """<mod displayName="test_depends_13_1"
+				unique="test_depends_13_1"
+				description="test_depends_13_1"
+				installerSystemVersion="1.0.1.3" 
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_13_8.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_13_8.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'update', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_13_8.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
+
+	# verify that updating a dependency without version to with version works
+	xml = """<mod displayName="test_depends_13_1"
+				unique="test_depends_13_1"
+				description="test_depends_13_1"
+				installerSystemVersion="1.0.1.3"
+				version="1.0.0"
+				dllsBuild="2.5.20">
+				<prerequisite>test_depends_13_9.dll</prerequisite>
+			</mod>"""
+	files = [
+		[ 'test_depends_13_9.dll', str(uuid.uuid4()) ],
+	]
+	write_sporemod(xml, files)
+	result = run_smm([ 'update', sporemod_file ])
+	assert result.returncode == 0
+	assert result.stdout != ''
+	assert result.stderr == ''
+	assert os.path.isfile(os.path.join(modlibs_path, 'test_depends_13_9.dll'))
+	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
 
 # Tests whether update-modapi works correctly
 def test_update_modapi():

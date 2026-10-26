@@ -22,7 +22,7 @@ using namespace SporeModManagerHelpers;
 //
 
 static bool check_other_mod_files(const SporeMod::Xml::InstalledSporeMod& installedSporeMod,
-                                         const std::vector<SporeMod::Xml::InstalledSporeMod>& installedSporeMods)
+                                  const std::vector<SporeMod::Xml::InstalledSporeMod>& installedSporeMods)
 {
     for (const auto& installedSporeModIter : installedSporeMods)
     {
@@ -49,8 +49,8 @@ static bool check_other_mod_files(const SporeMod::Xml::InstalledSporeMod& instal
 // Exported Functions
 //
 
-bool SporeMod::ResolveDependencies(const std::vector<Xml::SporeModInfo>& pendingSporeMods,
-                                   const std::vector<Xml::InstalledSporeMod>& installedSporeMods)
+bool SporeMod::ResolveInstallDependencies(const std::vector<Xml::SporeModInfo>& pendingSporeMods,
+                                          const std::vector<Xml::InstalledSporeMod>& installedSporeMods)
 {
     Xml::SporeModDependency dependency;
     std::vector<Xml::SporeModDependency> dependencies;
@@ -78,15 +78,19 @@ bool SporeMod::ResolveDependencies(const std::vector<Xml::SporeModInfo>& pending
     }
 
     // check if dependencies will be installed
-    for (size_t i = 0; i < dependencies.size(); i++)
+    if (!dependencies.empty())
     {
         for (const auto& pendingSporeMod : pendingSporeMods)
         {
-            if (pendingSporeMod.UniqueName == dependencies[i].UniqueName &&
-                pendingSporeMod.Version >= dependencies[i].Version)
+            for (size_t i = 0; i < dependencies.size(); i++)
             {
-                dependencies.erase(dependencies.begin() + i);
-                dependants.erase(dependants.begin() + i);
+                if (pendingSporeMod.UniqueName == dependencies[i].UniqueName &&
+                    pendingSporeMod.Version >= dependencies[i].Version)
+                {
+                    dependencies.erase(dependencies.begin() + i);
+                    dependants.erase(dependants.begin() + i);
+                    i--;
+                }
             }
         }
     }
@@ -95,13 +99,89 @@ bool SporeMod::ResolveDependencies(const std::vector<Xml::SporeModInfo>& pending
     for (size_t i = 0; i < dependencies.size(); i++)
     {
         std::cerr << "Error: required dependency for \"" 
-                            << dependants[i].Name << "\" is missing: \"" 
-                            << dependencies[i].UniqueName << "\"" << 
-                            (!dependencies[i].Version.is_valid() ? "!" 
-                                : (" v" + dependencies[i].Version.to_string() + "!")) << std::endl;
+                            << dependants[i].Name << "\" is missing: \""
+                            << dependencies[i].UniqueName << "\" "
+                            << dependencies[i].Version.to_string(true) 
+                            << "!" << std::endl;
     }
 
     return dependencies.empty();
+}
+
+bool SporeMod::ResolveUpdateDependencies(const std::vector<Xml::SporeModInfo>& pendingSporeMods,
+                                         const std::vector<Xml::InstalledSporeMod>& installedSporeMods)
+{
+    std::vector<SporeMod::Xml::InstalledSporeMod> dependants;
+    std::vector<Xml::SporeModInfo> dependencies;
+    FileVersion::FileVersionInfo dependencyVersion;
+
+    // check if dependencies are being updated
+    for (const auto& pendingSporeMod : pendingSporeMods)
+    {
+        for (const auto& installedSporeMod : installedSporeMods)
+        {
+            auto predicate = [pendingSporeMod](const SporeMod::Xml::SporeModDependency& dependency)
+            {
+                return pendingSporeMod.UniqueName == dependency.UniqueName &&
+                        pendingSporeMod.Version < dependency.Version;
+            };
+            auto dependencyIter = std::find_if(installedSporeMod.Dependencies.begin(), installedSporeMod.Dependencies.end(), predicate);
+            if (dependencyIter != installedSporeMod.Dependencies.end())
+            {
+                dependants.push_back(installedSporeMod);
+                dependencies.push_back(pendingSporeMod);
+            }
+        }
+    }
+
+    // check if dependant mods are being updated 
+    if (!dependants.empty())
+    {
+        for (const auto& pendingSporeMod : pendingSporeMods)
+        {
+            for (size_t i = 0; i < dependants.size(); i++)
+            {
+                if (pendingSporeMod.UniqueName == dependants[i].UniqueName &&
+                    pendingSporeMod.Version >= dependants[i].Version)
+                {
+                    dependants.erase(dependants.begin() + i);
+                    dependencies.erase(dependencies.begin() + i);
+                    i--;
+                }
+            }
+        }
+    }
+  
+    // show an error when we still have dependencies that
+    // don't fullfill the version requirement of the dependant
+    for (size_t i = 0; i < dependants.size(); i++)
+    {
+        // try to find the dependency version that the  dependant requires
+        dependencyVersion = {};
+        for (const auto& dependency : dependants[i].Dependencies)
+        {
+            if (dependency.UniqueName == dependencies[i].UniqueName)
+            {
+                dependencyVersion = dependency.Version;
+            }
+        }
+
+        // we're in a broken state if we get here, so error out immediately
+        if (!dependencyVersion.is_valid())
+        {
+            std::cerr << "Error: failed to retrieve dependency version for \"" 
+                        << dependencies[i].Name << "\"!" << std::endl;
+            return false;
+        }
+
+        std::cerr << "Error: cannot update \"" << dependencies[i].Name << "\" " 
+                    << dependencies[i].Version.to_string(true)
+                    << " because \"" << dependants[i].Name << "\" depends on \"" << dependencies[i].Name << "\" "
+                    << dependencyVersion.to_string(true) 
+                    << "!" << std::endl;
+    }
+
+    return dependants.empty();
 }
 
 bool SporeMod::ResolveUninstallDependencies(const std::vector<Xml::InstalledSporeMod>& installedSporeMods,
@@ -145,6 +225,7 @@ bool SporeMod::ResolveUninstallDependencies(const std::vector<Xml::InstalledSpor
                 {
                     dependants.erase(dependants.begin() + i);
                     dependenciesNames.erase(dependenciesNames.begin() + i);
+                    i--;
                 }
             }
         }

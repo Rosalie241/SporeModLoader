@@ -49,6 +49,11 @@ namespace SporeModManagerHelpers
                         *this == other;
             }
 
+            bool operator<(const FileVersionInfo& other) const
+            {
+                return !(*this >= other);
+            }
+
             bool is_valid(void) const
             {
                 return Major >= 0 &&
@@ -65,10 +70,29 @@ namespace SporeModManagerHelpers
                 Revision = -1;
             }
 
-            std::string to_string(void) const
+            std::string to_string(bool prefix = false, bool space = false) const
             {
                 std::string string;
-                string = std::to_string(Major) + ".";
+
+                // return empty string when invalid
+                if (!this->is_valid())
+                {
+                    return string;
+                }
+
+                // append space when desired
+                if (space)
+                {
+                    string += " ";
+                }
+
+                // append prefix when desired
+                if (prefix)
+                {
+                    string += "v";
+                }
+
+                string += std::to_string(Major) + ".";
                 string += std::to_string(Minor) + ".";
                 string += std::to_string(Build) + ".";
                 string += std::to_string(Revision);
