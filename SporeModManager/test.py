@@ -59,6 +59,7 @@ def reset_smm():
 
 def run_smm(args):
 	os_environment["SPOREMODMANAGER_CONFIGFILE"] = str(config_file)
+	os_environment["ASAN_OPTIONS"] = str('exitcode=2:abort_on_error=false')
 	valgrind_cmd = [ 'valgrind', '--quiet', '--leak-check=full', '--show-leak-kinds=all', '--track-origins=yes', '--error-exitcode=2' ]
 	smm_cmd = [ sporemodmanager, '--verbose', '--no-input', f'--corelibs-path={corelibs_path}', f'--modlibs-path={modlibs_path}', f'--data-path={data_path}', f'--ep1-path={ep1_path}' ]
 	cmd = [ ]
