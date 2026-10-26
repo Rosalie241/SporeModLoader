@@ -48,11 +48,20 @@ jobs:
       - name: Build SporeModManager (Linux)
         run: |
           make SporeModManager -j$(nproc)
+      - name: Build SporeModManager (Linux) (ASAN)
+        run: |
+          make clean BINARY_DIR=../bin-asan
+          make SporeModManager -j$(nproc) ASAN=1 DEBUG=1 BINARY_DIR=../bin-asan
       - name: Upload SporeModLoader (Linux for msvc)
         uses: actions/upload-artifact@v7
         with:
           name: linux-build-artifacts
           path: bin/*
+      - name: Upload SporeModLoader (Linux) (ASAN)
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux-build-artifacts-asan
+          path: bin-asan/*
   build-macos:
     runs-on: macos-26
     steps:
@@ -60,11 +69,20 @@ jobs:
       - name: Build SporeModManager (MacOS)
         run: |
           make SporeModManager -j$(sysctl -n hw.logicalcpu)
+      - name: Build SporeModManager (MacOS) (ASAN)
+        run: |
+          make clean BINARY_DIR=../bin-asan
+          make SporeModManager -j$(sysctl -n hw.logicalcpu) ASAN=1 DEBUG=1 BINARY_DIR=../bin-asan
       - name: Upload SporeModLoader (MacOS for msvc)
         uses: actions/upload-artifact@v7
         with:
           name: macos-build-artifacts
           path: bin/*
+      - name: Upload SporeModLoader (MacOS) (ASAN)
+        uses: actions/upload-artifact@v7
+        with:
+          name: macos-build-artifacts-asan
+          path: bin-asan/*
   build-mingw:
     runs-on: ubuntu-22.04
     steps:
@@ -182,10 +200,19 @@ jobs:
         with:
           name: SporeModLoader-${{ env.GIT_REVISION }}
           path: artifact
+      - name: Download SporeModManager (Linux) (ASAN)
+        uses: actions/download-artifact@v8
+        with:
+          name: linux-build-artifacts-asan
+          path: artifact-asan
       - name: Test SporeModManager (Linux)
         run: |
           chmod +x ./artifact/SporeModLoader/SporeModManager/SporeModManager
           python3 ./SporeModManager/test.py --network --verbose ./artifact/SporeModLoader/SporeModManager/SporeModManager
+      - name: Test SporeModManager (Linux) (ASAN)
+        run: |
+          chmod +x ./artifact-asan/SporeModLoader/SporeModManager/SporeModManager
+          python3 ./SporeModManager/test.py --verbose ./artifact-asan/SporeModLoader/SporeModManager/SporeModManager
       - name: Test SporeModManager (Linux) (Valgrind)
         run: |
           chmod +x ./artifact/SporeModLoader/SporeModManager/SporeModManager
@@ -205,10 +232,19 @@ jobs:
         with:
           name: SporeModLoader-macos-${{ env.GIT_REVISION }}
           path: artifact
+      - name: Download SporeModManager (MacOS) (ASAN)
+        uses: actions/download-artifact@v8
+        with:
+          name: macos-build-artifacts-asan
+          path: artifact-asan
       - name: Test SporeModManager (MacOS)
         run: |
           chmod +x ./artifact/SporeModLoader/SporeModManager/SporeModManager
           python3 ./SporeModManager/test.py --network --verbose ./artifact/SporeModLoader/SporeModManager/SporeModManager
+      - name: Test SporeModManager (MacOS) (ASAN)
+        run: |
+          chmod +x ./artifact-asan/SporeModLoader/SporeModManager/SporeModManager
+          python3 ./SporeModManager/test.py --verbose ./artifact-asan/SporeModLoader/SporeModManager/SporeModManager
   test-mingw:
     runs-on: windows-2025
     needs: [ package-artifacts ]
