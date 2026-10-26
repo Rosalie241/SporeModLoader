@@ -10,6 +10,7 @@
 #include "Zip.hpp"
 
 #include <iostream>
+#include <cstdlib>
 #include <fstream>
 #include <map>
 
@@ -21,14 +22,54 @@ using namespace SporeModManagerHelpers;
 // Local Defines
 //
 
-#define UNZIP_READ_SIZE 67108860 /* 64 MiB */
+#define UNZIP_READ_SIZE 1024 * 1024 * 64 /* 64 MiB */
+
+//
+// Local Templates
+//
+
+template <typename T>
+class MallocWrapper
+{
+private:
+    T* buffer = nullptr;
+
+public:
+    MallocWrapper() {}
+    ~MallocWrapper()
+    {
+        if (this->buffer != nullptr)
+        {
+            std::free(this->buffer);
+            this->buffer = nullptr;
+        }
+    }
+
+    void AllocateOnce(size_t size)
+    {
+        if (this->buffer == nullptr)
+        {
+            this->buffer = reinterpret_cast<T*>(std::malloc(size));
+            if (this->buffer == nullptr)
+            {
+                std::cerr << "Error: failed to allocate memory!" << std::endl;
+                std::exit(1);
+            }
+        }
+    }
+
+    T* Data()
+    {
+        return this->buffer;
+    }
+};
 
 //
 // Local Variables
 //
 
 static std::map<std::filesystem::path, std::ifstream> l_ZipFileStreams;
-static std::vector<char>                              l_ZipFileBuffer;
+static MallocWrapper<char> l_ZipFileBuffer;
 
 //
 // Local Functions
@@ -194,8 +235,8 @@ bool Zip::ExtractFile(ZipFile zipFile, const std::filesystem::path& file, const 
     int bytesRead = 0;
     std::ofstream outputFileStream;
 
-    // ensure the global buffer has the size reserved
-    l_ZipFileBuffer.reserve(UNZIP_READ_SIZE);
+    // ensure the global buffer has the size allocated
+    l_ZipFileBuffer.AllocateOnce(UNZIP_READ_SIZE);
 
     // try to find file in zip
     if (unzLocateFile(zipFile, file.string().c_str(), 2) != UNZ_OK)
@@ -220,7 +261,7 @@ bool Zip::ExtractFile(ZipFile zipFile, const std::filesystem::path& file, const 
 
     do
     {
-        bytesRead = unzReadCurrentFile(zipFile, l_ZipFileBuffer.data(), UNZIP_READ_SIZE);
+        bytesRead = unzReadCurrentFile(zipFile, l_ZipFileBuffer.Data(), UNZIP_READ_SIZE);
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
@@ -229,7 +270,7 @@ bool Zip::ExtractFile(ZipFile zipFile, const std::filesystem::path& file, const 
         }
         else if (bytesRead > 0)
         {
-            outputFileStream.write(l_ZipFileBuffer.data(), bytesRead);
+            outputFileStream.write(l_ZipFileBuffer.Data(), bytesRead);
         }
     } while (bytesRead > 0);
 
@@ -243,8 +284,8 @@ bool Zip::ExtractFile(ZipFile zipFile, const std::filesystem::path& file, std::v
 {
     int bytesRead = 0;
 
-    // ensure the global buffer has the size reserved
-    l_ZipFileBuffer.reserve(UNZIP_READ_SIZE);
+    // ensure the global buffer has the size allocated
+    l_ZipFileBuffer.AllocateOnce(UNZIP_READ_SIZE);
 
     // try to find file in zip
     if (!file.empty() && unzLocateFile(zipFile, file.string().c_str(), 2) != UNZ_OK)
@@ -264,7 +305,7 @@ bool Zip::ExtractFile(ZipFile zipFile, const std::filesystem::path& file, std::v
 
     do
     {
-        bytesRead = unzReadCurrentFile(zipFile, l_ZipFileBuffer.data(), UNZIP_READ_SIZE);
+        bytesRead = unzReadCurrentFile(zipFile, l_ZipFileBuffer.Data(), UNZIP_READ_SIZE);
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
@@ -273,7 +314,7 @@ bool Zip::ExtractFile(ZipFile zipFile, const std::filesystem::path& file, std::v
         }
         else if (bytesRead > 0)
         {
-            outBuffer.insert(outBuffer.end(), l_ZipFileBuffer.begin(), l_ZipFileBuffer.begin() + bytesRead);
+            outBuffer.insert(outBuffer.end(), l_ZipFileBuffer.Data(), l_ZipFileBuffer.Data() + bytesRead);
         }
     } while (bytesRead > 0);
 
