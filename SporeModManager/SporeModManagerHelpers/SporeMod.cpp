@@ -174,7 +174,7 @@ bool SporeMod::ResolveUpdateDependencies(const std::vector<Xml::SporeModInfo>& p
             return false;
         }
 
-        std::cerr << "Error: cannot update \"" << dependencies[i].Name << "\" " 
+        std::cerr << "Error: cannot update \"" << dependencies[i].Name << "\" to "
                     << dependencies[i].Version.to_string(true)
                     << " because \"" << dependants[i].Name << "\" depends on \"" << dependencies[i].Name << "\" "
                     << dependencyVersion.to_string(true) 
