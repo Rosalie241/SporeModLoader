@@ -40,6 +40,11 @@ else
 LDFLAGS    += -s
 endif
 
+ifeq ($(ASAN), 1)
+OPTFLAGS   += -fsanitize=address
+LDFLAGS    += -fsanitize=address
+endif
+
 CFLAGS     := \
 				-I$(THIRDPARTY_DIR)/zlib     \
 				-I$(THIRDPARTY_DIR)/zlib/contrib/minizip

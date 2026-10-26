@@ -25,6 +25,11 @@ else
 LDFLAGS    += -s
 endif
 
+ifeq ($(ASAN), 1)
+OPTFLAGS   += -fsanitize=address
+LDFLAGS    += -fsanitize=address
+endif
+
 OBJECT_FILES := \
 	$(SOURCE_DIR)/SporeModLoaderHelpers.obj \
 	$(SOURCE_DIR)/SporeModLoader.obj \
