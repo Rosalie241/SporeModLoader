@@ -123,21 +123,29 @@ jobs:
         with:
           name: mingw-build-artifacts
           path: mingw-artifacts
+      - name: Prepare SporeModLoader (Linux)
+        run: |
+          cp -r artifacts/* linux-artifacts/
+          rm -f linux-artifacts/SporeModLoader/SporeModManager/SporeModManager.exe
       - name: Prepare SporeModLoader (MacOS)
         run: |
           cp -r artifacts/* macos-artifacts/
           rm -f macos-artifacts/SporeModLoader/SporeModManager/SporeModManager.exe
-          cp -r linux-artifacts/* artifacts/
       - name: Prepare SporeModLoader (mingw)
         run: |
           cp -r artifacts/SporeModLoader/CoreLibs/ mingw-artifacts/SporeModLoader/CoreLibs
           cp -r artifacts/SporeModLoader/ModLibs/  mingw-artifacts/SporeModLoader/ModLibs
-          cp artifacts/SporeModLoader/SporeModManager/SporeModManager mingw-artifacts/SporeModLoader/SporeModManager/SporeModManager
       - name: Upload SporeModLoader (msvc)
         uses: actions/upload-artifact@v7
         with:
-          name: SporeModLoader-${{ env.GIT_REVISION }}
+          name: SporeModLoader-windows-${{ env.GIT_REVISION }}
           path: artifacts/*
+          compression-level: 9
+      - name: Upload SporeModLoader (Linux)
+        uses: actions/upload-artifact@v7
+        with:
+          name: SporeModLoader-linux-${{ env.GIT_REVISION }}
+          path: linux-artifacts/*
           compression-level: 9
       - name: Upload SporeModLoader (MacOS)
         uses: actions/upload-artifact@v7
@@ -171,7 +179,7 @@ jobs:
       - name: Download SporeModManager (msvc)
         uses: actions/download-artifact@v8
         with:
-          name: SporeModLoader-${{ env.GIT_REVISION }}
+          name: SporeModLoader-windows-${{ env.GIT_REVISION }}
           path: artifact
       - name: Test SporeModManager (msvc)
         run: |
@@ -192,7 +200,7 @@ jobs:
       - name: Download SporeModManager (Linux)
         uses: actions/download-artifact@v8
         with:
-          name: SporeModLoader-${{ env.GIT_REVISION }}
+          name: SporeModLoader-linux-${{ env.GIT_REVISION }}
           path: artifact
       - name: Download SporeModManager (Linux) (ASAN)
         uses: actions/download-artifact@v8
@@ -273,8 +281,13 @@ jobs:
       - name: Download SporeModLoader (msvc)
         uses: actions/download-artifact@v8
         with:
-          name: SporeModLoader-${{ env.GIT_REVISION }}
-          path: artifact
+          name: SporeModLoader-windows-${{ env.GIT_REVISION }}
+          path: windows-artifact
+      - name: Download SporeModLoader (Linux)
+        uses: actions/download-artifact@v8
+        with:
+          name: SporeModLoader-linux-${{ env.GIT_REVISION }}
+          path: linux-artifact
       - name: Download SporeModLoader (MacOS)
         uses: actions/download-artifact@v8
         with:
@@ -282,10 +295,16 @@ jobs:
           path: macos-artifact
       - name: Prepare SporeModManager (msvc)
         run: |
-          pushd artifact
+          pushd windows-artifact
+          rm SporeModLoader/ModLibs/keep.txt -f
+          7za a -mm=Deflate -mx=9 -r "../SporeModLoader-windows-${GIT_REVISION}.zip" *
+          popd
+      - name: Prepare SporeModManager (Linux)
+        run: |
+          pushd linux-artifact
           rm SporeModLoader/ModLibs/keep.txt -f
           chmod +x SporeModLoader/SporeModManager/SporeModManager
-          7za a -mm=Deflate -mx=9 -r "../SporeModLoader-${GIT_REVISION}.zip" *
+          7za a -mm=Deflate -mx=9 -r "../SporeModLoader-linux-${GIT_REVISION}.zip" *
           popd
       - name: Prepare SporeModManager (MacOS)
         run: |
@@ -306,5 +325,6 @@ jobs:
           replacesArtifacts: false
           tag: rolling-release
           artifacts: |
-            SporeModLoader-${{ env.GIT_REVISION }}.zip
+            SporeModLoader-windows-${{ env.GIT_REVISION }}.zip
+            SporeModLoader-linux-${{ env.GIT_REVISION }}.zip
             SporeModLoader-macos-${{ env.GIT_REVISION }}.zip
