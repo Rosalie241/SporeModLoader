@@ -35,8 +35,9 @@ static bool check_other_mod_files(const SporeMod::Xml::InstalledSporeMod& instal
             auto installedFileIter = std::find_if(installedSporeModIter.InstalledFiles.begin(), installedSporeModIter.InstalledFiles.end(), predicate);
             if (installedFileIter != installedSporeModIter.InstalledFiles.end())
             {
-                std::cerr << "Error: an already installed mod (" << installedSporeModIter.Name
-                          << ") contains a file (" << (*installedFileIter).FileName << ") that this mod wants to install!" << std::endl;
+                std::cerr << "Error: \"" << installedSporeModIter.Name
+                          << "\" contains " << (*installedFileIter).FileName << " that \"" 
+                          << installedSporeMod.Name << "\" also wants to install!" << std::endl;
                 return true;
             }
         }
@@ -100,8 +101,8 @@ bool SporeMod::ResolveInstallDependencies(const std::vector<Xml::SporeModInfo>& 
     {
         std::cerr << "Error: required dependency for \"" 
                             << dependants[i].Name << "\" is missing: \""
-                            << dependencies[i].UniqueName << "\" "
-                            << dependencies[i].Version.to_string(true) 
+                            << dependencies[i].UniqueName << "\""
+                            << dependencies[i].Version.to_string(true, true) 
                             << "!" << std::endl;
     }
 

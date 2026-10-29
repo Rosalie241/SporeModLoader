@@ -382,7 +382,7 @@ int main(int argc, char** argv)
             {
                 if (!String::ToInt(args[i], number))
                 {
-                    std::cerr << "Error: ID must be a number!" << std::endl;
+                    std::cerr << "Error: \"" << std::string(args[i].begin(), args[i].end()) << "\" is not a valid number!" << std::endl;
                     return 1;
                 }
                 ids.push_back(number);

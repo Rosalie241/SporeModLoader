@@ -239,7 +239,7 @@ bool SporeModManager::InstallMods(std::vector<std::filesystem::path>& paths, boo
             const bool hasInstalled = SporeMod::FindInstalledMod(sporeModInfo.UniqueName, installedSporeModId, l_InstalledSporeMods);
             if (!skipInstalled && hasInstalled)
             {
-                std::cerr << "Error: a mod with the same unique name (" << sporeModInfo.Name << ") has already been installed" << std::endl;
+                std::cerr << "Error: \"" << sporeModInfo.Name << "\" cannot be installed because another mod with the same unique name has already been installed!" << std::endl;
                 close_zipfiles();
                 return false;
             }
@@ -409,7 +409,7 @@ bool SporeModManager::UpdateMods(std::vector<std::filesystem::path>& paths, bool
             if (requiresInstalled)
             {
                 close_zipfiles();
-                std::cerr << "Error: no mod found with the same unique name (" << sporeModInfo.UniqueName << ")" << std::endl;
+                std::cerr << "Error: \"" << sporeModInfo.Name << "\" cannot be updated because no mod with the same unique name is installed!" << std::endl; 
                 return false;
             }
         }
@@ -485,7 +485,7 @@ bool SporeModManager::UninstallMods(const std::vector<int>& ids, bool skipDepend
     {
         if (id < 0 || (size_t)id >= l_InstalledSporeMods.size() || l_InstalledSporeMods.empty())
         {
-            std::cerr << "Error: ID(s) must be valid!" << std::endl;
+            std::cerr << "Error: \"" << std::to_string(id) << "\" is nonexistent ID!" << std::endl;
             return false;
         }
     }

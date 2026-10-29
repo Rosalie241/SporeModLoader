@@ -639,6 +639,18 @@ def test_uninstall():
 	assert result.stderr == ''
 	assert not os.path.isfile(os.path.join(ep1_path, 'test_package.package'))
 
+	# uninstall with a letter shouldn't work
+	result = run_smm([ 'uninstall', 'a' ])
+	assert result.returncode == 1
+	assert result.stdout == ''
+	assert result.stderr != ''
+
+	# uninstall with hex numbers shouldn't work
+	result = run_smm([ 'uninstall', '0x0' ])
+	assert result.returncode == 1
+	assert result.stdout == ''
+	assert result.stderr != ''
+
 	# uninstall with a valid range should work
 	result = run_smm([ 'uninstall', '0-20' ])
 	assert result.returncode == 0
