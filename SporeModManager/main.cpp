@@ -63,10 +63,10 @@ static void show_usage()
               << "Usage: SporeModManager [OPTION] [COMMAND]" << std::endl
               << std::endl
               << "Commands:" << std::endl
-              << "  list-installed      lists installed mod(s) with id(s)" << std::endl
+              << "  list-installed      lists installed mod(s) with their identifier(s)" << std::endl
               << "  install file(s)     installs file(s)" << std::endl
               << "  update file(s)      updates mod(s) using file(s)" << std::endl
-              << "  uninstall id(s)     uninstalls mod with id(s)" << std::endl
+              << "  uninstall id(s)     uninstalls mod(s) with specified identifier(s)" << std::endl
               << "  update-modapi       updates modapi dll" << std::endl
               << std::endl
               << "  version             display version and exit"   << std::endl
@@ -331,8 +331,8 @@ int main(int argc, char** argv)
 
         std::vector<int> ids;
 
-        // we support 2 types to parse the IDs,
-        // either a range (i.e '0-3') or the IDs specified (i.e '0 1 2 3')
+        // we support 2 types to parse the identifiers,
+        // either a range (i.e '0-3') or the identifiers specified (i.e '0 1 2 3')
         if (args.size() == 3 && args[2].find(arg_char('-')) != arg_str_type::npos)
         {
             int startIndex = 0;

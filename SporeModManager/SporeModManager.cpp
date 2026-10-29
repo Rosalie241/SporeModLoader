@@ -485,7 +485,7 @@ bool SporeModManager::UninstallMods(const std::vector<int>& ids, bool skipDepend
     {
         if (id < 0 || (size_t)id >= l_InstalledSporeMods.size() || l_InstalledSporeMods.empty())
         {
-            std::cerr << "Error: \"" << std::to_string(id) << "\" is nonexistent ID!" << std::endl;
+            std::cerr << "Error: no mod with identifier \"" << std::to_string(id) << "\" is installed!" << std::endl;
             return false;
         }
     }
