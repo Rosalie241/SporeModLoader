@@ -64,8 +64,8 @@ static void show_usage()
               << std::endl
               << "Commands:" << std::endl
               << "  list-installed      lists installed mod(s) with their identifier(s)" << std::endl
-              << "  install file(s)     installs file(s)" << std::endl
-              << "  update file(s)      updates mod(s) using file(s)" << std::endl
+              << "  install file(s)     installs specified file(s)" << std::endl
+              << "  update file(s)      updates mod(s) using specified file(s)" << std::endl
               << "  uninstall id(s)     uninstalls mod(s) with specified identifier(s)" << std::endl
               << "  update-modapi       updates modapi dll" << std::endl
               << std::endl
