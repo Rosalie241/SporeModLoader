@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@github.com:microsoft/Detours.git
 	branch = main
-	commit = 4b8c659f549b0ab21cf649377c7a84eb708f5e68
-	parent = 61482d06f4b40a99808d3d1e101d5f6799f96401
+	commit = 1dbd4ea281d73d478aa8d09a8b83fbd265f715f7
+	parent = 278e5e44238b60b247d1e84a2ce8f02b098fd2cd
 	method = merge
-	cmdver = 0.4.6
+	cmdver = 0.4.9
