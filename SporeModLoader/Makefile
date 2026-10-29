@@ -7,6 +7,8 @@ SOURCE_DIR     ?= .
 DLL_FILE       ?= dinput8.dll
 VERBOSE        ?= 0
 DEBUG          ?= 0
+ASAN           := 0
+WERROR         := 0
 
 MINGW_CXX     ?= i686-w64-mingw32-g++
 MINGW_WINDRES ?= i686-w64-mingw32-windres
@@ -18,6 +20,10 @@ CXXFLAGS   := -std=c++17                     \
 OPTFLAGS   := -Os -flto
 WARNFLAGS  := -Wall -Wextra -Wpedantic
 LDFLAGS    := -Wl,--enable-stdcall-fixup
+
+ifeq ($(WERROR), 1)
+WARNFLAGS  += -Werror
+endif
 
 ifeq ($(DEBUG), 1)
 OPTFLAGS   += -g3

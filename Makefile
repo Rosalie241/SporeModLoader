@@ -25,6 +25,7 @@ help:
 	@echo "  Build Options:"
 	@echo "    OPTFLAGS=flag       == compiler optimization (default: -Os -flto)"
 	@echo "    WARNFLAGS=flag      == compiler warning levels (default: -Wall -Wextra -Wpedantic)"
+	@echo "    WERROR=1            == compiler treats warnings as errors"
 	@echo "  Debugging Options:"
 	@echo "    DEBUG=1             == add debugging symbols to binaries"
 	@echo "	   ASAN=1              == add address sanitizer to binaries"

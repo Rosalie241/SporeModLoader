@@ -8,6 +8,8 @@ EXE_FILE       := SporeModManager
 VERBOSE        := 0
 MINGW          := 0
 DEBUG          := 0
+ASAN           := 0
+WERROR         := 0
 
 PYTHON        ?= python3
 CC            ?= gcc
@@ -32,6 +34,10 @@ OPTFLAGS   := -Os -fno-exceptions
 WARNFLAGS  := -Wall -Wextra -Wpedantic
 OBJ        := obj
 EXE_EXT    := .exe
+endif
+
+ifeq ($(WERROR), 1)
+WARNFLAGS  += -Werror
 endif
 
 ifeq ($(DEBUG), 1)
