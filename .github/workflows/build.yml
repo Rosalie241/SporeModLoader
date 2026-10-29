@@ -12,16 +12,10 @@ jobs:
           arch: amd64_x86
       - name: Build SporeModLoader (msvc)
         run: |
-          msbuild "SporeModLoader" `
-            /p:Configuration=Release `
-            /p:Platform=Win32 `
-            /m
+          msbuild "SporeModLoader" /p:Configuration=Release /p:Platform=Win32 /warnaserror /m
       - name: Build SporeModManager (msvc)
         run: |
-          msbuild "SporeModManager" `
-            /p:Configuration=Release `
-            /p:Platform=Win32 `
-            /m
+          msbuild "SporeModManager" /p:Configuration=Release /p:Platform=Win32 /warnaserror /m
       - name: Package SporeModLoader (msvc)
         run: |
           New-Item -ItemType Directory -Force -Path bin\SporebinEP1
@@ -47,11 +41,11 @@ jobs:
       - uses: actions/checkout@v7
       - name: Build SporeModManager (Linux)
         run: |
-          make SporeModManager -j$(nproc)
+          make SporeModManager -j$(nproc) WERROR=1
       - name: Build SporeModManager (Linux) (ASAN)
         run: |
           make clean BINARY_DIR=../bin-asan
-          make SporeModManager -j$(nproc) ASAN=1 DEBUG=1 BINARY_DIR=../bin-asan
+          make SporeModManager -j$(nproc) WERROR=1 ASAN=1 DEBUG=1 BINARY_DIR=../bin-asan
       - name: Upload SporeModLoader (Linux for msvc)
         uses: actions/upload-artifact@v7
         with:
@@ -68,11 +62,11 @@ jobs:
       - uses: actions/checkout@v7
       - name: Build SporeModManager (MacOS)
         run: |
-          make SporeModManager -j$(sysctl -n hw.logicalcpu)
+          make SporeModManager -j$(sysctl -n hw.logicalcpu) WERROR=1
       - name: Build SporeModManager (MacOS) (ASAN)
         run: |
           make clean BINARY_DIR=../bin-asan
-          make SporeModManager -j$(sysctl -n hw.logicalcpu) ASAN=1 DEBUG=1 BINARY_DIR=../bin-asan
+          make SporeModManager -j$(sysctl -n hw.logicalcpu) WERROR=1 ASAN=1 DEBUG=1 BINARY_DIR=../bin-asan
       - name: Upload SporeModLoader (MacOS for msvc)
         uses: actions/upload-artifact@v7
         with:
@@ -92,10 +86,10 @@ jobs:
           sudo apt-get -y install gcc-mingw-w64-i686 g++-mingw-w64-i686
       - name: Build SporeModLoader (mingw)
         run: |
-          make SporeModLoader -j$(nproc)
+          make SporeModLoader -j$(nproc) WERROR=1
       - name: Build SporeModManager (mingw)
         run: |
-          make SporeModManager.exe -j$(nproc)
+          make SporeModManager.exe -j$(nproc) WERROR=1
       - name: Upload SporeModLoader (mingw)
         uses: actions/upload-artifact@v7
         with:
