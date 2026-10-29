@@ -1,8 +1,9 @@
 ## SporeModLoader
 
 This is a simple mod loader for Spore,
-it injects DLLs at runtime before executing
-the entry point of the Spore executable  
+it loads DLLs at runtime after Spore sets
+the custom memory allocator and unloads the DLLs
+before the custom memory allocator is unset
 
 ## SporeModManager
 
