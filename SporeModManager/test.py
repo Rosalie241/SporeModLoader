@@ -10,6 +10,7 @@ import subprocess
 import tempfile
 import atexit
 import uuid
+import unittest
 
 #
 # Global Variables
@@ -43,400 +44,497 @@ os_environment  = os.environ.copy()
 write_mod_num   = 0
 
 #
-# Helper Functions
+# Helper classes
 #
 
-def cleanup_smm():
-	if cleanup:
-		shutil.rmtree(tests_path)
+class SporeModManagerTest(unittest.TestCase):
+	def setUp(self):
+		# setup variables
+		self.smmPath = tempfile.mkdtemp()
+		self.modsPath = os.path.join(self.smmPath, 'mods')
+		self.corelibsPath = os.path.join(self.smmPath, 'CoreLibs')
+		self.modLibsPath = os.path.join(self.smmPath, 'ModLibs')
+		self.dataPath = os.path.join(self.smmPath, 'Data')
+		self.dataEP1Path = os.path.join(self.smmPath, 'DataEP1')
+		self.packageFile = os.path.join(self.smmPath, 'test.package')
+		self.invalidFile = os.path.join(self.smmPath, 'test.invalid')
+		self.writeModNum = 0
 
-def reset_smm():
-	if os.path.isfile(config_file):
-		os.remove(config_file)
+		# create directories
+		os.mkdir(self.modsPath)
+		os.mkdir(self.corelibsPath)
+		os.mkdir(self.modLibsPath)
+		os.mkdir(self.dataPath)
+		os.mkdir(self.dataEP1Path)
 
-	global write_mod_num
-	write_mod_num = 0
+		# write files
+		self.writeSporeModAPIDLL(os.path.join(self.corelibsPath, 'SporeModAPI.dll'))
+		self.writePackage(self.packageFile)
+		self.writePackage(self.invalidFile)
 
-def run_smm(args):
-	os_environment["SPOREMODMANAGER_CONFIGFILE"] = str(config_file)
-	os_environment["ASAN_OPTIONS"] = str('exitcode=2:abort_on_error=false')
-	valgrind_cmd = [ 'valgrind', '--quiet', '--leak-check=full', '--show-leak-kinds=all', '--track-origins=yes', '--error-exitcode=2' ]
-	smm_cmd = [ sporemodmanager, '--verbose', '--no-input', f'--corelibs-path={corelibs_path}', f'--modlibs-path={modlibs_path}', f'--data-path={data_path}', f'--ep1-path={ep1_path}' ]
-	cmd = [ ]
-	if valgrind:
-		cmd += valgrind_cmd
-	cmd += smm_cmd
-	cmd += args
-	if verbose:
-		print(f'Running {" ".join(cmd)}')
-	result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=os_environment, text=True)
-	if verbose:
-		print(f'return code: {result.returncode}')
-		if result.stdout != '':
-			print(f'stdout:\n{result.stdout.rstrip()}')
-		if result.stderr != '':
-			print(f'stderr:\n{result.stderr.rstrip()}')
-	return result
+	def tearDown(self):
+		if self.smmPath != None:
+			shutil.rmtree(self.smmPath)
 
-def write_sporemod(xml = None, extra = None, createNew = False, invalidZip = False):
-	file = sporemod_file
-	if createNew:
-		global write_mod_num
-		file = os.path.join(mods_path, f'test_{write_mod_num}.sporemod')
-		write_mod_num = write_mod_num + 1
-	if invalidZip:
-		mod_file = open(file, 'wb')
-		mod_file.write(b'invalidZip')
-		mod_file.close()
-	else:
-		with zipfile.ZipFile(file, mode="w") as archive:
-			if xml is not None:
-				archive.writestr("ModInfo.xml", xml)
-			if extra is not None:
-				for list_str in extra:
-					archive.writestr(list_str[0], list_str[1])
-	return file
+	def checkFileContents(self, path, content):
+		with open(path, 'r') as file:
+			file_content = file.read()
+			if verbose:
+				print(f'expected file contents: {content}\nactual file contents: {file_content}')
+			return file_content == content
 
-def write_package(path):
-	with open(path, 'wb') as file:
-		file.write(b'package')
+	def writeFile(self, path, contents):
+		with open(path, 'wb') as file:
+			file.write(contents)
 
-def write_invalid(path):
-	with open(path, 'wb') as file:
-		file.write(b'invalid')
+	def writeSporeModAPIDLL(self, path):
+		self.writeFile(path, b'F\0i\0l\0e\0V\0e\0r\0s\0i\0o\0n\0\0\0\0\0002\0.\0005\0.\000300\0')
 
-def write_sporemodapi_dll(path):
-	with open(path, 'wb') as file:
-		# FileVersion 2.5.300
-		bytes = b'F\0i\0l\0e\0V\0e\0r\0s\0i\0o\0n\0\0\0\0\0002\0.\0005\0.\000300\0'
-		file.write(bytes)
+	def writePackage(self, path):
+		self.writeFile(path, b'package')
 
-def check_file_contents(path, content):
-	with open(path, 'r') as file:
-		file_content = file.read()
+	def writeSporemod(self, xml = None, extra = None, invalidZip = False):
+		file = os.path.join(self.modsPath, f'test_{self.writeModNum}.sporemod')
+		self.writeModNum = self.writeModNum + 1
+		if invalidZip:
+			modFile = open(file, 'wb')
+			modFile.write(b'invalidZip')
+			modFile.close()
+		else:
+			with zipfile.ZipFile(file, mode="w") as archive:
+				if xml is not None:
+					archive.writestr("ModInfo.xml", xml)
+				if extra is not None:
+					for list_str in extra:
+						archive.writestr(list_str[0], list_str[1])
+		return file
+
+	def runSMM(self, args):
+		os_environment["SPOREMODMANAGER_CONFIGFILE"] = str(os.path.join(self.modsPath, 'ConfigFile.xml'))
+		os_environment["ASAN_OPTIONS"] = str('exitcode=2:abort_on_error=false')
+		valgrind_cmd = [ 'valgrind', '--quiet', '--leak-check=full', '--show-leak-kinds=all', '--track-origins=yes', '--error-exitcode=2' ]
+		smm_cmd = [ sporemodmanager, '--verbose', '--no-input',
+					f'--corelibs-path={self.corelibsPath}', f'--modlibs-path={self.modLibsPath}',
+					f'--data-path={self.dataPath}', f'--ep1-path={self.dataEP1Path}' ]
+		cmd = [ ]
+		if valgrind:
+			cmd += valgrind_cmd
+		cmd += smm_cmd
+		cmd += args
 		if verbose:
-			print(f'expected file contents: {content}\nactual file contents: {file_content}')
-		return file_content == content
+			print(f'Running {" ".join(cmd)}')
+		result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=os_environment, text=True)
+		if verbose:
+			print(f'return code: {result.returncode}')
+			if result.stdout != '':
+				print(f'stdout:\n{result.stdout.rstrip()}')
+			if result.stderr != '':
+				print(f'stderr:\n{result.stderr.rstrip()}')
+		return result
+
+#
+# Tests
+#
+
+class BasicCommandlineTests(SporeModManagerTest):
+	def test_help(self):
+		result = self.runSMM([ 'help' ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+
+	def test_version(self):
+		result = self.runSMM([ 'version' ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+
+class InstallTests(SporeModManagerTest):
+	def test_install_invalid_extension(self):
+		result = self.runSMM([ 'install', self.invalidFile ])
+		self.assertTrue(result.returncode != 0)
+		self.assertTrue(result.stdout == '')
+		self.assertTrue(result.stderr != '')
+		self.assertTrue(not os.path.isfile(os.path.join(self.modLibsPath, 'test.invalid')))
+		self.assertTrue(not os.path.isfile(os.path.join(self.dataPath, 'test.invalid')))
+		self.assertTrue(not os.path.isfile(os.path.join(self.dataEP1Path, 'test.invalid')))
+
+	def test_install_package(self):
+		result = self.runSMM([ 'install', self.packageFile ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+		self.assertTrue(os.path.isfile(os.path.join(self.dataEP1Path, 'test.package')))
+
+	def test_install_package_duplicate(self):
+		result = self.runSMM([ 'install', self.packageFile ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+		self.assertTrue(os.path.isfile(os.path.join(self.dataEP1Path, 'test.package')))
+
+		# installing the same mod should fail
+		result = self.runSMM([ 'install', self.packageFile ])
+		assert result.returncode == 1
+		assert result.stdout == ''
+		assert result.stderr != ''
+
+		# but using --needed should work
+		result = self.runSMM([ 'install', '--needed', self.packageFile ])
+		assert result.returncode == 0
+		assert result.stdout != ''
+		assert result.stderr == ''
+
+		# --update-needed should also work
+		result = self.runSMM([ 'install', '--update-needed', self.packageFile ])
+		assert result.returncode == 0
+		assert result.stdout != ''
+		assert result.stderr == ''
+
+
+	def test_install_sporemod_invalid_zip(self):
+		result = self.runSMM([ 'install', self.writeSporemod(invalidZip=True) ])
+		self.assertTrue(result.returncode == 1)
+		self.assertTrue(result.stdout == '')
+		self.assertTrue(result.stderr != '')
+
+	def test_install_sporemod_no_modinfo(self):
+		files = [
+			[ 'test_install_sporemod_no_modinfo.dll', str(uuid.uuid4()) ],
+			[ 'test_install_sporemod_no_modinfo.txt', str(uuid.uuid4()) ],
+			[ 'test_install_sporemod_no_modinfo_ep1.package', str(uuid.uuid4()) ],
+		]
+		result = self.runSMM([ 'install', self.writeSporemod(None, files) ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+		self.assertTrue(os.path.isfile(os.path.join(self.modLibsPath, 'test_install_sporemod_no_modinfo.dll')))
+		self.assertTrue(not os.path.isfile(os.path.join(self.modLibsPath, 'test_install_sporemod_no_modinfo.txt')))
+		self.assertTrue(not os.path.isfile(os.path.join(self.dataPath, 'test_install_sporemod_no_modinfo.txt')))
+		self.assertTrue(not os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_sporemod_no_modinfo.txt')))
+		self.assertTrue(os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_sporemod_no_modinfo_ep1.package')))
+		self.assertTrue(self.checkFileContents(os.path.join(self.modLibsPath, files[0][0]), files[0][1]))
+		self.assertTrue(self.checkFileContents(os.path.join(self.dataEP1Path, files[2][0]), files[2][1]))
+
+	def test_install_sporemod_modinfo(self):
+		xml = """<mod displayName="test_install_modinfo" 
+					unique="test_install_modinfo" 
+					description="test_install_modinfo" 
+					installerSystemVersion="1.0.1.1" 
+					dllsBuild="2.5.20">
+				</mod>"""
+		result = self.runSMM([ 'install', self.writeSporemod(xml) ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+
+	def test_install_sporemod_modinfo_duplicate(self):
+		xml = """<mod displayName="test_install_sporemod_modinfo_duplicate" 
+					unique="test_install_sporemod_modinfo_duplicate" 
+					description="test_install_0" 
+					installerSystemVersion="1.0.1.1" 
+					dllsBuild="2.5.20">
+				</mod>"""
+		sporemod = self.writeSporemod(xml)
+		result = self.runSMM([ 'install', sporemod ])
+		assert result.returncode == 0
+		assert result.stdout != ''
+		assert result.stderr == ''
+
+		# installing the same mod should fail
+		result = self.runSMM([ 'install', sporemod ])
+		assert result.returncode == 1
+		assert result.stdout == ''
+		assert result.stderr != ''
+
+		# but using --needed should work
+		result = self.runSMM([ 'install', '--needed', sporemod ])
+		assert result.returncode == 0
+		assert result.stdout != ''
+		assert result.stderr == ''
+
+		# --update-needed should also work
+		result = self.runSMM([ 'install', '--update-needed', sporemod ])
+		assert result.returncode == 0
+		assert result.stdout != ''
+		assert result.stderr == ''
+
+	def test_install_sporemod_modinfo_prerequisite(self):
+		xml = """<mod displayName="test_install_sporemod_modinfo_prerequisite_1" 
+					unique="test_install_sporemod_modinfo_prerequisite_1" 
+					description="test_install_sporemod_modinfo_prerequisite_1" 
+					installerSystemVersion="1.0.1.1" 
+					dllsBuild="2.5.20">
+					<prerequisite>test_install_1.dll</prerequisite>
+					<prerequisite game="invalid">test_install_2.dll</prerequisite>
+					<prerequisite game="Spore">test_install_1.package</prerequisite>
+					<prerequisite game="spore">test_install_lowercase.package</prerequisite>
+					<prerequisite game="GalacticAdventures">test_install_ep1.package</prerequisite>
+					<prerequisite game="galacticAdventures">test_install_ep1_mixedcase.package</prerequisite>
+				</mod>"""
+		files = [
+			[ 'test_install_1.dll', str(uuid.uuid4()) ],
+			[ 'test_install_2.dll', str(uuid.uuid4()) ],
+			[ 'test_install_1.package', str(uuid.uuid4()) ],
+			[ 'test_install_lowercase.package', str(uuid.uuid4()) ],
+			[ 'test_install_ep1.package', str(uuid.uuid4()) ],
+			[ 'test_install_ep1_mixedcase.package', str(uuid.uuid4()) ]
+		]
+		result = self.runSMM([ 'install', self.writeSporemod(xml, files) ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+		self.assertTrue(os.path.isfile(os.path.join(self.modLibsPath, 'test_install_1.dll')))
+		self.assertTrue(os.path.isfile(os.path.join(self.modLibsPath, 'test_install_2.dll')))
+		self.assertTrue(os.path.isfile(os.path.join(self.dataPath, 'test_install_1.package')))
+		self.assertTrue(os.path.isfile(os.path.join(self.dataPath, 'test_install_lowercase.package')))
+		self.assertTrue(os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_ep1.package')))
+		self.assertTrue(os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_ep1_mixedcase.package')))
+		self.assertTrue(self.checkFileContents(os.path.join(self.modLibsPath, files[0][0]), files[0][1]))
+		self.assertTrue(self.checkFileContents(os.path.join(self.modLibsPath, files[1][0]), files[1][1]))
+		self.assertTrue(self.checkFileContents(os.path.join(self.dataPath, files[2][0]), files[2][1]))
+		self.assertTrue(self.checkFileContents(os.path.join(self.dataPath, files[3][0]), files[3][1]))
+		self.assertTrue(self.checkFileContents(os.path.join(self.dataEP1Path, files[4][0]), files[4][1]))
+		self.assertTrue(self.checkFileContents(os.path.join(self.dataEP1Path, files[5][0]), files[5][1]))
+
+	def test_install_sporemod_modinfo_compatFile(self):
+		self.writeFile(os.path.join(self.dataPath, 'compatfile_test_1.package'), b'compatfile')
+		self.writeFile(os.path.join(self.dataEP1Path, 'compatfile_test_2.package'), b'compatfile')
+		xml = """<mod displayName="test_install_sporemod_modinfo_compatFile" 
+					unique="test_install_sporemod_modinfo_compatFile" 
+					description="test_install_sporemod_modinfo_compatFile" 
+					installerSystemVersion="1.0.1.1" 
+					dllsBuild="2.5.20">
+					<compatFile game="spore" compatTargetFileName="compatfile_test_1.package" 
+						compatTargetGame="spore">compatfile_1.package</compatFile>
+					<compatFile game="GalacticAdventures" compatTargetFileName="compatfile_test_2.package" 
+						compatTargetGame="GalacticAdventures">compatfile_1_ep1.package</compatFile>
+					<compatFile game="spore" compatTargetFileName="no_compatfile" 
+						compatTargetGame="spore">compatfile_2.package</compatFile>
+					<compatFile game="GalacticAdventures" compatTargetFileName="no_compatfile" 
+						compatTargetGame="GalacticAdventures">compatfile_2_ep1.package</compatFile>
+				</mod>"""
+		files = [
+			[ 'compatfile_1.package', str(uuid.uuid4()) ],
+			[ 'compatfile_1_ep1.package', str(uuid.uuid4()) ],
+			[ 'compatfile_2.package', str(uuid.uuid4()) ],
+			[ 'compatfile_2_ep1.package', str(uuid.uuid4()) ],
+		]
+		result = self.runSMM([ 'install', self.writeSporemod(xml, files) ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+		self.assertTrue(os.path.isfile(os.path.join(self.dataPath, 'compatfile_1.package')))
+		self.assertTrue(os.path.isfile(os.path.join(self.dataEP1Path, 'compatfile_1_ep1.package')))
+		self.assertTrue(not os.path.isfile(os.path.join(self.dataPath, 'compatfile_2.package')))
+		self.assertTrue(not os.path.isfile(os.path.join(self.dataEP1Path, 'compatfile_2_ep1.package')))
+		self.assertTrue(self.checkFileContents(os.path.join(self.dataPath, files[0][0]), files[0][1]))
+		self.assertTrue(self.checkFileContents(os.path.join(self.dataEP1Path, files[1][0]), files[1][1]))
+
+	def test_install_sporemod_modinfo_component(self):
+		xml = """<mod displayName="test_install_sporemod_modinfo_component"
+					unique="test_install_sporemod_modinfo_component"
+					description="test_install_sporemod_modinfo_component"
+					installerSystemVersion="1.0.1.1" 
+					hasCustomInstaller="true"
+					dllsBuild="2.5.20">
+					<component unique="test_install_component_1" 
+						displayName="test_install_component_1" 
+						description="test_install_component_1"
+						game="GalacticAdventures" defaultChecked="true">test_install_ep1_1.package</component>
+					<component unique="test_install_component_2" 
+						displayName="test_install_component_2" 
+						description="test_install_component_2"
+						game="GalacticAdventures" defaultChecked="false">test_install_ep1_2.package</component>
+					<component unique="test_install_component_3" 
+						displayName="test_install_component_3" 
+						description="test_install_component_3"
+						game="GalacticAdventures" defaultChecked="true">test_install_ep1_3.package</component>
+				</mod>"""
+		files = [
+			[ 'test_install_ep1_1.package', str(uuid.uuid4()) ],
+			[ 'test_install_ep1_2.package', str(uuid.uuid4()) ],
+			[ 'test_install_ep1_3.package', str(uuid.uuid4()) ],
+		]
+		result = self.runSMM([ 'install', self.writeSporemod(xml, files) ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+		self.assertTrue(os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_ep1_1.package')))
+		self.assertTrue(not os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_ep1_2.package')))
+		self.assertTrue(os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_ep1_3.package')))
+		self.assertTrue(self.checkFileContents(os.path.join(self.dataEP1Path, files[0][0]), files[0][1]))
+		self.assertTrue(self.checkFileContents(os.path.join(self.dataEP1Path, files[2][0]), files[2][1]))
+
+	def test_install_sporemod_modinfo_componentgroup(self):
+		xml = """<mod displayName="test_install_sporemod_modinfo_componentgroup"
+					unique="test_install_sporemod_modinfo_componentgroup"
+					description="test_install_sporemod_modinfo_componentgroup"
+					installerSystemVersion="1.0.1.1" 
+					hasCustomInstaller="true"
+					dllsBuild="2.5.20">
+					<componentGroup unique="test_install_componentgroup_1" displayName="test_install_componentgroup_1">
+						<component unique="test_install_componentgroup_1_component_1" displayName="test_install_componentgroup_1_component_1" description="" game="GalacticAdventures">test_install_ep1_1.package</component>
+						<component unique="test_install_componentgroup_1_component_2" displayName="test_install_componentgroup_1_component_2" description="" game="GalacticAdventures" defaultChecked="true">test_install_ep1_2.package</component>
+						<component unique="test_install_componentgroup_1_component_3" displayName="test_install_componentgroup_1_component_3" description="" game="GalacticAdventures">test_install_ep1_3.package</component>
+					</componentGroup>
+					<componentGroup unique="test_install_componentgroup_2" displayName="test_install_componentgroup_2">
+						<component unique="test_install_componentgroup_2_component_1" displayName="test_install_componentgroup_2_component_1" description="" game="GalacticAdventures" defaultChecked="true">test_install_ep1_4.package</component>
+						<component unique="test_install_componentgroup_2_component_2" displayName="test_install_componentgroup_2_component_2" description="" game="GalacticAdventures">test_install_ep1_5.package</component>
+						<component unique="test_install_componentgroup_2_component_3" displayName="test_install_componentgroup_2_component_3" description="" game="GalacticAdventures">test_install_ep1_6.package</component>
+					</componentGroup>
+				</mod>"""
+		files = [
+			[ 'test_install_ep1_1.package', str(uuid.uuid4()) ],
+			[ 'test_install_ep1_2.package', str(uuid.uuid4()) ],
+			[ 'test_install_ep1_3.package', str(uuid.uuid4()) ],
+			[ 'test_install_ep1_4.package', str(uuid.uuid4()) ],
+			[ 'test_install_ep1_5.package', str(uuid.uuid4()) ],
+			[ 'test_install_ep1_6.package', str(uuid.uuid4()) ],
+		]
+		result = self.runSMM([ 'install', self.writeSporemod(xml, files) ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+		self.assertTrue(not os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_ep1_1.package')))
+		self.assertTrue(os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_ep1_2.package')))
+		self.assertTrue(not os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_ep1_3.package')))
+		self.assertTrue(os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_ep1_4.package')))
+		self.assertTrue(not os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_ep1_5.package')))
+		self.assertTrue(not os.path.isfile(os.path.join(self.dataEP1Path, 'test_install_ep1_6.package')))
+		self.assertTrue(self.checkFileContents(os.path.join(self.dataEP1Path, files[1][0]), files[1][1]))
+		self.assertTrue(self.checkFileContents(os.path.join(self.dataEP1Path, files[3][0]), files[3][1]))
+
+	def test_install_sporemod_modinfo_has_custom_installer(self):
+		xml = """<mod displayName="test_install_sporemod_modinfo_has_custom_installer_1"
+					unique="test_install_sporemod_modinfo_has_custom_installer_1"
+					description="test_install_sporemod_modinfo_has_custom_installer_1"
+					installerSystemVersion="1.0.1.1"
+					hasCustomInstaller="false" 
+					dllsBuild="2.5.20">
+					<component unique="component" 
+						displayName="component" 
+						description="component"
+						game="GalacticAdventures" defaultChecked="true">component_1.package</component>
+					</mod>"""	
+		files = [
+			[ 'component_1.package', str(uuid.uuid4()) ],
+		]
+		result = self.runSMM([ 'install', self.writeSporemod(xml, files) ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+		self.assertTrue(not os.path.isfile(os.path.join(self.dataEP1Path, 'component_1.package')))
+
+		# check if a hasCustomInstaller is enabled when installer version is 1.0.0.0
+		xml = """<mod displayName="test_install_sporemod_modinfo_has_custom_installer_2"
+					unique="test_install_sporemod_modinfo_has_custom_installer_2"
+					description="test_install_sporemod_modinfo_has_custom_installer_2"
+					installerSystemVersion="1.0.0.0">
+					<component unique="component" 
+						displayName="component" 
+						description="component"
+						game="GalacticAdventures" defaultChecked="true">component_2.package</component>
+					</mod>"""
+		files = [
+			[ 'component_2.package', str(uuid.uuid4()) ],
+		]
+		result = self.runSMM([ 'install', self.writeSporemod(xml, files) ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+		self.assertTrue(os.path.isfile(os.path.join(self.dataEP1Path, 'component_2.package')))
+		self.assertTrue(self.checkFileContents(os.path.join(self.dataEP1Path, files[0][0]), files[0][1]))
+
+	def test_install_sporemod_modinfo_dlls_build(self):
+		xml = """<mod displayName="test_install_sporemod_modinfo_dlls_build_1" 
+					unique="test_install_sporemod_modinfo_dlls_build_1" 
+					description="test_install_sporemod_modinfo_dlls_build_1" 
+					installerSystemVersion="1.0.1.1" 
+					dllsBuild="999.999.999">
+				</mod>"""
+		result = self.runSMM([ 'install', self.writeSporemod(xml) ])
+		self.assertTrue(result.returncode == 1)
+		self.assertTrue(result.stdout == '')
+		self.assertTrue(result.stderr != '')
+
+		xml = """<mod displayName="test_install_sporemod_modinfo_dlls_build_2" 
+					unique="test_install_sporemod_modinfo_dlls_build_2" 
+					description="test_install_sporemod_modinfo_dlls_build_2" 
+					installerSystemVersion="1.0.1.1" 
+					dllsBuild="2.5.100.1.1">
+				</mod>"""
+		result = self.runSMM([ 'install', self.writeSporemod(xml) ])
+		self.assertTrue(result.returncode == 1)
+		self.assertTrue(result.stdout == '')
+		self.assertTrue(result.stderr != '')
+
+		xml = """<mod displayName="test_install_sporemod_modinfo_dlls_build_3" 
+					unique="test_install_sporemod_modinfo_dlls_build_3" 
+					description="test_install_sporemod_modinfo_dlls_build_3" 
+					installerSystemVersion="1.0.1.1" 
+					dllsBuild="2.5.100">
+				</mod>"""
+		result = self.runSMM([ 'install', self.writeSporemod(xml) ])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+
+class UninstallTests(SporeModManagerTest):
+	def test_uninstall_no_mods(self):
+		result = self.runSMM([ 'uninstall', '0'])
+		self.assertTrue(result.returncode == 1)
+		self.assertTrue(result.stdout == '')
+		self.assertTrue(result.stderr != '')
+
+
+	def test_uninstall_mods(self):
+		install_cmd = [ 'install' ]
+		xml = f"""<mod displayName="test_uninstall_1" 
+					unique="test_uninstall_1" 
+					description="test_uninstall_1" 
+					installerSystemVersion="1.0.1.1" 
+					dllsBuild="2.5.20">
+					<prerequisite>test_uninstall_1.dll</prerequisite>
+				</mod>"""
+		files = [
+			[ f'test_uninstall_1.dll', str(uuid.uuid4()) ],
+		]
+		result = self.runSMM([ 'install', self.writeSporemod(xml, files)])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+		self.assertTrue(os.path.isfile(os.path.join(self.modLibsPath, f'test_uninstall_1.dll')))
+
+		result = self.runSMM([ 'uninstall', '0'])
+		self.assertTrue(result.returncode == 0)
+		self.assertTrue(result.stdout != '')
+		self.assertTrue(result.stderr == '')
+		self.assertTrue(not os.path.isfile(os.path.join(self.modLibsPath, f'test_uninstall_1.dll')))
+
+	def test_uninstall_invalid_number(self):
+		result = self.runSMM([ 'uninstall', '0x0'])
+		self.assertTrue(result.returncode == 1)
+		self.assertTrue(result.stdout == '')
+		self.assertTrue(result.stderr != '')
+
+		result = self.runSMM([ 'uninstall', 'a'])
+		self.assertTrue(result.returncode == 1)
+		self.assertTrue(result.stdout == '')
+		self.assertTrue(result.stderr != '')
+
+
 
 #
 # Test Functions
 #
-
-# Tests whether help works correctly
-def test_help():
-	print(f'Running {test_help.__name__}...')
-	reset_smm()
-
-	result = run_smm([ 'help' ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-
-# Tests whether version works correctly
-def test_version():
-	print(f'Running {test_version.__name__}...')
-	reset_smm()
-
-	result = run_smm([ 'version' ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
 
 # Tests whether install works correctly
 def test_install():
 	print(f'Running {test_install.__name__}...')
 	reset_smm()
 
-	# installing mod with invalid extension should fail
-	result = run_smm([ 'install', invalid_file ])
-	assert result.returncode == 1
-	assert result.stdout == ''
-	assert result.stderr != ''
-	assert not os.path.isfile(os.path.join(modlibs_path, 'test.invalid'))
-	assert not os.path.isfile(os.path.join(data_path, 'test.invalid'))
-	assert not os.path.isfile(os.path.join(ep1_path, 'test.invalid'))
-
-	# install package mod
-	result = run_smm([ 'install', package_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	assert os.path.isfile(os.path.join(ep1_path, 'test_package.package'))
-
-	# installing sporemod that isn't a zip should fail
-	write_sporemod(invalidZip=True)
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 1
-	assert result.stdout == ''
-	assert result.stderr != ''
-
 	# install sporemod mod
-	xml = """<mod displayName="test_install_0" 
-				unique="test_install_0" 
-				description="test_install_0" 
-				installerSystemVersion="1.0.1.1" 
-				dllsBuild="2.5.20">
-			</mod>"""
-	write_sporemod(xml)
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-
-	# installing the same mod should fail
-	result = run_smm([ 'install', package_file ])
-	assert result.returncode == 1
-	assert result.stdout == ''
-	assert result.stderr != ''
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 1
-	assert result.stdout == ''
-	assert result.stderr != ''
-
-	# but using --needed should work
-	result = run_smm([ 'install', '--needed', package_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	result = run_smm([ 'install', '--needed', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-
-	# --update-needed should also work
-	result = run_smm([ 'install', '--update-needed', package_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	result = run_smm([ 'install', '--update-needed', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-
-	# check if the <prerequisite /> element works
-	xml = """<mod displayName="test_install_1" 
-				unique="test_install_1" 
-				description="test_install_1" 
-				installerSystemVersion="1.0.1.1" 
-				dllsBuild="2.5.20">
-				<prerequisite>test_install_1_1.dll</prerequisite>
-				<prerequisite game="invalid">test_install_1_2.dll</prerequisite>
-				<prerequisite game="Spore">test_install_1.package</prerequisite>
-				<prerequisite game="spore">test_install_1_lowercase.package</prerequisite>
-				<prerequisite game="GalacticAdventures">test_install_1_ep1.package</prerequisite>
-				<prerequisite game="galacticAdventures">test_install_1_ep1_mixedcase.package</prerequisite>
-			</mod>"""
-	files = [
-		[ 'test_install_1_1.dll', str(uuid.uuid4()) ],
-		[ 'test_install_1_2.dll', str(uuid.uuid4()) ],
-		[ 'test_install_1.package', str(uuid.uuid4()) ],
-		[ 'test_install_1_lowercase.package', str(uuid.uuid4()) ],
-		[ 'test_install_1_ep1.package', str(uuid.uuid4()) ],
-		[ 'test_install_1_ep1_mixedcase.package', str(uuid.uuid4()) ]
-	]
-	write_sporemod(xml, files)
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_1_1.dll'))
-	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_1_2.dll'))
-	assert os.path.isfile(os.path.join(data_path, 'test_install_1.package'))
-	assert os.path.isfile(os.path.join(data_path, 'test_install_1_lowercase.package'))
-	assert os.path.isfile(os.path.join(ep1_path, 'test_install_1_ep1.package'))
-	assert os.path.isfile(os.path.join(ep1_path, 'test_install_1_ep1_mixedcase.package'))
-	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
-	assert check_file_contents(os.path.join(modlibs_path, files[1][0]), files[1][1])
-	assert check_file_contents(os.path.join(data_path, files[2][0]), files[2][1])
-	assert check_file_contents(os.path.join(data_path, files[3][0]), files[3][1])
-	assert check_file_contents(os.path.join(ep1_path, files[4][0]), files[4][1])
-	assert check_file_contents(os.path.join(ep1_path, files[5][0]), files[5][1])
-
-	# check if the <compatFile /> element works
-	os.close(os.open(os.path.join(data_path, 'test_install_2_compatfile'), os.O_CREAT))
-	os.close(os.open(os.path.join(ep1_path, 'test_install_2_compatfile'), os.O_CREAT))
-	xml = """<mod displayName="test_install_2" 
-				unique="test_install_2" 
-				description="test_install_2" 
-				installerSystemVersion="1.0.1.1" 
-				dllsBuild="2.5.20">
-				<compatFile game="spore" compatTargetFileName="test_install_2_compatfile" 
-					compatTargetGame="spore">test_install_2_1.package</compatFile>
-				<compatFile game="GalacticAdventures" compatTargetFileName="test_install_2_compatfile" 
-					compatTargetGame="GalacticAdventures">test_install_2_ep1_1.package</compatFile>
-				<compatFile game="spore" compatTargetFileName="test_no_install_2_compatfile" 
-					compatTargetGame="spore">test_install_2_2.package</compatFile>
-				<compatFile game="GalacticAdventures" compatTargetFileName="test_no_install_2_compatfile" 
-					compatTargetGame="GalacticAdventures">test_install_2_ep1_2.package</compatFile>
-			</mod>"""
-	files = [
-		[ 'test_install_2_1.package', str(uuid.uuid4()) ],
-		[ 'test_install_2_2.package', str(uuid.uuid4()) ],
-		[ 'test_install_2_ep1_1.package', str(uuid.uuid4()) ],
-		[ 'test_install_2_ep1_2.package', str(uuid.uuid4()) ],
-	]
-	write_sporemod(xml, files)
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	assert os.path.isfile(os.path.join(data_path, 'test_install_2_1.package'))
-	assert os.path.isfile(os.path.join(ep1_path, 'test_install_2_ep1_1.package'))
-	assert not os.path.isfile(os.path.join(data_path, 'test_install_2_2.package'))
-	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_2_ep1_2.package'))
-	assert check_file_contents(os.path.join(data_path, files[0][0]), files[0][1])
-	assert check_file_contents(os.path.join(ep1_path, files[2][0]), files[2][1])
-
-	# check if a disabled hasCustomInstaller attribute works
-	xml = """<mod displayName="test_install_3"
-				unique="test_install_3"
-				description="test_install_3"
-				installerSystemVersion="1.0.1.1"
-				hasCustomInstaller="false" 
-				dllsBuild="2.5.20">
-				<component unique="test_install_3_component_1" 
-					displayName="test_install_3_component_1" 
-					description="test_install_3_component_1"
-					game="GalacticAdventures" defaultChecked="true">test_install_3_ep1_1.package</component>
-				</mod>"""	
-	files = [
-		[ 'test_install_3_ep1_1.package', str(uuid.uuid4()) ],
-	]
-	write_sporemod(xml, files)
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_3_ep1_1.package'))
-
-	# check if the <component /> element works
-	xml = """<mod displayName="test_install_4"
-				unique="test_install_4"
-				description="test_install_4"
-				installerSystemVersion="1.0.1.1" 
-				hasCustomInstaller="true"
-				dllsBuild="2.5.20">
-				<component unique="test_install_4_component_1" 
-					displayName="test_install_4_component_1" 
-					description="test_install_4_component_1"
-					game="GalacticAdventures" defaultChecked="true">test_install_4_ep1_1.package</component>
-				<component unique="test_install_4_component_2" 
-					displayName="test_install_4_component_2" 
-					description="test_install_4_component_2"
-					game="GalacticAdventures" defaultChecked="false">test_install_4_ep1_2.package</component>
-				<component unique="test_install_4_component_3" 
-					displayName="test_install_4_component_3" 
-					description="test_install_4_component_3"
-					game="GalacticAdventures" defaultChecked="true">test_install_4_ep1_3.package</component>
-			</mod>"""
-	files = [
-		[ 'test_install_4_ep1_1.package', str(uuid.uuid4()) ],
-		[ 'test_install_4_ep1_2.package', str(uuid.uuid4()) ],
-		[ 'test_install_4_ep1_3.package', str(uuid.uuid4()) ],
-	]
-	write_sporemod(xml, files)
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	assert os.path.isfile(os.path.join(ep1_path, 'test_install_4_ep1_1.package'))
-	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_4_ep1_2.package'))
-	assert os.path.isfile(os.path.join(ep1_path, 'test_install_4_ep1_3.package'))
-	assert check_file_contents(os.path.join(ep1_path, files[0][0]), files[0][1])
-	assert check_file_contents(os.path.join(ep1_path, files[2][0]), files[2][1])
-
-	# check if the <componentGroup /> element works
-	xml = """<mod displayName="test_install_5"
-				unique="test_install_5"
-				description="test_install_4"
-				installerSystemVersion="1.0.1.1" 
-				hasCustomInstaller="true"
-				dllsBuild="2.5.20">
-				<componentGroup unique="test_install_5_componentgroup_1" displayName="test_install_5_componentgroup_1">
-					<component unique="test_install_5_componentgroup_1_component_1" displayName="test_install_5_componentgroup_1_component_1" description="" game="GalacticAdventures">test_install_5_ep1_1.package</component>
-					<component unique="test_install_5_componentgroup_1_component_2" displayName="test_install_5_componentgroup_1_component_2" description="" game="GalacticAdventures" defaultChecked="true">test_install_5_ep1_2.package</component>
-					<component unique="test_install_5_componentgroup_1_component_3" displayName="test_install_5_componentgroup_1_component_3" description="" game="GalacticAdventures">test_install_5_ep1_3.package</component>
-				</componentGroup>
-				<componentGroup unique="test_install_5_componentgroup_2" displayName="test_install_5_componentgroup_2">
-					<component unique="test_install_5_componentgroup_2_component_1" displayName="test_install_5_componentgroup_2_component_1" description="" game="GalacticAdventures" defaultChecked="true">test_install_5_ep1_4.package</component>
-					<component unique="test_install_5_componentgroup_2_component_2" displayName="test_install_5_componentgroup_2_component_2" description="" game="GalacticAdventures">test_install_5_ep1_5.package</component>
-					<component unique="test_install_5_componentgroup_2_component_3" displayName="test_install_5_componentgroup_2_component_3" description="" game="GalacticAdventures">test_install_5_ep1_6.package</component>
-				</componentGroup>
-			</mod>"""
-	files = [
-		[ 'test_install_5_ep1_1.package', str(uuid.uuid4()) ],
-		[ 'test_install_5_ep1_2.package', str(uuid.uuid4()) ],
-		[ 'test_install_5_ep1_3.package', str(uuid.uuid4()) ],
-		[ 'test_install_5_ep1_4.package', str(uuid.uuid4()) ],
-		[ 'test_install_5_ep1_5.package', str(uuid.uuid4()) ],
-		[ 'test_install_5_ep1_6.package', str(uuid.uuid4()) ],
-	]
-	write_sporemod(xml, files)
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_5_ep1_1.package'))
-	assert os.path.isfile(os.path.join(ep1_path, 'test_install_5_ep1_2.package'))
-	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_5_ep1_3.package'))
-	assert os.path.isfile(os.path.join(ep1_path, 'test_install_5_ep1_4.package'))
-	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_5_ep1_5.package'))
-	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_5_ep1_6.package'))
-	assert check_file_contents(os.path.join(ep1_path, files[1][0]), files[1][1])
-	assert check_file_contents(os.path.join(ep1_path, files[3][0]), files[3][1])
-
-	# check if a hasCustomInstaller is enabled when installer version is 1.0.0.0
-	xml = """<mod displayName="test_install_6"
-				unique="test_install_6"
-				description="test_install_6"
-				installerSystemVersion="1.0.0.0">
-				<component unique="test_install_6_component_1" 
-					displayName="test_install_6_component_1" 
-					description="test_install_6_component_1"
-					game="GalacticAdventures" defaultChecked="true">test_install_6_ep1_1.package</component>
-				</mod>"""	
-	files = [
-		[ 'test_install_6_ep1_1.package', str(uuid.uuid4()) ],
-	]
-	write_sporemod(xml, files)
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	assert os.path.isfile(os.path.join(ep1_path, 'test_install_6_ep1_1.package'))
-	assert check_file_contents(os.path.join(ep1_path, files[0][0]), files[0][1])
-
-	# check if a pre-modinfo.xml mod works
-	files = [
-		[ 'test_install_7.dll', str(uuid.uuid4()) ],
-		[ 'test_install_7.txt', str(uuid.uuid4()) ],
-		[ 'test_install_7_ep1.package', str(uuid.uuid4()) ],
-	]
-	write_sporemod(None, files)
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	assert os.path.isfile(os.path.join(modlibs_path, 'test_install_7.dll'))
-	assert not os.path.isfile(os.path.join(modlibs_path, 'test_install_7.txt'))
-	assert not os.path.isfile(os.path.join(data_path, 'test_install_7.txt'))
-	assert not os.path.isfile(os.path.join(ep1_path, 'test_install_7.txt'))
-	assert os.path.isfile(os.path.join(ep1_path, 'test_install_7_ep1.package'))
-	assert check_file_contents(os.path.join(modlibs_path, files[0][0]), files[0][1])
-	assert check_file_contents(os.path.join(ep1_path, files[2][0]), files[2][1])
-
-	# verify that an invalid dllsBuild doesn't work
-	xml = """<mod displayName="test_install_8" 
-				unique="test_install_8" 
-				description="test_install_8" 
-				installerSystemVersion="1.0.1.1" 
-				dllsBuild="999.999.999">
-			</mod>"""
-	write_sporemod(xml)
-	result = run_smm([ 'install', sporemod_file ])
-	assert result.returncode == 1
-	assert result.stdout == ''
-	assert result.stderr != ''
 
 	# verify that file collision with other mods fails
 	xml = """<mod displayName="test_install_9" 
@@ -593,63 +691,6 @@ def test_install():
 def test_uninstall():
 	print(f'Running {test_uninstall.__name__}...')
 	reset_smm()
-
-	# uninstall should fail when no mods have been installed
-	result = run_smm([ 'uninstall', '0'])
-	assert result.returncode == 1
-	assert result.stdout == ''
-	assert result.stderr != ''
-
-	# install multiple dummy mods
-	install_cmd = [ 'install' ]
-	for num in range(25):
-		xml = f"""<mod displayName="test_uninstall_{num:02}" 
-					unique="test_uninstall_{num:02}" 
-					description="test_uninstall_{num:02}" 
-					installerSystemVersion="1.0.1.1" 
-					dllsBuild="2.5.20">
-					<prerequisite>test_uninstall_{num:02}.dll</prerequisite>
-				</mod>"""
-		files = [
-			[ f'test_uninstall_{num:02}.dll', str(uuid.uuid4()) ],
-		]
-		install_cmd += [ write_sporemod(xml, files, True) ]
-	result = run_smm(install_cmd)
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	for num in range(25):
-		assert os.path.isfile(os.path.join(modlibs_path, f'test_uninstall_{num:02}.dll'))
-
-	result = run_smm([ 'install', package_file ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-
-	# uninstall with a too high ID shouldn't work
-	result = run_smm([ 'uninstall', '26' ])
-	assert result.returncode == 1
-	assert result.stdout == ''
-	assert result.stderr != ''
-
-	# uninstall with a valid ID should work
-	result = run_smm([ 'uninstall', '0' ])
-	assert result.returncode == 0
-	assert result.stdout != ''
-	assert result.stderr == ''
-	assert not os.path.isfile(os.path.join(ep1_path, 'test_package.package'))
-
-	# uninstall with a letter shouldn't work
-	result = run_smm([ 'uninstall', 'a' ])
-	assert result.returncode == 1
-	assert result.stdout == ''
-	assert result.stderr != ''
-
-	# uninstall with hex numbers shouldn't work
-	result = run_smm([ 'uninstall', '0x0' ])
-	assert result.returncode == 1
-	assert result.stdout == ''
-	assert result.stderr != ''
 
 	# uninstall with a valid range should work
 	result = run_smm([ 'uninstall', '0-20' ])
@@ -1439,10 +1480,7 @@ def test_update_modapi():
 # main
 #
 
-if __name__ == "__main__":
-	# register exit handler for cleanup
-	atexit.register(cleanup_smm)
-
+if __name__ == '__main__':
 	# add argument parser
 	parser = argparse.ArgumentParser(description='Runs SporeModManager tests.')
 	parser.add_argument('--nocleanup', action='store_false', help="skips cleanup of temporary directory")
@@ -1459,27 +1497,4 @@ if __name__ == "__main__":
 	network         = args.network
 	valgrind        = args.valgrind
 
-	# create test directories
-	os.mkdir(mods_path)
-	os.mkdir(mods2_path)
-	os.mkdir(corelibs_path)
-	os.mkdir(modlibs_path)
-	os.mkdir(data_path)
-	os.mkdir(ep1_path)
-
-	# write spore mod api dll and package file
-	write_sporemodapi_dll(sporemodapi_file)
-	write_package(package_file)
-	write_package(package_file_2)
-	write_invalid(invalid_file)
-
-	# call tests
-	test_help()
-	test_version()
-	test_install()
-	test_uninstall()
-	test_update()
-	test_list_installed()
-	test_depends()
-	if network:
-		test_update_modapi()
+	unittest.main(argv=['first-arg-is-ignored'], verbosity=2)
