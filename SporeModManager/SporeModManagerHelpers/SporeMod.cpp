@@ -452,9 +452,7 @@ bool SporeMod::ConfigureSporeMod(Zip::ZipFile zipFile, const Xml::SporeModInfo& 
         // deleting files that aren't theirs
         if (compatFile.RemoveTargets)
         {
-            std::cerr << "Warning: \"" << sporeModInfo.Name
-                        << "\" uses unsupported removeTargets attribute with the compatFile element!"
-                        << std::endl;
+            std::cerr << "Warning: skipping unsupported compatFile element with removeTargets attribute enabled!" << std::endl;
             continue;
         }
 
