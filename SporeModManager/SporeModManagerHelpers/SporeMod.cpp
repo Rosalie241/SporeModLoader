@@ -446,6 +446,18 @@ bool SporeMod::ConfigureSporeMod(Zip::ZipFile zipFile, const Xml::SporeModInfo& 
     {
         bool installFiles = true;
 
+        // skip unsupported compatFile element with the
+        // removeTargets attribute enabled due to the 
+        // fact that it's dangerous for mods to allow
+        // deleting files that aren't theirs
+        if (compatFile.RemoveTargets)
+        {
+            std::cerr << "Warning: \"" << sporeModInfo.Name
+                        << "\" uses unsupported removeTargets attribute with the compatFile element!"
+                        << std::endl;
+            continue;
+        }
+
         for (const auto& requiredFile : compatFile.RequiredFiles)
         {
             std::filesystem::path requiredFilePath = Path::GetFullInstallPath(requiredFile.InstallLocation, requiredFile.FileName);

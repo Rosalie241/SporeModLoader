@@ -262,6 +262,8 @@ def test_install():
 				dllsBuild="2.5.20">
 				<compatFile game="spore" compatTargetFileName="test_install_2_compatfile" 
 					compatTargetGame="spore">test_install_2_1.package</compatFile>
+				<compatFile game="spore" compatTargetFileName="test_install_2_compatfile" 
+					compatTargetGame="spore" removeTargets="true">test_install_2_2.package</compatFile>
 				<compatFile game="GalacticAdventures" compatTargetFileName="test_install_2_compatfile" 
 					compatTargetGame="GalacticAdventures">test_install_2_ep1_1.package</compatFile>
 				<compatFile game="spore" compatTargetFileName="test_no_install_2_compatfile" 
@@ -279,7 +281,7 @@ def test_install():
 	result = run_smm([ 'install', sporemod_file ])
 	assert result.returncode == 0
 	assert result.stdout != ''
-	assert result.stderr == ''
+	assert result.stderr != ''
 	assert os.path.isfile(os.path.join(data_path, 'test_install_2_1.package'))
 	assert os.path.isfile(os.path.join(ep1_path, 'test_install_2_ep1_1.package'))
 	assert not os.path.isfile(os.path.join(data_path, 'test_install_2_2.package'))

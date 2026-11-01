@@ -80,6 +80,7 @@ namespace SporeModManagerHelpers
             {
                 std::vector<SporeModFile> RequiredFiles;
                 std::vector<SporeModFile> Files;
+                bool RemoveTargets = false;
             };
 
             struct SporeModInfo

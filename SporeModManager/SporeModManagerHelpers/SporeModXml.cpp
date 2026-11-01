@@ -294,6 +294,7 @@ static SporeMod::Xml::SporeModInfoCompatFile parse_compatfile_element(tinyxml2::
 
     compatFile.RequiredFiles = parse_files_element(element, true);
     compatFile.Files         = parse_files_element(element);
+    compatFile.RemoveTargets = get_attribute_bool(element, "removeTargets");
 
     return compatFile;
 }
