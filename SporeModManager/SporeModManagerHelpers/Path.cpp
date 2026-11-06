@@ -20,6 +20,11 @@
 #include <sys/syslimits.h>
 #include <mach-o/dyld.h>
 #endif
+#ifdef __FreeBSD__
+#include <sys/sysctl.h>
+#include <unistd.h>
+#include <limits.h>
+#endif
 
 using namespace SporeModManagerHelpers;
 
@@ -151,7 +156,7 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
 {
 #if defined(_WIN32)
     static std::filesystem::path currentExecutablePath;
-    wchar_t currentExecutablePathBuf[MAX_PATH];
+    wchar_t currentExecutablePathBuf[MAX_PATH] = {0};
 
     if (!currentExecutablePath.empty())
     {
@@ -159,7 +164,7 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
     }
 
     if (GetModuleFileNameW(nullptr, currentExecutablePathBuf, MAX_PATH) == 0)
-    { // fallback to current path
+    {
         std::cerr << "Error: failed to retrieve path of current executable!" << std::endl;
         std::exit(1);
     }
@@ -169,7 +174,7 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
     return currentExecutablePath;
 #elif defined(__APPLE__) // MacOS
     static std::filesystem::path currentExecutablePath;
-    char currentExecutablePathBuf[PATH_MAX];
+    char currentExecutablePathBuf[PATH_MAX] = {0};
     uint32_t currentExecutablePathBufLen = PATH_MAX;
 
     if (!currentExecutablePath.empty())
@@ -178,6 +183,26 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
     }
 
     if (_NSGetExecutablePath(currentExecutablePathBuf, &currentExecutablePathBufLen) != 0)
+    {
+        std::cerr << "Error: failed to retrieve path of current executable!" << std::endl;
+        std::exit(1);
+    }
+
+    currentExecutablePath = currentExecutablePathBuf;
+    currentExecutablePath = currentExecutablePath.parent_path();
+    return currentExecutablePath;
+#elif defined(__FreeBSD__) // FreeBSD
+    static std::filesystem::path currentExecutablePath;
+    char currentExecutablePathBuf[PATH_MAX] = {0};
+    size_t currentExecutablePathBufLen = PATH_MAX;
+    int mib[4] = {CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, getpid()};
+
+    if (!currentExecutablePath.empty())
+    {
+        return currentExecutablePath;
+    }
+
+    if (sysctl(mib, 4, currentExecutablePathBuf, &currentExecutablePathBufLen, nullptr, 0) != 0)
     {
         std::cerr << "Error: failed to retrieve path of current executable!" << std::endl;
         std::exit(1);
