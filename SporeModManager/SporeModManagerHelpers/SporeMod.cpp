@@ -315,7 +315,7 @@ bool SporeMod::ConfigureSporeMod(Zip::ZipFile zipFile, const Xml::SporeModInfo& 
 
     if (configurationRequired)
     {
-        std::cout << "-> Configuring " << sporeModInfo.Name << std::endl;
+        std::cout << "-> Configuring " << sporeModInfo.Name << sporeModInfo.Version.to_string(true, true) << std::endl;
     }
 
     const struct
@@ -511,7 +511,7 @@ bool SporeMod::InstallSporeMod(Zip::ZipFile zipFile, const Xml::InstalledSporeMo
 {
     std::error_code error;
 
-    std::cout << "-> Installing " << installedSporeMod.Name << std::endl;
+    std::cout << "-> Installing " << installedSporeMod.Name << installedSporeMod.Version.to_string(true, true) << std::endl;
 
     for (const auto& installedFile : installedSporeMod.InstalledFiles)
     {
@@ -527,7 +527,7 @@ bool SporeMod::InstallSporeMod(Zip::ZipFile zipFile, const Xml::InstalledSporeMo
 
         if (!Zip::ExtractFile(zipFile, sourcePath, installPath))
         {
-            std::cerr << "Error: failed to extract file from zip file!" << std::endl;
+            std::cerr << "Error: failed to extract " << sourcePath << " from zip file!" << std::endl;
             // cleanup installed files that were left over
             for (const auto& installedFileToRemove : installedSporeMod.InstalledFiles)
             {

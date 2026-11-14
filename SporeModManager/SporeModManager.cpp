@@ -503,7 +503,7 @@ bool SporeModManager::UninstallMods(const std::vector<int>& ids, bool skipDepend
     {
         installedSporeMod = l_InstalledSporeMods[id];
 
-        std::cout << "-> Removing " << installedSporeMod.Name << std::endl;
+        std::cout << "-> Removing " << installedSporeMod.Name << installedSporeMod.Version.to_string(true, true) << std::endl;
 
         for (const auto& installedFile : installedSporeMod.InstalledFiles)
         {
@@ -543,7 +543,7 @@ bool SporeModManager::UninstallMods(const std::vector<int>& ids, bool skipDepend
 bool SporeModManager::UpdateSporeModAPI(void)
 {
     const std::string url = "https://github.com/Spore-Community/Spore-ModAPI/releases/latest/download/SporeModAPIdlls.zip";
-    const std::filesystem::path updatePath = Path::Combine({ Path::GetCoreLibsPath(), "update.zip" });
+    const std::filesystem::path updatePath = Path::Combine({ Path::GetCoreLibsPath(), "SporeModAPIdlls.zip" });
     const std::filesystem::path coreLibPath = Path::Combine({ Path::GetCoreLibsPath(), "SporeModAPI.dll" });
     std::error_code error;
     Zip::ZipFile zipFile;
