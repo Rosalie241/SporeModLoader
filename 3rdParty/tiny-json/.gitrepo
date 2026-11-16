@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:rafagafe/tiny-json.git
+	branch = master
+	commit = 025cdde5f2574290d8b2a8524bc257db2829bb7c
+	parent = ae916f5cbdd70742d136652a8e855d7b09f64373
+	method = merge
+	cmdver = 0.4.9
