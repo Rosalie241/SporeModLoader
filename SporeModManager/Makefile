@@ -52,17 +52,20 @@ LDFLAGS    += -fsanitize=address
 endif
 
 CFLAGS     := \
-				-I$(THIRDPARTY_DIR)/zlib     \
+				-I$(THIRDPARTY_DIR)/tiny-json \
+				-I$(THIRDPARTY_DIR)/zlib      \
 				-I$(THIRDPARTY_DIR)/zlib/contrib/minizip
-CXXFLAGS   := -std=c++17 -fno-rtti           \
-				-I$(SOURCE_DIR)              \
-				-I$(THIRDPARTY_DIR)/tinyxml2 \
-				-I$(THIRDPARTY_DIR)/zlib     \
+CXXFLAGS   := -std=c++17 -fno-rtti            \
+				-I$(SOURCE_DIR)               \
+				-I$(THIRDPARTY_DIR)/tiny-json \
+				-I$(THIRDPARTY_DIR)/tinyxml2  \
+				-I$(THIRDPARTY_DIR)/zlib      \
 				-I$(THIRDPARTY_DIR)/zlib/contrib/minizip
 
 OBJECT_FILES := \
 	$(SOURCE_DIR)/SporeModManagerHelpers/Download.$(OBJ)    \
 	$(SOURCE_DIR)/SporeModManagerHelpers/FileVersion.$(OBJ) \
+	$(SOURCE_DIR)/SporeModManagerHelpers/GithubApi.$(OBJ)   \
 	$(SOURCE_DIR)/SporeModManagerHelpers/Path.$(OBJ)        \
 	$(SOURCE_DIR)/SporeModManagerHelpers/SporeMod.$(OBJ)    \
 	$(SOURCE_DIR)/SporeModManagerHelpers/SporeModXml.$(OBJ) \
@@ -84,6 +87,8 @@ HEADER_FILES := \
 	$(SOURCE_DIR)/SporeModManager.hpp                    \
 	$(SOURCE_DIR)/SporeModManagerHelpers/Download.hpp    \
 	$(SOURCE_DIR)/SporeModManagerHelpers/FileVersion.hpp \
+	$(SOURCE_DIR)/SporeModManagerHelpers/GithubApi.hpp   \
+	$(SOURCE_DIR)/SporeModManagerHelpers/MallocWrapper.hpp \
 	$(SOURCE_DIR)/SporeModManagerHelpers/SporeModXml.hpp \
 	$(SOURCE_DIR)/SporeModManagerHelpers/SporeMod.hpp    \
 	$(SOURCE_DIR)/SporeModManagerHelpers/String.hpp      \
@@ -93,6 +98,7 @@ HEADER_FILES := \
 	$(GENERATED_HEADER_FILES)
 
 THIRDPARTY_OBJECT_FILES := \
+	$(THIRDPARTY_DIR)/tiny-json/tiny-json.$(OBJ) \
 	$(THIRDPARTY_DIR)/tinyxml2/tinyxml2.$(OBJ) \
 	$(THIRDPARTY_DIR)/zlib/adler32.$(OBJ)  \
 	$(THIRDPARTY_DIR)/zlib/crc32.$(OBJ)    \

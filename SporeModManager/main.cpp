@@ -12,6 +12,8 @@
 #include "SporeModManagerHelpers/UI.hpp"
 #include "SporeModManager.hpp"
 
+#include "SporeModManagerHelpers/Download.hpp"
+#include "SporeModManagerHelpers/GithubApi.hpp"
 #include "revision.h"
 
 #include <filesystem>
@@ -67,7 +69,10 @@ static void show_usage()
               << "  install file(s)     installs specified file(s)" << std::endl
               << "  update file(s)      updates mod(s) using specified file(s)" << std::endl
               << "  uninstall id(s)     uninstalls mod(s) with specified identifier(s)" << std::endl
-              << "  update-modapi       updates modapi dll" << std::endl
+              << "  update-modapi       updates SporeModAPI.dll" << std::endl
+#ifndef _WIN32
+              << "  update-sml          updates SporeModLoader" << std::endl
+#endif
               << std::endl
               << "  version             display version and exit"   << std::endl
               << "  help                display this help and exit" << std::endl
@@ -406,6 +411,12 @@ int main(int argc, char** argv)
             return 1;
         }
     }
+#ifndef _WIN32
+    else if (command == arg_str("update-sml"))
+    {
+        std::cout << "update available? " << GithubApi::IsUpdateAvailable(REVISION_STR) << std::endl;
+    }
+#endif
     else
     {
         show_usage();

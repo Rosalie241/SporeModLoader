@@ -8,6 +8,7 @@
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 #include "Zip.hpp"
+#include "MallocWrapper.hpp"
 
 #include <iostream>
 #include <cstdlib>
@@ -23,46 +24,6 @@ using namespace SporeModManagerHelpers;
 //
 
 #define UNZIP_READ_SIZE 1024 * 1024 * 64 /* 64 MiB */
-
-//
-// Local Templates
-//
-
-template <typename T>
-class MallocWrapper
-{
-private:
-    T* buffer = nullptr;
-
-public:
-    MallocWrapper() {}
-    ~MallocWrapper()
-    {
-        if (this->buffer != nullptr)
-        {
-            std::free(this->buffer);
-            this->buffer = nullptr;
-        }
-    }
-
-    void AllocateOnce(size_t size)
-    {
-        if (this->buffer == nullptr)
-        {
-            this->buffer = reinterpret_cast<T*>(std::malloc(size));
-            if (this->buffer == nullptr)
-            {
-                std::cerr << "Error: failed to allocate memory!" << std::endl;
-                std::exit(1);
-            }
-        }
-    }
-
-    T* Data()
-    {
-        return this->buffer;
-    }
-};
 
 //
 // Local Variables
@@ -261,7 +222,7 @@ bool Zip::ExtractFile(ZipFile zipFile, const std::filesystem::path& file, const 
 
     do
     {
-        bytesRead = unzReadCurrentFile(zipFile, l_ZipFileBuffer.Data(), UNZIP_READ_SIZE);
+        bytesRead = unzReadCurrentFile(zipFile, l_ZipFileBuffer.data(), UNZIP_READ_SIZE);
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
@@ -270,7 +231,7 @@ bool Zip::ExtractFile(ZipFile zipFile, const std::filesystem::path& file, const 
         }
         else if (bytesRead > 0)
         {
-            outputFileStream.write(l_ZipFileBuffer.Data(), bytesRead);
+            outputFileStream.write(l_ZipFileBuffer.data(), bytesRead);
         }
     } while (bytesRead > 0);
 
@@ -305,7 +266,7 @@ bool Zip::ExtractFile(ZipFile zipFile, const std::filesystem::path& file, std::v
 
     do
     {
-        bytesRead = unzReadCurrentFile(zipFile, l_ZipFileBuffer.Data(), UNZIP_READ_SIZE);
+        bytesRead = unzReadCurrentFile(zipFile, l_ZipFileBuffer.data(), UNZIP_READ_SIZE);
         if (bytesRead < 0)
         {
             unzCloseCurrentFile(zipFile);
@@ -314,7 +275,7 @@ bool Zip::ExtractFile(ZipFile zipFile, const std::filesystem::path& file, std::v
         }
         else if (bytesRead > 0)
         {
-            outBuffer.insert(outBuffer.end(), l_ZipFileBuffer.Data(), l_ZipFileBuffer.Data() + bytesRead);
+            outBuffer.insert(outBuffer.end(), l_ZipFileBuffer.data(), l_ZipFileBuffer.data() + bytesRead);
         }
     } while (bytesRead > 0);
 

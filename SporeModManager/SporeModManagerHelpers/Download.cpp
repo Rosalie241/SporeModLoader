@@ -35,6 +35,7 @@ using namespace SporeModManagerHelpers;
 
 // libcurl definitions
 #define CURLOPT_URL             10002
+#define CURLOPT_USERAGENT       10018
 #define CURLOPT_WRITEFUNCTION   20011
 #define CURLOPT_WRITEDATA       10001
 #define CURLOPT_REDIR_PROTOCOLS 182
@@ -52,13 +53,69 @@ static ptr_curl_easy_setopt  curl_easy_setopt  = nullptr;
 static ptr_curl_easy_perform curl_easy_perform = nullptr;
 static ptr_curl_easy_cleanup curl_easy_cleanup = nullptr;
 
-static size_t curl_write_data(char *data, size_t size, size_t nmemb, void* stream)
+static size_t curl_write_data_filestream(char* data, size_t size, size_t nmemb, void* stream)
 {
     std::ofstream* fileStream = static_cast<std::ofstream*>(stream);
     std::streamoff position = fileStream->tellp();
     fileStream->write(data, size * nmemb);
     return fileStream->tellp() - position;
 }
+
+static size_t curl_write_data_buffer(char* data, size_t size, size_t nmemb, void* buffer)
+{
+    std::vector<char>* vectorBuffer = static_cast<std::vector<char>*>(buffer);
+    size_t count = size * nmemb;
+    vectorBuffer->insert(vectorBuffer->end(), data, data + count);
+    return count;
+}
+
+static bool libcurl_init(void** libcurl, void** curl)
+{
+    *libcurl = dlopen(LIBCURL_FILENAME, RTLD_LAZY);
+    if (*libcurl == nullptr)
+    {
+        std::cerr << "Error: failed to load libcurl: " << dlerror() << std::endl;
+        return false;
+    }
+
+    curl_easy_init    = reinterpret_cast<ptr_curl_easy_init>(dlsym(*libcurl, "curl_easy_init"));
+    curl_easy_setopt  = reinterpret_cast<ptr_curl_easy_setopt>(dlsym(*libcurl, "curl_easy_setopt"));
+    curl_easy_perform = reinterpret_cast<ptr_curl_easy_perform>(dlsym(*libcurl, "curl_easy_perform"));
+    curl_easy_cleanup = reinterpret_cast<ptr_curl_easy_cleanup>(dlsym(*libcurl, "curl_easy_cleanup"));
+    if (curl_easy_init    == nullptr ||
+        curl_easy_setopt  == nullptr ||
+        curl_easy_perform == nullptr ||
+        curl_easy_cleanup == nullptr)
+    {
+        dlclose(*libcurl);
+        std::cerr << "Error: failed to retrieve required symbols from libcurl!" << std::endl;
+        return false;
+    }
+
+    *curl = curl_easy_init();
+    if (*curl == nullptr)
+    {
+        std::cerr << "Error: failed to initialize cURL!" << std::endl;;
+        return false;
+    }
+
+    return true;
+}
+
+static void libcurl_quit(void* libcurl, void* curl)
+{
+    if (curl_easy_cleanup != nullptr)
+    {
+        curl_easy_cleanup(curl);
+    }
+    dlclose(libcurl);
+
+    curl_easy_init    = nullptr;
+    curl_easy_setopt  = nullptr;
+    curl_easy_perform = nullptr;
+    curl_easy_cleanup = nullptr;
+}
+
 #endif
 
 
@@ -86,59 +143,71 @@ bool Download::DownloadFile(const std::string& url, const std::filesystem::path&
 
     return true;
 #else
-    void* libcurl = dlopen(LIBCURL_FILENAME, RTLD_LAZY);
-    if (libcurl == nullptr)
-    {
-        std::cerr << "Error: failed to load libcurl: " << dlerror() << std::endl;
-        return false;
-    }
+    void* libcurl = nullptr;
+    void* curl = nullptr;
 
-    curl_easy_init    = reinterpret_cast<ptr_curl_easy_init>(dlsym(libcurl, "curl_easy_init"));
-    curl_easy_setopt  = reinterpret_cast<ptr_curl_easy_setopt>(dlsym(libcurl, "curl_easy_setopt"));
-    curl_easy_perform = reinterpret_cast<ptr_curl_easy_perform>(dlsym(libcurl, "curl_easy_perform"));
-    curl_easy_cleanup = reinterpret_cast<ptr_curl_easy_cleanup>(dlsym(libcurl, "curl_easy_cleanup"));
-    if (curl_easy_init    == nullptr ||
-        curl_easy_setopt  == nullptr ||
-        curl_easy_perform == nullptr ||
-        curl_easy_cleanup == nullptr)
+    if (!libcurl_init(&libcurl, &curl))
     {
-        dlclose(libcurl);
-        std::cerr << "Error: failed to retrieve required symbols from libcurl!" << std::endl;
-        return false;
-    }
-
-    void* curl = curl_easy_init();
-    if (curl == nullptr)
-    {
-        std::cerr << "Error: failed to initialize cURL!" << std::endl;;
         return false;
     }
 
     std::ofstream fileStream(path, std::ios::trunc | std::ios::binary);
     if (!fileStream.is_open())
     {
-        curl_easy_cleanup(curl);
-        dlclose(libcurl);
+        libcurl_quit(libcurl, curl);
         std::cerr << "Error: failed to open " << path << std::endl;
         return false;
     }
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curl_write_data);
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, "SporeModLoader");
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curl_write_data_filestream);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &fileStream);
     curl_easy_setopt(curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
     if (curl_easy_perform(curl) != CURLE_OK)
     {
-        curl_easy_cleanup(curl);
-        dlclose(libcurl);
+        libcurl_quit(libcurl, curl);
         std::cerr << "Error: failed to download file!" << std::endl;
         return false;
     }
 
-    curl_easy_cleanup(curl);
-    dlclose(libcurl);
+    libcurl_quit(libcurl, curl);
     return true;
 #endif // _WIN32
+}
+
+bool Download::DownloadBuffer(const std::string& url, std::vector<char>& buffer)
+{
+#ifdef _WIN32
+    (void)url;
+    (void)buffer;
+    return false;
+#else
+    void* libcurl = nullptr;
+    void* curl = nullptr;
+
+    if (!libcurl_init(&libcurl, &curl))
+    {
+        return false;
+    }
+
+    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, "SporeModLoader");
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curl_write_data_buffer);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+    curl_easy_setopt(curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTPS);
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+
+    if (curl_easy_perform(curl) != CURLE_OK)
+    {
+        libcurl_quit(libcurl, curl);
+        std::cerr << "Error: failed to download to buffer!" << std::endl;
+        return false;
+    }
+
+    libcurl_quit(libcurl, curl);
+    return true;
+#endif
 }

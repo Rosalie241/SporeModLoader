@@ -11,6 +11,7 @@
 #define SPOREMODMANAGERHELPERS_DOWNLOAD_HPP
 
 #include <string>
+#include <vector>
 #include <filesystem>
 
 namespace SporeModManagerHelpers
@@ -21,6 +22,11 @@ namespace SporeModManagerHelpers
         ///     Downloads url to path
         /// </summary>
         bool DownloadFile(const std::string& url, const std::filesystem::path& path);
+
+        /// <summary>
+        ///     Downloads url to buffer
+        /// </summary>
+        bool DownloadBuffer(const std::string& url, std::vector<char>& buffer);
     }
 }
 
