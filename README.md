@@ -10,9 +10,9 @@ before the custom memory allocator is unset
 This is a simple commandline mod manager for Spore,
 it allows you to install, update and remove mods 
 easily using the commandline
-  
+
 It's inside the `SporeModLoader/SporeModManager`
-directory, with both a windows and linux executable  
+directory
 
 Example usage can be found when running the executable
 with the `help` argument
@@ -31,8 +31,8 @@ or by using `winecfg`
 
 #### Linux/MacOS
 
-* Install `make`, `gcc`, `g++` and optionally `i686-w64-mingw32-gcc` and `i686-w64-mingw32-g++`
-* Execute `make all`, if you don't have mingw installed, execute `make SporeModManager` instead
+* Install `make`, `gcc` and `g++`
+* Execute `make all`
 
 #### Windows
 * Open `SporeModLoader.sln` with Visual Studio or execute `msbuild` manually
