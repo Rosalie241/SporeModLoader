@@ -77,27 +77,9 @@ jobs:
         with:
           name: macos-build-artifacts-asan
           path: bin-asan/*
-  build-mingw:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v7
-      - name: Install Packages
-        run: |
-          sudo apt-get -y install gcc-mingw-w64-i686 g++-mingw-w64-i686
-      - name: Build SporeModLoader (mingw)
-        run: |
-          make SporeModLoader -j$(nproc) WERROR=1
-      - name: Build SporeModManager (mingw)
-        run: |
-          make SporeModManager.exe -j$(nproc) WERROR=1
-      - name: Upload SporeModLoader (mingw)
-        uses: actions/upload-artifact@v7
-        with:
-          name: mingw-build-artifacts
-          path: bin/*
   package-artifacts:
     runs-on: ubuntu-22.04
-    needs: [ build-msvc, build-linux, build-macos, build-mingw ]
+    needs: [ build-msvc, build-linux, build-macos ]
     steps:
       - uses: actions/checkout@v7
       - name: Prepare Environment
@@ -118,11 +100,6 @@ jobs:
         with:
           name: macos-build-artifacts
           path: macos-artifacts
-      - name: Download mingw-build-artifacts
-        uses: actions/download-artifact@v8
-        with:
-          name: mingw-build-artifacts
-          path: mingw-artifacts
       - name: Prepare SporeModLoader (Linux)
         run: |
           cp -r artifacts/* linux-artifacts/
@@ -131,10 +108,6 @@ jobs:
         run: |
           cp -r artifacts/* macos-artifacts/
           rm -f macos-artifacts/SporeModLoader/SporeModManager/SporeModManager.exe
-      - name: Prepare SporeModLoader (mingw)
-        run: |
-          cp -r artifacts/SporeModLoader/CoreLibs/ mingw-artifacts/SporeModLoader/CoreLibs
-          cp -r artifacts/SporeModLoader/ModLibs/  mingw-artifacts/SporeModLoader/ModLibs
       - name: Upload SporeModLoader (msvc)
         uses: actions/upload-artifact@v7
         with:
@@ -153,12 +126,6 @@ jobs:
           name: SporeModLoader-macos-${{ env.GIT_REVISION }}
           path: macos-artifacts/*
           compression-level: 9
-      - name: Upload SporeModLoader (mingw)
-        uses: actions/upload-artifact@v7
-        with:
-          name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
-          path: mingw-artifacts/*
-          compression-level: 9
       - name: Delete leftover artifacts
         uses: geekyeggo/delete-artifact@v6
         with:
@@ -166,7 +133,6 @@ jobs:
             msvc-build-artifacts
             linux-build-artifacts
             macos-build-artifacts
-            mingw-build-artifacts
   test-msvc:
     runs-on: windows-2025
     needs: [ package-artifacts ]
@@ -247,23 +213,6 @@ jobs:
         run: |
           chmod +x ./artifact-asan/SporeModLoader/SporeModManager/SporeModManager
           python3 ./SporeModManager/test.py --verbose ./artifact-asan/SporeModLoader/SporeModManager/SporeModManager
-  test-mingw:
-    runs-on: windows-2025
-    needs: [ package-artifacts ]
-    steps:
-      - uses: actions/checkout@v7
-      - name: Prepare Environment
-        run: |
-          $env:revision = git describe --tags --always
-          echo "GIT_REVISION=$env:revision" >> $env:GITHUB_ENV
-      - name: Download SporeModManager (mingw)
-        uses: actions/download-artifact@v8
-        with:
-          name: SporeModLoader-mingw-${{ env.GIT_REVISION }}
-          path: artifact
-      - name: Test SporeModManager (mingw)
-        run: |
-          python3 ./SporeModManager/test.py --network --verbose ./artifact/SporeModLoader/SporeModManager/SporeModManager.exe
   # actions/upload-artifact still doesn't retain
   # file permissions, so we'll need to download
   # the artifact, mark the linux executable as
@@ -271,7 +220,7 @@ jobs:
   # and then add it to a release
   publish-github:
     runs-on: ubuntu-22.04
-    needs: [ test-msvc, test-linux, test-macos, test-mingw ]
+    needs: [ test-msvc, test-linux, test-macos ]
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v7
