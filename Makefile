@@ -23,7 +23,7 @@ help:
 	@echo "    WERROR=1        == compiler treats warnings as errors"
 	@echo "  Debugging Options:"
 	@echo "    DEBUG=1         == add debugging symbols to binaries"
-	@echo "	   ASAN=1          == add address sanitizer to binaries"
+	@echo "    ASAN=1          == add address sanitizer to binaries"
 	@echo "    VERBOSE=1       == show verbose compiler output"
 
 all: SporeModLoader SporeModManager.exe SporeModManager
