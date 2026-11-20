@@ -31,110 +31,91 @@ static std::vector<HMODULE> l_LoadedModLibs;
 
 bool SporeModLoader::Initialize()
 {
-    try
+    if (!Logger::Open())
     {
-        Logger::Open();
-        Logger::AddMessage(L"SporeModLoader::Initialize()");
-
-        l_CoreLibsPaths = Path::GetCoreLibsPaths();
-        l_ModLibsPaths  = Path::GetModLibsPaths();
-
-        // allocate early
-        l_LoadedCoreLibs.reserve(l_CoreLibsPaths.size());
-        l_LoadedModLibs.reserve(l_ModLibsPaths.size());
-
-        Logger::AddMessage(L"SporeModLoader::Initialize() == 1");
-        return true;
-    }
-    catch (...)
-    {
-        Logger::AddMessage(L"SporeModLoader::Initialize() == 0");
-        UI::ShowErrorMessage(L"SporeModLoader::Initialize() Failed!");
+        UI::ShowErrorMessage("SporeModLoader::Initialize() Failed!");
         return false;
     }
+
+    Logger::AddMessage("SporeModLoader::Initialize()");
+
+    if (!Path::GetCoreLibsPaths(l_CoreLibsPaths) ||
+        !Path::GetModLibsPaths(l_ModLibsPaths))
+    {
+        Logger::AddMessage("SporeModLoader::Initialize() == 0");
+        UI::ShowErrorMessage("SporeModLoader::Initialize() Failed!");
+        return false;
+    }
+
+    // allocate early
+    l_LoadedCoreLibs.reserve(l_CoreLibsPaths.size());
+    l_LoadedModLibs.reserve(l_ModLibsPaths.size());
+
+    Logger::AddMessage("SporeModLoader::Initialize() == 1");
+    return true;
 }
 
 bool SporeModLoader::LoadCoreLibs()
 {
-    try
+    Logger::AddMessage("SporeModLoader::LoadCoreLibs()");
+   
+    if (!Library::LoadAll(l_CoreLibsPaths, l_LoadedCoreLibs))
     {
-        Logger::AddMessage(L"SporeModLoader::LoadCoreLibs()");
-        if (!Library::LoadAll(l_CoreLibsPaths, l_LoadedCoreLibs))
-        {
-            throw std::exception();
-        }
-        Logger::AddMessage(L"SporeModLoader::LoadCoreLibs() == 1");
-        return true;
-    }
-    catch (...)
-    {
-        Logger::AddMessage(L"SporeModLoader::LoadCoreLibs() == 0");
-        UI::ShowErrorMessage(L"SporeModLoader::LoadCoreLibs() Failed!");
+        Logger::AddMessage("SporeModLoader::LoadCoreLibs() == 0");
+        UI::ShowErrorMessage("SporeModLoader::LoadCoreLibs() Failed!");
         return false;
     }
+    
+    Logger::AddMessage("SporeModLoader::LoadCoreLibs() == 1");
+    return true;
 }
 
 bool SporeModLoader::LoadModLibs()
 {
-    try
+    Logger::AddMessage("SporeModLoader::LoadModLibs()");
+   
+    if (!Library::LoadAll(l_ModLibsPaths, l_LoadedModLibs))
     {
-        Logger::AddMessage(L"SporeModLoader::LoadModLibs()");
-        if (!Library::LoadAll(l_ModLibsPaths, l_LoadedModLibs))
-        {
-            throw std::exception();
-        }
-        Logger::AddMessage(L"SporeModLoader::LoadModLibs() == 1");
-        return true;
-    }
-    catch (...)
-    {
-        Logger::AddMessage(L"SporeModLoader::LoadModLibs() == 0");
-        UI::ShowErrorMessage(L"SporeModLoader::LoadModLibs() Failed!");
+        Logger::AddMessage("SporeModLoader::LoadModLibs() == 0");
+        UI::ShowErrorMessage("SporeModLoader::LoadModLibs() Failed!");
         return false;
     }
+    
+    Logger::AddMessage("SporeModLoader::LoadModLibs() == 1");
+    return true;
 }
 
 bool SporeModLoader::UnloadCoreLibs(void)
 {
-    try
-    {
-        // reverse the order of the core libraries,
-        // because the legacy library depends on the new one
-        std::reverse(l_LoadedCoreLibs.begin(), l_LoadedCoreLibs.end());
-        std::reverse(l_CoreLibsPaths.begin(), l_CoreLibsPaths.end());
+    // reverse the order of the core libraries,
+    // because the legacy library depends on the new one
+    std::reverse(l_LoadedCoreLibs.begin(), l_LoadedCoreLibs.end());
+    std::reverse(l_CoreLibsPaths.begin(), l_CoreLibsPaths.end());
 
-        Logger::AddMessage(L"SporeModLoader::UnloadCoreLibs()");
-        if (!Library::UnloadAll(l_LoadedCoreLibs, l_CoreLibsPaths))
-        {
-            throw std::exception();
-        }
-        Logger::AddMessage(L"SporeModLoader::UnloadCoreLibs() == 1");
-        return true;
-    }
-    catch (...)
+    Logger::AddMessage("SporeModLoader::UnloadCoreLibs()");
+    
+    if (!Library::UnloadAll(l_LoadedCoreLibs, l_CoreLibsPaths))
     {
-        Logger::AddMessage(L"SporeModLoader::UnloadCoreLibs() == 0");
-        UI::ShowErrorMessage(L"SporeModLoader::UnloadCoreLibs() Failed!");
+        Logger::AddMessage("SporeModLoader::UnloadCoreLibs() == 0");
+        UI::ShowErrorMessage("SporeModLoader::UnloadCoreLibs() Failed!");
         return false;
     }
+
+    Logger::AddMessage("SporeModLoader::UnloadCoreLibs() == 1");
+    return true;
 }
 
 bool SporeModLoader::UnloadModLibs(void)
 {
-    try
+    Logger::AddMessage("SporeModLoader::UnloadModLibs()");
+
+    if (!Library::UnloadAll(l_LoadedModLibs, l_ModLibsPaths))
     {
-        Logger::AddMessage(L"SporeModLoader::UnloadModLibs()");
-        if (!Library::UnloadAll(l_LoadedModLibs, l_ModLibsPaths))
-        {
-            throw std::exception();
-        }
-        Logger::AddMessage(L"SporeModLoader::UnloadModLibs() == 1");
-        return true;
-    }
-    catch (...)
-    {
-        Logger::AddMessage(L"SporeModLoader::UnloadModLibs() == 0");
-        UI::ShowErrorMessage(L"SporeModLoader::UnloadModLibs() Failed!");
+        Logger::AddMessage("SporeModLoader::UnloadModLibs() == 0");
+        UI::ShowErrorMessage("SporeModLoader::UnloadModLibs() Failed!");
         return false;
     }
+
+    Logger::AddMessage("SporeModLoader::UnloadModLibs() == 1");
+    return true;
 }

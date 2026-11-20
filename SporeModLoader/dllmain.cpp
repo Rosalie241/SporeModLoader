@@ -74,10 +74,10 @@ static void WINAPI DisposeGeneralAllocator_detoured(void)
 static void attach_allocator_detours(void)
 {
     Game::GameVersion version = Game::GetCurrentVersion();
-    uintptr_t base = (uintptr_t)GetModuleHandleA(nullptr);
+    uintptr_t base = reinterpret_cast<uintptr_t>(GetModuleHandleA(nullptr));
 
-#define SET_DETOUR_ADDRESS(name, disk, steam_patched) \
-        name##_real = (ptr_##name)((base + ((version == Game::GameVersion::Disk_1_5_1) ? disk : steam_patched)) - 0x00400000);
+#define SET_DETOUR_ADDRESS(name, disc, march2017) \
+        name##_real = (ptr_##name)((base + ((version == Game::GameVersion::Disc_1_5_1) ? disc : march2017)) - 0x00400000);
 
     SET_DETOUR_ADDRESS(InitializeGeneralAllocator, 0x01390ca0, 0x0138e640);
     SET_DETOUR_ADDRESS(DisposeGeneralAllocator, 0x013cc060, 0x013c9950);

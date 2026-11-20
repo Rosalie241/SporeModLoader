@@ -20,7 +20,7 @@ using namespace SporeModLoaderHelpers;
 // Local Variables
 //
 
-static std::wofstream l_LogFileStream;
+static std::ofstream l_LogFileStream;
 
 //
 // Exported Functions
@@ -38,12 +38,11 @@ std::filesystem::path Path::GetCurrentExecutablePath(void)
 
     if (GetModuleFileNameW(nullptr, currentExecutablePathBuf, MAX_PATH) == 0)
     {
-        UI::ShowErrorMessage(L"GetModuleFileNameW() Failed!");
-        throw std::exception();
+        UI::ShowErrorMessage("GetModuleFileNameW() Failed!");
+        std::abort();
     }
 
     currentExecutablePath = currentExecutablePathBuf;
-
     return currentExecutablePath;
 }
 
@@ -57,14 +56,13 @@ std::filesystem::path Path::GetModLoaderPath(void)
     return modLoaderPath;
 }
 
-std::vector<std::filesystem::path> Path::GetCoreLibsPaths(void)
+bool Path::GetCoreLibsPaths(std::vector<std::filesystem::path>& paths)
 {
-    std::vector<std::filesystem::path> coreLibsPaths;
     std::string legacyLibFile;
     std::filesystem::path legacyLibPath;
     std::filesystem::path coreLibPath;
     std::filesystem::path coreLibsPath;
-    std::wstring logMessage;
+    std::string message;
 
     coreLibsPath = GetModLoaderPath();
     coreLibsPath += "\\CoreLibs\\";
@@ -75,13 +73,13 @@ std::vector<std::filesystem::path> Path::GetCoreLibsPaths(void)
         legacyLibFile = "SporeModAPI-steam_patched.dll";
         break;
 
-    case Game::GameVersion::Disk_1_5_1:
+    case Game::GameVersion::Disc_1_5_1:
         legacyLibFile = "SporeModAPI-disk.dll";
         break;
 
     default:
-        UI::ShowErrorMessage(L"Unsupported Spore version!");
-        throw std::exception();
+        UI::ShowErrorMessage("Unsupported Spore version!");
+        return false;
     }
 
     coreLibPath = coreLibsPath;
@@ -90,39 +88,38 @@ std::vector<std::filesystem::path> Path::GetCoreLibsPaths(void)
     legacyLibPath = coreLibsPath;
     legacyLibPath += legacyLibFile;
 
-    coreLibsPaths.push_back(coreLibPath);
-    coreLibsPaths.push_back(legacyLibPath);
+    paths.push_back(coreLibPath);
+    paths.push_back(legacyLibPath);
 
-    for (const auto& path : coreLibsPaths)
+    for (const auto& path : paths)
     {
         bool file_exists = std::filesystem::is_regular_file(path);
 
-        logMessage = L"std::filesystem::is_regular_file(\"";
-        logMessage += path.wstring();
-        logMessage += L"\") == ";
-        logMessage += std::to_wstring(file_exists);
-        Logger::AddMessage(logMessage);
+        message = "std::filesystem::is_regular_file(\"";
+        message += path.string();
+        message += "\") == ";
+        message += std::to_string(file_exists);
+        Logger::AddMessage(message);
 
         if (!file_exists)
         {
-            std::wstring errorMessage;
-            errorMessage = L"\"";
-            errorMessage += path.wstring();
-            errorMessage += L"\" doesn't exist or is not a regular file!";
-            UI::ShowErrorMessage(errorMessage);
-            throw std::exception();
+            message = "\"";
+            message += path.string();
+            message += "\" doesn't exist or is not a regular file!";
+            UI::ShowErrorMessage(message);
+            return false;
         }
     }
 
-    return coreLibsPaths;
+    return true;
 }
 
-std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
+bool Path::GetModLibsPaths(std::vector<std::filesystem::path>& paths)
 {
-    std::vector<std::filesystem::path> modLibsPaths;
     std::filesystem::path modLibsPath;
     std::vector<std::wstring> excludePostfixes;
-    std::wstring logMessage;
+    std::string message;
+    std::error_code errorCode;
 
     modLibsPath = GetModLoaderPath();
     modLibsPath += "\\ModLibs";
@@ -143,25 +140,29 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
         excludePostfixes.push_back(L"-steam_patched.dll");
     }
 
-    bool directory_exists = std::filesystem::is_directory(modLibsPath);
+    bool directory_exists = std::filesystem::is_directory(modLibsPath, errorCode);
 
-    logMessage = L"std::filesystem::is_directory(\"";
-    logMessage += modLibsPath.wstring();
-    logMessage += L"\") == ";
-    logMessage += std::to_wstring(directory_exists);
-    Logger::AddMessage(logMessage);
+    message = "std::filesystem::is_directory(\"";
+    message += modLibsPath.string();
+    message += "\") == ";
+    message += std::to_string(directory_exists);
+    if (errorCode)
+    {
+        message += ": ";
+        message += errorCode.message();
+    }
+    Logger::AddMessage(message);
     
     if (!directory_exists)
     {
-        std::wstring errorMessage;
-        errorMessage = L"\"";
-        errorMessage += modLibsPath.wstring();
-        errorMessage += L"\" doesn't exist or is not a directory!";
-        UI::ShowErrorMessage(errorMessage);
-        throw std::exception();
+        message = "\"";
+        message += modLibsPath.string();
+        message += "\" doesn't exist or is not a directory!";
+        UI::ShowErrorMessage(message);
+        return false;
     }
 
-    for (const auto& entry : std::filesystem::directory_iterator(modLibsPath))
+    for (const auto& entry : std::filesystem::directory_iterator(modLibsPath, errorCode))
     {
         // skip non-files & non-dlls
         if (!entry.is_regular_file() ||
@@ -192,76 +193,69 @@ std::vector<std::filesystem::path> Path::GetModLibsPaths(void)
 
         if (!skipLib)
         {
-            modLibsPaths.push_back(entry.path());
+            paths.push_back(entry.path());
         }
     }
 
-    return modLibsPaths;
+    return true;
 }
 
-void Logger::Open(void)
+bool Logger::Open(void)
 {
-    try
-    {
-        std::filesystem::path logFilePath;
-        logFilePath = Path::GetModLoaderPath();
-        logFilePath += "\\SporeModLoader.log";
+    std::filesystem::path logFilePath;
+    logFilePath = Path::GetModLoaderPath();
+    logFilePath += "\\SporeModLoader.log";
 
-        // try to open the log file at the modloader path,
-        // if that fails, try the temporary path
+    // try to open the log file at the modloader path,
+    // if that fails, try the temporary path
+    l_LogFileStream.open(logFilePath);
+    if (!l_LogFileStream.good())
+    {
+        logFilePath = std::filesystem::temp_directory_path();
+        logFilePath += "\\SporeModLoader.log";
         l_LogFileStream.open(logFilePath);
         if (!l_LogFileStream.good())
         {
-            logFilePath = std::filesystem::temp_directory_path();
-            logFilePath += "\\SporeModLoader.log";
-            l_LogFileStream.open(logFilePath);
-            if (!l_LogFileStream.good())
-            {
-                throw std::exception();
-            }
+            UI::ShowErrorMessage("Failed to find a working log file location!");
+            return false;
         }
     }
-    catch (...)
-    {
-        std::wstring errorMessage;
-        errorMessage = L"Failed to find a working log file location!";
-        UI::ShowErrorMessage(errorMessage);
-        throw std::exception();
-    }
+
+    return true;
 }
 
-void Logger::AddMessage(std::wstring message)
+void Logger::AddMessage(const std::string& message)
 {
     l_LogFileStream << message << std::endl;
 }
 
-void UI::ShowErrorMessage(std::wstring message)
+void UI::ShowErrorMessage(const std::string& message)
 {
-    MessageBoxW(nullptr, message.c_str(), L"SporeModLoader", MB_OK | MB_ICONERROR);
+    MessageBoxA(nullptr, message.c_str(), "SporeModLoader", MB_OK | MB_ICONERROR);
 }
 
 bool Library::LoadAll(const std::vector<std::filesystem::path>& paths, std::vector<HMODULE>& modules)
 {
+    std::string message;
+
     for (const auto& path : paths)
     {
         // attempt to load library
         HMODULE hModule = LoadLibraryW(path.wstring().c_str());
         bool ret = hModule != nullptr;
 
-        std::wstring logMessage;
-        logMessage = L"LoadLibraryW(\"";
-        logMessage += path.wstring();
-        logMessage += L"\") == ";
-        logMessage += std::to_wstring((ret ? 1 : GetLastError()));
-        Logger::AddMessage(logMessage);
+        message = "LoadLibraryW(\"";
+        message += path.string();
+        message += "\") == ";
+        message += std::to_string((ret ? 1 : GetLastError()));
+        Logger::AddMessage(message);
 
         if (!ret)
         {
-            std::wstring errorMessage;
-            errorMessage = L"LoadLibraryW(\"";
-            errorMessage += path.wstring();
-            errorMessage += L"\") Failed!";
-            UI::ShowErrorMessage(errorMessage);
+            message = "LoadLibraryW(\"";
+            message += path.string();
+            message += "\") Failed!";
+            UI::ShowErrorMessage(message);
             return false;
         }
         else
@@ -275,6 +269,8 @@ bool Library::LoadAll(const std::vector<std::filesystem::path>& paths, std::vect
 
 bool Library::UnloadAll(const std::vector<HMODULE>& modules, const std::vector<std::filesystem::path>& paths)
 {
+    std::string message;
+
     for (size_t i = 0; i < modules.size(); i++)    
     {
         const auto& module = modules[i];
@@ -283,20 +279,18 @@ bool Library::UnloadAll(const std::vector<HMODULE>& modules, const std::vector<s
         // attempt to load library
         bool ret = FreeLibrary(module);
 
-        std::wstring logMessage;
-        logMessage = L"FreeLibrary(\"";
-        logMessage += path.wstring();
-        logMessage += L"\") == ";
-        logMessage += std::to_wstring((ret ? 1 : GetLastError()));
-        Logger::AddMessage(logMessage);
+        message = "FreeLibrary(\"";
+        message += path.string();
+        message += "\") == ";
+        message += std::to_string((ret ? 1 : GetLastError()));
+        Logger::AddMessage(message);
 
         if (!ret)
         {
-            std::wstring errorMessage;
-            errorMessage = L"FreeLibrary(\"";
-            errorMessage += path.wstring();
-            errorMessage += L"\") Failed!";
-            UI::ShowErrorMessage(errorMessage);
+            message = "FreeLibrary(\"";
+            message += path.string();
+            message += "\") Failed!";
+            UI::ShowErrorMessage(message);
             return false;
         }
     }
@@ -308,6 +302,8 @@ Game::GameVersion Game::GetCurrentVersion(void)
 {
     static std::optional<Game::GameVersion> cachedGameVersion;
     std::filesystem::path currentExecutablePath;
+    std::error_code errorCode;
+    std::string message;
     uintmax_t currentFileSize;
 
     if (cachedGameVersion.has_value())
@@ -317,30 +313,32 @@ Game::GameVersion Game::GetCurrentVersion(void)
 
     currentExecutablePath = Path::GetCurrentExecutablePath();
 
-    try
+    currentFileSize = std::filesystem::file_size(currentExecutablePath, errorCode);
+    if (errorCode)
     {
-        currentFileSize = std::filesystem::file_size(currentExecutablePath);
-    }
-    catch (...)
-    {
-        std::wstring errorMessage;
-        errorMessage = L"std::filesystem::file_size(\"";
-        errorMessage += currentExecutablePath;
-        errorMessage += L"\") Failed!";
-        UI::ShowErrorMessage(errorMessage);
-        throw std::exception();
+        message = "std::filesystem::file_size(\"";
+        message += currentExecutablePath.string();
+        message += "\") == 0: ";
+        message += errorCode.message();
+        Logger::AddMessage(message);
+
+        message = "std::filesystem::file_size(\"";
+        message += currentExecutablePath.string();
+        message += "\") Failed!";
+        UI::ShowErrorMessage(message);
+        return Game::GameVersion::Unknown;
     }
 
     switch (currentFileSize)
     {
-    case 24909584: // Disk         v1.5.1
-    case 24904192: // Cracked Disk v1.5.1
-        cachedGameVersion = Game::GameVersion::Disk_1_5_1;
+    case 24909584: // Disc         v1.5.1
+    case 24904192: // Cracked Disc v1.5.1
+        cachedGameVersion = Game::GameVersion::Disc_1_5_1;
         break;
 
-    case 24885248: // GOG March     2017
-    case 24895536: // GOG October   2024
-    case 25066744: // Steam October 2024
+    case 24885248: // GOG/Steam March 2017
+    case 24895536: // GOG October     2024
+    case 25066744: // Steam October   2024
         cachedGameVersion = Game::GameVersion::GogOrSteam_March2017;
         break;
 

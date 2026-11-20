@@ -31,12 +31,12 @@ namespace SporeModLoaderHelpers
         /// <summary>
         ///     Returns paths to the core libs
         /// </summary>
-        std::vector<std::filesystem::path> GetCoreLibsPaths(void);
+        bool GetCoreLibsPaths(std::vector<std::filesystem::path>& paths);
 
         /// <summary>
         ///     Returns paths to the mod libs
         /// </summary>
-        std::vector<std::filesystem::path> GetModLibsPaths(void);
+        bool GetModLibsPaths(std::vector<std::filesystem::path>& paths);
     }
 
     namespace Logger
@@ -44,13 +44,12 @@ namespace SporeModLoaderHelpers
         /// <summary>
         ///     Opens log file
         /// </summary>
-        /// <param name=""></param>
-        void Open(void);
+        bool Open(void);
 
         /// <summary>
         ///     Adds message to the log file
         /// </summary>
-        void AddMessage(std::wstring message);
+        void AddMessage(const std::string& message);
     }
 
     namespace UI
@@ -58,7 +57,7 @@ namespace SporeModLoaderHelpers
         /// <summary>
         ///     Displays error message
         /// </summary>
-        void ShowErrorMessage(std::wstring message);
+        void ShowErrorMessage(const std::string& message);
     }
 
     namespace Library
@@ -78,7 +77,7 @@ namespace SporeModLoaderHelpers
     {
         enum class GameVersion
         {
-            Disk_1_5_1 = 0,
+            Disc_1_5_1 = 0,
             GogOrSteam_March2017,
             Unknown
         };
