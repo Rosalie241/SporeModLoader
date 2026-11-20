@@ -177,13 +177,7 @@ bool Path::GetModLibsPaths(std::vector<std::filesystem::path>& paths)
         std::wstring filename = entry.path().filename().wstring();
         for (const auto& postfix : excludePostfixes)
         {
-            // we have to support C++17 for MinGW
-#ifdef __cpp_lib_starts_ends_with
             if (filename.ends_with(postfix))
-#else // C++17
-            if (filename.size() >= postfix.size() && 
-                filename.find(postfix, filename.size() - postfix.size()) != std::wstring::npos)
-#endif
             {
                 skipLib = true;
                 break;
