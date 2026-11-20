@@ -9,7 +9,7 @@ BINARY_DIR     := ../bin
 CC            := gcc
 CXX           := g++
 
-export CC CXX MINGW_CC MINGW_CXX MINGW_WINDRES
+export CC CXX
 
 help:
 	@echo "SporeModLoader Makefile."
@@ -26,7 +26,7 @@ help:
 	@echo "    ASAN=1          == add address sanitizer to binaries"
 	@echo "    VERBOSE=1       == show verbose compiler output"
 
-all: SporeModLoader SporeModManager.exe SporeModManager
+all: SporeModManager
 
 clean:
 	$(MAKE) -C SporeModManager clean BINARY_DIR=$(BINARY_DIR)/SporeModLoader/SporeModManager
