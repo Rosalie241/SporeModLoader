@@ -14,27 +14,13 @@ WERROR         := 0
 PYTHON        ?= python3
 CC            ?= gcc
 CXX           ?= g++
-MINGW_CC      ?= i686-w64-mingw32-gcc
-MINGW_CXX     ?= i686-w64-mingw32-g++
-MINGW_WINDRES ?= i686-w64-mingw32-windres
 
-ifeq ($(MINGW), 0)
 LIBLDFLAGS := -ldl
 LDFLAGS    :=
 OPTFLAGS   := -Os -flto -fno-exceptions
 WARNFLAGS  := -Wall -Wextra -Wpedantic
 OBJ        := o
 EXE_EXT    :=
-else
-# mingw doesn't like LTO
-# and we need to statically link
-LIBLDFLAGS := -lurlmon
-LDFLAGS    := -municode -static
-OPTFLAGS   := -Os -fno-exceptions
-WARNFLAGS  := -Wall -Wextra -Wpedantic
-OBJ        := obj
-EXE_EXT    := .exe
-endif
 
 ifeq ($(WERROR), 1)
 WARNFLAGS  += -Werror
@@ -71,11 +57,6 @@ OBJECT_FILES := \
 	$(SOURCE_DIR)/SporeModManagerHelpers/Zip.$(OBJ)         \
 	$(SOURCE_DIR)/SporeModManager.$(OBJ)                    \
 	$(SOURCE_DIR)/main.$(OBJ)
-
-ifneq ($(MINGW), 0)
-	OBJECT_FILES += \
-		$(SOURCE_DIR)/version.$(OBJ)
-endif
 
 GENERATED_HEADER_FILES := \
 	$(SOURCE_DIR)/revision.h
@@ -122,29 +103,12 @@ endif
 	@echo "CXX $<"
 	$(QUIET)$(CXX) -c $< -o $@ $(OPTFLAGS) $(WARNFLAGS) $(CXXFLAGS)
 
-%.obj: %.c $(THIRDPARTY_HEADER_FILES)
-	@echo "MINGW_CC  $<"
-	$(QUIET)$(MINGW_CC) -c $< -o $@ $(OPTFLAGS) $(WARNFLAGS) $(CFLAGS)
-
-%.obj: %.cpp $(HEADER_FILES) $(THIRDPARTY_HEADER_FILES)
-	@echo "MINGW_CXX $<"
-	$(QUIET)$(MINGW_CXX) -c $< -o $@ $(OPTFLAGS) $(WARNFLAGS) $(CXXFLAGS)
-
-%.obj: %.rc $(HEADER_FILES)
-	@echo "MINGW_RES $<"
-	$(QUIET)$(MINGW_WINDRES) -i $< -o $@
-
 all: $(BINARY_DIR)/$(EXE_FILE)$(EXE_EXT)
 
 $(BINARY_DIR)/$(EXE_FILE): $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
 	@echo "LD  $@"
 	$(QUIET)mkdir -p $(BINARY_DIR)
 	$(QUIET)$(CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS) $(LIBLDFLAGS)
-
-$(BINARY_DIR)/$(EXE_FILE).exe: $(THIRDPARTY_OBJECT_FILES) $(OBJECT_FILES)
-	@echo "MINGW_LD  $@"
-	$(QUIET)mkdir -p $(BINARY_DIR)
-	$(QUIET)$(MINGW_CXX) $(OBJECT_FILES) $(THIRDPARTY_OBJECT_FILES) -o $@ $(LDFLAGS) $(LIBLDFLAGS)
 
 $(SOURCE_DIR)/revision.h: $(SOURCE_DIR)/gen_rev_header.py
 	@echo "GEN revision.h"
