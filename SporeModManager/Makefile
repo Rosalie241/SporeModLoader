@@ -40,7 +40,7 @@ endif
 CFLAGS     := \
 				-I$(THIRDPARTY_DIR)/zlib     \
 				-I$(THIRDPARTY_DIR)/zlib/contrib/minizip
-CXXFLAGS   := -std=c++17 -fno-rtti           \
+CXXFLAGS   := -std=c++20 -fno-rtti           \
 				-I$(SOURCE_DIR)              \
 				-I$(THIRDPARTY_DIR)/tinyxml2 \
 				-I$(THIRDPARTY_DIR)/zlib     \
